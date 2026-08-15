@@ -290,7 +290,9 @@ export default function ObservatoryShell() {
 
   const unifiedBreadcrumb = useMemo(() => {
     const items: BreadcrumbItem[] = [...lens.breadcrumbs];
-    if (lens.selectedNode && lens.selectedNode.id !== lens.focalNode?.id) {
+    // Root graph selection is local emphasis, not a navigation scope. Keep
+    // breadcrumbs reserved for Enter/drill-down so they state scope exactly.
+    if (lens.lensPath.length > 0 && lens.selectedNode && lens.selectedNode.id !== lens.focalNode?.id) {
       items.push({ id: lens.selectedNode.id, label: truncateBreadcrumbLabel(lens.selectedNode.label), title: lens.selectedNode.label });
     }
     if (proofSelection && proofMode !== 'closed') {
@@ -306,7 +308,7 @@ export default function ObservatoryShell() {
       items.push({ id: 'evidence', label: truncateBreadcrumbLabel(statementLabel), title: statementLabel });
     }
     return items;
-  }, [lens.breadcrumbs, lens.focalNode, lens.selectedNode, proofMode, proofSelection]);
+  }, [lens.breadcrumbs, lens.focalNode, lens.lensPath.length, lens.selectedNode, proofMode, proofSelection]);
 
   const handleBreadcrumbSelect = useCallback((index: number) => {
     const lensCrumbCount = lens.breadcrumbs.length;

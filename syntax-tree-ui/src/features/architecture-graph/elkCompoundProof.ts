@@ -70,6 +70,14 @@ export async function layoutArchitectureGraphProof(groups: ArchitectureGraphGrou
       : { id: edge.id, sources: [sourceRoot], targets: [targetRoot] };
   });
   const laid = await elk.layout(root);
+  // A root without a cross-region relation is not made to look connected.
+  // ELK has no relation to rank it against, so place it in a stable secondary
+  // lane beside the connected map rather than letting it strand above it.
+  const connectedRoots = new Set((laid.edges ?? []).flatMap((edge) => [...(edge.sources ?? []), ...(edge.targets ?? [])]));
+  const rootChildren = laid.children ?? [];
+  const connectedExtent = rootChildren.filter((child) => connectedRoots.has(child.id)).reduce((extent, child) => Math.max(extent, (child.x ?? 0) + (child.width ?? 0)), 0);
+  const detached = rootChildren.filter((child) => !connectedRoots.has(child.id)).sort((a, b) => a.id.localeCompare(b.id));
+  detached.forEach((child, index) => { child.x = connectedExtent + 150; child.y = 48 + index * ((child.height ?? 0) + 64); });
   const nodes: CompoundLayoutNode[] = [];
   const emit = (node: ElkNode, parentId?: string) => {
     if (node.id !== '__root__') nodes.push({ id: node.id, ...(parentId ? { parentId } : {}), position: { x: node.x ?? 0, y: node.y ?? 0 }, width: node.width ?? 0, height: node.height ?? 0 });

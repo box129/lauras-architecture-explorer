@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react
 import { ArrowLeft } from 'lucide-react';
 import ArchitectureMapCanvas from '../architecture-map/ArchitectureMapCanvas';
 import ArchitectureGraphOverview from '../architecture-graph/ArchitectureGraphOverview';
+import ArchitectureGraphInspector from '../architecture-graph/ArchitectureGraphInspector';
 import {
   ArchitectureMapEmptyState,
   ArchitectureMapErrorState,
@@ -99,6 +100,7 @@ export default function ObservatoryShell() {
     runId: analysisRunId,
   });
   const [draftPrompt, setDraftPrompt] = useState('');
+  const [requestedGraphExpansion, setRequestedGraphExpansion] = useState<string | null>(null);
   const [proofSelection, setProofSelection] = useState<CodeCompanionSelection | null>(() => decodeProofSelection(searchParams.get('proof')));
   const [proofMode, setProofMode] = useState<'closed' | 'collapsed' | 'open' | 'expanded'>(() => {
     const mode = searchParams.get('proofMode');
@@ -430,6 +432,7 @@ export default function ObservatoryShell() {
   }, [playTour, tourStep]);
 
   const canvasFixture = lens.isEntityFocus ? (lens.entityFocusLandscape ?? lens.landscape) : lens.landscape;
+  const isRootArchitectureGraph = Boolean(canvasFixture && source === 'api' && lens.lensPath.length === 0 && !lens.isEntityFocus && !showQuestionLens && !showFlowLens);
 
   let canvas = showQuestionLens ? (
     <QuestionLensCanvas
@@ -453,13 +456,14 @@ export default function ObservatoryShell() {
       onSelectStep={flowLens.selectStep}
       selectedStepId={flowLens.selectedStepId}
     />
-  ) : (canvasFixture && source === 'api' && lens.lensPath.length === 0 && !lens.isEntityFocus) ? (
+  ) : isRootArchitectureGraph ? (
     <ArchitectureGraphOverview
       runId={analysisRunId}
       selectedNode={lens.selectedNode}
       onEnterNode={lens.enterNode}
       onHoverNode={lens.prefetchNode}
       onSelectNode={selectNode}
+      requestedExpandId={requestedGraphExpansion}
     />
   ) : (canvasFixture) ? (
     <ArchitectureMapCanvas
@@ -550,6 +554,7 @@ export default function ObservatoryShell() {
           />
           {!showFlowLens && (
             <QuestionDock
+              compact={isRootArchitectureGraph}
               contextLabel={lens.selectedNode?.label ?? lens.focalNode?.label ?? shellMeta.repoTitle}
               draftPrompt={draftPrompt}
               loading={questionLens.loading}
@@ -586,6 +591,12 @@ export default function ObservatoryShell() {
             onOpenProof={openProof}
             onSaveLens={saveCurrentLens}
             selectedStep={flowLens.selectedStep}
+          />
+        ) : isRootArchitectureGraph ? (
+          <ArchitectureGraphInspector
+            node={lens.selectedNode}
+            onEnter={lens.enterNode}
+            onExpand={(node) => setRequestedGraphExpansion(node.id)}
           />
         ) : (
           <VoiceRail

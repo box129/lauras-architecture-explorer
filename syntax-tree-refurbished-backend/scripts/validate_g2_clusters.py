@@ -134,7 +134,20 @@ def analyze(path: Path):
                 group = next(value for value in hierarchy.all_nodes if value.id == group_id)
                 modules = {member.id for member in members}
                 regions.append(_region_report(group, modules, _resolved_region_relations(store, run_id, modules, symbol_modules), projection, symbol_modules))
-    return {"repository": str(path), "run_id": run_id, "repeated_projection_identical": projection == repeated, "regions": regions}
+    relation_counts = Counter(
+        f"{relation.resolution_status}:{relation.relation_kind}"
+        for relation in store.get_relations(run_id)
+    )
+    return {
+        "repository": str(path),
+        "run_id": run_id,
+        "source_files_discovered": len(job.snapshot.files) if job.snapshot else 0,
+        "parsed_entities": len(store.get_symbols(run_id)),
+        "module_components": len(overview.main_components),
+        "persisted_relation_counts": dict(sorted(relation_counts.items())),
+        "repeated_projection_identical": projection == repeated,
+        "regions": regions,
+    }
 
 
 if __name__ == "__main__":

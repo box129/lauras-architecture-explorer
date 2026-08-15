@@ -29,6 +29,7 @@ import { questionLensProofSelection, questionStepProofSelection } from '../quest
 import { useQuestionLens } from '../question-lens/useQuestionLens';
 import ObservatoryTopBar from './ObservatoryTopBar';
 import type { BreadcrumbItem } from './BreadcrumbTrail';
+import type { ObservatoryNode } from './types';
 import QuestionDock from './QuestionDock';
 import VoiceRail from './VoiceRail';
 import { getFixtureExplanation } from './fixtures/openWebuiExplanations';
@@ -101,6 +102,11 @@ export default function ObservatoryShell() {
   });
   const [draftPrompt, setDraftPrompt] = useState('');
   const [requestedGraphExpansion, setRequestedGraphExpansion] = useState<string | null>(null);
+  // Architecture-graph nodes include v2 cluster/residual nodes that are not
+  // part of the broader architecture-map lens payload. Keep one selection
+  // value at the shell boundary so canvas, accessible table, and inspector
+  // render the same graph-local selection.
+  const [graphSelectedNode, setGraphSelectedNode] = useState<ObservatoryNode | null>(null);
   const [proofSelection, setProofSelection] = useState<CodeCompanionSelection | null>(() => decodeProofSelection(searchParams.get('proof')));
   const [proofMode, setProofMode] = useState<'closed' | 'collapsed' | 'open' | 'expanded'>(() => {
     const mode = searchParams.get('proofMode');
@@ -284,6 +290,7 @@ export default function ObservatoryShell() {
       setProofModeAndUrl('closed');
       return;
     }
+    setGraphSelectedNode(null);
     lens.goBack();
   }, [lens, proofMode, proofSelection, setProofModeAndUrl]);
   const canGoBack = (Boolean(proofSelection) && proofMode !== 'closed') || Boolean(lens.selectedNode) || lens.lensPath.length > 0;
@@ -313,6 +320,7 @@ export default function ObservatoryShell() {
   const handleBreadcrumbSelect = useCallback((index: number) => {
     const lensCrumbCount = lens.breadcrumbs.length;
     if (index < lensCrumbCount) {
+      setGraphSelectedNode(null);
       lens.goToBreadcrumb(index);
       setProofModeAndUrl('closed');
       return;
@@ -323,12 +331,17 @@ export default function ObservatoryShell() {
     setProofModeAndUrl('closed');
   }, [lens, setProofModeAndUrl]);
 
+  useEffect(() => {
+    setGraphSelectedNode(null);
+  }, [analysisRunId]);
+
   const analyzeAnotherRepository = useCallback(() => {
     resetAnalysis();
     window.history.replaceState({}, '', '/');
   }, [resetAnalysis]);
 
   const selectNode = (node: Parameters<typeof lens.selectNode>[0]) => {
+    setGraphSelectedNode(node);
     lens.selectNode(node);
     if (node?.level && node.level >= 2 && node.evidenceCount > 0) {
       openProof({
@@ -338,6 +351,11 @@ export default function ObservatoryShell() {
         open: true,
       });
     }
+  };
+
+  const enterNode = (node: ObservatoryNode, selectOnly = false) => {
+    setGraphSelectedNode(node);
+    lens.enterNode(node, selectOnly);
   };
 
   const relatedFlows = useMemo(() => {
@@ -463,8 +481,8 @@ export default function ObservatoryShell() {
   ) : isArchitectureGraph ? (
     <ArchitectureGraphOverview
       runId={analysisRunId}
-      selectedNode={lens.selectedNode}
-      onEnterNode={lens.enterNode}
+      selectedNode={graphSelectedNode ?? lens.selectedNode}
+      onEnterNode={enterNode}
       onHoverNode={lens.prefetchNode}
       onSelectNode={selectNode}
       requestedExpandId={requestedGraphExpansion}
@@ -599,8 +617,8 @@ export default function ObservatoryShell() {
           />
         ) : isArchitectureGraph ? (
           <ArchitectureGraphInspector
-            node={lens.selectedNode}
-            onEnter={lens.enterNode}
+            node={graphSelectedNode ?? lens.selectedNode}
+            onEnter={enterNode}
             onExpand={(node) => setRequestedGraphExpansion(node.id)}
             scopeGroupId={lens.lensPath.at(-1) ?? null}
           />

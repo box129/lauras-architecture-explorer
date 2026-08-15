@@ -12,6 +12,8 @@ The isolated ELK proof converts neutral graph DTOs into compound ELK hierarchy, 
 
 The wrapper is required because ELK works in absolute hierarchy coordinates while ReactFlow compound children require coordinates relative to `parentId`. It owns DTO-to-ELK conversion, deterministic sorting, parent sizing, routed-edge extraction, and that coordinate handoff.
 
+Cross-container aggregate edges are routed at the nearest common root-container level while preserving their original aggregate-edge IDs. Intra-container edges retain their leaf endpoints. This is an ELK limitation handled by the wrapper, not a change to graph facts or relation direction.
+
 Structural scale smoke on this workspace produced 20 groups and zero relations/aggregate edges in 1.20 ms (20 modules), 1.69 ms (200), and 4.18 ms (2,000). This intentionally exercises collapsed structural representation only; G0 does not claim a 2,000-node ReactFlow render result.
 
 Deferred: production canvas, filters, semantic zoom, clustering, AI interpretation, and relation drill-down UI/API.

@@ -24,7 +24,22 @@ export async function layoutArchitectureGraphProof(groups: ArchitectureGraphGrou
   for (const group of groups) if (group.parent_group_id && byId.has(group.parent_group_id)) children.set(group.parent_group_id, [...(children.get(group.parent_group_id) ?? []), group]);
   const build = (group: ArchitectureGraphGroupDTO): ElkNode => ({ id: group.id, width: children.has(group.id) ? 300 : 180, height: children.has(group.id) ? 120 : 82, layoutOptions: options, children: (children.get(group.id) ?? []).sort((a, b) => a.id.localeCompare(b.id)).map(build) });
   const root: ElkNode = { id: '__root__', layoutOptions: options, children: groups.filter((group) => !group.parent_group_id || !byId.has(group.parent_group_id)).sort((a, b) => a.id.localeCompare(b.id)).map(build) };
-  root.edges = edges.filter((edge) => byId.has(edge.source_group_id) && byId.has(edge.target_group_id)).sort((a, b) => a.id.localeCompare(b.id)).map((edge): ElkExtendedEdge => ({ id: edge.id, sources: [edge.source_group_id], targets: [edge.target_group_id] }));
+  // ELK does not route every edge whose endpoints live in separate nested
+  // compounds when attached at the artificial root. Route those through their
+  // nearest root children; the original aggregate-edge id remains intact for
+  // later ReactFlow gutter/handle rendering.
+  const rootRepresentative = (id: string): string => {
+    let current = id;
+    while (byId.get(current)?.parent_group_id && byId.has(byId.get(current)?.parent_group_id ?? '')) current = byId.get(current)?.parent_group_id ?? current;
+    return current;
+  };
+  root.edges = edges.filter((edge) => byId.has(edge.source_group_id) && byId.has(edge.target_group_id)).sort((a, b) => a.id.localeCompare(b.id)).map((edge): ElkExtendedEdge => {
+    const sourceRoot = rootRepresentative(edge.source_group_id);
+    const targetRoot = rootRepresentative(edge.target_group_id);
+    return sourceRoot === targetRoot
+      ? { id: edge.id, sources: [edge.source_group_id], targets: [edge.target_group_id] }
+      : { id: edge.id, sources: [sourceRoot], targets: [targetRoot] };
+  });
   const laid = await elk.layout(root);
   const nodes: CompoundLayoutNode[] = [];
   const emit = (node: ElkNode, parentId?: string) => {

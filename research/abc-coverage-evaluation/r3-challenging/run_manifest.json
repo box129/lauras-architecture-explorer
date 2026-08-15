@@ -1,0 +1,13 @@
+{
+  "protocol_version": "pilot-v1",
+  "ground_truth_freeze_tag": "pilot-v1-ground-truth-frozen",
+  "ground_truth_artifact_hash": "sha256:fa08aa2d826654a8890ab3c52ebe5c533a14c2d2350c62ff782b4319d78f083c",
+  "system_checkpoint": "0eee4a9",
+  "system_tag": "feasibility-deterministic-provenance-j3",
+  "repository_id": "openstack/stevedore",
+  "repository_revision": "d3a55f33fb310f43833c7c3eb5ba417e46a9a928",
+  "run_id": "run:ecc308bed34f465789d885a8523743e2",
+  "python_version": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+  "comparison_note": "ABC coverage evaluation -- NOT pilot-v1 and NOT the frozen D4 comparison; system checkpoint is this repository's backend with interventions A (subscripted generic inheritance bases), B (bare `from . import X` submodule binding), and C (guarded static super() resolution) applied on top of the J3+D4 state.",
+  "system_under_evaluation": "C:\\Users\\LENOVO T14\\Development\\lauras-architecture-explorer-design-review\\syntax-tree-refurbished-backend\\src\\syntax_tree_refurbished\\__init__.py"
+}

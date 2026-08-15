@@ -1,0 +1,194 @@
+[
+  {
+    "claim_id": "R3-TDI-1",
+    "evidence": [
+      {
+        "relation_id": "relation:b367382fce2a86bd033cc625",
+        "relation_span": "stevedore/named.py:35-35",
+        "span_inside_source_symbol": "python:stevedore/named.py::NamedExtensionManager (35-211)",
+        "matches_ground_truth_citation": "stevedore/named.py:35-35 (class NamedExtensionManager(ExtensionManager[T]) declaration)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R3-TDI-2",
+    "evidence": [
+      {
+        "relation_id": "relation:ff713474c71983bec6357601",
+        "relation_span": "stevedore/dispatch.py:34-34",
+        "span_inside_source_symbol": "python:stevedore/dispatch.py::DispatchExtensionManager (34-137)",
+        "matches_ground_truth_citation": "stevedore/dispatch.py:34-34 (class DispatchExtensionManager(EnabledExtensionManager[T]) declaration)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R3-TDI-3",
+    "evidence": [
+      {
+        "relation_id": "relation:c275e5be35ec841e7cb7b4a0",
+        "relation_span": "stevedore/hook.py:26-26",
+        "span_inside_source_symbol": "python:stevedore/hook.py::HookManager (26-107)",
+        "matches_ground_truth_citation": "stevedore/hook.py:26-26 (class HookManager(NamedExtensionManager[T]) declaration)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R3-TDC-1",
+    "evidence": [
+      {
+        "relation_id": "relation:0c413b79ecb9e6b43a76736a",
+        "relation_span": "stevedore/extension.py:196-198",
+        "span_inside_source_symbol": "python:stevedore/extension.py::ExtensionManager.__init__ (169-200)",
+        "matches_ground_truth_citation": "stevedore/extension.py:196-198 (self._load_plugins(...) call site inside ExtensionManager.__init__)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R3-TDC-2",
+    "evidence": [
+      {
+        "relation_id": "relation:17e52acdf3b29a4e3dfd72ce",
+        "relation_span": "stevedore/extension.py:200-200",
+        "span_inside_source_symbol": "python:stevedore/extension.py::ExtensionManager.__init__ (169-200)",
+        "matches_ground_truth_citation": "stevedore/extension.py:200-200 (self._init_plugins(extensions) call site inside ExtensionManager.__init__)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R3-TDC-3",
+    "evidence": [
+      {
+        "relation_id": "relation:e46eb694cac73cdc7e5555f9",
+        "relation_span": "stevedore/extension.py:408-410",
+        "span_inside_source_symbol": "python:stevedore/extension.py::ExtensionManager.map_method (389-410)",
+        "matches_ground_truth_citation": "stevedore/extension.py:408-410 (self.map(...) call site inside ExtensionManager.map_method)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R3-TDC-4",
+    "evidence": [
+      {
+        "relation_id": "relation:34228d614594e8ed6a18761d",
+        "relation_span": "stevedore/sphinxext.py:45-45",
+        "span_inside_source_symbol": "python:stevedore/sphinxext.py::_simple_list (40-47)",
+        "matches_ground_truth_citation": "stevedore/sphinxext.py:45-45 (_get_docstring(ext.plugin) call site inside _simple_list)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R3-TDC-5",
+    "evidence": [
+      {
+        "relation_id": "relation:974fe717dc46e91e4609d665",
+        "relation_span": "stevedore/enabled.py:97-99",
+        "span_inside_source_symbol": "python:stevedore/enabled.py::EnabledExtensionManager._load_one_plugin (90-103)",
+        "matches_ground_truth_citation": "stevedore/enabled.py:97-99 (super()._load_one_plugin(...) call site inside EnabledExtensionManager._load_one_plugin)",
+        "resolution_basis": "static_super",
+        "supporting_resolution_spans": [
+          "stevedore/enabled.py:30-30 (inherits relation walked to resolve super().method() along a single-base chain)"
+        ]
+      }
+    ]
+  },
+  {
+    "claim_id": "R3-TDC-6",
+    "evidence": [
+      {
+        "relation_id": "relation:75d54689052efe4cf0a15fd9",
+        "relation_span": "stevedore/hook.py:80-90",
+        "span_inside_source_symbol": "python:stevedore/hook.py::HookManager.__init__ (58-90)",
+        "matches_ground_truth_citation": "stevedore/hook.py:80-90 (super().__init__(...) call site inside HookManager.__init__)",
+        "resolution_basis": "static_super",
+        "supporting_resolution_spans": [
+          "stevedore/hook.py:26-26 (inherits relation walked to resolve super().method() along a single-base chain)"
+        ]
+      }
+    ]
+  },
+  {
+    "claim_id": "R3-TRC-1",
+    "evidence": [
+      {
+        "relation_id": "relation:8f9004dc6569aa5308ecfbf3",
+        "relation_span": "stevedore/driver.py:193-193",
+        "span_inside_source_symbol": "python:stevedore/driver.py::DriverManager.__call__ (170-196)",
+        "matches_ground_truth_citation": "stevedore/driver.py:193-193 (self.map(func, *args, **kwds) call site inside DriverManager.__call__ (hop 1, resolves via MRO to ExtensionManager.map))",
+        "resolution_basis": "inherited_self_method",
+        "supporting_resolution_spans": [
+          "stevedore/named.py:35-35 (inherits relation used to resolve self.method() through a base class)"
+        ]
+      },
+      {
+        "relation_id": "relation:ca80fcf700e0ab2450d57591",
+        "relation_span": "stevedore/extension.py:380-380",
+        "span_inside_source_symbol": "python:stevedore/extension.py::ExtensionManager.map (350-381)",
+        "matches_ground_truth_citation": "stevedore/extension.py:350-381 (ExtensionManager.map definition -- confirms not overridden by NamedExtensionManager/DriverManager)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R3-TRC-2",
+    "evidence": [
+      {
+        "relation_id": "relation:75d54689052efe4cf0a15fd9",
+        "relation_span": "stevedore/hook.py:80-90",
+        "span_inside_source_symbol": "python:stevedore/hook.py::HookManager.__init__ (58-90)",
+        "matches_ground_truth_citation": "stevedore/hook.py:80-90 (super().__init__(...) call site inside HookManager.__init__ (hop 1))",
+        "resolution_basis": "static_super",
+        "supporting_resolution_spans": [
+          "stevedore/hook.py:26-26 (inherits relation walked to resolve super().method() along a single-base chain)"
+        ]
+      },
+      {
+        "relation_id": "relation:987214ede7aaa5ee04de74c4",
+        "relation_span": "stevedore/named.py:109-118",
+        "span_inside_source_symbol": "python:stevedore/named.py::NamedExtensionManager.__init__ (75-118)",
+        "matches_ground_truth_citation": "stevedore/named.py:75-118 (NamedExtensionManager.__init__ definition)",
+        "resolution_basis": "static_super",
+        "supporting_resolution_spans": [
+          "stevedore/named.py:35-35 (inherits relation walked to resolve super().method() along a single-base chain)"
+        ]
+      }
+    ]
+  },
+  {
+    "claim_id": "R3-TRC-3",
+    "evidence": [
+      {
+        "relation_id": "relation:1495a33cc12dbe29eca0af77",
+        "relation_span": "stevedore/dispatch.py:263-265",
+        "span_inside_source_symbol": "python:stevedore/dispatch.py::NameDispatchExtensionManager.map_method (240-265)",
+        "matches_ground_truth_citation": "stevedore/dispatch.py:263-265 (self.map(...) call site inside NameDispatchExtensionManager.map_method (hop 1, resolves to same-class override))",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      },
+      {
+        "relation_id": "relation:8ef1afba08bd8fa5eecc640b",
+        "relation_span": "stevedore/dispatch.py:235-237",
+        "span_inside_source_symbol": "python:stevedore/dispatch.py::NameDispatchExtensionManager.map (200-238)",
+        "matches_ground_truth_citation": "stevedore/dispatch.py:200-238 (NameDispatchExtensionManager.map definition)",
+        "resolution_basis": "inherited_self_method",
+        "supporting_resolution_spans": [
+          "stevedore/enabled.py:30-30 (inherits relation used to resolve self.method() through a base class)"
+        ]
+      }
+    ]
+  }
+]

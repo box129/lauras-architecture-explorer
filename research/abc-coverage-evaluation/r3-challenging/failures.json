@@ -1,0 +1,18 @@
+[
+  {
+    "claim_id": "R3-OOS-1",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "outcome": "out_of_scope",
+    "failure_category": "proposition_vocabulary",
+    "evaluator_notes": "Out-of-scope structural pattern (not one of the 24 target claims): this is real production code where the actual callee of both 'ep.load()' invocation semantics and the subsequent 'plugin(...)' call depends entirely on runtime entry-point metadata (setuptools/importlib.metadata EntryPoint.value), not on any statically-visible name in this source tree. It reads exactly like an ordinary call/construction site but is not resolvable to a single real StableEntityRef the way direct_relation/calls requires. Recorded here as documented, valuable signal per the R3 tier's purpose rather than forced into an in-scope claim."
+  },
+  {
+    "claim_id": "R3-OOS-2",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "outcome": "out_of_scope",
+    "failure_category": "proposition_vocabulary",
+    "evaluator_notes": "Out-of-scope structural pattern (not one of the 24 target claims): stevedore's map()/map_method()/_invoke_one_plugin()/_call_extension_method() plumbing is a higher-order-function / callback-invocation pattern -- the actual function invoked at '_invoke_one_plugin's func(e, *args, **kwds)' (extension.py line 421) or '_call_extension_method's getattr(extension.obj, method_name)(...)' (line 387) is whatever callable the external caller of map()/map_method() passed in, which is not a fixed, statically-nameable entity within this repository's own source. This is exactly the kind of factory/callback indirection that makes 'reachability' claims through map() genuinely stop at _invoke_one_plugin rather than continuing further, and is recorded here as documented signal rather than forced into an in-scope claim."
+  }
+]

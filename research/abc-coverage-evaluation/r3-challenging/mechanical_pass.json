@@ -1,0 +1,217 @@
+[
+  {
+    "claim_id": "R3-TDI-1",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:4691fa8d0b98fa638ee16751"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-TDI-2",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:beedcc05d2b44c9f69042391"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-TDI-3",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:8cf7aa9551bd820eae0a9f6c"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-FDI-1",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-FDI-2",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-FDI-3",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-TDC-1",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:06fb930af0b20062f9791780"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-TDC-2",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:408757802eb38e2180c44f17"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-TDC-3",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:ef78dcdc1f384a8e1594ed82"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-TDC-4",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:cfdfd4ae662f3b5f962d05d7"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-TDC-5",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:64fe340312cbf210355bee01"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-TDC-6",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:21969dbec8eb1a763d357686"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-FDC-1",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-FDC-2",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-FDC-3",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-FDC-4",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-FDC-5",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-FDC-6",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-TRC-1",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:baaeecb6bf91b298d09c674a",
+      "relation:524cd490ee7a9d402c7013fe"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-TRC-2",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:21969dbec8eb1a763d357686",
+      "relation:57aaee46a08c7a33d682713f"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-TRC-3",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:b5babe3ff825d11d038ac43d",
+      "relation:923cd76664b232fe3be38fe7"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-FRC-1",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [
+      "relation:baaeecb6bf91b298d09c674a"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-FRC-2",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [
+      "relation:21969dbec8eb1a763d357686"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-FRC-3",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [
+      "relation:b5babe3ff825d11d038ac43d"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R3-OOS-1",
+    "outcome": "out_of_scope",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "ground_truth_notes": "Out-of-scope structural pattern (not one of the 24 target claims): this is real production code where the actual callee of both 'ep.load()' invocation semantics and the subsequent 'plugin(...)' call depends entirely on runtime entry-point metadata (setuptools/importlib.metadata EntryPoint.value), not on any statically-visible name in this source tree. It reads exactly like an ordinary call/construction site but is not resolvable to a single real StableEntityRef the way direct_relation/calls requires. Recorded here as documented, valuable signal per the R3 tier's purpose rather than forced into an in-scope claim."
+  },
+  {
+    "claim_id": "R3-OOS-2",
+    "outcome": "out_of_scope",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "ground_truth_notes": "Out-of-scope structural pattern (not one of the 24 target claims): stevedore's map()/map_method()/_invoke_one_plugin()/_call_extension_method() plumbing is a higher-order-function / callback-invocation pattern -- the actual function invoked at '_invoke_one_plugin's func(e, *args, **kwds)' (extension.py line 421) or '_call_extension_method's getattr(extension.obj, method_name)(...)' (line 387) is whatever callable the external caller of map()/map_method() passed in, which is not a fixed, statically-nameable entity within this repository's own source. This is exactly the kind of factory/callback indirection that makes 'reachability' claims through map() genuinely stop at _invoke_one_plugin rather than continuing further, and is recorded here as documented signal rather than forced into an in-scope claim."
+  }
+]

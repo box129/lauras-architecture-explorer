@@ -7,13 +7,21 @@ export interface ArchitectureGraphOverview {
   internalCounts: Map<string, number>;
 }
 
+/** The final structural path segment is a truthful, compact map label. The
+ * complete path remains available as `summary` for provenance. */
+function mapLabel(label: string): string {
+  if (label.endsWith(' (direct files)')) return 'Direct files';
+  const segments = label.replaceAll('\\', '/').split('/').filter(Boolean);
+  return segments.at(-1) ?? label;
+}
+
 export function adaptArchitectureGraph(response: ArchitectureGraphResponse): ArchitectureGraphOverview {
   const internalCounts = new Map<string, number>();
   for (const value of response.internal_relation_counts) internalCounts.set(value.group_id, (internalCounts.get(value.group_id) ?? 0) + value.member_relation_count);
   return {
     internalCounts,
     nodes: response.groups.map((group) => ({
-      id: group.id, label: group.label, kind: 'structural_group', description: `Structural basis: ${group.structural_path}`,
+      id: group.id, label: group.parent_group_id ? mapLabel(group.label) : group.label, kind: 'structural_group', description: `Structural basis: ${group.structural_path}`,
       status: 'verified', confidence: null, evidenceCount: 0, childrenCount: group.recursive_module_count,
       canDrilldown: group.can_drilldown, primaryFiles: [], accent: group.kind === 'root_file_bucket' ? 'stone' : 'slateBlue',
       icon: group.kind === 'structural_container' ? 'FolderTree' : 'Folder', position: { x: 0, y: 0 },

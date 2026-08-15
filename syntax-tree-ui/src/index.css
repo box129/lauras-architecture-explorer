@@ -5060,10 +5060,34 @@ html.observatory-active .react-flow__controls-button:hover {
 }
 /* G1 architecture-first overview: containment supports, relations lead. */
 .architecture-graph-overview { background: radial-gradient(circle at 45% 35%, rgba(79, 117, 164, .13), transparent 46%), var(--obs-canvas-bg, #171b24); }
+.observatory-shell__body:has(.architecture-graph-overview) { grid-template-columns:minmax(0, 1fr) 280px; }
 .architecture-graph-overview__hint { position:absolute; left:20px; bottom:18px; z-index:5; padding:8px 11px; border-radius:8px; background:rgba(18,23,31,.82); color:#c5cfdf; font-size:12px; }
-.architecture-graph-node--dimmed { opacity:.42; transition:opacity 150ms ease; }
-.architecture-graph-edge--dimmed { opacity:.18; }
-.architecture-graph-edge--calls path { stroke:#6fa8ff; stroke-width:2.5; }
-.architecture-graph-edge--inherits path { stroke:#c78bdb; stroke-dasharray:7 4; }
-.architecture-graph-edge--imports path { stroke:#63c5b4; stroke-width:2.2; }
+.architecture-graph-overview .react-flow__controls { box-shadow:0 6px 22px rgba(0,0,0,.22); }
+.architecture-graph-overview .react-flow__controls button { width:28px; height:28px; background:color-mix(in srgb, var(--obs-surface) 94%, transparent); border-color:color-mix(in srgb, var(--obs-line) 82%, transparent); color:var(--obs-ink); }
+.architecture-graph-overview .react-flow__minimap { border:1px solid color-mix(in srgb, var(--obs-line) 74%, transparent); border-radius:8px; overflow:hidden; opacity:.76; }
+.architecture-graph-node--dimmed { opacity:.46; transition:opacity 150ms ease; }
+.architecture-graph-edge--dimmed { opacity:.2; }
+.architecture-graph-edge--calls { stroke:#6fa8ff !important; stroke-width:2.7 !important; }
+.architecture-graph-edge--inherits { stroke:#c78bdb !important; stroke-width:2.4 !important; stroke-dasharray:7 4; }
+.architecture-graph-edge--imports { stroke:#63c5b4 !important; stroke-width:2.5 !important; }
 .architecture-graph-overview .react-flow__edge-text { fill:#e3eaf5; font-size:11px; font-weight:700; }
+.architecture-region-node { position:relative; box-sizing:border-box; width:100%; height:100%; border-radius:14px; color:#edf3ff; overflow:hidden; transition:border-color 150ms ease, box-shadow 150ms ease, opacity 150ms ease; }
+.architecture-region-node--region { display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; border:1px solid rgba(126,171,234,.5); background:linear-gradient(135deg, rgba(67,111,168,.2), rgba(20,29,42,.72)); box-shadow:inset 0 1px 0 rgba(255,255,255,.07), 0 14px 35px rgba(4,11,21,.16); }
+.architecture-region-node--group { border:1px solid rgba(179,202,235,.3); background:rgba(21,30,43,.74); border-radius:9px; padding:10px 12px; box-shadow:none; }
+.architecture-region-node--selected { border-color:#8fc2ff; box-shadow:0 0 0 2px rgba(108,171,255,.45), 0 16px 38px rgba(17,56,108,.36); }
+.architecture-region-node__header { display:flex; flex-direction:column; align-items:flex-start; gap:3px; min-width:0; }
+.architecture-region-node--region .architecture-region-node__header { width:100%; padding:14px 17px 9px; border-bottom:1px solid rgba(156,190,239,.18); background:rgba(8,15,26,.12); }
+.architecture-region-node__eyebrow { color:#9db4d5; font-size:9px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+.architecture-region-node__header strong { overflow:hidden; max-width:100%; color:#f2f6ff; font-size:16px; font-weight:720; line-height:1.12; text-overflow:ellipsis; white-space:nowrap; }
+.architecture-region-node--group .architecture-region-node__header strong { padding-right:15px; font-size:12px; font-weight:700; }
+.architecture-region-node__basis { overflow:hidden; max-width:100%; color:#aac0de; font-size:11px; text-overflow:ellipsis; white-space:nowrap; }
+.architecture-region-node__metrics { display:flex; gap:10px; align-items:center; padding:9px 17px; color:#c1d0e4; font-size:11px; font-weight:650; }
+.architecture-region-node--group .architecture-region-node__metrics { padding:5px 0 0; font-size:10px; }
+.architecture-region-node__metrics span { display:inline-flex; align-items:center; gap:4px; }
+.architecture-region-node__actions { display:flex; gap:12px; align-items:center; margin-top:auto; width:100%; padding:8px 17px 10px; color:#9db4d5; font-size:10px; }
+.architecture-region-node__actions span { display:inline-flex; align-items:center; gap:3px; white-space:nowrap; }
+.architecture-region-node__mark { position:absolute; right:10px; top:11px; color:#9db4d5; opacity:.52; }
+.architecture-region-node__handle { width:4px !important; height:4px !important; min-width:4px !important; min-height:4px !important; border:0 !important; background:var(--obs-slate-blue) !important; opacity:0; }
+.architecture-region-node:hover .architecture-region-node__handle, .architecture-region-node--selected .architecture-region-node__handle { opacity:.9; }
+.architecture-graph-edge-label { position:absolute; z-index:4; pointer-events:none; padding:3px 6px; border:1px solid rgba(137,178,235,.34); border-radius:999px; background:rgba(15,24,38,.94); color:#dceaff; font-size:10px; font-weight:750; line-height:1; white-space:nowrap; }
+@media (max-width: 900px) { .architecture-graph-overview__hint { display:none; } .architecture-graph-overview .react-flow__minimap { display:none; } }

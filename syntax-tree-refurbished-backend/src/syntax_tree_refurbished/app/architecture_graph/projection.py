@@ -90,13 +90,32 @@ class ArchitectureGraphProjector:
                     region.structural_path, cluster.id, "module", (), (), 1, False) for module_id in module_ids)
             residual = residual_by_region.get(region_id)
             if residual and residual.member_module_ids:
-                residual_id = _id(self._job.run_id, region_id, "residual")
-                child_ids.append(residual_id)
-                added.append(ArchitectureGraphGroup(residual_id, self._job.run_id, "Unclustered by recovered relations", region.structural_path,
-                    region_id, "relation_residual", residual.member_module_ids, residual.member_module_ids, len(residual.member_module_ids), False,
-                    None, True))
-                added.extend(ArchitectureGraphGroup(module_id, self._job.run_id, component_labels.get(module_id, module_id.rsplit(':', 1)[-1]),
-                    region.structural_path, residual_id, "module", (), (), 1, False, None, True) for module_id in residual.member_module_ids)
+                # Wrap the residual only when it is genuinely "left over":
+                # either the region has an accepted cluster (the residual is
+                # its real complement -- the accepted G3 policy), or the
+                # region was below MIN_CLUSTER_MEMBERS and never eligible for
+                # clustering at all ("region_too_small" -- a minimal
+                # exception so these modules stay reachable through the
+                # graph contract instead of being silently dropped; see the
+                # single-module "docs" dead-end fix). A region that WAS
+                # cluster-eligible (>= MIN_CLUSTER_MEMBERS) but produced no
+                # useful cluster is neither -- wrapping it too was a
+                # regression: it implied clustering ran and something was
+                # "left over" when nothing meaningful was ever found.
+                if clusters or residual.reason == "region_too_small":
+                    residual_id = _id(self._job.run_id, region_id, "residual")
+                    child_ids.append(residual_id)
+                    added.append(ArchitectureGraphGroup(residual_id, self._job.run_id, "Unclustered by recovered relations", region.structural_path,
+                        region_id, "relation_residual", residual.member_module_ids, residual.member_module_ids, len(residual.member_module_ids), False,
+                        None, True))
+                    added.extend(ArchitectureGraphGroup(module_id, self._job.run_id, component_labels.get(module_id, module_id.rsplit(':', 1)[-1]),
+                        region.structural_path, residual_id, "module", (), (), 1, False, None, True) for module_id in residual.member_module_ids)
+                else:
+                    # Plain G1 structural/module presentation: attach these
+                    # modules directly as children of the region itself.
+                    child_ids.extend(residual.member_module_ids)
+                    added.extend(ArchitectureGraphGroup(module_id, self._job.run_id, component_labels.get(module_id, module_id.rsplit(':', 1)[-1]),
+                        region.structural_path, region_id, "module", (), (), 1, False) for module_id in residual.member_module_ids)
             by_id[region_id] = ArchitectureGraphGroup(**{**region.__dict__, "direct_child_group_ids": tuple((*region.direct_child_group_ids, *child_ids))})
         return [by_id[group.id] for group in groups] + added
 

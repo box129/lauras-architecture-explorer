@@ -124,6 +124,38 @@ def test_graph_attaches_residual_module_for_region_with_no_clusters(tmp_path: Pa
     assert len(docs_modules) == 1
     assert docs_modules[0]["label"] == "conf.py" or docs_modules[0]["label"].endswith("conf.py")
 
+def test_graph_does_not_wrap_multi_module_zero_cluster_region_in_residual(tmp_path: Path) -> None:
+    """Accepted G3 policy: a region with >= MIN_CLUSTER_MEMBERS modules but
+    zero useful recovered clusters keeps plain G1 structural/module
+    presentation -- its modules attach directly to the region, not inside a
+    synthetic "Unclustered by recovered relations" wrapper. That framing
+    belongs only to (a) a genuine complement of an accepted cluster in the
+    same region, or (b) a region below MIN_CLUSTER_MEMBERS that was never
+    eligible for clustering at all (the single-module dead-end exception).
+    Reproduces a live-audit regression where the dead-end fix accidentally
+    wrapped every zero-cluster region, including large ones with no
+    clustering language justification at all (e.g. Tenacity's 10-module,
+    zero-relation "tenacity (direct files)" region)."""
+    for name in ("a", "b", "c", "d", "e"):
+        _write(tmp_path / "lib" / f"{name}.py", f"def {name}():\n return 1\n")
+    # A repository-root partition needs >= 2 sections for
+    # build_containment_hierarchy to activate at all (otherwise it returns
+    # None and the caller flat-degrades) -- a second top-level directory is
+    # required for "lib" to be grouped as its own structural region.
+    _write(tmp_path / "other" / "z.py", "def z():\n return 1\n")
+    app, client, run_id = _ready(tmp_path)
+    # No relations at all are recorded for "lib" -- 5 modules, 0 internal
+    # resolved relations, well above MIN_CLUSTER_MEMBERS but nothing to
+    # cluster from ("no_internal_resolved_relations").
+    body = client.get(f"/api/architecture-graph?run_id={run_id}").json()
+    lib = next(group for group in body["groups"] if group["label"] == "lib")
+    assert lib["recursive_module_count"] == 5
+    assert not [group for group in body["groups"] if group["kind"] == "relation_cluster" and group["parent_group_id"] == lib["id"]]
+    assert not [group for group in body["groups"] if group["kind"] == "relation_residual" and group["parent_group_id"] == lib["id"]]
+    lib_modules = [group for group in body["groups"] if group["kind"] == "module" and group["parent_group_id"] == lib["id"]]
+    assert len(lib_modules) == 5
+    assert set(lib["direct_child_group_ids"]) == {module["id"] for module in lib_modules}
+
 def test_structural_graph_scale_smoke_20_200_2000() -> None:
     """Collapsed graph foundation must remain bounded before any leaf rendering."""
     timings = []

@@ -39,7 +39,15 @@ def test_graph_resolved_only_aggregation_membership_and_legacy_compatibility(tmp
     body = graph.json()
     assert body["schema_version"] == "architecture-graph/v2"
     api = next(group for group in body["groups"] if group["label"] == "api")
-    assert api["direct_member_module_ids"] and api["direct_child_group_ids"] == []
+    # "api" has 1 module (a.py) and zero *internal* resolved relations (its
+    # only relations are cross-region, to services/b.py), so it is below
+    # MIN_CLUSTER_MEMBERS and gets a residual+module child, not an empty
+    # region -- the single-module dead-end fix (see
+    # test_graph_attaches_residual_module_for_region_with_no_clusters).
+    assert api["direct_member_module_ids"] and api["direct_child_group_ids"]
+    api_residuals = [group for group in body["groups"] if group["kind"] == "relation_residual" and group["parent_group_id"] == api["id"]]
+    assert len(api_residuals) == 1
+    assert [group for group in body["groups"] if group["kind"] == "module" and group["parent_group_id"] == api_residuals[0]["id"]]
     calls = [edge for edge in body["aggregate_edges"] if edge["relation_kind"] == "calls"]
     assert len(calls) == 1 and calls[0]["member_relation_count"] == 2
     assert calls[0]["distinct_member_pair_count"] == 1
@@ -73,9 +81,48 @@ def test_graph_projects_g2_cluster_membership_and_preserves_zero_cluster_regions
     assert len(clusters) == 1
     assert clusters[0]["label"] == "Structural cluster 1"
     assert len(clusters[0]["direct_member_module_ids"]) == 3
+    services = next(group for group in body["groups"] if group["label"] == "services")
+    api = next(group for group in body["groups"] if group["label"] == "api")
     residuals = [group for group in body["groups"] if group["kind"] == "relation_residual"]
-    assert len(residuals) == 1 and len(residuals[0]["direct_member_module_ids"]) == 1
+    # "services" (4 modules, 1 accepted cluster) keeps its lonely.py residual
+    # alongside the cluster. "api" (1 module, no clusters at all) previously
+    # never appeared here because the old projection only attached residuals
+    # for regions that also produced a cluster -- the single-module dead-end
+    # bug. Both residuals must be present now.
+    services_residual = next(group for group in residuals if group["parent_group_id"] == services["id"])
+    api_residual = next(group for group in residuals if group["parent_group_id"] == api["id"])
+    assert len(residuals) == 2
+    assert len(services_residual["direct_member_module_ids"]) == 1
+    assert len(api_residual["direct_member_module_ids"]) == 1
     assert not [edge for edge in body["aggregate_edges"] if edge["source_group_id"] == clusters[0]["id"] and edge["target_group_id"] == clusters[0]["id"]]
+
+def test_graph_attaches_residual_module_for_region_with_no_clusters(tmp_path: Path) -> None:
+    """A leaf region below MIN_CLUSTER_MEMBERS (or with no internal relations)
+    still gets a residual group with its real module attached, even though it
+    never contributes to clusters_by_region. Reproduces the live-audit defect
+    where entering such a region (e.g. a single-module "docs" folder) showed
+    0 modules / 0 regions / 0 relations despite the parent card correctly
+    reporting 1 module."""
+    _write(tmp_path / "docs" / "conf.py", "def setup():\n return 1\n")
+    for name in ("a", "b", "c"):
+        _write(tmp_path / "services" / f"{name}.py", f"def {name}():\n return 1\n")
+    app, client, run_id = _ready(tmp_path)
+    symbols = {symbol.path: symbol for symbol in app.state.run_store.get_symbols(run_id) if not symbol.parent_symbol_id}
+    def resolved(source: str, target: str):
+        return ObservedProgramRelation.create(run_id=run_id, relation_kind="calls", source_entity_id=symbols[source].id, target_entity_id=symbols[target].id, extractor_name="test", extractor_version="1", resolution_status="resolved", span_path=source, span_start_line=1, span_end_line=1)
+    # Give "services" an accepted cluster so clusters_by_region is non-empty
+    # for it, while "docs" (1 module, no relations at all) never produces a
+    # cluster and previously never appeared in clusters_by_region's keys.
+    app.state.run_store.put_relations(run_id, (resolved("services/a.py", "services/b.py"), resolved("services/b.py", "services/c.py"), resolved("services/c.py", "services/a.py")))
+    body = client.get(f"/api/architecture-graph?run_id={run_id}").json()
+    docs_region = next(group for group in body["groups"] if group["label"] == "docs")
+    assert docs_region["recursive_module_count"] == 1
+    assert docs_region["direct_child_group_ids"], "docs region has a module but zero children -- the dead-end reproduction"
+    docs_residuals = [group for group in body["groups"] if group["kind"] == "relation_residual" and group["parent_group_id"] == docs_region["id"]]
+    assert len(docs_residuals) == 1
+    docs_modules = [group for group in body["groups"] if group["kind"] == "module" and group["parent_group_id"] == docs_residuals[0]["id"]]
+    assert len(docs_modules) == 1
+    assert docs_modules[0]["label"] == "conf.py" or docs_modules[0]["label"].endswith("conf.py")
 
 def test_structural_graph_scale_smoke_20_200_2000() -> None:
     """Collapsed graph foundation must remain bounded before any leaf rendering."""

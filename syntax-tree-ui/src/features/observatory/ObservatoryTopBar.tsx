@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, BookOpen, FolderSearch, Menu, Network, Settings as SettingsIcon } from 'lucide-react';
+import { ArrowLeft, BookOpen, FolderSearch, Library, Menu, Network, Settings as SettingsIcon } from 'lucide-react';
 import { useSyntaxTreeStore } from '../../store';
 import BreadcrumbTrail, { type BreadcrumbItem } from './BreadcrumbTrail';
 import RunPicker from './RunPicker';
@@ -15,6 +15,7 @@ interface ObservatoryTopBarProps {
   onBreadcrumbSelect?: (index: number) => void;
   onOpenDocs: () => void;
   onAnalyzeAnotherRepository: () => void;
+  onOpenLenses?: () => void;
 }
 
 export default function ObservatoryTopBar({
@@ -28,6 +29,7 @@ export default function ObservatoryTopBar({
   onBreadcrumbSelect,
   onOpenDocs,
   onAnalyzeAnotherRepository,
+  onOpenLenses,
 }: ObservatoryTopBarProps) {
   const [navigationOpen, setNavigationOpen] = useState(false);
   const navigationRef = useRef<HTMLDivElement | null>(null);
@@ -52,24 +54,35 @@ export default function ObservatoryTopBar({
   return (
     <header className="obs-topbar">
       <div className="obs-topbar__left">
-        {/* Generic "Back" rather than "...previous architecture lens": this
-            control now pops exactly one level of Evidence -> Entity ->
-            Group -> Overview (unifiedBack in ObservatoryShell), not only
-            lens/area levels, so a label naming one specific level would
-            undersell what it does from Evidence or Entity Focus. */}
-        <div className="obs-topbar__nav-anchor" ref={navigationRef}>
+        {/* Global navigation (Architecture / Documentation / Settings /
+            Analyze another repository) and architectural-history Back are
+            separate concepts and must both stay reachable at every depth:
+            Back alone used to replace the hamburger entirely once the user
+            had any history, which made Settings/Docs/Analyze-another-repo
+            unreachable without backing out to repository root first. */}
+        {canGoBack && (
           <button
-            aria-controls={canGoBack ? undefined : 'observatory-navigation-menu'}
-            aria-expanded={canGoBack ? undefined : navigationOpen}
-            aria-haspopup={canGoBack ? undefined : 'menu'}
             className="obs-icon-button"
             type="button"
-            aria-label={canGoBack ? 'Back' : 'Open navigation'}
-            onClick={canGoBack ? onBack : () => setNavigationOpen((open) => !open)}
+            aria-label="Back"
+            onClick={onBack}
           >
-            {canGoBack ? <ArrowLeft size={18} strokeWidth={1.8} /> : <Menu size={18} strokeWidth={1.8} />}
+            <ArrowLeft size={18} strokeWidth={1.8} />
           </button>
-          {!canGoBack && navigationOpen && (
+        )}
+        <div className="obs-topbar__nav-anchor" ref={navigationRef}>
+          <button
+            aria-controls="observatory-navigation-menu"
+            aria-expanded={navigationOpen}
+            aria-haspopup="menu"
+            className="obs-icon-button"
+            type="button"
+            aria-label="Open navigation"
+            onClick={() => setNavigationOpen((open) => !open)}
+          >
+            <Menu size={18} strokeWidth={1.8} />
+          </button>
+          {navigationOpen && (
             <div className="obs-topbar__nav-menu" id="observatory-navigation-menu" role="menu" aria-label="Repository navigation">
               <div className="obs-topbar__nav-current" role="presentation">
                 <Network size={15} />
@@ -79,6 +92,12 @@ export default function ObservatoryTopBar({
                 <BookOpen size={15} />
                 <span><strong>Documentation / Doc Studio</strong><small>Browse components and source</small></span>
               </button>
+              {onOpenLenses && (
+                <button type="button" role="menuitem" onClick={() => { setNavigationOpen(false); onOpenLenses(); }}>
+                  <Library size={15} />
+                  <span><strong>Lenses & tours</strong><small>Saved views and walkthroughs</small></span>
+                </button>
+              )}
               <button type="button" role="menuitem" onClick={() => { setNavigationOpen(false); onAnalyzeAnotherRepository(); }}>
                 <FolderSearch size={15} />
                 <span><strong>Analyze another repository</strong><small>Clear this session and start again</small></span>

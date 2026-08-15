@@ -66,8 +66,18 @@ class ArchitectureGraphProjector:
             clusters_by_region[cluster.containing_structural_group_id].append(cluster)
         residual_by_region = {residual.containing_structural_group_id: residual for residual in projection.residuals}
         added = []
-        for region_id, clusters in sorted(clusters_by_region.items()):
+        # Iterate every region that has clusters OR a residual, not just
+        # cluster-producing regions. A region below MIN_CLUSTER_MEMBERS (or
+        # with no internal resolved relations) still gets a residual record
+        # with its real modules -- but with the old `clusters_by_region`-only
+        # iteration, that residual (and its module children) were silently
+        # never attached, so entering such a region showed 0 modules / 0
+        # regions / 0 relations even though its own parent card correctly
+        # reported real module counts. See qa notes for the reproduction on
+        # a single-module leaf region ("docs").
+        for region_id in sorted(set(clusters_by_region) | set(residual_by_region)):
             region = by_id[region_id]
+            clusters = clusters_by_region.get(region_id, [])
             child_ids = []
             for cluster in sorted(clusters, key=lambda value: value.display_name):
                 child_ids.append(cluster.id)

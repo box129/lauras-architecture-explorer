@@ -353,6 +353,21 @@ export default function ObservatoryShell() {
     }
   };
 
+  // Selection inside the architecture-graph (v2) canvas must stay local to
+  // graphSelectedNode only. Routing it through lens.selectNode (as plain
+  // selectNode above does, for the legacy architecture-map canvas) makes
+  // useArchitectureLens.focusEntity non-null for any graph node whose id
+  // differs from the legacy focalNode -- which is every graph node, since
+  // the graph and the legacy map use disjoint id spaces. That flips
+  // isEntityFocus true and silently swaps the whole canvas and inspector
+  // over to ArchitectureMapCanvas/VoiceRail (the pre-redesign entity-focus
+  // system), which is where the "Verified" badge on a 0-evidence
+  // structural container, the raw "fallback no llm" chip, and the
+  // triplicated node-detail panels all actually came from.
+  const selectGraphNode = useCallback((node: ObservatoryNode | null) => {
+    setGraphSelectedNode(node);
+  }, []);
+
   const enterNode = (node: ObservatoryNode, selectOnly = false) => {
     setGraphSelectedNode(node);
     lens.enterNode(node, selectOnly);
@@ -484,7 +499,7 @@ export default function ObservatoryShell() {
       selectedNode={graphSelectedNode ?? lens.selectedNode}
       onEnterNode={enterNode}
       onHoverNode={lens.prefetchNode}
-      onSelectNode={selectNode}
+      onSelectNode={selectGraphNode}
       requestedExpandId={requestedGraphExpansion}
       scopeGroupId={lens.lensPath.at(-1) ?? null}
     />
@@ -560,6 +575,7 @@ export default function ObservatoryShell() {
         onBreadcrumbSelect={handleBreadcrumbSelect}
         onOpenDocs={() => navigateToDocs(source, analysisRunId, analysisRepositoryPath)}
         onAnalyzeAnotherRepository={analyzeAnotherRepository}
+        onOpenLenses={() => setDrawerOpen(true)}
         repoTitle={shellMeta.repoTitle}
         runId={shellMeta.runId}
       />

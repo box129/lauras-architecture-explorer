@@ -7,6 +7,7 @@ from time import perf_counter
 from fastapi.testclient import TestClient
 
 from syntax_tree_refurbished.api.app import create_app
+from syntax_tree_refurbished.app.analysis.static_structure import module_component_id
 from syntax_tree_refurbished.app.architecture_clusters.projection import (
     ArchitectureClusterProjector,
     _bridge_separated_components,
@@ -73,7 +74,8 @@ def test_resolved_only_two_cores_boundary_and_determinism(tmp_path: Path):
     assert all(cluster.algorithm.endswith("/v1") for cluster in first.clusters)
     assert {kind for cluster in first.clusters for kind, _ in cluster.internal_relation_kind_counts} == {"calls", "inherits"}
     assert sum(cluster.boundary_relation_count for cluster in first.clusters) == 2
-    residual = next(value for value in first.residuals if value.member_module_ids)
+    isolated_module = module_component_id(run_id, symbols[6].path)
+    residual = next(value for value in first.residuals if isolated_module in value.member_module_ids)
     assert len(residual.member_module_ids) == 1 and residual.member_reasons[0][1] == "no_internal_resolved_relation"
     assert len(first.cluster_edges) == 1
     assert first.cluster_edges[0].relation_kind == "calls"

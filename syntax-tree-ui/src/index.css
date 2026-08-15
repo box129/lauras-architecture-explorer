@@ -5058,3 +5058,12 @@ html.observatory-active .react-flow__controls-button:hover {
   background: color-mix(in srgb, #3d7a4f 8%, var(--obs-paper));
   border-color: color-mix(in srgb, #3d7a4f 20%, var(--obs-border));
 }
+/* G1 architecture-first overview: containment supports, relations lead. */
+.architecture-graph-overview { background: radial-gradient(circle at 45% 35%, rgba(79, 117, 164, .13), transparent 46%), var(--obs-canvas-bg, #171b24); }
+.architecture-graph-overview__hint { position:absolute; left:20px; bottom:18px; z-index:5; padding:8px 11px; border-radius:8px; background:rgba(18,23,31,.82); color:#c5cfdf; font-size:12px; }
+.architecture-graph-node--dimmed { opacity:.42; transition:opacity 150ms ease; }
+.architecture-graph-edge--dimmed { opacity:.18; }
+.architecture-graph-edge--calls path { stroke:#6fa8ff; stroke-width:2.5; }
+.architecture-graph-edge--inherits path { stroke:#c78bdb; stroke-dasharray:7 4; }
+.architecture-graph-edge--imports path { stroke:#63c5b4; stroke-width:2.2; }
+.architecture-graph-overview .react-flow__edge-text { fill:#e3eaf5; font-size:11px; font-weight:700; }

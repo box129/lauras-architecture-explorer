@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { layoutArchitectureGraphProof } from './elkCompoundProof';
 import type { ArchitectureGraphAggregateEdgeDTO, ArchitectureGraphGroupDTO } from './graphTypes';
 
-const group = (id: string, parent_group_id: string | null = null): ArchitectureGraphGroupDTO => ({ id, label: id, structural_path: id, parent_group_id, kind: parent_group_id ? 'structural_leaf' : 'structural_container', direct_member_module_ids: [], direct_child_group_ids: [], recursive_module_count: 1 });
-const edge = (id: string, source_group_id: string, target_group_id: string): ArchitectureGraphAggregateEdgeDTO => ({ id, source_group_id, target_group_id, relation_kind: 'calls', member_relation_count: 1 });
+const group = (id: string, parent_group_id: string | null = null): ArchitectureGraphGroupDTO => ({ id, analysis_run_id: 'run:1', label: id, structural_path: id, parent_group_id, kind: parent_group_id ? 'structural_leaf' : 'structural_container', direct_member_module_ids: [], direct_child_group_ids: [], recursive_module_count: 1, can_drilldown: true });
+const edge = (id: string, source_group_id: string, target_group_id: string): ArchitectureGraphAggregateEdgeDTO => ({ id, analysis_run_id: 'run:1', source_group_id, target_group_id, relation_kind: 'calls', member_relation_count: 1, distinct_member_pair_count: 1, distinct_source_member_count: 1, distinct_target_member_count: 1, relation_ids_preview: [], contributing_relation_count: 1 });
 
 describe('ELK compound G0 proof', () => {
   it('packs nested groups into ReactFlow-compatible relative child coordinates and routes cross-container edges', async () => {

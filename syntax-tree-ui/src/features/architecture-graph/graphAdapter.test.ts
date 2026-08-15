@@ -1,0 +1,24 @@
+import { describe, expect, it } from 'vitest';
+import { adaptArchitectureGraph, visibleGraphEdges } from './graphAdapter';
+import type { ArchitectureGraphResponse } from './graphTypes';
+
+const response: ArchitectureGraphResponse = { schema_version: 'architecture-graph/v1', analysis_run_id: 'run:1', groups: [
+  { id: 'backend', analysis_run_id: 'run:1', label: 'backend', structural_path: 'backend', parent_group_id: null, kind: 'structural_container', direct_member_module_ids: [], direct_child_group_ids: ['services'], recursive_module_count: 3, can_drilldown: true },
+  { id: 'services', analysis_run_id: 'run:1', label: 'services', structural_path: 'backend/services', parent_group_id: 'backend', kind: 'structural_leaf', direct_member_module_ids: ['module:1'], direct_child_group_ids: [], recursive_module_count: 1, can_drilldown: true },
+], aggregate_edges: [{ id: 'calls', analysis_run_id: 'run:1', source_group_id: 'backend', target_group_id: 'services', relation_kind: 'calls', member_relation_count: 4, distinct_member_pair_count: 2, distinct_source_member_count: 2, distinct_target_member_count: 1, relation_ids_preview: ['relation:1'], contributing_relation_count: 4 }], internal_relation_counts: [{ group_id: 'services', relation_kind: 'calls', member_relation_count: 2 }] };
+
+describe('architecture graph adapter', () => {
+  it('preserves deterministic ids, containment, aggregate relation counts and path basis', () => {
+    const graph = adaptArchitectureGraph(response);
+    expect(graph.nodes.find((node) => node.id === 'services')?.parentGroupId).toBe('backend');
+    expect(graph.nodes.find((node) => node.id === 'services')?.summary).toBe('backend/services');
+    expect(graph.edges[0]).toMatchObject({ id: 'calls', source: 'backend', target: 'services', kind: 'calls', label: 'calls · 4' });
+    expect(graph.internalCounts.get('services')).toBe(2);
+  });
+  it('uses deterministic semantic LOD thresholds without removing facts', () => {
+    const graph = adaptArchitectureGraph(response);
+    expect(visibleGraphEdges(graph.edges, 0.5)).toHaveLength(1);
+    expect(visibleGraphEdges([{ ...graph.edges[0], sourceRefs: { member_relation_count: [1] } }], 0.5)).toHaveLength(0);
+    expect(visibleGraphEdges([{ ...graph.edges[0], sourceRefs: { member_relation_count: [1] } }], 0.8)).toHaveLength(1);
+  });
+});

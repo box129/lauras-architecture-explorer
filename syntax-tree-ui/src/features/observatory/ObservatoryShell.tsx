@@ -1,6 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import ArchitectureMapCanvas from '../architecture-map/ArchitectureMapCanvas';
+import ArchitectureGraphOverview from '../architecture-graph/ArchitectureGraphOverview';
 import {
   ArchitectureMapEmptyState,
   ArchitectureMapErrorState,
@@ -451,6 +452,14 @@ export default function ObservatoryShell() {
       onOpenProof={openProof}
       onSelectStep={flowLens.selectStep}
       selectedStepId={flowLens.selectedStepId}
+    />
+  ) : (canvasFixture && source === 'api' && lens.lensPath.length === 0 && !lens.isEntityFocus) ? (
+    <ArchitectureGraphOverview
+      runId={analysisRunId}
+      selectedNode={lens.selectedNode}
+      onEnterNode={lens.enterNode}
+      onHoverNode={lens.prefetchNode}
+      onSelectNode={selectNode}
     />
   ) : (canvasFixture) ? (
     <ArchitectureMapCanvas

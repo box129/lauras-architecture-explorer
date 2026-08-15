@@ -432,7 +432,9 @@ export default function ObservatoryShell() {
   }, [playTour, tourStep]);
 
   const canvasFixture = lens.isEntityFocus ? (lens.entityFocusLandscape ?? lens.landscape) : lens.landscape;
-  const isRootArchitectureGraph = Boolean(canvasFixture && source === 'api' && lens.lensPath.length === 0 && !lens.isEntityFocus && !showQuestionLens && !showFlowLens);
+  // Root structural selection is graph-local context, not an entity-focus
+  // navigation event. Only Enter changes `lensPath` and leaves this canvas.
+  const isRootArchitectureGraph = Boolean(canvasFixture && source === 'api' && lens.lensPath.length === 0 && !showQuestionLens && !showFlowLens);
 
   let canvas = showQuestionLens ? (
     <QuestionLensCanvas

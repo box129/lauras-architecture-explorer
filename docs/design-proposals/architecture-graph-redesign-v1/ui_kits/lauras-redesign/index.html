@@ -1,0 +1,290 @@
+<!-- @dsCard group="Laura's redesign" viewport="1440x900" name="Laura's — redesigned product" subtitle="Landing → analysis → overview → group → entity → statement → evidence → source, light + dark" -->
+<!-- @startingPoint section="Laura's" subtitle="Full redesigned architecture explorer" viewport="1440x900" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Laura's — redesign prototype</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="./theme.js"></script>
+<script src="./data.js"></script>
+<style>html,body{margin:0;height:100%}body{background:var(--bg-app);color:var(--text-primary)}#root{height:100vh}</style></head>
+<body><div id="root"></div>
+<script type="text/babel" src="./Shell.jsx"></script>
+<script type="text/babel" src="./Landing.jsx"></script>
+<script type="text/babel" src="./Explorer.jsx"></script>
+<script type="text/babel" src="./Settings.jsx"></script>
+<script type="text/babel">
+const { Icon, Button, Chip, Callout, StatusBadge, ProvenanceChip, AIInterpretationCard, ArchitectureTree, StatementCard } = window.SyntaxTreeDesignSystem_b1a4e9;
+const D = window.LaurasData;
+
+function App() {
+  const [theme, setThemeState] = React.useState(window.LaurasTheme.read());
+  const setTheme = (v) => { window.LaurasTheme.write(v); setThemeState(v); };
+
+  const [destination, setDestination] = React.useState('projects');
+  const [analysing, setAnalysing] = React.useState(false);
+  const [progress, setProgress] = React.useState(0);
+  const [stageIndex, setStageIndex] = React.useState(2);
+
+  const [stack, setStack] = React.useState([{ id: 'overview', label: 'Overview', state: 'overview' }]);
+  const [expanded, setExpanded] = React.useState({});
+  const [selected, setSelected] = React.useState(null);
+  const [ai, setAi] = React.useState({});
+  const [view, setView] = React.useState('map'); // 'map' = default containment map; 'outline' = compact/accessible equivalent
+  const [statement, setStatement] = React.useState(null);
+  const [activeEvidence, setActiveEvidence] = React.useState('e1');
+  const [treeOpen, setTreeOpen] = React.useState({});
+  const [basisFor, setBasisFor] = React.useState(null);
+  const [panelOpen, setPanelOpen] = React.useState(false);
+  const [narrow, setNarrow] = React.useState(() => window.innerWidth < 1280);
+  const [compact, setCompact] = React.useState(() => window.innerWidth < 1180);
+
+  React.useEffect(() => {
+    const onResize = () => { setNarrow(window.innerWidth < 1280); setCompact(window.innerWidth < 1180); };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  const top = stack[stack.length - 1];
+
+  React.useEffect(() => {
+    if (!analysing) return;
+    const t = setInterval(() => setProgress((p) => {
+      const next = Math.min(51, p + 6);
+      if (next > 30) setStageIndex(3);
+      if (next >= 51) { clearInterval(t); setTimeout(() => { setAnalysing(false); setDestination('architecture'); }, 500); }
+      return next;
+    }), 220);
+    return () => clearInterval(t);
+  }, [analysing]);
+
+  const stages = D.stages.map((s, i) => ({ ...s, state: i < stageIndex ? 'done' : i === stageIndex ? 'current' : 'waiting' }));
+
+  const push = (crumb) => setStack((s) => [...s, crumb]);
+  const back = () => setStack((s) => (s.length > 1 ? s.slice(0, -1) : s));
+  const toCrumb = (i) => setStack((s) => s.slice(0, i + 1));
+
+  const actions = {
+    toggle: (id) => setExpanded((e) => ({ ...e, [id]: e[id] === false ? true : e[id] === true ? false : false })),
+    selectCluster: (cluster, mode) => { setSelected({ ...cluster, kind: 'cluster' }); setBasisFor(mode === 'basis' ? cluster.id : null); },
+    enterRegion: (region) => {
+      setSelected({ ...region, kind: 'region' });
+      const payload = { ...region, kind: 'region', members: region.members || [] };
+      if (region.id === 'backend') payload.sections = D.regions;
+      push({ id: region.id, label: region.path, state: 'group', payload });
+    },
+    enterCluster: (cluster) => { setSelected({ ...cluster, kind: 'cluster' }); push({ id: cluster.id, label: cluster.label, state: 'group', payload: { ...cluster, kind: 'cluster' } }); },
+    generate: (id) => {
+      setAi((a) => ({ ...a, [id]: 'generating' }));
+      setTimeout(() => setAi((a) => ({ ...a, [id]: 'generated' })), 1100);
+    },
+  };
+
+  /* One resolver, one identity. Breadcrumb, canvas centre and context panel all read
+     the object this returns — see 06_ENTITY_FOCUS_SPEC.md, invariant E-1. */
+  const entityFor = (label) => {
+    if (label === D.entity.label) return D.entity;
+    const cluster = D.clusters.find((c) => c.members.includes(label));
+    const region = D.regions.find((r) => (r.members || []).includes(label));
+    const basis = (cluster && cluster.basis) || [];
+    return {
+      id: label, label, kind: 'module',
+      ancestry: cluster ? ['backend/src/services', cluster.label] : [region ? region.path : 'backend'],
+      section: cluster ? 'backend/src/services' : region ? region.path : 'backend',
+      cluster: cluster ? cluster.label : 'Ungrouped',
+      dependents: basis.filter((b) => b[2] === label).map((b) => ({ label: b[0], relation: b[1], group: cluster.label })),
+      dependencies: basis.filter((b) => b[0] === label).map((b) => ({ label: b[2], relation: b[1], group: cluster.label })),
+      statements: [],
+    };
+  };
+  const openEntity = (target) => {
+    if (target && typeof target === 'object') {
+      if (target.kind === 'cluster') actions.enterCluster(target); else actions.enterRegion(target);
+      return;
+    }
+    push({ id: 'entity-' + target, label: target, state: 'entity' });
+  };
+  const openStatement = (s) => { const chain = D.evidenceByStatement[s.id] || []; setStatement(s); setActiveEvidence(chain.length ? chain[0].id : null); push({ id: s.id, label: s.statement.length > 46 ? s.statement.slice(0, 46) + '…' : s.statement, state: 'evidence' }); };
+
+  const tree = [{
+    id: 'backend', label: 'backend', kind: 'region', moduleCount: 51,
+    children: D.regions.map((r) => r.clustered ? {
+      id: r.id, label: r.path, kind: 'region', moduleCount: r.modules,
+      children: [
+        ...D.clusters.map((c) => ({ id: c.id, label: c.label, kind: 'cluster', moduleCount: c.modules, aiName: ai[c.id] === 'generated' && c.ai ? c.ai.name : undefined,
+          children: c.members.map((m) => ({ id: c.id + m, label: m, kind: 'module' })) })),
+        { id: 'residual', label: 'Ungrouped', kind: 'residual', moduleCount: D.residual.modules },
+      ],
+    } : { id: r.id, label: r.path, kind: 'region', moduleCount: r.modules,
+          children: (r.members || []).map((m) => ({ id: r.id + m, label: m, kind: 'module' })) }),
+  }];
+
+  if (destination === 'projects' || analysing) {
+    return <Landing theme={theme} onTheme={setTheme} onOpenSettings={() => setDestination('settings')}
+      onAnalyse={() => { setAnalysing(true); setProgress(0); setStageIndex(2); }} analysing={analysing} stages={stages} progress={progress} />;
+  }
+
+  const chrome = (body) => (
+    <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0,1fr)', height: '100%', fontFamily: 'var(--font-sans)' }}>
+      <TopNav destination={destination} onNavigate={setDestination} theme={theme} onTheme={setTheme} compact={compact}
+        right={<span style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, color: 'var(--text-muted)', fontSize: 12.5, whiteSpace: 'nowrap' }}>
+          <Icon name="folder-open" size={14} />
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{D.repo.name}<span style={{ opacity: 0.7 }}> · {D.repo.analysedAt}</span></span>
+        </span>} />
+      {body}
+    </div>
+  );
+
+  if (destination === 'settings') return chrome(<SettingsView theme={theme} onTheme={setTheme} />);
+  if (destination === 'docs') return chrome(<DocStudioView />);
+
+  let canvas, panel;
+  if (top.state === 'overview') {
+    canvas = view === 'outline'
+      ? <div style={{ height: '100%', overflow: 'auto', padding: '18px 22px 84px' }}><ArchitectureTree items={tree} expanded={treeOpen} onToggle={(id) => setTreeOpen((o) => ({ ...o, [id]: o[id] === false ? true : false }))} onActivate={(n) => openEntity(n.label)} /></div>
+      : <Overview state={{ expanded, selected, ai }} actions={actions} />;
+    panel = (
+      <ContextPanel eyebrow="Repository" title={D.repo.name} chip={<ProvenanceChip kind="structure" size="sm" />}>
+        <PanelSection title="What is here">
+          <FactRow label="Source modules" value={D.repo.modules} />
+          <FactRow label="Top-level regions" value={D.repo.regions} />
+          <FactRow label="Repository sections" value={D.repo.sections} />
+          <FactRow label="Structural clusters" value={D.repo.clusters} />
+          <FactRow label="Ungrouped modules" value={D.residual.modules} />
+        </PanelSection>
+        <PanelSection title="Where to start">
+          <p style={{ margin: '0 0 10px', color: 'var(--text-secondary)', fontSize: 13, lineHeight: 1.55 }}>
+            <code style={{ fontSize: 12 }}>backend/src/services</code> holds 50 of the 51 modules and is the only section dense enough to cluster. It is the most informative place to begin.
+          </p>
+          <Button variant="quiet" iconAfter={<Icon name="arrow-right" size={14} />} onClick={() => actions.enterRegion(D.regions.find((r) => r.clustered))}>Open src/services</Button>
+        </PanelSection>
+        <details style={{ paddingTop: 8, borderTop: '1px solid var(--border-subtle)' }}>
+          <summary style={{ cursor: 'pointer', color: 'var(--text-muted)', fontSize: 12.5 }}>Orientation &amp; README guidance</summary>
+          <p style={{ margin: '10px 0 0', color: 'var(--text-muted)', fontSize: 12.5, lineHeight: 1.55 }}>
+            The repository README describes a Node/Express service with a submission-review workflow. Kept here as background; it is not part of the analysis.
+          </p>
+        </details>
+      </ContextPanel>
+    );
+  } else if (top.state === 'group') {
+    const g = top.payload;
+    canvas = <GroupView group={g} onEnterEntity={openEntity} />;
+    panel = (
+      <ContextPanel eyebrow={g.kind === 'cluster' ? 'Structural cluster' : 'Repository section'} title={g.path || g.label}
+        chip={<ProvenanceChip kind={g.kind === 'cluster' ? 'cluster' : 'structure'} size="sm" />}>
+        {g.kind === 'cluster' && (
+          <AIInterpretationCard style={{ marginBottom: 20 }}
+            state={ai[g.id] || (g.ai ? 'available' : 'unavailable')}
+            name={g.ai && g.ai.name} description={g.ai && g.ai.description}
+            groundTruth={g.label + ' · ' + g.modules + ' modules'}
+            generatedAt={ai[g.id] === 'generated' ? 'cached from this run' : undefined}
+            onGenerate={() => actions.generate(g.id)} onRegenerate={() => actions.generate(g.id)} />
+        )}
+        <PanelSection title="Facts">
+          <FactRow label="Modules" value={g.modules} />
+          {g.relations != null && <FactRow label="Internal relations" value={g.relations} />}
+          <FactRow label="Origin" value={g.kind === 'cluster' ? 'Relation clustering' : 'Directory'} />
+        </PanelSection>
+        {g.basis && (
+          <PanelSection title="Why these modules are grouped">
+            <p style={{ margin: '0 0 10px', color: 'var(--text-muted)', fontSize: 12.5, lineHeight: 1.5 }}>Structural evidence that this cluster exists. It does not evaluate any name given to it.</p>
+            <div style={{ display: 'grid', gap: 7 }}>
+              {g.basis.map((b) => (
+                <span key={b[0] + b[2]} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6, padding: '7px 9px', background: 'var(--bg-sunken)', border: '1px solid var(--border-subtle)', borderRadius: 7, fontFamily: 'var(--font-mono)', fontSize: 11 }}>
+                  {b[0]}<Icon name="arrow-right" size={11} /><em style={{ fontStyle: 'normal', color: 'var(--structural-cluster-accent)' }}>{b[1]}</em><Icon name="arrow-right" size={11} />{b[2]}
+                </span>
+              ))}
+            </div>
+          </PanelSection>
+        )}
+        <PanelSection title="Members">
+          <div style={{ display: 'grid', gap: 4 }}>
+            {(g.members || []).map((m) => (
+              <button key={m} type="button" onClick={() => openEntity(m)} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 8px', color: 'var(--text-primary)', textAlign: 'left', background: 'transparent', border: '1px solid transparent', borderRadius: 6, cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: 12 }}>
+                <Icon name="file-code-2" size={13} />{m}
+              </button>
+            ))}
+          </div>
+        </PanelSection>
+      </ContextPanel>
+    );
+  } else if (top.state === 'entity') {
+    const ent = entityFor(top.label);
+    canvas = <EntityView entity={ent} onOpenStatement={openStatement} selectedStatement={statement} />;
+    panel = (
+      <ContextPanel eyebrow="Module" title={ent.label} chip={<ProvenanceChip kind="structure" size="sm" />}>
+        <PanelSection title="Where it sits">
+          <FactRow label="Section" value={ent.section || ent.ancestry[0]} />
+          <FactRow label="Cluster" value={ent.cluster || ent.ancestry[ent.ancestry.length - 1]} />
+          <FactRow label="Depended on by" value={ent.dependents.length} />
+          <FactRow label="Depends on" value={ent.dependencies.length} />
+        </PanelSection>
+        <PanelSection title="Statements">
+          <div style={{ display: 'grid', gap: 6, fontSize: 13 }}>
+            {['supported', 'insufficient_evidence', 'contradicted'].map((s) => {
+              const n = ent.statements.filter((x) => x.status === s).length;
+              const word = s === 'supported' ? 'Supported' : s === 'insufficient_evidence' ? 'Insufficient evidence' : 'Contradicted';
+              return <FactRow key={s} label={word} value={n} />;
+            })}
+          </div>
+        </PanelSection>
+        <PanelSection title="Architectural explanation">
+          <Callout icon={<Icon name="sparkles" size={14} />}>
+            Not generated yet. Uses the provider set in Settings &rsaquo; AI. The statements above are deterministic either way.
+          </Callout>
+        </PanelSection>
+      </ContextPanel>
+    );
+  } else {
+    canvas = <EvidenceView statement={statement} activeEvidence={activeEvidence} onSelectEvidence={setActiveEvidence} />;
+    panel = (
+      <ContextPanel eyebrow="Statement" title={statement.statement} chip={<ProvenanceChip kind="verified" size="sm" />}>
+        <PanelSection title="Verification">
+          <FactRow label="Verdict" value={statement.status === 'supported' ? 'SUPPORTED' : statement.status === 'contradicted' ? 'CONTRADICTED' : 'INSUFFICIENT EVIDENCE'} />
+          <FactRow label="Relation" value={statement.relation} />
+          <FactRow label="Evidence items" value={statement.evidenceCount} />
+        </PanelSection>
+        <PanelSection title="Context">
+          <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: 13, lineHeight: 1.55 }}>
+            From <code style={{ fontSize: 12 }}>{statement.statement.split(' ')[0]}</code> in Structural cluster 1, inside <code style={{ fontSize: 12 }}>backend/src/services</code>.
+          </p>
+          <Button variant="quiet" style={{ marginTop: 12 }} icon={<Icon name="arrow-left" size={14} />} onClick={back}>Back to the module</Button>
+        </PanelSection>
+      </ContextPanel>
+    );
+  }
+
+  return chrome(
+    <div style={{ display: 'grid', gridTemplateRows: 'auto minmax(0,1fr)', minHeight: 0 }}>
+      <NavBar crumbs={stack} onCrumb={toCrumb} onBack={back} compact={compact}
+        right={<>
+          <span style={{ color: 'var(--text-muted)', fontSize: 12.5 }}>{top.state === 'overview' ? (view === 'outline' ? 'Overview · Outline' : 'Overview · Map') : top.state === 'group' ? 'Group' : top.state === 'entity' ? 'Entity' : 'Evidence'}</span>
+          {narrow && (
+            <button type="button" onClick={() => setPanelOpen((o) => !o)} aria-expanded={panelOpen}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 6, height: 28, padding: '0 10px', color: 'var(--text-primary)', background: 'transparent', border: '1px solid var(--border-default2)', borderRadius: 7, cursor: 'pointer', fontSize: 12.5, whiteSpace: 'nowrap' }}>
+              <Icon name="panel-right" size={14} />Details
+            </button>
+          )}
+        </>} />
+      <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: narrow ? 'minmax(0,1fr)' : 'minmax(0,1fr) auto', minHeight: 0, background: 'var(--bg-canvas)' }}>
+        <div style={{ position: 'relative', minWidth: 0, minHeight: 0 }}>
+          {canvas}
+          {(top.state === 'overview' || top.state === 'group') && (
+            <CanvasControls view={view} onView={setView} onZoom={() => {}} onFit={() => {}} />
+          )}
+        </div>
+        {narrow
+          ? (panelOpen && (
+              <div style={{ position: 'fixed', inset: '96px 0 0', zIndex: 20, display: 'flex', justifyContent: 'flex-end', background: 'var(--bg-scrim)' }} onClick={() => setPanelOpen(false)}>
+                <div style={{ display: 'flex', maxWidth: '92vw', boxShadow: 'var(--shadow-panel)' }} onClick={(e) => e.stopPropagation()}>{panel}</div>
+              </div>
+            ))
+          : panel}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>

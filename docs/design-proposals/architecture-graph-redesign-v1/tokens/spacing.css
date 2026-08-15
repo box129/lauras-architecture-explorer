@@ -1,0 +1,41 @@
+/* Spacing, radii and fixed layout metrics — literal upstream values. */
+:root {
+  --space-1: 4px;
+  --space-2: 6px;
+  --space-3: 8px;
+  --space-4: 10px;
+  --space-5: 12px;
+  --space-6: 14px;
+  --space-7: 16px;
+  --space-8: 18px;
+  --space-9: 22px;
+  --space-10: 24px;
+  --space-11: 26px;
+  --space-12: 34px;
+  --space-13: 56px;
+  --space-14: 64px;
+
+  --radius-xs: 5px;
+  --radius-sm: 6px;
+  --radius-md: 7px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-2xl: 12px;
+  --radius-3xl: 14px;
+  --radius-4xl: 16px;
+  --radius-pill: 999px;
+
+  --topbar-height: 48px;
+  --voice-rail-width: 360px;
+  --question-rail-width: 420px;
+  --question-dock-max: 780px;
+  --docs-sidebar-width: 310px;
+  --node-width: 238px;
+  --node-min-height: 104px;
+  --group-node-min-height: 148px;
+  --node-icon-size: 38px;
+  --control-height: 30px;
+  --control-height-lg: 48px;
+  --hero-max-width: 1180px;
+  --prose-max-width: 760px;
+}

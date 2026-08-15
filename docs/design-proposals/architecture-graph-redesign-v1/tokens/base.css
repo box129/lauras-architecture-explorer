@@ -1,0 +1,22 @@
+/* Base element styles a consuming page can rely on. */
+html, body { background: var(--obs-canvas); color: var(--obs-ink); }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+* { box-sizing: border-box; }
+button, input, textarea, select { font: inherit; }
+a { color: var(--text-link); text-decoration: none; }
+a:hover { color: color-mix(in srgb, var(--obs-slate-blue) 82%, var(--obs-ink)); text-decoration: underline; }
+code, kbd, samp, pre { font-family: var(--font-mono); }
+::selection { background: color-mix(in srgb, var(--obs-citrine-fill) 30%, transparent); }
+:is(button, a, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--obs-slate-blue);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--obs-white);
+}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--obs-border); border-radius: 4px; }

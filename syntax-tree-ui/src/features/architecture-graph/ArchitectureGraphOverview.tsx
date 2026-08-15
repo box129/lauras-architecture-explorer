@@ -23,7 +23,7 @@ function GraphSurface({ data, selectedNode, onSelectNode, onEnterNode, onHoverNo
     if (next.has(id)) next.delete(id); else next.add(id);
     return next;
   });
-  const visibleIds = useMemo(() => visibleGroupIds(sourceNodes, expandedIds, zoom), [expandedIds, sourceNodes, zoom]);
+  const visibleIds = useMemo(() => visibleGroupIds(sourceNodes, expandedIds), [expandedIds, sourceNodes]);
   const detailLevel = zoom < 0.68 ? 'far' : zoom < 0.95 ? 'mid' : 'near';
   useEffect(() => {
     if (!requestedExpandId) return undefined;

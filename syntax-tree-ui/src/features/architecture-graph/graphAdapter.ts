@@ -41,14 +41,17 @@ export function visibleGraphEdges(edges: ObservatoryEdge[], zoom: number): Obser
   return edges.filter((edge) => Number((edge.sourceRefs?.member_relation_count as number[] | undefined)?.[0] ?? 0) >= minimum);
 }
 
-export function visibleGroupIds(nodes: ObservatoryNode[], expandedIds: ReadonlySet<string>, zoom: number): Set<string> {
+export function visibleGroupIds(nodes: ObservatoryNode[], expandedIds: ReadonlySet<string>): Set<string> {
   const byId = new Map(nodes.map((node) => [node.id, node]));
   const result = new Set<string>();
   for (const node of nodes) {
     let parent = node.parentGroupId;
     let visible = true;
     while (parent && byId.has(parent)) {
-      if (!expandedIds.has(parent) && zoom < 0.95) { visible = false; break; }
+      // Nested containment is progressive disclosure at every zoom. Zoom
+      // changes node detail and edge density; only an explicit Expand makes
+      // a child a visible peer on the same root canvas.
+      if (!expandedIds.has(parent)) { visible = false; break; }
       parent = byId.get(parent)?.parentGroupId;
     }
     if (visible) result.add(node.id);

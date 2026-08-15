@@ -317,6 +317,13 @@ export function useArchitectureLens({
   }, [clearLens, lensPath, source, writeState]);
 
   const goBack = useCallback(() => {
+    // Enter records the entered structural node as the selected focal node.
+    // Back from that state must leave the scope, not spend a redundant step
+    // merely clearing selection before the actual scope transition.
+    if (lensPath.length > 0 && selectedNodeId === focalNode?.id) {
+      writeState(lensPath.slice(0, -1), null);
+      return;
+    }
     if (selectedNodeId) {
       writeState(lensPath, null);
       return;
@@ -324,7 +331,7 @@ export function useArchitectureLens({
     if (lensPath.length > 0) {
       writeState(lensPath.slice(0, -1), null);
     }
-  }, [lensPath, selectedNodeId, writeState]);
+  }, [focalNode?.id, lensPath, selectedNodeId, writeState]);
 
   // Browser Back/Forward integration: pushObservatoryUrlState above gives every
   // in-app navigation its own history entry, so a popstate event means the user

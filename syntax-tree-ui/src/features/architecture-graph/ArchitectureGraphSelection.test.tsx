@@ -68,4 +68,23 @@ describe('architecture graph selection synchronization', () => {
     expect(screen.getByText('Deterministic identity · Structural cluster 1')).toBeInTheDocument();
     expect(screen.getByText('Internal relations')).toBeInTheDocument();
   });
+
+  it('shows scope-aware copy when nothing is selected, instead of the same root-level text at every depth', async () => {
+    const { rerender } = render(<ArchitectureGraphInspector node={null} onEnter={vi.fn()} onExpand={vi.fn()} scopeGroupId={null} />);
+    expect(await screen.findByText('Select a structural region to inspect its recovered architecture.')).toBeInTheDocument();
+    rerender(<ArchitectureGraphInspector node={null} onEnter={vi.fn()} onExpand={vi.fn()} scopeGroupId="region" />);
+    expect(await screen.findByText('Select a region, cluster, or module in Repository root files to inspect it.')).toBeInTheDocument();
+  });
+
+  it('never renders a Verified badge for a selected structural region or relation cluster', async () => {
+    render(<Harness />);
+    await waitFor(() => expect(screen.getByText('Repository root files')).toBeInTheDocument());
+    fireEvent.click(screen.getAllByRole('button', { name: 'Repository root files' }).at(-1)!);
+    expect(await screen.findByRole('heading', { name: 'Repository root files' })).toBeInTheDocument();
+    expect(screen.queryByText('Verified')).not.toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole('button', { name: 'Expand' })[0]);
+    fireEvent.click((await screen.findAllByRole('button', { name: 'Structural cluster 1' })).at(-1)!);
+    expect(await screen.findByRole('heading', { name: 'Structural cluster 1' })).toBeInTheDocument();
+    expect(screen.queryByText('Verified')).not.toBeInTheDocument();
+  });
 });

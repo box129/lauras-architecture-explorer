@@ -43,7 +43,13 @@ export function adaptArchitectureGraph(response: ArchitectureGraphResponse): Arc
     internalCounts,
     nodes: response.groups.map((group) => ({
       id: group.id, label: group.kind === 'relation_residual' ? group.label : (group.parent_group_id ? mapLabel(group.label) : group.label), kind: group.kind === 'module' ? 'structural_module' : 'structural_group', description: group.kind === 'relation_cluster' ? 'Derived mechanically from resolved source relationships.' : group.kind === 'relation_residual' ? 'These modules were not placed in a deterministic relation cluster from the currently recovered resolved relationships.' : `Structural basis: ${group.structural_path}`,
-      status: 'verified', confidence: null, evidenceCount: 0, childrenCount: group.recursive_module_count,
+      // Structural regions, relation clusters, and residual groups are
+      // deterministic structural facts, not verified evidence-backed
+      // claims -- applying the "Verified" status here would misuse the
+      // same badge the evidence/claims system uses for source-backed
+      // support. 'candidate' is the closest existing status that does not
+      // overclaim while these nodes carry no evidenceCount of their own.
+      status: 'candidate', confidence: null, evidenceCount: 0, childrenCount: group.recursive_module_count,
       canDrilldown: group.can_drilldown, primaryFiles: [], accent: group.kind === 'root_file_bucket' ? 'stone' : 'slateBlue',
       icon: group.kind === 'structural_container' ? 'FolderTree' : 'Folder', position: { x: 0, y: 0 },
       summary: group.structural_path, whatHappens: [`${group.recursive_module_count} source module${group.recursive_module_count === 1 ? '' : 's'}.`], relatedLenses: [],

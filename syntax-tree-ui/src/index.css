@@ -32,6 +32,24 @@
   --obs-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Laura's product shell is dark by default (architecture-graph-redesign
+   direction). These redefine the same tokens every Observatory surface
+   already consumes -- landing, topbar, inspector, Settings, Doc Studio --
+   rather than introducing a second palette, so the whole shell re-themes
+   together instead of leaving individual panels stranded in light mode. */
+html.observatory-active {
+  --obs-canvas: #171b24;
+  --obs-paper: #1c2330;
+  --obs-ink: #E8EDF7;
+  --obs-stone: #9AA8C2;
+  --obs-border: #333C4E;
+  --obs-slate-blue: #8FC2FF;
+  --obs-citrine: #E4C15C;
+  --obs-clay: #E08A5B;
+  --obs-sage: #8FCB78;
+  --obs-muted-red: #E58C7D;
+}
+
 /* Base styles */
 html {
   background-color: var(--color-bg);
@@ -1117,7 +1135,7 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   bottom: 54px;
   max-width: min(820px, calc(100% - 36px));
   color: var(--obs-ink);
-  background: rgba(252, 250, 247, 0.98);
+  background: color-mix(in srgb, var(--obs-paper) 98%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 8px;
   box-shadow: 0 12px 28px rgba(26, 25, 22, 0.14);
@@ -1356,7 +1374,7 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   padding: clamp(22px, 4vw, 54px);
   overflow: auto;
   color: var(--obs-ink);
-  background: var(--obs-white);
+  background: var(--obs-paper);
 }
 
 .obs-docs-detail__header {
@@ -1623,7 +1641,7 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   align-items: center;
   height: 48px;
   padding: 0 18px;
-  background: rgba(252, 250, 247, 0.86);
+  background: color-mix(in srgb, var(--obs-paper) 86%, transparent);
   border-bottom: 1px solid var(--obs-border);
   backdrop-filter: blur(18px);
 }
@@ -1763,7 +1781,7 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   height: 30px;
   padding: 0 10px;
   color: var(--obs-ink);
-  background: rgba(252, 250, 247, 0.72);
+  background: color-mix(in srgb, var(--obs-paper) 72%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 8px;
   cursor: pointer;
@@ -1882,7 +1900,7 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   z-index: 4;
   max-width: min(840px, calc(100% - 72px));
   padding: 10px 14px;
-  background: rgba(252, 250, 247, 0.88);
+  background: color-mix(in srgb, var(--obs-paper) 88%, transparent);
   border-radius: 12px;
   pointer-events: none;
 }
@@ -1901,7 +1919,7 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   height: 24px;
   padding: 0 8px;
   color: color-mix(in srgb, var(--obs-ink) 72%, var(--obs-stone));
-  background: rgba(252, 250, 247, 0.72);
+  background: color-mix(in srgb, var(--obs-paper) 72%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 999px;
   font-size: 11px;
@@ -1954,7 +1972,7 @@ html.observatory-active .react-flow__background {
 html.observatory-active .react-flow__minimap,
 .obs-rf-minimap {
   overflow: hidden;
-  background-color: rgba(252, 250, 247, 0.84) !important;
+  background-color: color-mix(in srgb, var(--obs-paper) 84%, transparent) !important;
   border: 1px solid var(--obs-border) !important;
   border-radius: 8px !important;
   box-shadow: 0 10px 24px rgba(26, 25, 22, 0.06);
@@ -1963,7 +1981,7 @@ html.observatory-active .react-flow__minimap,
 html.observatory-active .react-flow__controls,
 .obs-rf-controls {
   overflow: hidden;
-  background: rgba(252, 250, 247, 0.86) !important;
+  background: color-mix(in srgb, var(--obs-paper) 86%, transparent) !important;
   border: 1px solid var(--obs-border) !important;
   border-radius: 8px !important;
   box-shadow: 0 10px 24px rgba(26, 25, 22, 0.06);
@@ -1992,7 +2010,7 @@ html.observatory-active .react-flow__controls-button:hover {
   padding: 14px 15px;
   text-align: left;
   color: var(--obs-ink);
-  background: rgba(252, 250, 247, 0.9);
+  background: color-mix(in srgb, var(--obs-paper) 90%, transparent);
   border: 1px solid color-mix(in srgb, var(--obs-border) 84%, var(--obs-white));
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(26, 25, 22, 0.055);
@@ -2144,7 +2162,7 @@ html.observatory-active .react-flow__controls-button:hover {
   padding: 18px 20px;
   border-width: 1.5px;
   border-color: color-mix(in srgb, var(--obs-stone) 46%, var(--obs-border));
-  background: color-mix(in srgb, var(--obs-stone) 5%, rgba(252, 250, 247, 0.9));
+  background: color-mix(in srgb, var(--obs-stone) 5%, color-mix(in srgb, var(--obs-paper) 90%, transparent));
 }
 
 .obs-rf-node--group .obs-rf-node__title {
@@ -2199,7 +2217,7 @@ html.observatory-active .react-flow__controls-button:hover {
   width: 100%;
   padding: 12px 16px;
   color: var(--obs-ink);
-  background: color-mix(in srgb, var(--obs-stone) 10%, rgba(252, 250, 247, 0.95));
+  background: color-mix(in srgb, var(--obs-stone) 10%, color-mix(in srgb, var(--obs-paper) 95%, transparent));
   border: none;
   border-bottom: 1.5px dashed color-mix(in srgb, var(--obs-stone) 50%, var(--obs-border));
   border-radius: 12px 12px 0 0;
@@ -2208,7 +2226,7 @@ html.observatory-active .react-flow__controls-button:hover {
 }
 
 .obs-rf-container-frame__header:hover {
-  background: color-mix(in srgb, var(--obs-slate-blue) 8%, rgba(252, 250, 247, 0.95));
+  background: color-mix(in srgb, var(--obs-slate-blue) 8%, color-mix(in srgb, var(--obs-paper) 95%, transparent));
 }
 
 .obs-rf-container-frame__title {
@@ -2288,7 +2306,7 @@ html.observatory-active .react-flow__controls-button:hover {
   z-index: 3;
   padding: 5px 10px;
   color: var(--obs-stone);
-  background: rgba(252, 250, 247, 0.92);
+  background: color-mix(in srgb, var(--obs-paper) 92%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 999px;
   font-size: 12px;
@@ -2309,7 +2327,7 @@ html.observatory-active .react-flow__controls-button:hover {
   width: min(440px, 100%);
   padding: 24px;
   color: var(--obs-ink);
-  background: rgba(252, 250, 247, 0.88);
+  background: color-mix(in srgb, var(--obs-paper) 88%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 12px;
   box-shadow: 0 16px 42px rgba(26, 25, 22, 0.07);
@@ -2357,9 +2375,9 @@ html.observatory-active .react-flow__controls-button:hover {
   height: 42px;
   background: linear-gradient(
     90deg,
-    rgba(252, 250, 247, 0.72),
+    color-mix(in srgb, var(--obs-paper) 72%, transparent),
     rgba(255, 255, 255, 0.9),
-    rgba(252, 250, 247, 0.72)
+    color-mix(in srgb, var(--obs-paper) 72%, transparent)
   );
   border: 1px solid var(--obs-border);
   border-radius: 10px;
@@ -2374,7 +2392,7 @@ html.observatory-active .react-flow__controls-button:hover {
 .obs-skeleton-node {
   width: 238px;
   height: 104px;
-  background: rgba(252, 250, 247, 0.76);
+  background: color-mix(in srgb, var(--obs-paper) 76%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(26, 25, 22, 0.045);
@@ -2414,7 +2432,7 @@ html.observatory-active .react-flow__controls-button:hover {
   padding: 14px 16px;
   text-align: left;
   color: var(--obs-ink);
-  background: rgba(252, 250, 247, 0.88);
+  background: color-mix(in srgb, var(--obs-paper) 88%, transparent);
   border: 1px solid color-mix(in srgb, var(--obs-border) 84%, var(--obs-white));
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(26, 25, 22, 0.055);
@@ -2584,7 +2602,7 @@ html.observatory-active .react-flow__controls-button:hover {
   bottom: 18px;
   width: 132px;
   height: 92px;
-  background: rgba(252, 250, 247, 0.84);
+  background: color-mix(in srgb, var(--obs-paper) 84%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 8px;
   box-shadow: 0 10px 24px rgba(26, 25, 22, 0.06);
@@ -2629,7 +2647,7 @@ html.observatory-active .react-flow__controls-button:hover {
   min-width: 0;
   padding: 24px;
   overflow: auto;
-  background: rgba(252, 250, 247, 0.76);
+  background: color-mix(in srgb, var(--obs-paper) 76%, transparent);
   backdrop-filter: blur(18px);
 }
 
@@ -2866,7 +2884,7 @@ html.observatory-active .react-flow__controls-button:hover {
 .obs-file-list {
   margin-top: 12px;
   overflow: hidden;
-  background: rgba(252, 250, 247, 0.72);
+  background: color-mix(in srgb, var(--obs-paper) 72%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 8px;
 }
@@ -2933,7 +2951,7 @@ html.observatory-active .react-flow__controls-button:hover {
   min-height: 32px;
   padding: 7px 11px;
   color: color-mix(in srgb, var(--obs-ink) 78%, var(--obs-stone));
-  background: rgba(252, 250, 247, 0.72);
+  background: color-mix(in srgb, var(--obs-paper) 72%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 7px;
   cursor: pointer;
@@ -2957,7 +2975,7 @@ html.observatory-active .react-flow__controls-button:hover {
   grid-template-columns: 14px minmax(0, 1fr);
   gap: 10px;
   padding: 11px 12px;
-  background: rgba(252, 250, 247, 0.62);
+  background: color-mix(in srgb, var(--obs-paper) 62%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 8px;
 }
@@ -3019,7 +3037,7 @@ html.observatory-active .react-flow__controls-button:hover {
   min-height: 64px;
   padding: 12px 14px 12px 18px;
   color: var(--obs-stone);
-  background: rgba(252, 250, 247, 0.9);
+  background: color-mix(in srgb, var(--obs-paper) 90%, transparent);
   border: 1px solid color-mix(in srgb, var(--obs-border) 80%, var(--obs-white));
   border-radius: 16px;
   box-shadow: 0 18px 46px rgba(26, 25, 22, 0.09);
@@ -3132,7 +3150,7 @@ html.observatory-active .react-flow__controls-button:hover {
   min-height: 0;
   overflow: hidden;
   color: var(--obs-ink);
-  background: rgba(252, 250, 247, 0.96);
+  background: color-mix(in srgb, var(--obs-paper) 96%, transparent);
   border: 1px solid color-mix(in srgb, var(--obs-border) 82%, var(--obs-white));
   border-radius: 14px;
   box-shadow: 0 22px 60px rgba(26, 25, 22, 0.13);
@@ -3306,7 +3324,7 @@ html.observatory-active .react-flow__controls-button:hover {
   padding: 0 10px;
   color: var(--obs-stone);
   text-align: left;
-  background: rgba(252, 250, 247, 0.76);
+  background: color-mix(in srgb, var(--obs-paper) 76%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 8px;
   cursor: pointer;
@@ -4503,7 +4521,7 @@ html.observatory-active .react-flow__controls-button:hover {
 .la-arch-explanation {
   margin-top: 20px;
   padding: 16px;
-  background: rgba(252, 250, 247, 0.72);
+  background: color-mix(in srgb, var(--obs-paper) 72%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 10px;
 }
@@ -5059,12 +5077,23 @@ html.observatory-active .react-flow__controls-button:hover {
   border-color: color-mix(in srgb, #3d7a4f 20%, var(--obs-border));
 }
 /* G1 architecture-first overview: containment supports, relations lead. */
-.architecture-graph-overview { background: radial-gradient(circle at 45% 35%, rgba(79, 117, 164, .13), transparent 46%), var(--obs-canvas-bg, #171b24); }
+.architecture-graph-overview { background: radial-gradient(circle at 45% 35%, rgba(79, 117, 164, .13), transparent 46%), var(--obs-canvas); }
 .observatory-shell__body:has(.architecture-graph-overview) { grid-template-columns:minmax(0, 1fr) 280px; }
 .architecture-graph-overview__hint { position:absolute; left:20px; bottom:18px; z-index:5; padding:8px 11px; border-radius:8px; background:rgba(18,23,31,.82); color:#c5cfdf; font-size:12px; }
 .architecture-graph-overview .react-flow__controls { box-shadow:0 6px 22px rgba(0,0,0,.22); }
-.architecture-graph-overview .react-flow__controls button { width:28px; height:28px; background:color-mix(in srgb, var(--obs-surface) 94%, transparent); border-color:color-mix(in srgb, var(--obs-line) 82%, transparent); color:var(--obs-ink); }
-.architecture-graph-overview .react-flow__minimap { width:110px; height:72px; border:1px solid color-mix(in srgb, var(--obs-line) 74%, transparent); border-radius:8px; overflow:hidden; opacity:.62; }
+.architecture-graph-overview .react-flow__controls button { width:28px; height:28px; background:color-mix(in srgb, var(--obs-paper) 94%, transparent); border-color:color-mix(in srgb, var(--obs-border) 82%, transparent); color:var(--obs-ink); }
+.architecture-graph-overview .react-flow__minimap { width:110px; height:72px; border:1px solid color-mix(in srgb, var(--obs-border) 74%, transparent); border-radius:8px; overflow:hidden; opacity:.62; }
+/* Bottom-left in this canvas is already owned by ReactFlow's zoom controls;
+   anchoring the accessible-table toggle there too made it visually overlap
+   them (the zoom "+" button was hidden behind this toggle). Top-right is
+   unclaimed here -- clear of the Lenses tab (top-left) and the minimap
+   (bottom-right) -- so give the toggle its own space instead. */
+.architecture-graph-overview .obs-graph-alternative.architecture-graph-alternative { left: auto; right: 18px; bottom: auto; top: 16px; }
+/* The question composer's left edge previously sat under the zoom-control
+   column (~40px wide); nudge it clear so neither control is partially
+   covered by the other. */
+.architecture-graph-overview ~ .obs-question-dock,
+.observatory-shell__main:has(.architecture-graph-overview) > .obs-question-dock { left: 64px; }
 .architecture-graph-node--dimmed { opacity:.46; transition:opacity 150ms ease; }
 .architecture-graph-edge--dimmed { opacity:.2; }
 .architecture-graph-edge--calls { stroke:#6fa8ff !important; stroke-width:2.7 !important; }
@@ -5096,7 +5125,7 @@ html.observatory-active .react-flow__controls-button:hover {
 .architecture-region-node__handle { width:4px !important; height:4px !important; min-width:4px !important; min-height:4px !important; border:0 !important; background:var(--obs-slate-blue) !important; opacity:0; }
 .architecture-region-node:hover .architecture-region-node__handle, .architecture-region-node--selected .architecture-region-node__handle { opacity:.9; }
 .architecture-graph-edge-label { position:absolute; z-index:4; pointer-events:none; padding:3px 6px; border:1px solid rgba(137,178,235,.34); border-radius:999px; background:rgba(15,24,38,.94); color:#dceaff; font-size:10px; font-weight:750; line-height:1; white-space:nowrap; }
-.architecture-graph-inspector { height:100%; min-width:0; padding:20px; overflow:auto; border-left:1px solid var(--obs-border); background:rgba(252,250,247,.94); color:var(--obs-ink); }
+.architecture-graph-inspector { height:100%; min-width:0; padding:20px; overflow:auto; border-left:1px solid var(--obs-border); background:color-mix(in srgb, var(--obs-paper) 94%, transparent); color:var(--obs-ink); }
 .architecture-graph-inspector__eyebrow { margin:0 0 6px; color:var(--obs-slate-blue); font-size:10px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
 .architecture-graph-inspector h2 { margin:0; font-size:19px; line-height:1.15; }
 .architecture-graph-inspector h3 { margin:20px 0 7px; font-size:12px; }
@@ -5123,11 +5152,17 @@ html.observatory-active .react-flow__controls-button:hover {
 .la-claim-card__statement small, .la-claim-card__relation small { color:var(--obs-stone); font-size:10px; font-weight:750; letter-spacing:.06em; text-transform:uppercase; }
 .la-claim-card__evidence-label { margin:0 0 8px; color:var(--obs-slate-blue); font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
 .obs-settings__clarity-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:14px 0 18px; }
-.obs-settings__clarity-grid > div { padding:12px; border:1px solid var(--obs-border); border-radius:8px; background:color-mix(in srgb, var(--obs-white) 52%, transparent); }
+/* Was color-mix(var(--obs-white) 52%, transparent): a heavy white wash
+   read fine as a light-mode surface tint, but over the dark paper panel it
+   washed out to a pale grey block with near-illegible --obs-stone text on
+   top. Blending --obs-ink into --obs-paper elevates the card a touch in
+   both themes (ink is dark-on-light, light-on-dark) without collapsing
+   contrast in either. */
+.obs-settings__clarity-grid > div { padding:12px; border:1px solid var(--obs-border); border-radius:8px; background:color-mix(in srgb, var(--obs-ink) 6%, var(--obs-paper)); }
 .obs-settings__clarity-grid strong { font-size:12px; }
 .obs-settings__clarity-grid ul { margin:8px 0 0; padding-left:17px; color:var(--obs-stone); font-size:11.5px; line-height:1.5; }
 .obs-settings__availability { margin:16px 0 0; padding:11px 12px; color:var(--obs-stone); border:1px solid var(--obs-border); border-radius:8px; background:color-mix(in srgb, var(--obs-slate-blue) 5%, transparent); font-size:12px; line-height:1.45; }
 @media (max-width: 900px) { .obs-topbar__title { max-width:28vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .observatory-shell__body:has(.architecture-graph-overview) { grid-template-columns:minmax(0,1fr) 300px; } }
 @media (max-width: 700px) { .obs-settings__clarity-grid { grid-template-columns:1fr; } .obs-topbar { padding:0 10px; } .obs-topbar__right { display:none; } }
-.obs-question-dock--compact { display:inline-flex; align-items:center; gap:8px; width:auto; min-height:auto; padding:8px 12px; border:1px solid rgba(197,210,231,.78); border-radius:999px; background:rgba(252,250,247,.94); color:var(--obs-slate-blue); font:600 12px var(--font-sans); cursor:pointer; box-shadow:0 8px 22px rgba(10,18,31,.16); }
+.obs-question-dock--compact { display:inline-flex; align-items:center; gap:8px; width:auto; min-height:auto; padding:8px 12px; border:1px solid rgba(197,210,231,.78); border-radius:999px; background:color-mix(in srgb, var(--obs-paper) 94%, transparent); color:var(--obs-slate-blue); font:600 12px var(--font-sans); cursor:pointer; box-shadow:0 8px 22px rgba(10,18,31,.16); }
 @media (max-width: 900px) { .architecture-graph-overview__hint { display:none; } .architecture-graph-overview .react-flow__minimap { display:none; } }

@@ -11,6 +11,11 @@ export default function ArchitectureGraphInspector({ node, onEnter, onExpand, sc
   const [interpreting, setInterpreting] = useState(false);
   useEffect(() => { void fetchApi<ArchitectureGraphResponse>('/architecture-graph').then(setGraph).catch(() => setGraph(null)); }, []);
   const scoped = useMemo(() => graph ? architectureGraphScope(graph, scopeGroupId) : null, [graph, scopeGroupId]);
+  // architectureGraphScope excludes the scope's own group from `scoped`
+  // (it becomes the implicit root of that view), so the current scope's
+  // own label has to come from the unscoped graph -- needed only to make
+  // the no-selection copy below say where the user actually is.
+  const scopeGroup = useMemo(() => scopeGroupId ? graph?.groups.find((group) => group.id === scopeGroupId) ?? null : null, [graph, scopeGroupId]);
   const selected = useMemo(() => scoped?.groups.find((group) => group.id === node?.id) ?? null, [scoped, node?.id]);
   const incoming = useMemo(() => selected ? (scoped?.aggregate_edges.filter((edge) => edge.target_group_id === selected.id) ?? []) : [], [scoped, selected]);
   const outgoing = useMemo(() => selected ? (scoped?.aggregate_edges.filter((edge) => edge.source_group_id === selected.id) ?? []) : [], [scoped, selected]);
@@ -18,7 +23,7 @@ export default function ArchitectureGraphInspector({ node, onEnter, onExpand, sc
   useEffect(() => { setInterpretation(null); setInterpreting(false); }, [selected?.id]);
   const generateInterpretation = async () => { if (!selected) return; setInterpreting(true); try { setInterpretation(await fetchApi<ClusterInterpretationResponse>(`/architecture-graph/clusters/${encodeURIComponent(selected.id)}/interpretation`, { method: 'POST' })); } catch { setInterpretation({ analysis_run_id: selected.analysis_run_id, cluster_id: selected.id, status: 'unavailable' }); } finally { setInterpreting(false); } };
   if (!scoped) return <aside className="architecture-graph-inspector" aria-label="Architecture graph inspector" />;
-  if (!selected || !node) return <aside className="architecture-graph-inspector" aria-label="Architecture graph inspector"><p className="architecture-graph-inspector__eyebrow">Architecture overview</p><h2>Architecture Overview</h2><p className="architecture-graph-inspector__copy">Choose a structural region to see recovered relationships, clusters, and modules.</p><dl><div><dt>Modules</dt><dd>{scoped.groups.filter((group) => !group.parent_group_id).reduce((count, group) => count + group.recursive_module_count, 0)}</dd></div><div><dt>Regions</dt><dd>{scoped.groups.filter((group) => !group.parent_group_id).length}</dd></div><div><dt>Relations</dt><dd>{scoped.aggregate_edges.length}</dd></div></dl><p className="architecture-graph-inspector__hint"><Network size={15} /> Only relationships recovered from source are shown.</p></aside>;
+  if (!selected || !node) return <aside className="architecture-graph-inspector" aria-label="Architecture graph inspector"><p className="architecture-graph-inspector__eyebrow">Architecture overview</p><h2>Architecture Overview</h2><p className="architecture-graph-inspector__copy">{scopeGroup ? `Select a region, cluster, or module in ${scopeGroup.label} to inspect it.` : 'Select a structural region to inspect its recovered architecture.'}</p><dl><div><dt>Modules</dt><dd>{scoped.groups.filter((group) => !group.parent_group_id).reduce((count, group) => count + group.recursive_module_count, 0)}</dd></div><div><dt>Regions</dt><dd>{scoped.groups.filter((group) => !group.parent_group_id).length}</dd></div><div><dt>Relations</dt><dd>{scoped.aggregate_edges.length}</dd></div></dl><p className="architecture-graph-inspector__hint"><Network size={15} /> Only relationships recovered from source are shown.</p></aside>;
   const children = scoped.groups.filter((group) => group.parent_group_id === selected.id).length;
   if (selected.kind === 'relation_cluster') return <aside className="architecture-graph-inspector" aria-label="Selected deterministic relation cluster">
     <p className="architecture-graph-inspector__eyebrow">Relation cluster</p>

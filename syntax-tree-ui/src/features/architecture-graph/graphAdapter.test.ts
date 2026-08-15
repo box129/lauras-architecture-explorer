@@ -46,4 +46,17 @@ describe('architecture graph adapter', () => {
     expect(graph.nodes.find((node) => node.id === 'residual:1')?.description).toContain('not placed');
     expect([...visibleGroupIds(graph.nodes, new Set(['backend', 'services', 'cluster:1']))]).toContain('module:1');
   });
+  it('never labels a structural region, relation cluster, or residual group as a verified claim', () => {
+    // These node kinds are deterministic structural facts, not
+    // evidence-verified claims -- the "Verified" badge belongs to the
+    // evidence/claims system only. Regression for a live defect where a
+    // 0-evidence structural container displayed a "Verified" badge.
+    const graph = adaptArchitectureGraph({ ...response, schema_version: 'architecture-graph/v2', groups: [...response.groups,
+      { id: 'cluster:1', analysis_run_id: 'run:1', label: 'Structural cluster 1', structural_path: 'backend/services', parent_group_id: 'services', kind: 'relation_cluster', direct_member_module_ids: ['module:1'], direct_child_group_ids: ['module:1'], recursive_module_count: 1, can_drilldown: false, cluster_id: 'cluster:1', internal_relation_count: 3, boundary_relation_count: 1 },
+      { id: 'residual:1', analysis_run_id: 'run:1', label: 'Unclustered by recovered relations', structural_path: 'backend/services', parent_group_id: 'services', kind: 'relation_residual', direct_member_module_ids: ['module:2'], direct_child_group_ids: ['module:2'], recursive_module_count: 1, can_drilldown: false, residual: true },
+    ] });
+    for (const node of graph.nodes) {
+      expect(node.status).not.toBe('verified');
+    }
+  });
 });

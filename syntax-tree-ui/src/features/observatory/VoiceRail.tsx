@@ -472,6 +472,12 @@ function explanationLabel(status: string) {
       return 'stale explanation';
     case 'llm_failed':
       return 'LLM failed';
+    case 'fallback_no_llm':
+      // Deterministic explanation only -- no AI provider was configured, so
+      // this did not fall back FROM a failure, it simply never had one to
+      // call. Surfacing the raw enum ("fallback no llm") reads as internal
+      // debug text; this is the plain-language, actionable equivalent.
+      return 'generated without AI';
     case 'not_generated':
       return 'not generated';
     default:

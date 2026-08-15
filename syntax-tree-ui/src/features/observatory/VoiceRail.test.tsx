@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import VoiceRail from './VoiceRail';
 import type { ObservatoryNode } from './types';
+import type { ArchitectureNodeExplanationDTO } from '../architecture-map/apiTypes';
 
 // Architectural Explanation only ever resolves against a real parsed
 // symbol (api/routes/architectural_explanation.py 404s "Entity not found"
@@ -85,5 +86,30 @@ describe('VoiceRail map-confidence labeling', () => {
 
     expect(screen.queryByText(/0% map confidence/)).not.toBeInTheDocument();
     expect(screen.getByText('map confidence not available')).toBeInTheDocument();
+  });
+});
+
+function buildExplanation(overrides: Partial<ArchitectureNodeExplanationDTO>): ArchitectureNodeExplanationDTO {
+  return {
+    analysis_run_id: 'run:1', node_id: 'symbol:abc123', status: 'verified', generation_status: 'llm_generated',
+    model: '', summary: '', simple_explanation: '', technical_explanation: '', responsibilities: [], what_happens: [],
+    key_files: [], relationships: [], gaps: [], warnings: [], suggested_questions: [], evidence_ids: [],
+    prompt_hash: '', input_hash: '',
+    ...overrides,
+  };
+}
+
+/**
+ * Regression for a live product audit finding: a deterministic-only
+ * explanation (no AI provider configured, generation_status
+ * "fallback_no_llm") rendered as the raw enum "fallback no llm" -- an
+ * internal implementation detail leaking into ordinary UX.
+ */
+describe('VoiceRail explanation status labeling', () => {
+  it('never shows the raw "fallback_no_llm" enum for a deterministic-only explanation', () => {
+    render(<VoiceRail node={buildNode({})} explanation={buildExplanation({ generation_status: 'fallback_no_llm' })} onClose={vi.fn()} />);
+
+    expect(screen.queryByText(/fallback.?no.?llm/i)).not.toBeInTheDocument();
+    expect(screen.getByText('generated without AI')).toBeInTheDocument();
   });
 });

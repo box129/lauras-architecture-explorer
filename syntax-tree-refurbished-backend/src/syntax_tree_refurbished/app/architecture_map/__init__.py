@@ -1,0 +1,1 @@
+"""Architecture-map compatibility projection."""

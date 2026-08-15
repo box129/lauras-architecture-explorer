@@ -1,0 +1,154 @@
+{
+  "review_type": "independent_pre_human_ux_audit",
+  "product_head": "a350b8f5c54ff3b76d735ac88dfa9b82a1757207",
+  "frozen_checkpoint_reference": "v2-usability-dry-run-ready @ 4bdec8f",
+  "live_frontend_reviewed": "http://127.0.0.1:5175 (syntax-tree-ui, Vite dev server)",
+  "dry_run_repository": "pallets/flask, pinned 6a2f545bfd8ed31e19066a299296917e034aca58",
+  "overall_readiness": "NOT READY - MAJOR UX BLOCKER",
+  "counts": {
+    "blocker": 2,
+    "major": 4,
+    "minor": 5,
+    "polish": 1
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "severity": "BLOCKER",
+      "screen_context": "Repo orientation screen (pre-map) and every architecture-map node/component detail panel",
+      "observed_design": "Two parallel status vocabularies coexist and look alike. (1) Area/component level: a six-state legend (Verified / Insufficient / Candidate / Unsupported / Stale / Legacy), each shown as a small pill badge, and a numeric '% confidence' badge next to almost every card and panel (observed 50% on the pre-map orientation card, 98% on the app.py component, 100% on the Flask class and on full_dispatch_request). (2) Claim level, inside Architectural Explanation: SUPPORTED / INSUFFICIENT EVIDENCE, shown as a similarly styled pill badge, with NO numeric percentage attached. Nothing on screen tells the user these are two different systems measuring two different things (static-extraction classification confidence vs. LLM-claim verifier outcome).",
+      "likely_user_interpretation": "A user will very plausibly read the recurring 'Verified — NN% confidence' pattern they saw throughout the map and orientation screen, then encounter 'SUPPORTED' on a claim and assume it belongs to the same percentage-based confidence system, i.e. 'the AI/tool is some percent sure' rather than 'a deterministic verifier established this from source'. The word 'Insufficient' (area legend) and 'Unsupported' (area legend) are also near-homonyms of 'INSUFFICIENT EVIDENCE' and the opposite of 'SUPPORTED', which invites literal confusion between the two vocabularies, not just a vague conflation.",
+      "why_this_matters": "This is precisely the mental-model risk this whole audit exists to check for (docs/usability-dry-run/README.md explicitly lists 'misunderstanding of SUPPORTED vs INSUFFICIENT EVIDENCE' as a target risk). Neither docs/START_HERE.md, docs/OPENAI_CONFIGURATION.md, nor any of the docs/usability-dry-run/ materials mention the area-level Verified/Insufficient/Candidate/Unsupported/Stale/Legacy vocabulary or its confidence percentages at all, even though a participant sees this on literally every card before they ever reach a claim.",
+      "evidence": "qa-audit/claude-design-ux-review/screenshots/issue-01-orientation-confidence-percentage.jpg (50% confidence on pre-map orientation); live legend text captured via accessibility tree: 'Verified' = 'Source-backed evidence is available.', 'Insufficient' = 'The backend found this area, but source evidence is incomplete.', 'Candidate' = 'This area is plausible but not promoted to verified evidence.', 'Unsupported' = 'The available source evidence does not support this claim.', 'Stale' = 'This evidence may no longer match the current source snapshot.', 'Legacy' = 'This area comes from a legacy projection or compatibility path.'",
+      "recommended_design_direction": "Visually and terminologically separate the two systems: rename or restyle the area/component 'confidence %' badge so it cannot be mistaken for a claim-level status (e.g. a distinct shape/color and a label like 'extraction confidence', never placed near a SUPPORTED/INSUFFICIENT EVIDENCE badge without a qualifier). Consider whether the area-level six-state vocabulary needs to be user-facing at all in its current form, or whether it should be simplified/relabeled to avoid lexical overlap with the claim-level vocabulary.",
+      "research_semantic_impact": "POTENTIALLY — REVIEW REQUIRED",
+      "research_semantic_note": "No change to SUPPORTED/INSUFFICIENT EVIDENCE/CONTRADICTED meaning is proposed. But if the area-level vocabulary's wording is changed to reduce lexical overlap, someone must confirm that vocabulary's own underlying meaning (extraction/classification confidence, a real and distinct concept) is preserved and not itself flattened into a probability score."
+    },
+    {
+      "id": "F04",
+      "severity": "BLOCKER",
+      "screen_context": "Source viewer opened via 'Open source' from an expanded claim's evidence chain",
+      "observed_design": "Opened 'Open source' for the claim 'full_dispatch_request calls preprocess_request', whose evidence chain cited app.py:1014-1014. The source viewer renders the surrounding ~30 lines of app.py with normal syntax highlighting only — line 1014 (`rv = self.preprocess_request(ctx)`) has no background highlight, no gutter marker, no bolding, and no distinct scroll-to-center treatment versus the other ~29 visible lines.",
+      "likely_user_interpretation": "A user can complete the click-through (find the claim, expand evidence, click Open source, see real code) but has no way, from the source view itself, to determine which single line is 'the evidence' versus ordinary surrounding code they must read and guess about.",
+      "why_this_matters": "This is the exact test posed by the audit brief itself: 'Could a user successfully click Open source yet still fail to understand why that code is evidence?' The answer, observed live, is yes. Claim → evidence → source is described in this program's own materials as 'the central provenance interaction' (Section 19); without highlighting, the source viewer makes code available but does not make provenance understandable.",
+      "evidence": "qa-audit/claude-design-ux-review/screenshots/issue-03-source-viewer-no-highlight.jpg, plus a zoomed capture of lines 1013-1016 confirming identical styling for line 1014 and its neighbors.",
+      "recommended_design_direction": "Highlight (background tint and/or gutter marker) the exact cited line/span when the source viewer opens from an evidence chain, and auto-scroll so the highlighted span is vertically centered rather than merely present in the loaded range.",
+      "research_semantic_impact": "NO",
+      "research_semantic_note": "Purely a rendering/UX fix; the cited line/span already comes from the same evidence data already computed and displayed as text (app.py:1014-1014). No verifier or evidence semantics change."
+    },
+    {
+      "id": "F02",
+      "severity": "MAJOR",
+      "screen_context": "Architectural Explanation panel, individual claim cards (e.g. 'full_dispatch_request calls preprocess_request' — SUPPORTED)",
+      "observed_design": "docs/START_HERE.md states claims are 'labeled either SUPPORTED or INSUFFICIENT EVIDENCE (hover either label for a one-line explanation of what it means...)'. Hovering directly over a live SUPPORTED badge for 2 seconds produced no visible tooltip in two separate attempts. A related, differently-labeled 'Verified' element elsewhere in the DOM does carry a well-written explanatory string ('Laura's found deterministic source-derived evidence establishing this proposition.'), but this text was not observed to surface visibly on the SUPPORTED claim badge itself.",
+      "likely_user_interpretation": "A user relying on the documented hover affordance gets no in-context explanation at all, and has no visual cue (no info icon, no dotted underline, no cursor change) suggesting one might exist.",
+      "why_this_matters": "This removes the one explanatory mechanism the product's own documentation promises exists at the exact point of maximum ambiguity (the SUPPORTED label itself). A facilitator running the real dry run, following SESSION_CHECKLIST.md/START_HERE.md, would reasonably expect this affordance to be available to the participant.",
+      "evidence": "Live hover test at the SUPPORTED badge on the full_dispatch_request → preprocess_request claim; zoomed screenshot taken mid-hover shows no tooltip.",
+      "recommended_design_direction": "Add a visible hover/focus tooltip (or an explicit info icon that is keyboard-operable) on both SUPPORTED and INSUFFICIENT EVIDENCE badges, using language consistent with the strong explanatory copy already written elsewhere in the product (e.g. the Settings panel's 'the model never decides what is true' framing).",
+      "research_semantic_impact": "NO",
+      "research_semantic_note": "This is a visibility/wiring fix for an explanation the product already claims to have; no proposed change to what SUPPORTED/INSUFFICIENT EVIDENCE mean."
+    },
+    {
+      "id": "F03",
+      "severity": "MAJOR",
+      "screen_context": "Expanded 'Evidence chain (1 hop)' card under a SUPPORTED claim",
+      "observed_design": "The expanded evidence chain shows: a truncated relation label ('c..'), 'calls relation', two raw hex symbol identifiers joined by an arrow ('symbol:55f52fb839c2059bc5338dcb -> symbol:894931060189965ccf8a9742'), 'observed by python_call_extractor@0.3.0 (resolved, app.py:1014-1014)', and further truncated lines ('sy..', '→', 'sy..') before the Open source button — the container is too narrow for its own content.",
+      "likely_user_interpretation": "This reads as raw internal pipeline/debug metadata (tool name, version, opaque hashes) rather than as human-legible proof, and parts are outright unreadable due to truncation.",
+      "why_this_matters": "Section 19 of the audit brief asks directly whether the evidence 'looks like proof or just metadata' — observed live, it presents as metadata, and the truncation makes part of it illegible regardless of interpretation.",
+      "evidence": "Observed live and transcribed verbatim in this session; not separately saved as a screenshot file (captured via in-session zoom only).",
+      "recommended_design_direction": "Widen the evidence-chain container or wrap/scroll long identifiers instead of truncating mid-word; consider showing the human-readable symbol names (already available elsewhere in the same panel, e.g. 'full_dispatch_request', 'preprocess_request') as the primary text, with the raw ids/tool-version as secondary/collapsed detail for those who want it.",
+      "research_semantic_impact": "NO",
+      "research_semantic_note": "Presentation-only; the underlying evidence record (extractor, resolved file:line) is exactly what should back a claim and is not being changed, only reformatted for legibility."
+    },
+    {
+      "id": "F05",
+      "severity": "MAJOR",
+      "screen_context": "Top header bar, visible on every screen once a scan starts",
+      "observed_design": "The header permanently shows a raw run identifier ('run:1f7f34f034dc4674a8f395f29adb58ee'), an oddly doubled label ('Run Run'), and an internal map-template slug ('system-overview-architecture-map-v1'), none of which are explained or needed for any participant task.",
+      "likely_user_interpretation": "Unexplained hash/slug text in a persistent, prominent header position reads as internal debug/pipeline information leaking into the primary UI.",
+      "why_this_matters": "This directly contradicts the product's own stated design principle, shown to the user on the very first screen: 'Guided progress — Analysis stages use human copy instead of raw pipeline jargon.' It is also the first thing a participant sees immediately after their first meaningful action (clicking Build architecture map).",
+      "evidence": "qa-audit/claude-design-ux-review/screenshots/issue-01-orientation-confidence-percentage.jpg (header visible at top of frame).",
+      "recommended_design_direction": "Move the run id/version slug into a collapsed/secondary location (e.g. a details disclosure or footer), or remove from the default view entirely; fix the 'Run Run' label rendering.",
+      "research_semantic_impact": "NO"
+    },
+    {
+      "id": "F06",
+      "severity": "MAJOR",
+      "screen_context": "Settings panel; top-left navigation menu across breadcrumb depths",
+      "observed_design": "Settings > Architectural Explanations contains the single clearest LLM-vs-verifier statement anywhere in the product: 'Every proposal is independently checked against your codebase by Laura's deterministic verifier before it is ever shown to you — the model never decides what is true.' However, the hamburger menu (☰) that opens Settings is only present at the repository-root breadcrumb ('flask' alone); once the user drills into any module, class, or function (e.g. 'flask > app.py', 'flask > app.py > Flask'), the hamburger disappears and only a back-arrow remains — confirmed live across three breadcrumb depths.",
+      "likely_user_interpretation": "A user who has drilled into an entity (the expected, normal flow per the participant tasks) has no visible way to reach the one place that clearly states the LLM-proposes/verifier-decides distinction, without first navigating all the way back to the repository root.",
+      "why_this_matters": "The best epistemic-clarity copy in the product is effectively unreachable from the screens where the participant actually spends their time and forms their SUPPORTED/INSUFFICIENT EVIDENCE mental model.",
+      "evidence": "Observed live: hamburger present at 'flask' root breadcrumb, absent at 'flask > app.py' and 'flask > app.py > Flask'; Settings content captured in qa-audit/claude-design-ux-review/screenshots/issue-04-settings-masked-key.jpg.",
+      "recommended_design_direction": "Keep a persistent way to reach Settings (or at minimum a persistent way to reach a short 'how explanations work' note) regardless of navigation depth; consider surfacing a condensed version of the Settings framing sentence directly in the Architectural Explanation panel itself.",
+      "research_semantic_impact": "NO"
+    },
+    {
+      "id": "F07",
+      "severity": "MINOR",
+      "screen_context": "Entity detail panel tags (e.g. Flask class, full_dispatch_request, app.py)",
+      "observed_design": "A raw tag reading 'fallback no llm' appears next to 'component'/'code group', 'NN% confidence', '1 evidence', etc., with no explanation anywhere in the UI.",
+      "likely_user_interpretation": "Sounds like an error or degraded-mode indicator ('fallback', 'no llm') even when nothing has gone wrong; a user has no way to know whether to be concerned.",
+      "why_this_matters": "Unexplained internal-sounding state exposed in a user-facing panel, contrary to the product's stated 'human copy, not pipeline jargon' principle.",
+      "evidence": "Observed live on multiple entity panels throughout the session (app.py, Flask, full_dispatch_request, cli.py).",
+      "recommended_design_direction": "Either explain this tag inline (tooltip) or remove it from the default user-facing tag row.",
+      "research_semantic_impact": "NO"
+    },
+    {
+      "id": "F08",
+      "severity": "MINOR",
+      "screen_context": "Entity detail panel, 'Simple' tab (default-open, shown before Architectural Explanation is requested)",
+      "observed_design": "For a leaf-level function (full_dispatch_request), the 'Simple explanation' text and its single 'Main responsibilities' bullet both simply restate the function's own def signature and location, verbatim, rather than describing what the function does in plain language.",
+      "likely_user_interpretation": "A user who reads 'Simple' before trying 'Architectural Explanation' gets no real explanatory content, which may reduce trust or make it unclear what distinguishes 'Simple' from the AI-generated explanation.",
+      "why_this_matters": "Section 21 of the audit brief specifically flags the risk of two coexisting explanation surfaces ('Simple explanation' vs 'Architectural Explanation') being indistinguishable to a new user; here 'Simple' does not yet do enough to earn a distinct identity.",
+      "evidence": "Observed live on full_dispatch_request's detail panel, Simple tab.",
+      "recommended_design_direction": "Populate 'Simple explanation' with an actual plain-language summary distinct from the raw signature, or relabel/de-emphasize the tab if no such summary is available for leaf entities.",
+      "research_semantic_impact": "NO"
+    },
+    {
+      "id": "F10",
+      "severity": "MINOR",
+      "screen_context": "Product branding (tab title, top-left logo/nav) versus generated explanation prose and all internal documentation",
+      "observed_design": "The shipped UI brands itself 'Syntax Tree' everywhere visible (browser tab title 'syntax-tree-ui', top-left logo/wordmark 'Syntax Tree'). Generated Architectural Explanation prose refers to the system as 'Laura's' ('What Laura's could establish: ...'), and every operator/facilitator document in docs/usability-dry-run/ and docs/START_HERE.md calls it 'Laura's' exclusively.",
+      "likely_user_interpretation": "Not confusing to a participant with no prior context, but a facilitator who refers to 'Laura's' out loud while the participant is looking at a screen branded 'Syntax Tree' introduces an avoidable naming mismatch during the session itself.",
+      "why_this_matters": "Minor but easily avoidable friction at the one moment (session framing) where the facilitator is trying to sound consistent and trustworthy.",
+      "evidence": "Observed live: tab title and header say 'Syntax Tree'; explanation prose says 'What Laura's could establish'.",
+      "recommended_design_direction": "Either update facilitator framing language to say 'Syntax Tree' or reconcile the generated-prose product name with the shipped UI brand.",
+      "research_semantic_impact": "NO"
+    },
+    {
+      "id": "F11",
+      "severity": "MINOR",
+      "screen_context": "Architecture map screen, keyboard-only navigation",
+      "observed_design": "Pressing Tab five times from the top-level architecture map produced no visible focus ring/outline anywhere in a full-page screenshot.",
+      "likely_user_interpretation": "A keyboard-only or low-vision user may be unable to tell what element currently has focus.",
+      "why_this_matters": "Accessibility Pass concern (Section 26); this is a lightweight, non-exhaustive check, not a formal audit, and a screenshot cannot fully rule out a low-contrast or off-viewport focus indicator, so this is reported as an observation to verify, not a confirmed defect.",
+      "evidence": "Observed live: 5x Tab press from the flask-root architecture map, no visible focus indicator in the resulting screenshot.",
+      "recommended_design_direction": "Run a dedicated keyboard-navigation/focus-visibility pass across the map, entity panel, and Architectural Explanation controls.",
+      "research_semantic_impact": "NO"
+    },
+    {
+      "id": "F12",
+      "severity": "MINOR",
+      "screen_context": "docs/usability-dry-run/PARTICIPANT_TASKS.md Task E and DEBRIEF_QUESTIONS.md Q2",
+      "observed_design": "Task E ('Interpreting INSUFFICIENT EVIDENCE') and debrief question 2 are both conditional on an INSUFFICIENT EVIDENCE claim naturally appearing during the session. In this review's own live run against Flask's Flask.full_dispatch_request, all 5 claims returned were SUPPORTED with 0 insufficient evidence; the prior readiness round's captured artifacts (qa-audit/usability-dry-run-readiness/) also show no INSUFFICIENT EVIDENCE example. No entity known to reliably produce one is identified anywhere in the readiness materials.",
+      "likely_user_interpretation": "N/A (this is an instrument-design observation, not a user-facing finding).",
+      "why_this_matters": "If INSUFFICIENT EVIDENCE doesn't appear, Task E and debrief Q2 are silently skipped per the facilitator guide's own instructions ('do not force it, do not manufacture one') — meaning the dry run may end up validating comprehension of SUPPORTED only, leaving half of the product's core epistemic distinction untested by the human session.",
+      "evidence": "This session's live Architectural Explanation result (5 supported, 0 insufficient evidence) plus qa-audit/usability-dry-run-readiness/readiness-walkthrough-summary.json (no insufficient-evidence entity recorded there either).",
+      "recommended_design_direction": "Before the real session, have the facilitator pre-identify (via their own exploration, not shown to the participant) at least one Flask entity/claim that reliably returns INSUFFICIENT EVIDENCE, as a fallback prompt path, without listing it in participant-facing materials.",
+      "research_semantic_impact": "NO"
+    }
+  ],
+  "top_pre_human_changes": [
+    {"id": "F04", "severity": "BLOCKER", "expected_impact_on_dry_run": "Participant completes Open source but cannot connect the code to the claim, corrupting Task G and the debrief 'trust the explanation' question.", "recommended_design_direction": "Highlight/scroll-to the cited line or span in the source viewer.", "affects_research_semantics": false},
+    {"id": "F01", "severity": "BLOCKER", "expected_impact_on_dry_run": "Participant likely misreads SUPPORTED as an AI confidence score due to the coexisting area-level confidence-percentage vocabulary, corrupting the primary comprehension question the dry run exists to test (Task D and debrief Q1).", "recommended_design_direction": "Visually/terminologically separate area-level confidence % from claim-level SUPPORTED/INSUFFICIENT EVIDENCE.", "affects_research_semantics": "review required for wording only, not meaning"},
+    {"id": "F02", "severity": "MAJOR", "expected_impact_on_dry_run": "The one documented in-context explanation of SUPPORTED (hover tooltip) does not visibly work, removing a safety net exactly where Task D needs it.", "recommended_design_direction": "Fix/add a visible tooltip on SUPPORTED and INSUFFICIENT EVIDENCE badges.", "affects_research_semantics": false},
+    {"id": "F03", "severity": "MAJOR", "expected_impact_on_dry_run": "Task F ('find out exactly why Laura's believes that claim') surfaces raw, partly-truncated pipeline metadata instead of legible evidence.", "recommended_design_direction": "Fix truncation; lead with human-readable symbol names.", "affects_research_semantics": false},
+    {"id": "F05", "severity": "MAJOR", "expected_impact_on_dry_run": "First thing shown after the primary action (Build architecture map) is unexplained raw jargon in the header, undermining the 'guided progress, no pipeline jargon' first impression the product promises.", "recommended_design_direction": "Remove or demote run id/version slug from the default header.", "affects_research_semantics": false}
+  ],
+  "post_dry_run_candidates": ["F06", "F07", "F08", "F09", "F10", "F11", "F12"],
+  "epistemic_comprehension": {
+    "supported": "The visible SUPPORTED badge and claim-card wording ('full_dispatch_request calls preprocess_request', 'DIRECT RELATION: CALLS') are themselves reasonably precise, and the Architectural Explanation preamble ('What Laura's could establish:') uses careful, non-confidence-flavored framing. However, the product surrounds this correct core with a second, numeric 'confidence %' vocabulary at the area/component level that is visually similar and appears constantly before a user ever reaches a claim, and the one documented hover-explanation safety net on the SUPPORTED badge itself was not observed to work live. Net assessment: a new user is more likely than not to end up believing SUPPORTED carries or relates to a confidence percentage, even though no claim-level badge in this product actually shows one.",
+    "insufficient_evidence": "Could not be observed live in this session (0 of 5 claims were INSUFFICIENT EVIDENCE) and no prior captured artifact in this repository shows one either. Assessment is therefore based on the legend/docs text only: the area-level legend's 'Insufficient' entry ('The backend found this area, but source evidence is incomplete.') and docs/START_HERE.md's claim-level description ('insufficient evidence does not mean the claim is false, just that Laura's couldn't establish it from the code it analyzed') are both worded correctly, but neither has been confirmed to render as the actual live claim-card copy, and the near-identical area-level 'Unsupported' state ('The available source evidence does not support this claim') is a real risk of being confused with INSUFFICIENT EVIDENCE or with a negative/false verdict.",
+    "llm_vs_verifier": "The clearest statement of the LLM-proposes/verifier-decides distinction in the entire product lives in Settings ('the model never decides what is true'), which is only reachable from the repository-root breadcrumb and disappears from navigation the moment a user drills into an entity — i.e., exactly when they need it most. The Architectural Explanation panel's own preamble ('What Laura's could establish') implies but does not explicitly state this distinction at the point of use."
+  }
+}

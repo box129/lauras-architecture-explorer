@@ -1,0 +1,47 @@
+{
+  "note": "Read-only, deterministic (ZERO OpenAI calls) audit of Targets B and C's evidence ceiling BEFORE any generation. Performed via the real, unmodified analysis pipeline run in-process (FastAPI TestClient, environment=test), reading app.state.run_store.get_symbols()/get_relations() directly -- no HTTP round trip beyond the initial /api/analyze call, no architectural-explanation endpoint touched.",
+  "target_B": {
+    "frozen_claim_id": "R3-TDI-1",
+    "proposition": "NamedExtensionManager inherits ExtensionManager",
+    "1_subject_symbol_represented": true,
+    "1_detail": "python:stevedore/named.py::NamedExtensionManager -- real ParsedSymbol",
+    "2_target_symbol_represented": true,
+    "2_detail": "python:stevedore/extension.py::ExtensionManager -- real ParsedSymbol",
+    "3_source_spans_represented": true,
+    "3_detail": "Both symbols carry real source_region_id spans (not independently re-verified line-by-line at this pre-generation stage; done post-generation if a claim references them)",
+    "4_required_relation_extracted": true,
+    "4_detail": "An 'inherits' relation IS emitted from NamedExtensionManager (the extractor does attempt to parse the base-class expression)",
+    "5_required_relation_resolved": false,
+    "5_detail": "resolution_status='unresolved', target_reference='ExtensionManager[T]' -- confirmed via direct in-process pipeline run. The base expression is an ast.Subscript (generic parameterization), which python_inheritance_extractor.py's base-resolution logic does not handle (only ast.Name/ast.Attribute).",
+    "6_stable_entity_ref_resolves": "N/A -- moot; the relation itself never reaches a resolved target to match a StableEntityRef against",
+    "7_proposition_structurally_verifiable_today": false,
+    "evidence_ceiling_conclusion": "Deterministic evidence CANNOT establish this proposition today. Expected verifier outcome if proposed: INSUFFICIENT_EVIDENCE (correct abstention), not a bounded-reference or vocabulary problem -- both entities are real and in-packet, the relation kind is legal, only the specific edge is unresolved."
+  },
+  "target_C": {
+    "frozen_claim_id": "R3-TDC-5",
+    "proposition": "EnabledExtensionManager._load_one_plugin calls ExtensionManager._load_one_plugin (via super())",
+    "1_subject_symbol_represented": true,
+    "1_detail": "python:stevedore/enabled.py::EnabledExtensionManager._load_one_plugin -- real ParsedSymbol",
+    "2_target_symbol_represented": true,
+    "2_detail": "python:stevedore/extension.py::ExtensionManager._load_one_plugin -- real ParsedSymbol",
+    "3_source_spans_represented": true,
+    "3_detail": "Both symbols carry real source_region_id spans",
+    "4_required_relation_extracted": true,
+    "4_detail": "A 'calls' relation IS emitted from EnabledExtensionManager._load_one_plugin for the super() call site",
+    "5_required_relation_resolved": false,
+    "5_detail": "resolution_status='unresolved', target_reference='super()._load_one_plugin' -- confirmed via direct in-process pipeline run. python_call_extractor.py's own docstring documents super().method() as explicitly out of scope (would require MRO resolution); D4's inherited_self_method fallback never fires either, since it only matches a bare self.method() attribute-call shape, structurally different from super().method().",
+    "6_stable_entity_ref_resolves": "N/A -- moot, same reason as Target B",
+    "7_proposition_structurally_verifiable_today": false,
+    "evidence_ceiling_conclusion": "Deterministic evidence CANNOT establish this proposition today. Expected verifier outcome if proposed: INSUFFICIENT_EVIDENCE (correct abstention)."
+  },
+  "target_A_sanity_check_for_contrast": {
+    "frozen_claim_id": "R3-TDC-1",
+    "proposition": "ExtensionManager.__init__ calls ExtensionManager._load_plugins",
+    "required_relation_resolved": true,
+    "detail": "Confirmed RESOLVED via the same in-process check: ExtensionManager.__init__ has 2 resolved outgoing 'calls' relations -- to ExtensionManager._load_plugins and ExtensionManager._init_plugins. This IS deterministically verifiable today, establishing the contrast baseline before generation.",
+    "purpose": "Not a formal requirement of this section (only B/C were required), included for completeness/contrast."
+  },
+  "conclusion": "This establishes the evidence ceiling BEFORE the LLM proposes anything: Target A has full deterministic support available; Targets B and C do not, for two DIFFERENT, well-documented, unchanged-since-frozen-pilot reasons (generic-parameterized base resolution gap; super().method() out-of-scope). If gpt-5.4-mini proposes the B/C facts, the deterministic verifier is expected to correctly return INSUFFICIENT_EVIDENCE, not SUPPORTED and not CONTRADICTED. Missing evidence here is a KNOWN, frozen limitation, not treated as a product failure in this validation.",
+  "no_openai_calls_made_for_this_section": true,
+  "no_production_changes_made": true
+}

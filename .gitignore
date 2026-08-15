@@ -1,0 +1,62 @@
+# Secrets / local config
+.claude/
+.codex
+.vscode/
+.env
+.env.*
+!.env.example
+*.local
+
+# Python
+__pycache__/
+*.pyc
+*.db
+*.sqlite
+*.sqlite3
+.syntax-tree-refurbished/
+
+# Runtime logs and test-run output
+*.log
+*.trace
+*.har
+*.pid
+*-pids.json
+playwright-report/
+blob-report/
+test-results/
+
+# Build / editor artifacts
+.vite/
+frontend.zip
+node_modules/
+*.egg-info/
+dist/
+build/
+
+# Benchmarks, tests, fixtures (non-functional)
+bench-repos/
+benches_2/
+qa-suite/
+syntax-tree-e2e-fixtures/
+syntax-tree-test-artifacts/
+qa-audit/logs/
+qa-audit/screenshots/
+qa-audit/traces/
+qa-audit/tmp/
+Pre_Frontend_Integration_Tests (1).md
+
+
+# Experimental probes
+blackbox_api_probe/
+blackbox_sonnet_chat/
+
+# Scratch
+lauras/
+
+#unnecassry docs
+extraction/
+frontend/
+intelligence-layer/
+knowledge tree/
+
+

@@ -1,0 +1,147 @@
+{
+  "run_type": "confirmatory",
+  "repository": "pallets/flask",
+  "commit": "6a2f545bfd8ed31e19066a299296917e034aca58",
+  "checkout_path": "C:\\Users\\LENOVO T14\\Development\\lauras-gt-r2-flask\\research\\real-repo-pilot\\repos\\r2-medium\\source",
+  "analysis_root": "C:\\Users\\LENOVO T14\\Development\\lauras-gt-r2-flask\\research\\real-repo-pilot\\repos\\r2-medium\\source\\src\\flask",
+  "checkout_reverified_before_this_run": "git rev-parse HEAD -> 6a2f545bfd8ed31e19066a299296917e034aca58 (exact match), git status --short -> clean, working tree unmodified",
+  "provider": "OpenAI",
+  "model": "gpt-5.4-mini",
+  "target_count": 3,
+  "preselection_file": "preselected-targets.json",
+  "preselection_timestamp_utc": "2026-08-13T08:57:06Z",
+  "excluded_claim_ids_from_prior_run": ["R2-TDC-2", "R2-TDI-1", "R2-TRC-1", "R2-TDC-3", "R2-TDI-2"],
+  "relationship_to_exploratory_run": "Separate, additional run. Does not overwrite or replace qa-audit/live-openai-flask-validation/ (frozen at commit 0ce14da). Resolves that run's sampling-protocol deviation (lost first A/B response bodies) via a redesigned capture mechanism (see first_response_capture_mechanism below).",
+  "first_response_capture_mechanism": {
+    "design": "A page.on('response') listener is registered BEFORE the Architectural Explanation button is clicked, so the chronologically-first-to-complete matching network response is captured unambiguously regardless of React StrictMode's duplicate dispatch. That response is written to raw/target-<x>-first-response.json IMMEDIATELY via a synchronous writeFileSync, followed by an explicit read-back-and-verify step, before any screenshot, evidence-panel interaction, or navigation to the next target occurs. Had persistence failed, the script was designed to throw a fatal error and halt the entire run rather than regenerate -- this path was never exercised because persistence succeeded for all three targets.",
+    "outcome": "All three targets' genuine first responses were durably persisted before any further step. Unlike the exploratory run, this run completed with zero crash."
+  },
+  "targets": [
+    {
+      "label": "A",
+      "category": "direct CALLS",
+      "frozen_claim_id": "R2-TDC-1",
+      "source_entity": "Flask.run",
+      "target_entity_id": "symbol:a87f9f12968c22ca8089a855",
+      "run_id": "run:b528b890d25443db8be861731ffe9f05",
+      "raw_file": "raw/target-a-first-response.json",
+      "http_status": 200,
+      "latency_ms": 4623,
+      "proposal_count": 5,
+      "supported_count": 5,
+      "insufficient_count": 0,
+      "contradicted_count": 0,
+      "preselected_claim_proposed_and_supported": false,
+      "preselected_claim_note": "R2-TDC-1 asserts Flask.run calls cli.load_dotenv (app.py:710). The model instead proposed 'run calls get_load_dotenv' (app.py:709) -- a real, different, adjacent function (a boolean condition-check helper in helpers.py, distinct from the action function cli.load_dotenv it gates) -- and did not propose the exact preselected proposition. Not treated as a match; not forced into R2-TDC-1.",
+      "ui_render_matches_persisted_sample": true,
+      "claims_summary": [
+        "run calls get_debug_flag (app.py:714) -- SUPPORTED",
+        "run calls get_load_dotenv (app.py:709) -- SUPPORTED",
+        "ScriptInfo.__init__ calls get_load_dotenv (cli.py:322) -- SUPPORTED",
+        "ScriptInfo.load_app calls get_debug_flag (cli.py:369) -- SUPPORTED",
+        "run_command calls get_debug_flag (cli.py:973) -- SUPPORTED"
+      ]
+    },
+    {
+      "label": "B",
+      "category": "INHERITS",
+      "frozen_claim_id": "R2-TDI-3",
+      "source_entity": "Blueprint (class, blueprints.py)",
+      "target_entity_id": "symbol:40179aedaa1bdf7700071caf",
+      "run_id": "run:016545486fd04761a305cbcbb61b302f",
+      "raw_file": "raw/target-b-first-response.json",
+      "http_status": 200,
+      "latency_ms": 2548,
+      "proposal_count": 2,
+      "supported_count": 2,
+      "insufficient_count": 0,
+      "contradicted_count": 0,
+      "preselected_claim_proposed_and_supported": true,
+      "preselected_claim_note": "First claim in the persisted first response is an EXACT match to R2-TDI-3 (blueprints.Blueprint inherits sansio.blueprints.Blueprint, evidence blueprints.py:18) and is SUPPORTED.",
+      "ui_render_matches_persisted_sample": false,
+      "ui_render_discrepancy": {
+        "observed": true,
+        "description": "The browser's rendered Architectural Explanation panel for target B (and therefore screenshots 07-10-target-b-*.png and 15-insufficient-evidence.png) display a DIFFERENT, later real generation than the persisted first-response.json: 3 claims (2 supported + 1 insufficient_evidence: 'Blueprint reaches Scaffold through a call path') instead of the persisted 2 claims (both supported, 0 insufficient). This is NOT a repeat of the exploratory run's data-loss defect -- the genuine first response WAS captured and durably persisted before this was ever discovered, exactly as designed. It is a newly observed, distinct phenomenon: React's StrictMode mount/unmount/remount cycle assigns an internal 'cancelled' flag per effect instance that is NOT correlated with network response arrival order -- the request from the effect instance that survives to render wins, regardless of whether its response happened to arrive at the browser before or after the other duplicate's. Network-arrival order (what this script captures and persists) and React-render order (what screenshots depict) can therefore diverge. Confirmed NOT to have occurred for targets A or C (their screenshots exactly match their persisted first responses).",
+        "root_cause": "React StrictMode (src/main.tsx) double-invoking useArchitecturalExplanation's effect; the two resulting real, independent OpenAI calls returned genuinely different LLM samples (non-deterministic proposal step), and this is the first observed case in this initiative where the rendered (React-surviving) response differs in CONTENT from the network-arrival-first response.",
+        "consequence_for_this_audit": "The structured audit below (schema/bounded-reference/vocabulary/verifier/correctness) for target B uses ONLY the persisted raw/target-b-first-response.json (2 claims), per the predeclared 'first successfully returned explanation' protocol. Screenshots 07 (pre-generation) and 11 remain valid; 08/09/10/15 depict the second (non-sample) generation and must not be read as depicting the persisted sample's content. Source-navigation correctness for target B's persisted sample is established via independent read-only GET /api/source-regions/{id} re-fetches (see source_navigation below), not via the mismatched screenshots."
+      },
+      "claims_summary": [
+        "blueprints.Blueprint inherits sansio.blueprints.Blueprint (blueprints.py:18) -- SUPPORTED -- matches R2-TDI-3 exactly",
+        "sansio.blueprints.Blueprint inherits Scaffold (sansio/blueprints.py:119) -- SUPPORTED"
+      ]
+    },
+    {
+      "label": "C",
+      "category": "path-specific REACHABILITY/CALLS",
+      "frozen_claim_id": "R2-TRC-2",
+      "source_entity": "Flask.wsgi_app",
+      "target_entity_id": "symbol:55a018b3eb8b5309fbd53e0a",
+      "run_id": "run:e7f675411ca14e9baa719040c51a3953",
+      "raw_file": "raw/target-c-first-response.json",
+      "http_status": 200,
+      "latency_ms": 6198,
+      "proposal_count": 5,
+      "supported_count": 5,
+      "insufficient_count": 0,
+      "contradicted_count": 0,
+      "preselected_claim_proposed_and_supported": false,
+      "preselected_claim_note": "R2-TRC-2 asserts Flask.wsgi_app reaches Flask.dispatch_request via full_dispatch_request (app.py:1597, app.py:1016). The model proposed the same hop-1 direct call (wsgi_app calls full_dispatch_request) but, for its reachability proposals, chose different second hops (wsgi_app reaches finalize_request via full_dispatch_request; wsgi_app reaches from_environ via request_context) -- not the exact preselected dispatch_request path. Not treated as a match; not forced into R2-TRC-2.",
+      "ui_render_matches_persisted_sample": true,
+      "claims_summary": [
+        "wsgi_app calls request_context (app.py:1592) -- SUPPORTED",
+        "wsgi_app calls full_dispatch_request (app.py:1597) -- SUPPORTED",
+        "wsgi_app calls handle_exception (app.py:1600) -- SUPPORTED",
+        "wsgi_app reaches finalize_request via full_dispatch_request (app.py:1597, app.py:1019) -- SUPPORTED",
+        "wsgi_app reaches from_environ via request_context (app.py:1592, app.py:1515) -- SUPPORTED"
+      ]
+    }
+  ],
+  "primary_confirmatory_metrics": {
+    "1_first_response_sample_retention": "3 / 3 -- all three targets' genuine first successful responses were captured and durably persisted before any further step. Clean confirmatory retention (contrast with the exploratory run's 1/3).",
+    "2_schema_valid_proposals": "12 / 12",
+    "3_bounded_reference_violations": 0,
+    "4_proposition_vocabulary_violations": 0,
+    "5_selected_target_proposal_coverage": "1 / 3 -- only target B's persisted first claim exactly matches its preselected proposition (R2-TDI-3). Targets A and C each proposed real, true, in-scope, independently-verified facts, but not the exact preselected proposition. This is a targeted generation-coverage observation, not a precision statistic, and is not combined with the frozen pilot or exploratory run's metrics.",
+    "6_supported_claim_correctness": "12 / 12 -- every SUPPORTED proposition across all three persisted first responses was independently checked against real, re-fetched source text (GET /api/source-regions/{id}, read-only) and/or the frozen ground truth directly; Laura's own verifier output was never used as its own ground truth.",
+    "7_false_support_count": 0,
+    "8_insufficient_evidence_count": 0,
+    "9_contradicted_count": 0,
+    "10_source_navigation_correctness": "3 / 3 checked -- for each target, the persisted first sample's cited evidence source region(s) were independently re-fetched read-only and matched real, exact file/line/text (see source_navigation below). Distinct from screenshot-based visual inspection, which for target B depicts a different (non-sample) generation -- see ui_render_discrepancy above."
+  },
+  "source_navigation": [
+    {"target": "A", "claim": "run calls get_debug_flag", "region": "app.py:714", "text": "self.debug = get_debug_flag()", "result": "exact match, independently verified"},
+    {"target": "B", "claim": "Blueprint inherits sansio Blueprint", "region": "blueprints.py:18", "text": "class Blueprint(SansioBlueprint):", "result": "exact match, independently verified"},
+    {"target": "C", "claim": "wsgi_app calls full_dispatch_request", "region": "app.py:1597", "text": "response = self.full_dispatch_request(ctx)", "result": "exact match, independently verified"}
+  ],
+  "strictmode_duplicates": {
+    "authoritative_source": "backend access log (decoded UTF-16) -- each target's entity id shows exactly 2 POST /api/entities/.../architectural-explanation requests, both 200 OK",
+    "target_a": {"count": 2, "in_script_duplicate_window_captured": 0, "note": "second duplicate response arrived outside this script's 4-second post-persistence observation window; not needed since the backend log independently confirms the count and the persisted first sample is unaffected."},
+    "target_b": {"count": 2, "in_script_duplicate_window_captured": 0, "note": "second duplicate response arrived outside the observation window, but its DOM effect was directly observed via the UI render discrepancy (see ui_render_discrepancy) -- it produced 3 claims vs the persisted 2."},
+    "target_c": {"count": 2, "in_script_duplicate_window_captured": 1, "note": "duplicate observed 19ms after the first, status 200, not used as a sample."},
+    "never_counted_as_additional_samples": true,
+    "never_substituted_for_first": true
+  },
+  "legacy_external_request_count": 0,
+  "legacy_traffic_check_method": "Backend access log for the full validation window (decoded UTF-16) contains zero ERROR/WARN/Exception/Traceback lines and zero openrouter/blackbox references, despite the legacy provider being genuinely configured with real credentials on this backend. GET /api/architecture-map's own metadata.llm_used stayed false throughout.",
+  "token_usage_exposed": false,
+  "token_usage_note": "Token usage not exposed by current runtime.",
+  "ui_reachability": {
+    "target_a_reached": true,
+    "target_b_reached": true,
+    "target_c_reached": true,
+    "navigation_path_a_c": "root (flask) -> app.py -> Flask -> [run | wsgi_app]",
+    "navigation_path_b": "root (flask) -> blueprints.py -> Blueprint"
+  },
+  "artifact_paths": {
+    "preselection": "preselected-targets.json",
+    "raw_first_responses": ["raw/target-a-first-response.json", "raw/target-b-first-response.json", "raw/target-c-first-response.json"],
+    "raw_capture_summary": "raw-capture-summary.json",
+    "screenshots_dir": "screenshots/",
+    "recording": "recording-real-openai-flask-confirmatory.webm",
+    "result": "result.json",
+    "report": "REPORT.md"
+  },
+  "production_code_changed": false,
+  "verdict": "CONFIRMATORY PASS",
+  "verdict_rationale": "All CONFIRMATORY PASS criteria are met on the basis of the durably-persisted first-response data: exact pinned revision reverified; three new targets preselected before generation; genuine first successful response retained for all 3 targets (0 crashes, 0 lost samples); real OpenAI used; all 12 proposals schema-safe; zero bounded-reference escapes; deterministic verifier authoritative throughout; zero false supports; at least one preselected TRUE target (R2-TDI-3, target B) proposed and SUPPORTED; all 12 supported claims independently checked correct; source navigation independently confirmed correct for all 3 targets; no credential leakage; no legacy/fake provider substitution. One new, non-blocking observation is disclosed prominently (ui_render_discrepancy for target B) -- it does not affect the validity of the persisted sample or any PASS criterion, since the protocol concerns which SERVER response is captured/durable, not which response a dev-mode React remount happens to render."
+}

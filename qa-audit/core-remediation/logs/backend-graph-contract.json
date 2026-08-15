@@ -1,0 +1,98 @@
+{
+  "method": "FastAPI TestClient against completed real fixture analyses",
+  "run_selection": "X-Syntax-Tree-Run-Id header supplied on every request",
+  "external_model_used": false,
+  "fixtures": {
+    "python-nested": {
+      "fixture_path": "qa-audit/phase-2/fixtures/python-nested",
+      "status_code": 200,
+      "response_run_matches_selected": true,
+      "node_count": 6,
+      "edge_count": 5,
+      "node_labels": [
+        "app/__init__.py",
+        "app/models.py",
+        "app/parser.py",
+        "app/service.py",
+        "main.py",
+        "python-nested"
+      ],
+      "edges": [
+        "app/__init__.py -> app/service.py (imports)",
+        "app/parser.py -> app/models.py (imports)",
+        "app/service.py -> app/models.py (imports)",
+        "app/service.py -> app/parser.py (imports)",
+        "main.py -> app/service.py (imports)"
+      ],
+      "source_check": "all five import edges correspond to import statements in the fixture"
+    },
+    "typescript-small": {
+      "fixture_path": "qa-audit/phase-2/fixtures/typescript-small",
+      "status_code": 200,
+      "response_run_matches_selected": true,
+      "node_count": 6,
+      "edge_count": 6,
+      "node_labels": [
+        "src/analyzer.ts",
+        "src/docs.ts",
+        "src/index.ts",
+        "src/parser.ts",
+        "src/types.ts",
+        "typescript-small"
+      ],
+      "edges": [
+        "src/analyzer.ts -> src/parser.ts (imports)",
+        "src/analyzer.ts -> src/types.ts (imports)",
+        "src/docs.ts -> src/types.ts (imports)",
+        "src/index.ts -> src/analyzer.ts (imports)",
+        "src/index.ts -> src/docs.ts (imports)",
+        "src/parser.ts -> src/types.ts (imports)"
+      ],
+      "source_check": "all six import edges correspond to import statements in the fixture"
+    },
+    "mixed-moderate": {
+      "fixture_path": "qa-audit/phase-2/fixtures/mixed-moderate",
+      "status_code": 200,
+      "response_run_matches_selected": true,
+      "node_count": 16,
+      "edge_count": 16,
+      "node_labels": [
+        "backend/__init__.py",
+        "backend/api.py",
+        "backend/domain/__init__.py",
+        "backend/domain/errors.py",
+        "backend/domain/task.py",
+        "backend/reporting.py",
+        "backend/services/__init__.py",
+        "backend/services/repository.py",
+        "backend/services/task_service.py",
+        "backend/services/validator.py",
+        "frontend/src/api.ts",
+        "frontend/src/controller.ts",
+        "frontend/src/errors.ts",
+        "frontend/src/store.ts",
+        "frontend/src/types.ts",
+        "mixed-moderate"
+      ],
+      "edges": [
+        "backend/__init__.py -> backend/api.py (imports)",
+        "backend/api.py -> backend/domain/task.py (imports)",
+        "backend/api.py -> backend/services/repository.py (imports)",
+        "backend/api.py -> backend/services/task_service.py (imports)",
+        "backend/domain/__init__.py -> backend/domain/task.py (imports)",
+        "backend/reporting.py -> backend/domain/task.py (imports)",
+        "backend/services/__init__.py -> backend/services/task_service.py (imports)",
+        "backend/services/repository.py -> backend/domain/task.py (imports)",
+        "backend/services/task_service.py -> backend/domain/task.py (imports)",
+        "backend/services/task_service.py -> backend/services/repository.py (imports)",
+        "backend/services/task_service.py -> backend/services/validator.py (imports)",
+        "backend/services/validator.py -> backend/domain/errors.py (imports)",
+        "frontend/src/api.ts -> frontend/src/types.ts (imports)",
+        "frontend/src/controller.ts -> frontend/src/api.ts (imports)",
+        "frontend/src/controller.ts -> frontend/src/store.ts (imports)",
+        "frontend/src/store.ts -> frontend/src/types.ts (imports)"
+      ],
+      "source_check": "all sixteen import edges correspond to import statements in the fixture"
+    }
+  }
+}

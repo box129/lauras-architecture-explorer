@@ -1,0 +1,199 @@
+{
+  "schema_version": "1.0",
+  "description": "Candidate set B: deliberately flawed, to exercise every failure mode the metrics are meant to catch. Specifically contains: (1) two false-positive supports of insufficient-evidence claims (C6, C8), (2) a missed hop in a multi-hop chain (C4, only 2 of 3 evidence items), (3) an accepted contradiction -- a contradicted claim wrongly marked supported (C10), (4) a correctly-abstained claim with incorrect/irrelevant cited evidence (C9), and (5) one 'novel' claim with no ground-truth counterpart (novel:extra1), to exercise the open-ended-generation code path.",
+  "claims": [
+    {
+      "claim_id": "C1",
+      "text": "OrderController.place_order calls OrderService.create_order.",
+      "support_status": "supported",
+      "epistemic_type": "observed",
+      "evidence": [
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.controllers.order_controller.OrderController.place_order",
+          "target_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "file": "python_app/controllers/order_controller.py",
+          "start_line": 22,
+          "end_line": 22
+        }
+      ]
+    },
+    {
+      "claim_id": "C2",
+      "text": "OrderService.create_order calls PaymentService.charge to process payment.",
+      "support_status": "supported",
+      "epistemic_type": "observed",
+      "evidence": [
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "target_symbol_id": "python_app.services.payment_service.PaymentService.charge",
+          "file": "python_app/services/order_service.py",
+          "start_line": 34,
+          "end_line": 34
+        }
+      ]
+    },
+    {
+      "claim_id": "C3",
+      "text": "OrderService.create_order calls OrderRepository.save to persist the order.",
+      "support_status": "supported",
+      "epistemic_type": "observed",
+      "evidence": [
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "target_symbol_id": "python_app.repositories.order_repository.OrderRepository.save",
+          "file": "python_app/services/order_service.py",
+          "start_line": 36,
+          "end_line": 36
+        }
+      ]
+    },
+    {
+      "claim_id": "C4",
+      "text": "OrderController transitively depends on the Order entity, via OrderService and OrderRepository.",
+      "support_status": "supported",
+      "epistemic_type": "inferred",
+      "evidence": [
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.controllers.order_controller.OrderController.place_order",
+          "target_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "file": "python_app/controllers/order_controller.py",
+          "start_line": 22,
+          "end_line": 22
+        },
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "target_symbol_id": "python_app.repositories.order_repository.OrderRepository.save",
+          "file": "python_app/services/order_service.py",
+          "start_line": 36,
+          "end_line": 36
+        }
+      ],
+      "_deliberate_error": "MISSING the third hop (OrderRepository.save operates_on Order) -- the chain is incomplete. Should reduce evidence_completeness for this claim."
+    },
+    {
+      "claim_id": "C5",
+      "text": "OrderController transitively depends on PaymentService for payment processing, via OrderService.",
+      "support_status": "supported",
+      "epistemic_type": "inferred",
+      "evidence": [
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.controllers.order_controller.OrderController.place_order",
+          "target_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "file": "python_app/controllers/order_controller.py",
+          "start_line": 22,
+          "end_line": 22
+        },
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "target_symbol_id": "python_app.services.payment_service.PaymentService.charge",
+          "file": "python_app/services/order_service.py",
+          "start_line": 34,
+          "end_line": 34
+        }
+      ]
+    },
+    {
+      "claim_id": "C6",
+      "text": "OrderController requires the customer to be authenticated via OAuth2 before placing an order.",
+      "support_status": "supported",
+      "epistemic_type": "observed",
+      "evidence": [
+        {
+          "evidence_type": "source_span",
+          "symbol_id": "python_app.controllers.order_controller.OrderController.__init__",
+          "file": "python_app/controllers/order_controller.py",
+          "start_line": 17,
+          "end_line": 18
+        }
+      ],
+      "_deliberate_error": "FALSE-POSITIVE support: ground truth is insufficient_evidence. The cited span is just the constructor storing order_service; it has nothing to do with authentication. This should count as an unsupported claim wrongly accepted."
+    },
+    {
+      "claim_id": "C7",
+      "text": "OrderService sends a confirmation email to the customer after placing an order.",
+      "support_status": "insufficient_evidence",
+      "epistemic_type": "observed",
+      "evidence": []
+    },
+    {
+      "claim_id": "C8",
+      "text": "PaymentService.charge performs fraud detection (risk scoring / anomaly analysis) on transactions before charging them.",
+      "support_status": "supported",
+      "epistemic_type": "observed",
+      "evidence": [
+        {
+          "evidence_type": "source_span",
+          "symbol_id": "python_app.services.payment_service.PaymentService.charge",
+          "file": "python_app/services/payment_service.py",
+          "start_line": 25,
+          "end_line": 32
+        }
+      ],
+      "_deliberate_error": "FALSE-POSITIVE support: ground truth is insufficient_evidence (not contradicted -- see the corrected C8 in ground_truth/claims.json). The candidate cites the real charge() span but wrongly treats the absence of fraud-detection code as license to mark the claim 'supported', which is exactly the false-accept failure this metric suite is meant to catch (a second instance alongside C6)."
+    },
+    {
+      "claim_id": "C9",
+      "text": "OrderRepository persists Order entities to a SQL database.",
+      "support_status": "insufficient_evidence",
+      "epistemic_type": "observed",
+      "evidence": [
+        {
+          "evidence_type": "source_span",
+          "symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "file": "python_app/services/order_service.py",
+          "start_line": 34,
+          "end_line": 36
+        }
+      ],
+      "_deliberate_error": "Status is correct (insufficient_evidence, matching the corrected ground truth) but the candidate hallucinates an IRRELEVANT cited span anyway (OrderService.create_order, not anything in OrderRepository, and ground truth expects zero evidence for this claim) -- should fail evidence_correctness even though the status matches, per evaluator/metrics.py's documented handling of evidence cited against an empty ground-truth expected_evidence list."
+    },
+    {
+      "claim_id": "C10",
+      "text": "OrderRepository extends SqlRepository.",
+      "support_status": "supported",
+      "epistemic_type": "observed",
+      "evidence": [
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "inherits",
+          "source_symbol_id": "python_app.repositories.order_repository.OrderRepository",
+          "target_symbol_id": "python_app.repositories.base.InMemoryRepository",
+          "file": "python_app/repositories/order_repository.py",
+          "start_line": 25,
+          "end_line": 25
+        }
+      ],
+      "_deliberate_error": "ACCEPTED CONTRADICTION: ground truth is contradicted -- the class statement's complete base list is {InMemoryRepository}, not SqlRepository. The candidate cites the right relationship (the real declared base) but draws the wrong conclusion from it, wrongly marking the claim supported."
+    },
+    {
+      "claim_id": "novel:extra1",
+      "text": "OrderService validates that the charge amount is positive before calling PaymentService.charge.",
+      "support_status": "supported",
+      "epistemic_type": "observed",
+      "evidence": [
+        {
+          "evidence_type": "source_span",
+          "symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "file": "python_app/services/order_service.py",
+          "start_line": 22,
+          "end_line": 37
+        }
+      ],
+      "_deliberate_error": "NOVEL claim with no ground-truth counterpart (also happens to be false -- create_order performs no such validation -- but the point of including it here is to exercise the 'claim_id not found in ground truth' path in the evaluator, which must exclude it from precision/recall rather than silently miscounting it)."
+    }
+  ]
+}

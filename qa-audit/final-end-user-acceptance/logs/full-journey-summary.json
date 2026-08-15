@@ -1,0 +1,40 @@
+{
+  "analyzeStatus": 200,
+  "preSaveHealth": {
+    "enabled": true,
+    "configured": true,
+    "provider": "openrouter",
+    "model": "fake-local-test-model",
+    "base_url": "http://127.0.0.1:8991",
+    "credentials_present": true
+  },
+  "postSaveSettingsConfigSource": "runtime",
+  "canvasNavigationOk": true,
+  "canvasClaims": 2,
+  "canvasSupported": 2,
+  "canvasInsufficient": 0,
+  "sourceOverlayVerified": true,
+  "insufficientEvidenceShotTaken": true,
+  "persistedStatusAfterReload": "completed",
+  "reopenAfterReloadWorked": true,
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+    "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+  ],
+  "failedRequests": [
+    "404 POST http://localhost:5491/api/entities/module%3A2ba95355cb0cebd97b61eda6/architectural-explanation",
+    "404 POST http://localhost:5491/api/entities/module%3A2ba95355cb0cebd97b61eda6/architectural-explanation",
+    "404 POST http://localhost:5491/api/entities/module%3A2ba95355cb0cebd97b61eda6/architectural-explanation",
+    "404 POST http://localhost:5491/api/entities/module%3A2ba95355cb0cebd97b61eda6/architectural-explanation",
+    "404 POST http://localhost:5491/api/entities/module%3A2ba95355cb0cebd97b61eda6/architectural-explanation",
+    "404 POST http://localhost:5491/api/entities/module%3A2ba95355cb0cebd97b61eda6/architectural-explanation",
+    "503 POST http://localhost:5491/api/entities/symbol%3Abed2fa868874626fd0f00e36/architectural-explanation",
+    "503 POST http://localhost:5491/api/entities/symbol%3Abed2fa868874626fd0f00e36/architectural-explanation"
+  ]
+}

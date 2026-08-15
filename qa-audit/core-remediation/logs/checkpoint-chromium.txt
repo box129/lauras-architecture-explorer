@@ -1,0 +1,7 @@
+
+[2mRunning [22m1[2m test using [22m1[2m worker[22m
+
+  [32mok[39m [2m1 [22mtests\e2e\core-workflows-real.spec.cjs:18:1 › [real backend] analysis, graph, docs, query, switching, and recovery use repository data[2m (36.5s)[22m
+
+[32m  1 passed[39m[2m (43.6s)[22m
+PLAYWRIGHT_EXIT_CODE=0

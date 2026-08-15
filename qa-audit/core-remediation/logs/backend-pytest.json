@@ -1,0 +1,12 @@
+{
+  "working_directory": "syntax-tree-refurbished-backend",
+  "command": ".venv/Scripts/python.exe -m pytest",
+  "exit_code": 0,
+  "passed": 93,
+  "failed": 0,
+  "warnings": 1,
+  "duration_seconds": 23.94,
+  "warning_summary": [
+    "Starlette TestClient reports a deprecation warning for its current httpx compatibility import."
+  ]
+}

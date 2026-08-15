@@ -1,0 +1,1230 @@
+{
+  "browser": "firefox",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "fixture": "typescript",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Blocking Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Transition Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Suspense Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Idle Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Render"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Commit"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Waiting for Paint"
+    },
+    {
+      "type": "timeStamp",
+      "text": "App"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryEntry"
+    },
+    {
+      "type": "timeStamp",
+      "text": "GitBranch"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ExternalLink"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Sparkles"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "PromiseItem"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ShieldCheck"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "PromiseItem"
+    },
+    {
+      "type": "timeStamp",
+      "text": "GitBranch"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "PromiseItem"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Clock"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "FolderOpen"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ChevronDown"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "SegmentedField"
+    },
+    {
+      "type": "timeStamp",
+      "text": "SegmentedField"
+    },
+    {
+      "type": "timeStamp",
+      "text": "SegmentedField"
+    },
+    {
+      "type": "timeStamp",
+      "text": "SegmentedField"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ArrowRight"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryEntry"
+    },
+    {
+      "type": "timeStamp",
+      "text": "FolderOpen"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryEntry"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Remaining Effects"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Blocking Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Transition Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Suspense Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Idle Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Event: input"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Render"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Commit"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryEntry"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Remaining Effects"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Blocking Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Transition Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Suspense Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Idle Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Event: click"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Render"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Commit"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Waiting"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryEntry"
+    },
+    {
+      "type": "timeStamp",
+      "text": "LoaderCircle"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Remaining Effects"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Blocking Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Transition Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Suspense Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Idle Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Render"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Commit"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Waiting"
+    },
+    {
+      "type": "timeStamp",
+      "text": "App"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryProgressPanel"
+    },
+    {
+      "type": "timeStamp",
+      "text": "LoaderCircle"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "RepoOrientationPanel"
+    },
+    {
+      "type": "timeStamp",
+      "text": "LoaderCircle"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "OrientationList"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Compass"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "OrientationList"
+    },
+    {
+      "type": "timeStamp",
+      "text": "BookOpen"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "StageRow"
+    },
+    {
+      "type": "timeStamp",
+      "text": "LoaderCircle"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryProgressPanel"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryEntry"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Remaining Effects"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Blocking Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Transition Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Suspense Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Idle Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Render"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Commit"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Waiting for Paint"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryProgressPanel"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Remaining Effects"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Blocking Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Transition Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Suspense Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Idle Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Render"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Commit"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Waiting"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryProgressPanel"
+    },
+    {
+      "type": "timeStamp",
+      "text": "StageRow"
+    },
+    {
+      "type": "timeStamp",
+      "text": "LoaderCircle"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryProgressPanel"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Remaining Effects"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Blocking Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Transition Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Suspense Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Idle Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Render"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Commit"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryEntry"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryProgressPanel"
+    },
+    {
+      "type": "timeStamp",
+      "text": "App"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryShell"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryTopBar"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Menu"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "BreadcrumbTrail"
+    },
+    {
+      "type": "timeStamp",
+      "text": "RunPicker"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ChevronDown"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ChevronDown"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ArchitectureMapSkeleton"
+    },
+    {
+      "type": "timeStamp",
+      "text": "CodeCompanion"
+    },
+    {
+      "type": "timeStamp",
+      "text": "QuestionDock"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Sparkles"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Send"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "VoiceRail"
+    },
+    {
+      "type": "timeStamp",
+      "text": "RepoOrientationPanel"
+    },
+    {
+      "type": "timeStamp",
+      "text": "LoaderCircle"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "OrientationList"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Compass"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "OrientationList"
+    },
+    {
+      "type": "timeStamp",
+      "text": "BookOpen"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "VoiceRail"
+    },
+    {
+      "type": "timeStamp",
+      "text": "SavedLensDrawer"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Library"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "TourOverlay"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryShell"
+    },
+    {
+      "type": "timeStamp",
+      "text": "CodeCompanion"
+    },
+    {
+      "type": "timeStamp",
+      "text": "VoiceRail"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryShell"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Remaining Effects"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Blocking Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Transition Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Suspense Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Idle Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Render"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Commit"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Waiting for Paint"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryShell"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Remaining Effects"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Blocking Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Transition Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Suspense Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Idle Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Render"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Commit"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Waiting for Paint"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryShell"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Compass"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "FileText"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "CircleAlert"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Remaining Effects"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Blocking Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Transition Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Suspense Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Idle Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Render"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Commit"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Waiting for Paint"
+    },
+    {
+      "type": "timeStamp",
+      "text": "VoiceRail"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Remaining Effects"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Blocking Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Transition Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Suspense Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Idle Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Render"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Commit"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Waiting for Paint"
+    },
+    {
+      "type": "timeStamp",
+      "text": "VoiceRail"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Remaining Effects"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Blocking Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Transition Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Suspense Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Idle Track"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Render"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Commit"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Waiting for Paint"
+    },
+    {
+      "type": "timeStamp",
+      "text": "App"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryEntry"
+    },
+    {
+      "type": "timeStamp",
+      "text": "GitBranch"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ExternalLink"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Sparkles"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "PromiseItem"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ShieldCheck"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "PromiseItem"
+    },
+    {
+      "type": "timeStamp",
+      "text": "GitBranch"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "PromiseItem"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Clock"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "FolderOpen"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ChevronDown"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "SegmentedField"
+    },
+    {
+      "type": "timeStamp",
+      "text": "SegmentedField"
+    },
+    {
+      "type": "timeStamp",
+      "text": "SegmentedField"
+    },
+    {
+      "type": "timeStamp",
+      "text": "SegmentedField"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ArrowRight"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ForwardRef"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryEntry"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ObservatoryEntry"
+    },
+    {
+      "type": "timeStamp",
+      "text": "ShieldCheck"
+    },
+    {
+      "type": "timeStamp",
+      "text": "Remaining Effects"
+    }
+  ],
+  "page_errors": [],
+  "failed_requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5473/api/architecture-map",
+      "failure": "NS_BINDING_ABORTED"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5473/api/architecture-map",
+      "failure": "NS_BINDING_ABORTED"
+    }
+  ],
+  "responses": [
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/hooks.ts"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/tokenStore.ts"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/client.ts"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/websocket.ts"
+    },
+    {
+      "method": "POST",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/analyze"
+    },
+    {
+      "method": "GET",
+      "status": 101,
+      "url": "http://127.0.0.1:5473/api/ws/analyze/job:467f98b048e941dba06d06d1a237c515"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3A9770c5134d8d494ab52b21af734f853b/orientation"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3A9770c5134d8d494ab52b21af734f853b/orientation"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/flows?limit=50"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3A9770c5134d8d494ab52b21af734f853b/orientation"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3A9770c5134d8d494ab52b21af734f853b/orientation"
+    },
+    {
+      "method": "GET",
+      "status": 304,
+      "url": "http://127.0.0.1:5473/src/api/hooks.ts"
+    },
+    {
+      "method": "GET",
+      "status": 304,
+      "url": "http://127.0.0.1:5473/src/api/tokenStore.ts"
+    },
+    {
+      "method": "GET",
+      "status": 304,
+      "url": "http://127.0.0.1:5473/src/api/client.ts"
+    },
+    {
+      "method": "GET",
+      "status": 304,
+      "url": "http://127.0.0.1:5473/src/api/websocket.ts"
+    }
+  ],
+  "websockets": [
+    {
+      "url": "ws://127.0.0.1:5473/?token=<REDACTED-HMR-TOKEN>",
+      "sent": [],
+      "received": [
+        "{\"type\":\"connected\"}"
+      ],
+      "closed": false,
+      "error": null
+    },
+    {
+      "url": "ws://127.0.0.1:5473/api/ws/analyze/job:467f98b048e941dba06d06d1a237c515",
+      "sent": [],
+      "received": [
+        "{\"event\":\"status_update\",\"data\":{\"job_id\":\"job:467f98b048e941dba06d06d1a237c515\",\"analysis_run_id\":\"run:9770c5134d8d494ab52b21af734f853b\",\"status\":\"completed\",\"stage\":\"complete\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\typescript-small\",\"error\":\"\",\"created_at\":\"2026-08-06T11:26:53.028765Z\",\"started_at\":\"2026-08-06T11:26:53.028765Z\",\"completed_at\":\"2026-08-06T11:26:53.173397Z\",\"progress\":{\"stage\":\"complete\",\"total_files\":6,\"files_parsed\":6,\"files_total\":6,\"can_render_frontend\":true},\"run_metadata\":{\"analysis_run_id\":\"run:9770c5134d8d494ab52b21af734f853b\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\typescript-small\",\"comprehension_mode\":\"refurbished\",\"scope\":\"snapshot\",\"llm_active\":false,\"fallback_used\":false}}}",
+        "{\"event\":\"pipeline_complete\",\"data\":{\"job_id\":\"job:467f98b048e941dba06d06d1a237c515\",\"analysis_run_id\":\"run:9770c5134d8d494ab52b21af734f853b\",\"status\":\"completed\",\"stage\":\"complete\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\typescript-small\",\"error\":\"\",\"created_at\":\"2026-08-06T11:26:53.028765Z\",\"started_at\":\"2026-08-06T11:26:53.028765Z\",\"completed_at\":\"2026-08-06T11:26:53.173397Z\",\"progress\":{\"stage\":\"complete\",\"total_files\":6,\"files_parsed\":6,\"files_total\":6,\"can_render_frontend\":true},\"run_metadata\":{\"analysis_run_id\":\"run:9770c5134d8d494ab52b21af734f853b\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\typescript-small\",\"comprehension_mode\":\"refurbished\",\"scope\":\"snapshot\",\"llm_active\":false,\"fallback_used\":false}}}"
+      ],
+      "closed": true,
+      "error": null
+    },
+    {
+      "url": "ws://127.0.0.1:5473/?token=<REDACTED-HMR-TOKEN>",
+      "sent": [],
+      "received": [
+        "{\"type\":\"connected\"}"
+      ],
+      "closed": false,
+      "error": null
+    }
+  ],
+  "initial_load_ms": 3836,
+  "keyboard": [
+    {
+      "tag": "BODY",
+      "name": "Syntax TreeOpen legacy workspaceCodebase observatoryWhat repo do you want to understand?Syntax Tree ",
+      "outline": "rgb(224, 224, 232) 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "A",
+      "name": "Open legacy workspace",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "INPUT",
+      "name": "Enter an absolute local repository path",
+      "outline": "rgb(26, 25, 22) 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(143, 138, 130) auto 3px",
+      "boxShadow": "none"
+    }
+  ],
+  "analysis": {
+    "fixture": "typescript",
+    "acknowledgement_ms": 741,
+    "observed_for_ms": 7056,
+    "status": 200,
+    "run_id": "run:9770c5134d8d494ab52b21af734f853b",
+    "active_run_loading_after_7s": false,
+    "orientation_ready": true,
+    "page_text_excerpt": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\ntypescript-small has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npackage.json\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+  },
+  "graph": {
+    "node_count": 0,
+    "edge_count": 0,
+    "graph_api_requested": false,
+    "meaningful_empty_state": false
+  },
+  "accessibility": {
+    "unlabeled": [],
+    "landmarks": [
+      "HEADER",
+      "NAV",
+      "MAIN",
+      "ASIDE"
+    ],
+    "h1_count": 0,
+    "images_missing_alt": 0,
+    "color_only_visual_candidates": 25
+  },
+  "refresh": {
+    "url": "http://127.0.0.1:5473/",
+    "text": "Syntax Tree\nOpen legacy workspace\nCodebase observatory\nWhat repo do you want to understand?\n\nSyntax Tree scans a repository and turns it into a calm, source-backed architecture map. You can zoom through concepts, inspect flows, ask questions, and open the exact code behind each answer.\n\nSource-backed\nArchitecture claims stay tied to files, spans, and evidence.\nMeaning first\nThe first screen explains the system shape, not the folder tree.\nGuided progress\nAnalysis stages use human copy instead of raw pipeline jargon.\nStart a scan\n\nPaste a local repository path. Orientation appears first, then the map opens when deeper analysis is ready.\n\nAPI mode\nREPOSITORY PATH\nfixtures/typescript-small\nAdvanced analysis settings\nBuild architecture map\n\nThe first repo orientation appears before the full architecture map. If the backend is offline, this screen will say so directly."
+  },
+  "outcome": "completed"
+}

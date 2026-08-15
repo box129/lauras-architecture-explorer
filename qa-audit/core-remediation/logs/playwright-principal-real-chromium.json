@@ -1,0 +1,495 @@
+{
+  "browser": "chromium",
+  "fixtures": [
+    "qa-audit/phase-2/fixtures/typescript-small",
+    "qa-audit/phase-2/fixtures/python-nested"
+  ],
+  "firstRunId": "run:f2887d8b49124174a6b7944d12ef402b",
+  "firstGraph": {
+    "nodes": 6,
+    "edges": 6
+  },
+  "alternateRunId": "run:3a517ebf759145778b3cc6fa7344c101",
+  "alternateGraph": {
+    "nodes": 6,
+    "edges": 5
+  },
+  "evidence": {
+    "apiResponses": [
+      {
+        "method": "GET",
+        "path": "/src/api/hooks.ts",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/tokenStore.ts",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/websocket.ts",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/client.ts",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/hooks.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/tokenStore.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/client.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/websocket.ts",
+        "status": 304
+      },
+      {
+        "method": "POST",
+        "path": "/api/analyze",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/runs/run%3Af2887d8b49124174a6b7944d12ef402b/orientation",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/runs/run%3Af2887d8b49124174a6b7944d12ef402b/orientation",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/flows",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/flows",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map/nodes/module%3Ab64c84cb518ddf060aa2bd7d/evidence",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map/nodes/module%3Ab64c84cb518ddf060aa2bd7d/explanation",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map/nodes/module%3Ab64c84cb518ddf060aa2bd7d/children",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map/nodes/module%3Ab64c84cb518ddf060aa2bd7d/implementation",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/hooks.ts",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/tokenStore.ts",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/websocket.ts",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/client.ts",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/docs/hierarchy",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/docs/hierarchy",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/flows",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/flows",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/docs/components/module%3Ab64c84cb518ddf060aa2bd7d",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/hooks.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/tokenStore.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/client.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/websocket.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/api/docs/hierarchy",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/flows",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/flows",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/docs/hierarchy",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/docs/components/module%3Ab64c84cb518ddf060aa2bd7d",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/docs/components/module%3Ab64c84cb518ddf060aa2bd7d",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/hooks.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/tokenStore.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/client.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/websocket.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/api/runs/run%3Af2887d8b49124174a6b7944d12ef402b/orientation",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/flows",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/runs/run%3Af2887d8b49124174a6b7944d12ef402b/orientation",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/flows",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/query",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/hooks.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/tokenStore.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/client.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/src/api/websocket.ts",
+        "status": 304
+      },
+      {
+        "method": "GET",
+        "path": "/api/runs/run%3Af2887d8b49124174a6b7944d12ef402b/orientation",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/flows",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/runs/run%3Af2887d8b49124174a6b7944d12ef402b/orientation",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/flows",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/query-lenses/symbol%3Ae340c8303e83a7b33066e6be/implementation",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/query-lenses/symbol%3Ae340c8303e83a7b33066e6be",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/query-lenses/symbol%3Ae340c8303e83a7b33066e6be/implementation",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/query-lenses/symbol%3Ae340c8303e83a7b33066e6be",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/files/src/docs.ts",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/runs/run%3Af2887d8b49124174a6b7944d12ef402b/orientation",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/runs/run%3Af2887d8b49124174a6b7944d12ef402b/orientation",
+        "status": 200
+      },
+      {
+        "method": "POST",
+        "path": "/api/analyze",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/runs/run%3A3a517ebf759145778b3cc6fa7344c101/orientation",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/flows",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/runs/run%3A3a517ebf759145778b3cc6fa7344c101/orientation",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/flows",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/architecture-map",
+        "status": 200
+      }
+    ],
+    "consoleErrors": [],
+    "consoleMessages": [
+      {
+        "type": "debug",
+        "text": "[vite] connecting..."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      },
+      {
+        "type": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connecting..."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      },
+      {
+        "type": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connecting..."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      },
+      {
+        "type": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connecting..."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      },
+      {
+        "type": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connecting..."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      },
+      {
+        "type": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connecting..."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      },
+      {
+        "type": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+      }
+    ],
+    "failedRequests": [],
+    "pageErrors": [],
+    "websocketEvents": [
+      "status_update",
+      "status_update",
+      "status_update",
+      "status_update",
+      "pipeline_complete",
+      "status_update",
+      "status_update",
+      "status_update",
+      "status_update",
+      "pipeline_complete"
+    ]
+  }
+}

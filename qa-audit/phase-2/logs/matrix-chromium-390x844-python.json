@@ -1,0 +1,293 @@
+{
+  "browser": "chromium",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "fixture": "python",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "page_errors": [],
+  "failed_requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5473/api/architecture-map",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5473/api/architecture-map",
+      "failure": "net::ERR_ABORTED"
+    }
+  ],
+  "responses": [
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/websocket.ts"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/tokenStore.ts"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/client.ts"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/hooks.ts"
+    },
+    {
+      "method": "POST",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/analyze"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3A24ee5d1caf3443638d474391b5680e56/orientation"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3A24ee5d1caf3443638d474391b5680e56/orientation"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/flows?limit=50"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3A24ee5d1caf3443638d474391b5680e56/orientation"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3A24ee5d1caf3443638d474391b5680e56/orientation"
+    },
+    {
+      "method": "GET",
+      "status": 304,
+      "url": "http://127.0.0.1:5473/src/api/hooks.ts"
+    },
+    {
+      "method": "GET",
+      "status": 304,
+      "url": "http://127.0.0.1:5473/src/api/tokenStore.ts"
+    },
+    {
+      "method": "GET",
+      "status": 304,
+      "url": "http://127.0.0.1:5473/src/api/client.ts"
+    },
+    {
+      "method": "GET",
+      "status": 304,
+      "url": "http://127.0.0.1:5473/src/api/websocket.ts"
+    }
+  ],
+  "websockets": [
+    {
+      "url": "ws://127.0.0.1:5473/?token=<REDACTED-HMR-TOKEN>",
+      "sent": [],
+      "received": [
+        "{\"type\":\"connected\"}"
+      ],
+      "closed": true,
+      "error": null
+    },
+    {
+      "url": "ws://127.0.0.1:5473/api/ws/analyze/job:8a1bbf3b68f44baf93fa806f6e18a5bf",
+      "sent": [],
+      "received": [
+        "{\"event\":\"status_update\",\"data\":{\"job_id\":\"job:8a1bbf3b68f44baf93fa806f6e18a5bf\",\"analysis_run_id\":\"run:24ee5d1caf3443638d474391b5680e56\",\"status\":\"completed\",\"stage\":\"complete\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\python-nested\",\"error\":\"\",\"created_at\":\"2026-08-06T11:26:29.319476Z\",\"started_at\":\"2026-08-06T11:26:29.319476Z\",\"completed_at\":\"2026-08-06T11:26:29.467219Z\",\"progress\":{\"stage\":\"complete\",\"total_files\":6,\"files_parsed\":6,\"files_total\":6,\"can_render_frontend\":true},\"run_metadata\":{\"analysis_run_id\":\"run:24ee5d1caf3443638d474391b5680e56\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\python-nested\",\"comprehension_mode\":\"refurbished\",\"scope\":\"snapshot\",\"llm_active\":false,\"fallback_used\":false}}}",
+        "{\"event\":\"pipeline_complete\",\"data\":{\"job_id\":\"job:8a1bbf3b68f44baf93fa806f6e18a5bf\",\"analysis_run_id\":\"run:24ee5d1caf3443638d474391b5680e56\",\"status\":\"completed\",\"stage\":\"complete\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\python-nested\",\"error\":\"\",\"created_at\":\"2026-08-06T11:26:29.319476Z\",\"started_at\":\"2026-08-06T11:26:29.319476Z\",\"completed_at\":\"2026-08-06T11:26:29.467219Z\",\"progress\":{\"stage\":\"complete\",\"total_files\":6,\"files_parsed\":6,\"files_total\":6,\"can_render_frontend\":true},\"run_metadata\":{\"analysis_run_id\":\"run:24ee5d1caf3443638d474391b5680e56\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\python-nested\",\"comprehension_mode\":\"refurbished\",\"scope\":\"snapshot\",\"llm_active\":false,\"fallback_used\":false}}}"
+      ],
+      "closed": true,
+      "error": null
+    },
+    {
+      "url": "ws://127.0.0.1:5473/?token=<REDACTED-HMR-TOKEN>",
+      "sent": [],
+      "received": [
+        "{\"type\":\"connected\"}"
+      ],
+      "closed": false,
+      "error": null
+    }
+  ],
+  "initial_load_ms": 2134,
+  "keyboard": [
+    {
+      "tag": "A",
+      "name": "Open legacy workspace",
+      "outline": "rgb(16, 16, 16) auto 1px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "INPUT",
+      "name": "Enter an absolute local repository path",
+      "outline": "rgb(26, 25, 22) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(16, 16, 16) auto 1px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "BODY",
+      "name": "Syntax TreeOpen legacy workspaceCodebase observatoryWhat repo do you want to understand?Syntax Tree ",
+      "outline": "rgb(224, 224, 232) none 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "A",
+      "name": "Open legacy workspace",
+      "outline": "rgb(16, 16, 16) auto 1px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "INPUT",
+      "name": "Enter an absolute local repository path",
+      "outline": "rgb(26, 25, 22) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(16, 16, 16) auto 1px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "BODY",
+      "name": "Syntax TreeOpen legacy workspaceCodebase observatoryWhat repo do you want to understand?Syntax Tree ",
+      "outline": "rgb(224, 224, 232) none 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "A",
+      "name": "Open legacy workspace",
+      "outline": "rgb(16, 16, 16) auto 1px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "INPUT",
+      "name": "Enter an absolute local repository path",
+      "outline": "rgb(26, 25, 22) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(16, 16, 16) auto 1px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "BODY",
+      "name": "Syntax TreeOpen legacy workspaceCodebase observatoryWhat repo do you want to understand?Syntax Tree ",
+      "outline": "rgb(224, 224, 232) none 3px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "A",
+      "name": "Open legacy workspace",
+      "outline": "rgb(16, 16, 16) auto 1px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "INPUT",
+      "name": "Enter an absolute local repository path",
+      "outline": "rgb(26, 25, 22) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(16, 16, 16) auto 1px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "A",
+      "name": "Open legacy workspace",
+      "outline": "rgb(16, 16, 16) auto 1px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "INPUT",
+      "name": "Enter an absolute local repository path",
+      "outline": "rgb(26, 25, 22) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgb(16, 16, 16) auto 1px",
+      "boxShadow": "none"
+    }
+  ],
+  "analysis": {
+    "fixture": "python",
+    "acknowledgement_ms": 623,
+    "observed_for_ms": 7242,
+    "status": 200,
+    "run_id": "run:24ee5d1caf3443638d474391b5680e56",
+    "active_run_loading_after_7s": false,
+    "orientation_ready": true,
+    "page_text_excerpt": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\npython-nested has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npyproject.toml\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+  },
+  "graph": {
+    "node_count": 0,
+    "edge_count": 0,
+    "graph_api_requested": false,
+    "meaningful_empty_state": false
+  },
+  "accessibility": {
+    "unlabeled": [],
+    "landmarks": [
+      "HEADER",
+      "NAV",
+      "MAIN",
+      "ASIDE"
+    ],
+    "h1_count": 0,
+    "images_missing_alt": 0,
+    "color_only_visual_candidates": 25
+  },
+  "refresh": {
+    "url": "http://127.0.0.1:5473/",
+    "text": "Syntax Tree\nOpen legacy workspace\nCodebase observatory\nWhat repo do you want to understand?\n\nSyntax Tree scans a repository and turns it into a calm, source-backed architecture map. You can zoom through concepts, inspect flows, ask questions, and open the exact code behind each answer.\n\nSource-backed\nArchitecture claims stay tied to files, spans, and evidence.\nMeaning first\nThe first screen explains the system shape, not the folder tree.\nGuided progress\nAnalysis stages use human copy instead of raw pipeline jargon.\nStart a scan\n\nPaste a local repository path. Orientation appears first, then the map opens when deeper analysis is ready.\n\nAPI mode\nREPOSITORY PATH\nfixtures/python-nested\nAdvanced analysis settings\nBuild architecture map\n\nThe first repo orientation appears before the full architecture map. If the backend is offline, this screen will say so directly."
+  },
+  "outcome": "completed"
+}

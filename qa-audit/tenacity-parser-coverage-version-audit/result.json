@@ -1,0 +1,114 @@
+{
+  "audit_type": "version_provenance_audit",
+  "no_openai_requests_made": true,
+  "no_production_code_changed": true,
+  "no_frozen_pilot_artifacts_modified": true,
+  "no_metric_recomputation_performed": true,
+  "system_versions": {
+    "A_frozen_pilot_J3": {"commit": "0eee4a9", "full_hash": null, "label": "feasibility-deterministic-provenance-j3, R1's own run_manifest.json system_checkpoint"},
+    "B_d4_checkpoint": {"commit": "edf11ba", "related_commit": "6d7068c", "label": "D4 unresolved-base-blocking fix + post-pilot D4 comparison"},
+    "C_current_product": {"commit": "ac0126a45254394ec31bc9d97afffe5e2f6fe064", "branch": "product/end-user-acceptance"}
+  },
+  "parser_recursion_commit_87c0fb3": {
+    "summary": "Fix python_symbol_parser to descend into if/try/with at module/class level",
+    "what_it_actually_changed": "Added recursion into ast.If (body+orelse), ast.Try/TryStar (body+handlers+orelse+finalbody), and ast.With/AsyncWith (body) inside visit_body -- i.e. classes/functions declared INSIDE a conditional/try/with block (e.g. 'try: from cjson import loads except ImportError: def loads(s): ...') now get a real ParsedSymbol. It did NOT add recursion into ordinary nested-function bodies -- that recursive call (visit_body(node.body, ...) for FunctionDef/AsyncFunctionDef) was ALREADY present, unchanged, in the version this commit is based on.",
+    "did_it_recurse_into_nested_function_definitions": "No new behavior here -- ordinary FunctionDef-body recursion (which is what makes wrapped_f/log_it discoverable) predates this commit entirely and this commit did not touch it.",
+    "did_it_create_ParsedSymbol_entries_for_nested_functions": "No new effect for functions nested directly in another function's body (already handled before this commit). Its actual effect is for definitions nested inside if/try/with blocks specifically.",
+    "did_it_affect_relation_extraction_from_nested_bodies": "No -- this commit touches python_symbol_parser.py only, not python_call_extractor.py.",
+    "did_it_affect_entity_ids_resolution": "No direct effect observed; out of this audit's scope to verify further (no remediation performed).",
+    "is_ancestor_of_current_product_HEAD": false,
+    "verification_method": "git merge-base --is-ancestor 87c0fb3 ac0126a45254394ec31bc9d97afffe5e2f6fe064 -> exit code 1 (not an ancestor). Only reachable via the isolated research/parser-recursion branch."
+  },
+  "current_nested_function_representation_root_cause": {
+    "question": "What exact commit first caused current product behavior to represent nested functions such as wrapped_f/before_log.log_it?",
+    "finding": "NO commit did -- python_symbol_parser.py is BYTE-IDENTICAL between the J3 frozen checkpoint (0eee4a9) and current product HEAD (ac0126a...), verified via direct diff (zero output). The recursive call responsible (visit_body(node.body, _join_name(parent_name, node.name), symbol.id) inside the FunctionDef/AsyncFunctionDef branch) was present in the very first commit that added this file (1934727) and has never been modified on the path to current HEAD (confirmed: `git log -- .../python_symbol_parser.py` from current HEAD shows only 1934727 and 1e2d1fa [stable_entity_key addition, unrelated field-only change] -- not 008e423, not 3852860, not 87c0fb3).",
+    "before_or_after_J3_D4_V2": "BEFORE J3 -- this recursion has existed since the file's initial creation, predating J3, D4, and all V2 provenance work. It did not change at any point relevant to this audit.",
+    "conclusion": "The frozen R1 pilot's own evaluator notes for R1-TDC-5/R1-FDC-5 ('Laura's real python_symbol_parser does not descend into a function/method body to discover nested function definitions, so no ParsedSymbol was ever produced for wrapped_f') describe behavior that does not match the actual parser code AT THE EXACT J3 CHECKPOINT R1 WAS RUN AGAINST. This appears to be a ground-truth-authoring inaccuracy about WHICH STAGE was responsible, not a later product improvement. See the corrected root-cause finding below, which shows the PRACTICAL OUTCOME (claim not supportable) is unchanged and still correct today, for a different, more precisely-identified reason."
+  },
+  "symbol_vs_relation_coverage_distinction": {
+    "method": "Ran the real, unmodified analysis pipeline in-process (FastAPI TestClient, environment=test, zero OpenAI/LLM involvement) against the exact pinned Tenacity checkout, then read app.state.run_store.get_symbols()/get_relations() directly -- fully deterministic, no HTTP round trip beyond the initial /api/analyze call, no architectural-explanation endpoint touched.",
+    "wrapped_f": {
+      "symbol_representation": "PRESENT -- python:tenacity/__init__.py::BaseRetrying.wraps.wrapped_f, span tenacity/__init__.py:381-395 (exact match to frozen ground truth's own cited span)",
+      "source_span_representation": "PRESENT -- real SourceRegion, independently re-fetched, text begins 'def wrapped_f(*args...)'",
+      "required_relation_extraction": "ABSENT -- 'calls' relation from wrapped_f is emitted with resolution_status='unresolved', target_reference='self.copy' (confirmed via direct in-process pipeline run; wrapped_f had 5 outgoing call relations, ALL unresolved: f, self.copy, stats.clear, copy, functools.wraps)",
+      "relation_resolution": "N/A -- never reaches a resolved state; see root cause below",
+      "stable_entity_ref_resolution": "N/A -- moot, since no relation to resolve a reference for exists in the first place",
+      "proposition_verification_capability": "NOT structurally expressible -- R1-TDC-5's proposition (wrapped_f calls BaseRetrying.copy) cannot be verified today; the deterministic evidence required does not exist",
+      "root_cause_of_relation_gap": "app/analysis/python_call_extractor.py's _process_module/_process_class dispatch explicitly passes current_class=None whenever it encounters a nested FunctionDef inside another function's body, with an explicit comment: 'Nested function: its own source entity, not a method of the enclosing class even if the enclosing scope is a method.' Since ctx.current_class is None inside wrapped_f, the ordinary same-class self.method() check (which would otherwise resolve self.copy() -> BaseRetrying.copy, since copy IS defined directly on BaseRetrying) never fires, and D4's own inherited_self_method fallback (_resolve_via_inheritance) also immediately returns None for the same reason (its own first check is 'if ctx.current_class is None: return None'). This is a documented, deliberate design boundary, not an accidental regression -- and it is UNCHANGED between J3 and current product (python_call_extractor.py's only diff between J3 and current is D4's own additive inherited_self_method fallback, which this case never reaches)."
+    },
+    "before_log_log_it": {
+      "symbol_representation": "PRESENT -- python:tenacity/before.py::before_log.log_it, and (independently spot-checked) the same pattern exists for after.py::after_log.log_it and before_sleep.py::before_sleep_log.log_it",
+      "source_span_representation": "PRESENT",
+      "required_relation_extraction": "ABSENT -- log_it's 'calls' relations (retry_state.get_fn_name, logger.log, _utils.to_ordinal) are all resolution_status='unresolved'",
+      "relation_resolution": "N/A",
+      "stable_entity_ref_resolution": "N/A",
+      "proposition_verification_capability": "NOT structurally expressible -- R1-TRC-2's proposition (before_log.log_it reaches get_callback_name via RetryCallState.get_fn_name) cannot be verified today",
+      "root_cause_of_relation_gap": "DIFFERENT from wrapped_f's root cause, despite log_it also being a nested function. The unresolved call here (retry_state.get_fn_name()) is not a self.method() call at all -- retry_state is an ordinary function PARAMETER (typed RetryCallState), not self. Resolving it would require parameter-type-annotation-based resolution, which python_call_extractor's variable-type-tracking heuristic (_infer_var_types) does not provide -- that heuristic only tracks LOCAL variables assigned from a constructor call within the same scope, not typed function parameters. This limitation is independent of the nested-function current_class issue and is unchanged between J3 and current product (the relevant code is part of the byte-identical-since-J3 baseline, untouched by D4's own diff)."
+    }
+  },
+  "four_frozen_r1_parser_coverage_failures": [
+    {
+      "claim_id": "R1-TDC-5",
+      "entity": "BaseRetrying.wraps.wrapped_f -> calls -> BaseRetrying.copy",
+      "frozen_failure_reason": "outcome=resolution_failed, failure_category=parser_coverage, analyzer_support_status=not_evaluated; evaluator note claimed no ParsedSymbol was ever produced for wrapped_f",
+      "symbol_existed_in_J3_analysis": "Yes, per unchanged source code (python_symbol_parser.py byte-identical J3->current) -- the evaluator note appears to be a ground-truth-authoring inaccuracy about which stage was responsible, not a later code change",
+      "symbol_exists_in_current_product": true,
+      "required_relation_exists_in_current_product": false,
+      "stable_entity_ref_resolves_it": "N/A -- no relation exists to resolve a reference for",
+      "now_structurally_expressible": false,
+      "qualified_wording": "Under the current product implementation, this previously observed J3 limitation appears STILL PRESENT -- the specific technical description in the frozen note (missing ParsedSymbol) does not match current (or, per source-code evidence, likely J3-era) reality, but the practical outcome (this claim cannot be deterministically verified) is unchanged."
+    },
+    {
+      "claim_id": "R1-FDC-5",
+      "entity": "Same StableEntityRef/root cause as R1-TDC-5 (BaseRetrying.wraps.wrapped_f), per the frozen pilot's own note",
+      "frozen_failure_reason": "outcome=resolution_failed, failure_category=parser_coverage, analyzer_support_status=not_evaluated",
+      "symbol_existed_in_J3_analysis": "Yes (same as R1-TDC-5)",
+      "symbol_exists_in_current_product": true,
+      "required_relation_exists_in_current_product": false,
+      "stable_entity_ref_resolves_it": "N/A",
+      "now_structurally_expressible": false,
+      "qualified_wording": "Same conclusion as R1-TDC-5 -- still present, same root cause."
+    },
+    {
+      "claim_id": "R1-TRC-2",
+      "entity": "before.py::before_log.log_it reachability -> RetryCallState.get_fn_name -> _utils.get_callback_name",
+      "frozen_failure_reason": "outcome=resolution_failed, failure_category=parser_coverage, analyzer_support_status=not_evaluated; evaluator note claimed no ParsedSymbol was ever produced for log_it",
+      "symbol_existed_in_J3_analysis": "Yes, per unchanged source code -- same ground-truth-authoring-inaccuracy pattern as R1-TDC-5",
+      "symbol_exists_in_current_product": true,
+      "required_relation_exists_in_current_product": false,
+      "stable_entity_ref_resolves_it": "N/A",
+      "now_structurally_expressible": false,
+      "qualified_wording": "Under the current product implementation, this previously observed J3 limitation appears STILL PRESENT, for a DIFFERENT specific reason than R1-TDC-5 (parameter-type resolution, not the current_class-reset issue) -- the practical outcome is unchanged."
+    },
+    {
+      "claim_id": "R1-FRC-2",
+      "entity": "Same StableEntityRef/root cause as R1-TRC-2 (before_log.log_it)",
+      "frozen_failure_reason": "outcome=resolution_failed, failure_category=parser_coverage, analyzer_support_status=not_evaluated",
+      "symbol_existed_in_J3_analysis": "Yes (same as R1-TRC-2)",
+      "symbol_exists_in_current_product": true,
+      "required_relation_exists_in_current_product": false,
+      "stable_entity_ref_resolves_it": "N/A",
+      "now_structurally_expressible": false,
+      "qualified_wording": "Same conclusion as R1-TRC-2 -- still present, same root cause."
+    }
+  ],
+  "capability_delta_table": [
+    {"capability": "inherited self.method() (same-name method on a resolved base)", "J3_frozen_pilot": "NOT resolved (documented out of scope)", "D4": "RESOLVED (new inherited_self_method fallback)", "current_product": "Same as D4 -- python_call_extractor.py unchanged since D4's own comparison commit; empirically reconfirmed live in the Tenacity real-OpenAI validation (R1-TDC-1)"},
+    {"capability": "nested-function ParsedSymbol representation", "J3_frozen_pilot": "PRESENT in the actual code at this checkpoint (verified via byte-identical diff), though the frozen pilot's own evaluator notes describe it as absent", "D4": "unchanged (parser untouched by D4)", "current_product": "PRESENT -- empirically confirmed (wrapped_f, log_it, after_log.log_it, before_sleep_log.log_it all real symbols)"},
+    {"capability": "calls relations extracted from inside a nested-function closure (incl. self.method() referring to the enclosing method's self)", "J3_frozen_pilot": "NOT resolved -- current_class explicitly reset to None for any nested FunctionDef, by design", "D4": "unchanged -- D4's fallback requires a known current_class and is never reached here", "current_product": "STILL NOT resolved -- empirically reconfirmed (wrapped_f's self.copy() call: unresolved)"},
+    {"capability": "super().method()", "J3_frozen_pilot": "NOT resolved (documented out of scope)", "D4": "unchanged, explicitly not touched by the inherited_self_method fallback", "current_product": "unchanged, still explicitly out of scope"},
+    {"capability": "generic parameterized inheritance (e.g. class Foo(Generic[T]))", "J3_frozen_pilot": "Not explicitly documented; presumed unresolved under the extractor's general dotted-name-only base rule", "D4": "unchanged (inheritance extractor byte-identical J3->current)", "current_product": "Not empirically tested in this audit -- presumed unchanged; not asserted as fact"},
+    {"capability": "package re-export import resolution (bare 'from . import name', relative level >= 2)", "J3_frozen_pilot": "NOT resolved (documented out of scope)", "D4": "unchanged", "current_product": "unchanged, still explicitly out of scope"}
+  ],
+  "research_reporting_recommendation": {
+    "principle": "The frozen R1 pilot's per-claim resolution outcomes AND aggregate metrics remain valid and correct today for these four claims -- not because the system is frozen in amber, but because empirical re-testing shows the actual functional limitation (deterministic evidence unavailable for these specific propositions) is genuinely unchanged, even though the SYMBOL layer looks different from what the frozen evaluator notes described.",
+    "required_correction": "Only the EXPLANATORY TEXT for R1-TDC-5/R1-FDC-5 needs a documented correction (as a dated addendum, not a silent edit) -- the frozen note's claim that no ParsedSymbol was produced does not match the actual parser behavior at the J3 checkpoint (or now). The correct explanation is that python_call_extractor.py resets current_class to None for any nested function, so a self.method() call inside a closure cannot resolve even when the symbol and the target method both exist. The SCORING (resolution_failed, not counted toward true_supported) does not change.",
+    "general_going_forward_principle": "If a future validation (e.g. Stevedore) surfaces an apparent capability difference between a frozen pilot and current product, the correct process demonstrated by this audit is: (1) diff the exact relevant source file(s) between the frozen checkpoint and current HEAD; (2) if unchanged, do not conclude 'nothing to explain' -- re-derive the frozen evaluator's ORIGINAL reasoning against the unchanged code to check whether the original note was itself accurate; (3) separately test symbol representation, relation extraction, and relation resolution rather than inferring one from another; (4) never combine a corrected historical explanation with a change to the frozen claim's scored outcome unless the underlying code has ACTUALLY changed and been re-run.",
+    "wording_recommendation_for_future_citations": "\"The J3/R1 pilot (system checkpoint 0eee4a9) documented four Tenacity claim-resolution failures as parser_coverage/nested-function gaps. A later version-provenance audit (2026-08-13) found the underlying parser code unchanged since J3 and determined the four claims remain non-verifiable today for a more precisely characterized reason: python_call_extractor.py deliberately does not track enclosing-class context across a nested-function boundary (R1-TDC-5/R1-FDC-5), and does not perform parameter-type-based call resolution (R1-TRC-2/R1-FRC-2). The frozen pilot's scored outcomes for these four claims remain valid; only the originally recorded explanation for two of them (a missing-symbol claim that does not match the actual code) has been corrected.\""
+  },
+  "artifact_paths": {
+    "report": "REPORT.md",
+    "result": "result.json"
+  },
+  "tenacity_pass_evidence_modified": false
+}

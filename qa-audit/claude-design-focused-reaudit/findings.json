@@ -1,0 +1,65 @@
+{
+  "review_type": "focused_claude_design_reaudit",
+  "product_head_reviewed": "f50ebb9eb479f754af4d1b9afb16a9aaaaf9931b",
+  "original_audit_commit": "b7daa57a39657b3bb5b9ea818ef65d605a1c2e21",
+  "remediation_commit": "f50ebb9eb479f754af4d1b9afb16a9aaaaf9931b",
+  "live_frontend_reviewed": "http://127.0.0.1:5175 (syntax-tree-ui, same pinned Flask repo/run as prior rounds)",
+  "verdicts": {
+    "F01": "RESOLVED",
+    "F02": "RESOLVED",
+    "F03": "RESOLVED",
+    "F04": "RESOLVED",
+    "F05": "RESOLVED",
+    "F06": "RESOLVED"
+  },
+  "counts": { "resolved": 6, "partially_resolved": 0, "not_resolved": 0 },
+  "detail": [
+    {
+      "id": "F01",
+      "verdict": "RESOLVED",
+      "question": "confidence vs verification",
+      "evidence": "Checked fresh at three levels: pre-map orientation ('50% map confidence'), app.py component ('98% map confidence'), Flask class and full_dispatch_request ('100% map confidence' at both). Every instance carries the literal words 'map confidence', not bare 'confidence'. Visual style is a dashed/unfilled pill, distinct from the filled 'Verified'/'Orientation ready' status pills next to it. Accessible name (confirmed via accessibility-tree query, reachable without hover) reads in full: '50% map confidence. How confident Laura's structural analysis is that this area/relationship was correctly identified and classified. This is a static-analysis classification score, not a claim verification status, and not the AI's confidence in a generated explanation.' No claim-level SUPPORTED/INSUFFICIENT EVIDENCE badge anywhere carries a percentage. No unlabeled bare percentage was found anywhere in the explanation workflow.",
+      "screenshot": "reaudit-04-header-map-confidence-f01-f05.jpg"
+    },
+    {
+      "id": "F02",
+      "verdict": "RESOLVED",
+      "question": "source evidence highlight",
+      "evidence": "SUPPORTED claim 'full_dispatch_request calls preprocess_request' -> evidence -> Open source: app.py:1014 rendered with a persistent gold background and left gutter marker, confirmed still present after 5+ seconds (well past the old 1.5s auto-clear window). A second claim ('...calls finalize_request', citing app.py:1019) was independently confirmed via accessibility-tree query to carry the same highlight decoration on the exact correct line, even in a viewport position where Monaco's sticky-scroll context row happened to visually overlap it (see note below -- not treated as a defect in the highlight mechanism itself, since the decoration is demonstrably present and correctly targeted in both cases; surrounding code remains fully readable in the first, unobstructed case).",
+      "incidental_note_not_escalated": "In one case, Monaco's sticky-scroll context header (showing the enclosing class/function signature) visually sat directly over the newly-revealed target line at the initial scroll position, and the automation tool's simulated mouse-wheel scroll did not move the editor further to resolve it (keyboard Ctrl+Home did work, confirming this was a scroll-input quirk, not a frozen page). Decoration presence and correct line targeting were independently confirmed via the accessibility tree regardless. Not classified as a new BLOCKER/MAJOR: the highlight itself is present and correctly placed; this is, at most, an occasional viewport-timing nuance worth a human dry-run data point, not a comprehension failure.",
+      "screenshots": ["reaudit-05-persistent-highlight-preprocess_request-line1014.jpg", "reaudit-01-source-highlight-finalize_request-line1019.jpg"]
+    },
+    {
+      "id": "F03",
+      "verdict": "RESOLVED",
+      "question": "SUPPORTED / INSUFFICIENT EVIDENCE communication",
+      "evidence": "Opened Architectural Explanation directly (Settings never visited). An always-visible legend appears immediately, before the narrative or claims load: 'The model proposes architectural claims. Laura's then independently checks each one against recovered source evidence -- the model never decides what is true,' followed by explicit definitions -- SUPPORTED: 'Laura's found deterministic source-derived evidence establishing this proposition.'; INSUFFICIENT EVIDENCE: 'Laura's does not currently have enough deterministic evidence to establish this proposition. It does NOT automatically mean the statement is false.' Both definitions are evidence-framed, not confidence-framed, and the INSUFFICIENT EVIDENCE definition explicitly disclaims the falsehood inference. Each claim badge's full meaning is also exposed via accessible name (confirmed reachable by keyboard/screen-reader focus, not hover-only) on every individual claim, not just the shared legend.",
+      "screenshot": "reaudit-03-legend-f02-f03-f06.jpg"
+    },
+    {
+      "id": "F04",
+      "verdict": "RESOLVED",
+      "question": "evidence chain legibility",
+      "evidence": "Checked two different claims' evidence chains. Both lead with a plain, human-readable relation heading ('CALLS') and the Open source button; no raw symbol id or tool/version string is visible in the default view. A collapsed 'Technical details' disclosure (closed by default, confirmed via accessible open-state) holds the raw from/to symbol ids, the backend's freeform description, producer name/version, and evidence id -- expanded on demand and confirmed present, nothing destroyed.",
+      "incidental_note_not_escalated": "Inside the expanded Technical details block, the raw DESCRIPTION field wraps one character per line in its narrow definition-list column at this viewport width, which is visually ugly. This sits behind an opt-in disclosure most users will never open, and does not block or misrepresent the primary evidence-comprehension path. Not classified as a new BLOCKER/MAJOR.",
+      "screenshot": "reaudit-02-technical-details-expanded.jpg"
+    },
+    {
+      "id": "F05",
+      "verdict": "RESOLVED",
+      "question": "run context / raw hash",
+      "evidence": "Header now reads 'active run' as the primary label, with an abbreviated run id ('1f7f34f0...') as clearly secondary text. Accessibility-tree query confirms the literal 'Run Run' double-prefix bug is gone: the button's accessible name now reads exactly 'Full run id: run:1f7f34f034dc4674a8f395f29adb58ee' (single, correct prefix), and a dedicated 'Copy full run id' button is present. The run id no longer competes with the repository/entity breadcrumb or title for attention.",
+      "screenshot": "reaudit-04-header-map-confidence-f01-f05.jpg"
+    },
+    {
+      "id": "F06",
+      "verdict": "RESOLVED",
+      "question": "LLM vs verifier distinction",
+      "evidence": "Settings was not opened before or during this check. The same always-visible legend inside the Architectural Explanation panel states the distinction directly: model proposes, Laura's independently checks against recovered source evidence, model never decides what is true. This is present before any claim data loads and does not require expanding Technical details or any other disclosure. A developer completing this workflow would reasonably form the mental model: model proposes -> Laura's checks against evidence -> evidence status assigned -> evidence can be inspected -- not 'the AI generated this and marked it supported.'",
+      "screenshot": "reaudit-03-legend-f02-f03-f06.jpg"
+    }
+  ],
+  "new_issues_found": [],
+  "new_issues_note": "Two incidental observations were made during verification (Monaco sticky-scroll/highlight viewport overlap; Technical-details description text wrapping) -- both documented above as notes attached to the relevant finding, deliberately not classified as new BLOCKER/MAJOR findings per instruction, since neither prevents completion or correct interpretation of the six remediated areas. F07-F12 were not reassessed or promoted.",
+  "overall_classification": "READY FOR HUMAN DRY RUN"
+}

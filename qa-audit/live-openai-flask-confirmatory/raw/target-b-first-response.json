@@ -1,0 +1,130 @@
+{
+  "target": "B",
+  "clickedAtMs": 1786612058327,
+  "observedAtMs": 1786612060875,
+  "latencyFromClickMs": 2548,
+  "status": 200,
+  "body": {
+    "analysis_run_id": "run:016545486fd04761a305cbcbb61b302f",
+    "target_kind": "entity",
+    "target_id": "symbol:40179aedaa1bdf7700071caf",
+    "explanation_id": "explanation:c5d611fc6b7ca12c142e3a2e",
+    "narrative": "What Laura's could establish:\n- Blueprint inherits from Blueprint.\n- Blueprint inherits from Scaffold.",
+    "claims": [
+      {
+        "id": "claim:0d8addc716b5faca5781ce94",
+        "run_id": "run:016545486fd04761a305cbcbb61b302f",
+        "statement": "Blueprint inherits from Blueprint.",
+        "epistemic_type": "observed",
+        "support_status": "supported",
+        "confidence": null,
+        "producer": {
+          "producer_type": "llm",
+          "name": "architectural-explanation-verification-service",
+          "version": "",
+          "produced_at": "2026-08-13T09:07:40.782220Z"
+        },
+        "evidence_chain": {
+          "id": "evidence-chain:71e84ab39080caeafc91da1d",
+          "run_id": "run:016545486fd04761a305cbcbb61b302f",
+          "claim_id": "claim:0d8addc716b5faca5781ce94",
+          "items": [
+            {
+              "kind": "relationship",
+              "id": "evidence-rel:1ecaa769bcfb09d3cfd622d5",
+              "run_id": "run:016545486fd04761a305cbcbb61b302f",
+              "producer": {
+                "producer_type": "llm",
+                "name": "architectural-explanation-verification-service",
+                "version": "",
+                "produced_at": "2026-08-13T09:07:40.782220Z"
+              },
+              "description": "inherits relation symbol:40179aedaa1bdf7700071caf -> symbol:e52bb573051beca19a4e9f28, observed by python_inheritance_extractor@0.2.0 (resolved, blueprints.py:18-18)",
+              "relationship_kind": "inherits",
+              "from_symbol_id": "symbol:40179aedaa1bdf7700071caf",
+              "to_symbol_id": "symbol:e52bb573051beca19a4e9f28",
+              "source_region_id": "region:79726865448956464bc2e20e"
+            }
+          ],
+          "reasoning": "",
+          "hop_count": 1
+        },
+        "proposition": {
+          "kind": "direct_relation",
+          "subject_entity_id": "symbol:40179aedaa1bdf7700071caf",
+          "relation_kind": "inherits",
+          "object_entity_id": "symbol:e52bb573051beca19a4e9f28",
+          "path_entity_ids": []
+        },
+        "subject_symbol_ids": [
+          "symbol:40179aedaa1bdf7700071caf",
+          "symbol:e52bb573051beca19a4e9f28"
+        ],
+        "related_lens_ids": [],
+        "created_at": "2026-08-13T09:07:40.828255Z"
+      },
+      {
+        "id": "claim:2d4dceb07c2263d2429bbf3f",
+        "run_id": "run:016545486fd04761a305cbcbb61b302f",
+        "statement": "Blueprint inherits from Scaffold.",
+        "epistemic_type": "observed",
+        "support_status": "supported",
+        "confidence": null,
+        "producer": {
+          "producer_type": "llm",
+          "name": "architectural-explanation-verification-service",
+          "version": "",
+          "produced_at": "2026-08-13T09:07:40.782220Z"
+        },
+        "evidence_chain": {
+          "id": "evidence-chain:619e149965188ca053b8acd2",
+          "run_id": "run:016545486fd04761a305cbcbb61b302f",
+          "claim_id": "claim:2d4dceb07c2263d2429bbf3f",
+          "items": [
+            {
+              "kind": "relationship",
+              "id": "evidence-rel:f2fa072ff32840771defe577",
+              "run_id": "run:016545486fd04761a305cbcbb61b302f",
+              "producer": {
+                "producer_type": "llm",
+                "name": "architectural-explanation-verification-service",
+                "version": "",
+                "produced_at": "2026-08-13T09:07:40.782220Z"
+              },
+              "description": "inherits relation symbol:e52bb573051beca19a4e9f28 -> symbol:3ec0f49ae194ac0da65a6f7c, observed by python_inheritance_extractor@0.2.0 (resolved, sansio/blueprints.py:119-119)",
+              "relationship_kind": "inherits",
+              "from_symbol_id": "symbol:e52bb573051beca19a4e9f28",
+              "to_symbol_id": "symbol:3ec0f49ae194ac0da65a6f7c",
+              "source_region_id": "region:c6da70a490608268b478f983"
+            }
+          ],
+          "reasoning": "",
+          "hop_count": 1
+        },
+        "proposition": {
+          "kind": "direct_relation",
+          "subject_entity_id": "symbol:e52bb573051beca19a4e9f28",
+          "relation_kind": "inherits",
+          "object_entity_id": "symbol:3ec0f49ae194ac0da65a6f7c",
+          "path_entity_ids": []
+        },
+        "subject_symbol_ids": [
+          "symbol:e52bb573051beca19a4e9f28",
+          "symbol:3ec0f49ae194ac0da65a6f7c"
+        ],
+        "related_lens_ids": [],
+        "created_at": "2026-08-13T09:07:40.858724Z"
+      }
+    ],
+    "supported_count": 2,
+    "insufficient_evidence_count": 0,
+    "producer": {
+      "producer_type": "llm",
+      "name": "architectural-explanation-verification-service",
+      "version": "",
+      "produced_at": "2026-08-13T09:07:40.858724Z"
+    },
+    "created_at": "2026-08-13T09:07:40.858724Z"
+  },
+  "bodyParseError": null
+}

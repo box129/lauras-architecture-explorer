@@ -1,0 +1,160 @@
+{
+  "repository": "pallets/flask",
+  "commit": "6a2f545bfd8ed31e19066a299296917e034aca58",
+  "checkout_path": "C:\\Users\\LENOVO T14\\Development\\lauras-gt-r2-flask\\research\\real-repo-pilot\\repos\\r2-medium\\source",
+  "analysis_root": "C:\\Users\\LENOVO T14\\Development\\lauras-gt-r2-flask\\research\\real-repo-pilot\\repos\\r2-medium\\source\\src\\flask",
+  "provider": "OpenAI",
+  "model": "gpt-5.4-mini",
+  "target_count": 3,
+  "preselection_file": "preselected-targets.json",
+  "preselection_timestamp_utc": "2026-08-13T07:47:43Z",
+  "preselection_before_generation_proof": "preselected-targets.json's file mtime and internal timestamp (07:47:43Z) both predate the first architectural-explanation request in this validation (backend access log's first POST /api/entities/.../architectural-explanation for this repository, ~08:09Z after re-analysis); the file's target list was never edited after that.",
+  "targets": [
+    {
+      "label": "A",
+      "category": "direct CALLS",
+      "frozen_claim_id": "R2-TDC-2",
+      "source_entity": "Flask.full_dispatch_request",
+      "target_entity_id": "symbol:e1a6b720126c0baa5c344e4d",
+      "run_id": "run:fdf1a519d131471983612ff025f26a01",
+      "http_status": 200,
+      "latency_ms": 3908,
+      "sample_provenance": "later-generation exploratory sample -- NOT the first successfully returned explanation for this target. A genuine first A response was returned by the backend (access log: two 200 OK POSTs for entity symbol:edc2af952e127c3226a855a3, before the script crashed later during target B's evidence capture) but its response body was never persisted before the crash and is not recoverable from any existing artifact (see protocol_deviation below). This retained response is from a second, independent analysis+generation pass.",
+      "proposal_count": 4,
+      "supported_count": 4,
+      "insufficient_count": 0,
+      "contradicted_count": 0,
+      "preselected_claim_proposed_and_supported": true,
+      "additional_true_in_scope_propositions": [
+        "full_dispatch_request calls preprocess_request (app.py:1014) -- matches ground truth R2-FDC-2's own quoted method body inventory",
+        "full_dispatch_request calls handle_user_exception (app.py:1018) -- matches ground truth R2-FDC-2's own quoted method body inventory",
+        "full_dispatch_request calls finalize_request (app.py:1019) -- matches frozen claim R2-TDC-3 exactly (not one of the 3 preselected targets, but a distinct frozen true claim)"
+      ]
+    },
+    {
+      "label": "B",
+      "category": "INHERITS",
+      "frozen_claim_id": "R2-TDI-1",
+      "source_entity": "Flask (class)",
+      "target_entity_id": "symbol:38770df7bc221315e658b0f1",
+      "run_id": "run:17bb97593d76443c98dd11df30468022",
+      "http_status": 200,
+      "latency_ms": 2855,
+      "sample_provenance": "later-generation exploratory sample -- NOT the first successfully returned explanation for this target. A genuine first B response was returned by the backend (access log: two 200 OK POSTs for entity symbol:3cb0a1da299bb69faa8a9fdc) but its response body was never persisted before the crash (which occurred immediately afterward, during this same target's evidence-capture step) and is not recoverable from any existing artifact (see protocol_deviation below). This retained response is from a second, independent analysis+generation pass.",
+      "proposal_count": 3,
+      "supported_count": 2,
+      "insufficient_count": 1,
+      "contradicted_count": 0,
+      "preselected_claim_proposed_and_supported": true,
+      "additional_true_in_scope_propositions": [
+        "App inherits from Scaffold (sansio/app.py:59) -- matches frozen claim R2-TDI-2 exactly"
+      ],
+      "naturally_occurring_insufficient_evidence": {
+        "statement": "Flask reaches Scaffold through a call path.",
+        "full_structured_proposition": {
+          "kind": "reachability",
+          "subject_entity_id": "symbol:38770df7bc221315e658b0f1",
+          "subject_name": "Flask",
+          "relation_kind": "calls",
+          "object_entity_id": "symbol:00d326da538edb3e953838c6",
+          "object_name": "Scaffold",
+          "path_entity_ids": [
+            "symbol:38770df7bc221315e658b0f1",
+            "symbol:4122044054ea7eb61cd04922",
+            "symbol:00d326da538edb3e953838c6"
+          ],
+          "path_names": ["Flask", "App", "Scaffold"]
+        },
+        "rendered_statement": "Flask reaches Scaffold through a call path.",
+        "audit": {
+          "bounded_reference_compliance": "PASS -- Flask, App, and Scaffold are all real entities within the bounded evidence packet: Flask is the target entity itself; App is 1 hop away via the real Flask-inherits-App relation; Scaffold is exactly 2 hops away via the real App-inherits-Scaffold relation (gather_bounded_evidence expands the frontier over relations of ANY kind, not calls-only, out to hop_limit=2). No entity outside the supplied packet was referenced.",
+          "proposition_vocabulary_compliance": "PASS -- (kind=reachability, relation_kind=calls) is one of the three explicitly supported (kind, relation_kind) shapes (ALLOWED_PROPOSITION_SHAPES). Not an out-of-vocabulary proposal.",
+          "positive_structural_support": "ABSENT -- the bounded packet contains real INHERITS relations for both hops (Flask->App, App->Scaffold) but contains no CALLS relation for either hop, because none exists in the actual codebase: Flask/App/Scaffold are related purely by class inheritance, never by a call expression between these class symbols. The proposition speculatively asserted a CALLS-kind path between entities that are genuinely only INHERITS-related.",
+          "verifier_result": "INSUFFICIENT_EVIDENCE, reason (deterministic, verbatim from the verifier): \"no resolved 'calls' relation found for hop 'symbol:38770df7bc221315e658b0f1' -> 'symbol:4122044054ea7eb61cd04922'; 0/2 preceding hop(s) were matched before this gap\". This is a correct abstention on a plausible-sounding but evidence-unsupported proposition, not an invented entity and not a bounded-evidence escape -- it is a proposal made of entirely real, in-packet entities under a supported vocabulary shape, for which the required positive evidence simply does not exist."
+        }
+      }
+    },
+    {
+      "label": "C",
+      "category": "path-specific REACHABILITY/CALLS",
+      "frozen_claim_id": "R2-TRC-1",
+      "source_entity": "Flask.__call__",
+      "target_entity_id": "symbol:e341a0f95326ead65173ad59",
+      "run_id": "run:cf4c85e905af4739a7beb489f20e15a2",
+      "http_status": 200,
+      "latency_ms": 3807,
+      "sample_provenance": "genuine first sample -- target C was never navigated to or generated in the crashed first attempt (the crash occurred during target B's evidence capture, before target C's flow began; confirmed by the backend access log, which contains no explanation POST for a would-be target-C entity before this one). This retained response is the actual first successfully returned explanation for target C, satisfying the original protocol.",
+      "proposal_count": 4,
+      "supported_count": 4,
+      "insufficient_count": 0,
+      "contradicted_count": 0,
+      "preselected_claim_proposed_and_supported": true,
+      "additional_true_in_scope_propositions": [
+        "__call__ calls wsgi_app (app.py:1625) -- the direct-relation hop underlying R2-TRC-1",
+        "__call__ reaches request_context through a call path (app.py:1625, app.py:1592) -- matches ground truth R2-FDC-5's own quoted wsgi_app method body inventory",
+        "__call__ reaches handle_exception through a call path (app.py:1625, app.py:1600) -- matches ground truth R2-FDC-5's own quoted wsgi_app method body inventory"
+      ]
+    }
+  ],
+  "total_proposals": 11,
+  "schema_valid_proposals": 11,
+  "bounded_evidence_violation_count": 0,
+  "bounded_evidence_check_method": "Every subject/object/path entity id across all 11 proposals was independently resolved via GET /api/runs/{run_id}/symbols to a real symbol matching its expected name and file (Flask.full_dispatch_request, Flask.preprocess_request, Flask.dispatch_request, Flask.handle_user_exception, Flask.finalize_request, Flask, App, Scaffold, Flask.__call__, Flask.wsgi_app, Flask.request_context, Flask.handle_exception). Zero out-of-scope or fabricated ids.",
+  "supported_count": 10,
+  "insufficient_count": 1,
+  "contradicted_count": 0,
+  "false_support_count": 0,
+  "false_support_check_method": "Every one of the 10 SUPPORTED claims' evidence source region was independently re-fetched via GET /api/source-regions/{id} (read-only) and its exact file/line/text compared against the frozen ground truth's own human_verification_evidence (which quotes full method bodies, e.g. R2-FDC-2/R2-FDC-5's exhaustive call lists) -- all 10 matched real, previously-authored, line-exact facts. Zero false claims were marked SUPPORTED.",
+  "preselected_true_targets_proposed_and_supported": 3,
+  "selected_target_proposal_coverage": "3 / 3 preselected true target propositions (R2-TDC-2, R2-TDI-1, R2-TRC-1) were proposed and deterministically SUPPORTED. This is a targeted generation-coverage observation, not a precision statistic, and must not be combined with the frozen pilot's aggregate metrics.",
+  "supported_claim_correctness_in_this_exploratory_run": "10 / 10 -- all 10 SUPPORTED propositions were independently checked against either the frozen Flask ground truth (claims.json) directly, or directly-inspectable source evidence independent of Laura's own generated prose (read-only GET /api/source-regions/{id} re-fetches, cross-referenced against ground truth's own human-authored, independently-written full-method-body evidence quotes). Laura's own verifier output was never used as its own ground truth for this check. Preferred wording over a broad 'precision = 1.0' claim; do not generalize beyond this targeted 3-target sample.",
+  "proposal_support_precision": {
+    "value": "10 / 10 = 1.0",
+    "denominator_definition": "All 10 proposals presented as SUPPORTED across all 3 targets in this validation, each independently source-checked (see false_support_check_method and supported_claim_correctness_in_this_exploratory_run). Distinct from selected_target_proposal_coverage. Reported only as a secondary, precisely-scoped figure -- supported_claim_correctness_in_this_exploratory_run is the preferred framing per the methodology audit."
+  },
+  "source_navigation_pass_count": 3,
+  "source_navigation_checked_count": 3,
+  "source_navigation_note": "All 3 'Open source' screenshots were captured while the Monaco editor pane was still mounting (a larger file than the prior python_app validation, so the load spinner outlasted the fixed post-click wait) -- each screenshot's tab header nonetheless confirms navigation to the correct file. Line-level precision for all 3 was independently confirmed via read-only GET /api/source-regions/{id}, exact-matching frozen ground-truth lines (app.py:1016, app.py:109, app.py:1625) in every case.",
+  "legacy_external_request_count": 0,
+  "legacy_traffic_check_method": "Backend access log for the full validation window (decoded UTF-16) contains zero ERROR/WARN/Exception/Traceback lines and zero openrouter/blackbox references, despite the legacy provider being genuinely configured with real credentials on this backend. GET /api/architecture-map's own metadata.llm_used stayed false throughout.",
+  "token_usage_exposed": false,
+  "token_usage_note": "Token usage not exposed by current runtime.",
+  "development_runtime_duplicate_requests": {
+    "observed": true,
+    "description": "Non-blocking product observation: the development runtime caused duplicate architectural-explanation requests for one UI action, for all three targets (backend access log shows each target's entity id POSTed twice). The validation uses the first response only for each target; the second response was not counted as another sample and not compared against the first.",
+    "root_cause": "React StrictMode (src/main.tsx) double-invoking effects in the Vite dev server; absent in a production build."
+  },
+  "script_defect_and_recovery_note": "A first attempt at this validation script crashed mid-run (a UI interaction bug in the validation script itself -- clicking a second claim card while a full-page source-code overlay from an earlier click was still open -- not a defect in the product). That crash occurred AFTER real, successful explanation responses had already been returned for targets A and B, but before this script persisted them to disk, so that data could not be recovered and was discarded (not used as evidence, not compared against the retained run). The script was fixed and the full 3-target flow was re-run once, cleanly, to completion; every JSON/screenshot/recording artifact in this directory is from that single clean run. Total real OpenAI calls actually made across both attempts, per the backend access log: 4 from the crashed attempt (2 duplicate requests each for targets A and B, StrictMode) + 6 from the clean retained run (2 duplicate requests each for targets A, B, C) = 10; exactly 3 of those 10 responses (the first response per target from the clean run) are used as this validation's evidence.",
+  "ui_reachability": {
+    "target_a_reached": true,
+    "target_b_reached": true,
+    "target_c_reached": true,
+    "navigation_path": "root (flask) -> app.py -> Flask -> [target method, or Flask itself for target B]"
+  },
+  "protocol_deviation": {
+    "predeclared_protocol": "The FIRST successfully returned explanation for each target is the validation sample.",
+    "audit_date": "2026-08-13 (reporting/methodology audit, no new OpenAI requests, no reruns, no new analysis)",
+    "audit_method": "Reconstructed the full request timeline from the backend access log (decoded UTF-16), cross-referenced against raw-capture.json, the retained screenshots/recording, and the crashed first attempt's own script log (flask-validation-run1.log, which contains only the stack trace, zero response-body content). Searched for any surviving artifact from the crashed attempt (screenshots, video, HAR) -- none exist; both were deliberately cleaned up before the retained rerun and neither the crashed run's script nor the backend access log persisted response bodies anywhere.",
+    "target_a": {
+      "first_response_recoverable": false,
+      "classification": "unavailable first sample",
+      "retained_response_classification": "later-generation exploratory sample",
+      "evidence": "Backend log shows a genuine 200 OK response for entity symbol:edc2af952e127c3226a855a3 (target A's entity in the crashed run's own fresh analysis) before the retained run's target A request. That response body was held only in the crashed script's in-memory `targetA` variable and was never written to disk before the crash (which happened later, during target B's evidence-capture step) -- Node does not persist in-memory state across an uncaught-exception exit. No other artifact (log, screenshot, video, HAR) captured its content."
+    },
+    "target_b": {
+      "first_response_recoverable": false,
+      "classification": "unavailable first sample",
+      "retained_response_classification": "later-generation exploratory sample",
+      "evidence": "Backend log shows a genuine 200 OK response for entity symbol:3cb0a1da299bb69faa8a9fdc (target B's entity in the crashed run). The crash occurred immediately afterward, inside this same target's evidence-capture step, before the response was written to disk. Not recoverable for the same reasons as target A."
+    },
+    "target_c": {
+      "first_response_recoverable": true,
+      "classification": "genuine first sample",
+      "evidence": "The backend access log contains no explanation POST for any target-C-equivalent entity before the retained run's target C request -- the crashed attempt never reached target C's navigation step at all. The retained response is therefore the actual, unambiguous first successful generation for target C."
+    },
+    "conclusion": "2 of 3 targets (A, B) deviate from the predeclared first-response protocol; their retained samples are later-generation exploratory samples, not first samples. Target C fully satisfies the original protocol. This is a validation-tooling/process deviation, not a Laura's product defect -- the underlying safety/correctness findings (zero bounded-evidence escapes, zero false supports, correct verifier abstention) are unaffected by which generation pass produced them, but the PROTOCOL classification must be downgraded accordingly."
+  },
+  "production_code_changed": false,
+  "verdict": "EXPLORATORY PASS WITH PROTOCOL DEVIATION",
+  "verdict_rationale": "Not CONFIRMATORY PASS because the genuine first A/B response bodies are unrecoverable, so the predeclared 'first successful response' protocol was not satisfied for 2 of 3 targets. Not FAIL because no substantive safety/correctness failure was found in the retained samples: zero bounded-evidence escapes, zero fabricated entities/relations/paths, zero false propositions marked SUPPORTED, the deterministic verifier remained authoritative throughout, and the one INSUFFICIENT_EVIDENCE case was a correct abstention. The validation-script crash that caused the deviation is a tooling defect, not a Laura's product failure."
+}

@@ -1,0 +1,91 @@
+{
+  "generated_at": "2026-06-02T02:16:51.399Z",
+  "frontend_url": "http://127.0.0.1:5173",
+  "backend_url": "http://127.0.0.1:8000",
+  "system_token_budget": 2000000,
+  "estimated_system_tokens_observed": 167150,
+  "repos": [
+    {
+      "repo": "axios",
+      "run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+      "grades": null,
+      "screenshots": [
+        "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_progress_complete.png",
+        "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_architecture_map.png",
+        "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_node_1.png",
+        "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_node_2.png",
+        "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_node_3.png",
+        "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_q1.png",
+        "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_q2.png",
+        "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_q3.png"
+      ],
+      "metrics": null,
+      "question_scores": [
+        {
+          "question": "What is the interceptor chain and how does it process requests?",
+          "score": {
+            "score": 9.2,
+            "keyword_hits": [
+              "InterceptorManager",
+              "request interceptors",
+              "dispatchRequest",
+              "synchronous"
+            ],
+            "expected_keywords": [
+              "InterceptorManager",
+              "request interceptors",
+              "response interceptors",
+              "dispatchRequest",
+              "synchronous"
+            ],
+            "evidence_signals": 9,
+            "confidence": 1
+          }
+        },
+        {
+          "question": "How does axios handle request cancellation?",
+          "score": {
+            "score": 6.8,
+            "keyword_hits": [
+              "CancelToken",
+              "AbortSignal",
+              "CanceledError"
+            ],
+            "expected_keywords": [
+              "CancelToken",
+              "AbortSignal",
+              "throwIfCancellationRequested",
+              "CanceledError"
+            ],
+            "evidence_signals": 7,
+            "confidence": 1
+          }
+        },
+        {
+          "question": "What adapters does axios support and how does it choose one?",
+          "score": {
+            "score": 8,
+            "keyword_hits": [
+              "http",
+              "xhr",
+              "fetch",
+              "getAdapter",
+              "adapter"
+            ],
+            "expected_keywords": [
+              "http",
+              "xhr",
+              "fetch",
+              "getAdapter",
+              "adapter"
+            ],
+            "evidence_signals": 108,
+            "confidence": 1
+          }
+        }
+      ],
+      "doc_scores": [],
+      "artifact_file": "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_artifacts\\axios_run.json"
+    }
+  ]
+}

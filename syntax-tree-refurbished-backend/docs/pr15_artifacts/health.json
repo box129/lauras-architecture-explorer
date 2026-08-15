@@ -1,0 +1,20 @@
+{
+  "status": "ok",
+  "service": "Syntax Tree Refurbished Backend",
+  "version": "0.1.0",
+  "environment": "development",
+  "python_version": "3.14.2",
+  "storage": {
+    "kind": "sqlite",
+    "path": ".syntax-tree-refurbished/backend.sqlite"
+  },
+  "llm": {
+    "configured": true,
+    "provider_keys_present": {
+      "blackbox": true,
+      "openrouter": true,
+      "openrouter_secondary": true
+    },
+    "model": "anthropic/claude-sonnet-4.6"
+  }
+}

@@ -1,0 +1,80 @@
+[
+  {
+    "browser": "chromium",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "fixture": "python",
+    "outcome": "harness-or-browser-error",
+    "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit question' })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled type=\"submit\" aria-label=\"Submit question\" class=\"obs-question-dock__send\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    56 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not enabled\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at submitQuestion (<USER_HOME>\\Development\\lauras\\qa-audit\\phase-2\\playwright\\phase2-ui-audit.cjs:123:63)\n    at async runPrimary (<USER_HOME>\\Development\\lauras\\qa-audit\\phase-2\\playwright\\phase2-ui-audit.cjs:243:61)\n    at async <USER_HOME>\\Development\\lauras\\qa-audit\\phase-2\\playwright\\phase2-ui-audit.cjs:285:41",
+    "graph": {
+      "node_count": 0,
+      "edge_count": 0,
+      "graph_api_requested": false,
+      "meaningful_empty_state": false
+    },
+    "analysis": {
+      "fixture": "python",
+      "acknowledgement_ms": 528,
+      "observed_for_ms": 7067,
+      "status": 200,
+      "run_id": "run:492768ac2e08489285ab49311c27aadf",
+      "active_run_loading_after_7s": false,
+      "orientation_ready": true,
+      "page_text_excerpt": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\npython-nested has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npyproject.toml\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    }
+  },
+  {
+    "browser": "chromium",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "fixture": "typescript",
+    "outcome": "harness-or-browser-error",
+    "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit question' })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled type=\"submit\" aria-label=\"Submit question\" class=\"obs-question-dock__send\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    56 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not enabled\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at submitQuestion (<USER_HOME>\\Development\\lauras\\qa-audit\\phase-2\\playwright\\phase2-ui-audit.cjs:123:63)\n    at async runPrimary (<USER_HOME>\\Development\\lauras\\qa-audit\\phase-2\\playwright\\phase2-ui-audit.cjs:243:61)\n    at async <USER_HOME>\\Development\\lauras\\qa-audit\\phase-2\\playwright\\phase2-ui-audit.cjs:285:41",
+    "graph": {
+      "node_count": 0,
+      "edge_count": 0,
+      "graph_api_requested": false,
+      "meaningful_empty_state": false
+    },
+    "analysis": {
+      "fixture": "typescript",
+      "acknowledgement_ms": 370,
+      "observed_for_ms": 7061,
+      "status": 200,
+      "run_id": "run:86c66874376c44079a3334e440dca293",
+      "active_run_loading_after_7s": false,
+      "orientation_ready": true,
+      "page_text_excerpt": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\ntypescript-small has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npackage.json\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    }
+  },
+  {
+    "browser": "chromium",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "fixture": "mixed",
+    "outcome": "harness-or-browser-error",
+    "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Submit question' })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled type=\"submit\" aria-label=\"Submit question\" class=\"obs-question-dock__send\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    56 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not enabled\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at submitQuestion (<USER_HOME>\\Development\\lauras\\qa-audit\\phase-2\\playwright\\phase2-ui-audit.cjs:123:63)\n    at async runPrimary (<USER_HOME>\\Development\\lauras\\qa-audit\\phase-2\\playwright\\phase2-ui-audit.cjs:243:61)\n    at async <USER_HOME>\\Development\\lauras\\qa-audit\\phase-2\\playwright\\phase2-ui-audit.cjs:285:41",
+    "graph": {
+      "node_count": 0,
+      "edge_count": 0,
+      "graph_api_requested": false,
+      "meaningful_empty_state": false
+    },
+    "analysis": {
+      "fixture": "mixed",
+      "acknowledgement_ms": 392,
+      "observed_for_ms": 7061,
+      "status": 200,
+      "run_id": "run:126a8d8915f447a7b2fcb00437e2a601",
+      "active_run_loading_after_7s": false,
+      "orientation_ready": true,
+      "page_text_excerpt": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\nmixed-moderate has 3 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\nREADME.md\n\nreadme guidance-only material, not proof.\n\n50%\npackage.json\n\nmanifest guidance-only material, not proof.\n\n50%\npyproject.toml\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    }
+  }
+]

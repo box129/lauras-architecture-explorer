@@ -1,0 +1,64 @@
+{
+  "preselection_timestamp_utc": "2026-08-13T20:11:58Z",
+  "note": "Written BEFORE any real OpenAI architectural-explanation request in this validation round. Selection used ONLY the frozen ground-truth artifact and results.json below, plus a read-only, deterministic (no-OpenAI) UI-reachability check of the same three entities via a reconnaissance analysis run -- Laura's LLM output was never consulted to choose these targets.",
+  "repository": "openstack/stevedore",
+  "commit": "d3a55f33fb310f43833c7c3eb5ba417e46a9a928",
+  "ground_truth_source": "research/real-repo-pilot/repos/r3-challenging/ground_truth/claims.json (frozen pilot artifact, lauras-real-repo-pilot worktree; not modified)",
+  "frozen_results_source": "research/real-repo-pilot/repos/r3-challenging/results/claims.json (frozen, lauras-real-repo-pilot worktree)",
+  "reachability_check_method": "A reconnaissance repository analysis (POST /api/analyze against the pinned checkout, deterministic parsing only, no LLM/OpenAI call of any kind) confirmed all three target entities are directly reachable via the normal map drilldown before any target was finalized.",
+  "targets": [
+    {
+      "target_label": "A",
+      "category": "baseline-supported",
+      "frozen_claim_id": "R3-TDC-1",
+      "source_entity_to_navigate_to": "ExtensionManager.__init__",
+      "proposition": {
+        "kind": "direct_relation",
+        "relation_kind": "calls",
+        "subject": {"file_path": "stevedore/extension.py", "qualified_name": "ExtensionManager.__init__", "kind": "method"},
+        "object": {"file_path": "stevedore/extension.py", "qualified_name": "ExtensionManager._load_plugins", "kind": "method"}
+      },
+      "expected_truth": "true",
+      "relevant_source_span": "stevedore/extension.py:196-198 (call site: extensions = self._load_plugins(...)), stevedore/extension.py:290-324 (definition of _load_plugins)",
+      "historical_frozen_status": "analyzer_support_status=supported, outcome=correct_support -- one of the frozen pilot's 4 true-supported claims",
+      "post_d4_status": "unaffected/unchanged -- a same-class direct call, not an inherited-self case",
+      "why_selected": "A single, unambiguous, same-class direct method call already correctly supported by the frozen system -- establishes that a normal positive case still works on Stevedore. Confirmed UI-reachable (root -> stevedore/extension.py -> ExtensionManager -> __init__)."
+    },
+    {
+      "target_label": "B",
+      "category": "generic-inheritance-limited",
+      "frozen_claim_id": "R3-TDI-1",
+      "source_entity_to_navigate_to": "NamedExtensionManager",
+      "proposition": {
+        "kind": "direct_relation",
+        "relation_kind": "inherits",
+        "subject": {"file_path": "stevedore/named.py", "qualified_name": "NamedExtensionManager", "kind": "class"},
+        "object": {"file_path": "stevedore/extension.py", "qualified_name": "ExtensionManager", "kind": "class"}
+      },
+      "expected_truth": "true",
+      "relevant_source_span": "stevedore/named.py:35 (class NamedExtensionManager(ExtensionManager[T]):), stevedore/named.py:21 (from .extension import ExtensionManager)",
+      "historical_frozen_status": "analyzer_support_status=insufficient_evidence, outcome=incorrect_abstention, failure_category=parser_coverage -- the base expression ExtensionManager[T] is an ast.Subscript (generic parameterization), unhandled by python_inheritance_extractor.py's _resolve_base (only ast.Name/ast.Attribute are handled), so the relation is emitted unresolved with target_reference='ExtensionManager[T]'",
+      "post_d4_status": "unchanged at 4/12 true supported -- D4's inherited-self-method fallback requires an already-RESOLVED inherits relation to walk, and this base relation itself never resolves, so D4 cannot reach it",
+      "why_selected": "The canonical R3 generic-parameterized-inheritance limitation -- tests whether a plausible LLM proposal is safely abstained from when deterministic evidence cannot establish it. Confirmed UI-reachable (root -> stevedore/named.py -> NamedExtensionManager)."
+    },
+    {
+      "target_label": "C",
+      "category": "super()-limited",
+      "frozen_claim_id": "R3-TDC-5",
+      "source_entity_to_navigate_to": "EnabledExtensionManager._load_one_plugin",
+      "proposition": {
+        "kind": "direct_relation",
+        "relation_kind": "calls",
+        "subject": {"file_path": "stevedore/enabled.py", "qualified_name": "EnabledExtensionManager._load_one_plugin", "kind": "method"},
+        "object": {"file_path": "stevedore/extension.py", "qualified_name": "ExtensionManager._load_one_plugin", "kind": "method"}
+      },
+      "expected_truth": "true",
+      "relevant_source_span": "stevedore/enabled.py:97-99 (call site: ext = super()._load_one_plugin(...)), stevedore/extension.py:329-341 (definition of ExtensionManager._load_one_plugin)",
+      "historical_frozen_status": "analyzer_support_status=insufficient_evidence, outcome=incorrect_abstention, failure_category=call_resolution -- python_call_extractor.py's own docstring documents super().method() calls as explicitly OUT of scope (would require MRO resolution); confirmed target_reference='super()._load_one_plugin' left unresolved",
+      "post_d4_status": "unchanged -- D4's inherited_self_method fallback only ever matches a bare self.method() attribute-call shape and explicitly never fires for super().method() (structurally different AST shape)",
+      "why_selected": "A clean, single-hop super().method() case (EnabledExtensionManager's own base is not itself generic-parameterized, keeping this target's difficulty attributable to super() alone, not conflated with Target B's generic-inheritance gap) -- exercises another known deterministic evidence gap. Confirmed UI-reachable (root -> stevedore/enabled.py -> EnabledExtensionManager -> _load_one_plugin)."
+    }
+  ],
+  "excluded_categories_note": "All three required categories (baseline-supported, generic-inheritance-limited, super()-limited) are present among the frozen, in-scope claims, so no substitution was needed.",
+  "targets_excluded_as_uncertain_or_out_of_scope": "R3-OOS-1, R3-OOS-2 (out-of-scope dynamic-dispatch cases) were not considered. All three chosen targets have in_scope=true and truth_label=true in the frozen ground-truth file."
+}

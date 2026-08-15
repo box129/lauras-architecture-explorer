@@ -1,0 +1,66 @@
+{
+  "phase": "architecture-navigation-phase-b",
+  "starting_head": "b311b1607cda531235697fba6b61036a023f7c0b",
+  "grouping_rule": {
+    "activation": "every SystemOverview.main_components is kind==\"module\" (file-shaped, deterministic no-LLM default path)",
+    "grouping_key": "real immediate parent directory of the component's repo-relative path (_directory_of, plain POSIX rsplit)",
+    "nesting": "flat buckets keyed by full directory path; no recursive/multi-level group tree",
+    "root_files_bucket_label": "Repository root files",
+    "min_sections_for_grouping": 2,
+    "max_representative_members": 5,
+    "representative_member_selection": "plain alphabetical order, no LLM/relevance ranking"
+  },
+  "terminology": "Repository section",
+  "backend_contract": {
+    "new_node_kind": "structural_group",
+    "new_dto": false,
+    "new_routes": false,
+    "reused_contract": "ArchitectureMapNode (existing fields: id, label, children_count, primary_files, can_drilldown, description, graph_qn)",
+    "projection_version": "system-overview-architecture-map-v2"
+  },
+  "overview_edge_strategy": "NONE",
+  "group_confidence_behavior": "null / not shown (no fabricated percentage); frontend renders \"map confidence not available\"",
+  "flask_live_walkthrough": {
+    "repo": "lauras-gt-r2-flask/research/real-repo-pilot/repos/r2-medium/source/src/flask",
+    "modules_analyzed": 24,
+    "overview_groups": 3,
+    "group_labels": ["json", "sansio", "Repository root files"],
+    "before_ungrouped_top_level_node_count": 24,
+    "after_grouped_top_level_node_count": 3,
+    "node_count_reduction_pct": 87.5,
+    "overview_fetch_ms": 29,
+    "group_drilldown_fetch_ms": 41,
+    "overview_edges_returned": 3,
+    "overview_edges_are_group_to_group": false,
+    "console_errors_observed": 0
+  },
+  "bug_found_and_fixed": {
+    "description": "ObservatoryNode.confidence was coerced null -> 0 in adaptArchitectureNode, so a group's real null map-confidence rendered as a fabricated \"0% map confidence\" in the entity panel",
+    "fix": "widened ObservatoryNode.confidence to number|null, removed the ?? 0 coercion, VoiceRail.tsx now shows \"map confidence not available\" when confidence is null",
+    "regression_test_added": "VoiceRail.test.tsx: never shows a fabricated 0% map confidence for a node with no confidence metric"
+  },
+  "tests": {
+    "backend_total": 551,
+    "backend_failures": 0,
+    "backend_new_grouping_tests": 19,
+    "frontend_total": 88,
+    "frontend_failures": 0,
+    "typecheck_build": "pass",
+    "lint": "pass",
+    "ruff": "not available in this environment (skipped)"
+  },
+  "accessible_table": {
+    "mirrors_canvas_state": true,
+    "new_column": "Members",
+    "flask_rows": 3
+  },
+  "navigation_regression_walkthrough": "Overview -> Group -> Entity(module) -> Entity(symbol, Architectural Explanation opened) -> Back -> Back -> Back -> Overview : all steps correct",
+  "participant_1_remediations_regressed": false,
+  "phase_c_inspector_redesign_implemented": false,
+  "new_architectural_inference_added": false,
+  "llm_semantic_grouping_added": false,
+  "verifier_research_semantics_touched": false,
+  "formal_ab_c_study_touched": false,
+  "participant_2_started": false,
+  "final_classification": "READY FOR PHASE C REVIEW"
+}

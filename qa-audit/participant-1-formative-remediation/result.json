@@ -1,0 +1,75 @@
+{
+  "scope": "participant_1_formative_remediation",
+  "session_classification": "NON_SCORED_FORMATIVE_USABILITY_DRY_RUN_PARTICIPANT_1",
+  "verbatim_evidence_location": "external, outside the product git repository, per docs/usability-dry-run/SESSION_CHECKLIST.md",
+  "in_repo_deidentified_summary": "qa-audit/participant-1-formative-remediation/OVERVIEW.md",
+  "findings_addressed": {
+    "B1_map_interaction_discoverability": "implemented",
+    "B2_B3_status_mental_model": "implemented",
+    "M1_repository_folder_selection": "implemented",
+    "M2_map_categorization_and_overlap": "implemented",
+    "M3_claim_terminology": "implemented",
+    "M4_navigation_consistency": "implemented",
+    "M5_docs_studio_comprehensibility": "implemented",
+    "M6_play_guide_take_the_tour": "identified_and_fixed"
+  },
+  "play_guide_identification": {
+    "actual_control": "\"Take the Tour\" button, Dashboard.tsx (legacy workspace, /legacy route)",
+    "trigger": "components/architecture/Narrator.tsx",
+    "classification": "A - actually broken",
+    "root_cause": "Narrator silently returned null whenever its steps array (built from separate, legacy /api/architecture/overview + /api/subsystems + /api/violations endpoints) was empty -- which it reliably is for any analysis produced by the current Observatory/architecture-map pipeline. A dead click with zero visible feedback.",
+    "fix": "Honest, dismissible in-context message instead of silent no-op. Tour data pipeline itself not rebuilt (out of bounded scope)."
+  },
+  "task_vs_product_alignment_assessment": {
+    "task_assessed": "PARTICIPANT_TASKS.md Task B (find code responsible for handling an incoming request)",
+    "task_wording_changed": false,
+    "conclusion": "Primary root cause was (B) map interaction discoverability -- the participant never attempted a click, so task wording, map semantics, and layout could not yet be separately evaluated as contributing factors. Recommend re-testing this same task wording, unmodified, against the remediated build before considering any instrument change."
+  },
+  "production_changes": {
+    "backend_new_route": "GET /api/fs/browse-directories (syntax-tree-refurbished-backend/src/syntax_tree_refurbished/api/routes/browse.py) -- read-only, directories-only, never lists files or returns file contents",
+    "frontend_new_component": "FolderBrowserDialog.tsx",
+    "no_research_semantics_changed": true,
+    "no_verifier_or_proposition_vocabulary_changed": true,
+    "internal_domain_types_unchanged": "ArchitecturalClaim, ClaimProposal, ClaimCard.tsx left as-is; only user-facing copy changed to \"architectural statement(s)\""
+  },
+  "test_totals": {
+    "frontend_before": { "test_files": 11, "tests": 67 },
+    "frontend_after": { "test_files": 14, "tests": 79 },
+    "new_frontend_test_files": [
+      "syntax-tree-ui/src/features/architecture-map/LensNode.test.tsx",
+      "syntax-tree-ui/src/features/architecture-map/mapAdapter.test.ts",
+      "syntax-tree-ui/src/features/observatory/FolderBrowserDialog.test.tsx",
+      "syntax-tree-ui/src/components/architecture/Narrator.test.tsx"
+    ],
+    "extended_frontend_test_files": [
+      "syntax-tree-ui/src/features/architectural-explanation/ArchitecturalExplanationPanel.test.tsx"
+    ],
+    "backend_new_test_file": "syntax-tree-refurbished-backend/tests/test_browse.py (6 tests)",
+    "all_passing": true
+  },
+  "typecheck": "clean (tsc --noEmit -p .)",
+  "lint": "clean (eslint .)",
+  "build": "succeeded (tsc -b && vite build)",
+  "backend_tests": "full suite passing, no regressions",
+  "live_replay": {
+    "repository": "pallets/flask @ 6a2f545bfd8ed31e19066a299296917e034aca58",
+    "environment_note": "The long-running dev backend on port 8000 could not be cleanly restarted to pick up the new /api/fs/browse-directories route within this session (its owning process was not reliably identifiable/terminable via the available tooling in this environment -- appears to be a stale/orphaned process from an earlier session). The new endpoint was independently verified end-to-end against a freshly-started, correctly-configured isolated backend instance instead (real directory listing returned, e.g. under C:\\Users). The FolderBrowserDialog UI itself (open/cancel/select/error states) was exercised live against the actual running app; its live network call surfaced an honest 'Not Found' error against the stale backend, exactly as designed for a real failure case. Recommend a normal Laura's restart (stop-lauras.ps1 / start-lauras.ps1) before any further session, which should resolve this trivially.",
+    "verified_live": [
+      "map: always-visible 'Select an area to explore it.' hint",
+      "map: visible kind label (COMPONENT / CODE GROUP / CROSS CUTTING / EXTERNAL BOUNDARY) on every node card",
+      "map: accessible name includes kind + 'select'/'select to explore'",
+      "map: floating summary panel and watermark now have backgrounds, no longer blend into node cards",
+      "architectural explanation: legend says 'architectural statements', not 'claims'",
+      "architectural explanation: every SUPPORTED badge carries 'Verified from available source evidence' directly beneath it, always visible",
+      "evidence chain: leads with human-readable relation ('CALLS'), Technical details collapsed by default",
+      "open source: exit control is now a top-left '<- Back' button, not a top-right 'Close' button",
+      "open source: returning via Back preserves exact prior evidence-chain state",
+      "docs studio: intro sentence present, run hash removed from header, Source section collapsed by default"
+    ],
+    "verified_isolated": [
+      "GET /api/fs/browse-directories with no path returns starting locations (home + drive roots)",
+      "GET /api/fs/browse-directories?path=<real path> returns only real subdirectories, never files or file contents"
+    ]
+  },
+  "process_note": "Two local dev-server processes were stopped during this session as part of restart attempts: the previously-tracked stop-lauras.ps1 PIDs (already not running) and a since-unreachable backend wrapper process (PID 23764) whose child worker could not be independently confirmed terminated. No files, git history, or unrelated projects were affected. An isolated scratch verification backend (port 8799) started for this session was stopped cleanly at the end."
+}

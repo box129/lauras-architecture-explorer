@@ -1,0 +1,5 @@
+
+> syntax-tree-ui@0.0.0 lint
+> eslint .
+
+LINT_EXIT_CODE=0

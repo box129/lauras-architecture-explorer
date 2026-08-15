@@ -1,0 +1,59 @@
+{
+  "scope": "bounded_pre_human_ux_remediation",
+  "claude_design_audit_commit": "b7daa57a39657b3bb5b9ea818ef65d605a1c2e21",
+  "findings_implemented": ["F01", "F02", "F03", "F04", "F05", "F06"],
+  "findings_deferred_for_human_dry_run_evidence": ["F07", "F08", "F09", "F10", "F11", "F12"],
+  "findings_touched_incidentally": [],
+  "confidence_field_semantics": {
+    "traced_from": [
+      "syntax-tree-refurbished-backend/src/syntax_tree_refurbished/app/architecture_map/projection.py",
+      "syntax-tree-refurbished-backend/src/syntax_tree_refurbished/app/overview/system_overview_generator.py"
+    ],
+    "meaning": "A deterministic, structural-analysis classification confidence -- how confident Laura's static-analysis pipeline is that an area/component/relationship was correctly identified/resolved/classified (e.g. a symbol scores 1.0 if its source region resolved, 0.6 if not; a repo-shape guess scores per how strong the local signals were). Never LLM-derived, never a claim-verification score.",
+    "label_applied": "map confidence",
+    "backend_field_unchanged": true
+  },
+  "no_backend_changes": true,
+  "no_research_semantics_changed": true,
+  "no_formal_study_materials_changed": true,
+  "no_participant_session": true,
+  "test_totals": {
+    "before": { "test_files": 5, "tests": 36 },
+    "after": { "test_files": 7, "tests": 48 },
+    "new_test_files": [
+      "syntax-tree-ui/src/components/code/MonacoWrapper.test.tsx",
+      "syntax-tree-ui/src/features/observatory/RunPicker.test.tsx"
+    ],
+    "extended_test_files": [
+      "syntax-tree-ui/src/features/architectural-explanation/ArchitecturalExplanationPanel.test.tsx",
+      "syntax-tree-ui/src/features/observatory/VoiceRail.test.tsx"
+    ],
+    "all_passing": true
+  },
+  "typecheck": "clean (tsc --noEmit -p .)",
+  "lint": "clean (eslint .)",
+  "build": "succeeded (tsc -b && vite build)",
+  "e2e_chromium_result": "Not run via Playwright (tests:e2e:* scripts require a full backend+frontend Playwright harness not exercised in this round); live Chromium walkthrough performed instead via Claude-in-Chrome against the real running app -- see live_walkthrough below.",
+  "live_walkthrough": {
+    "repository": "pallets/flask @ 6a2f545bfd8ed31e19066a299296917e034aca58",
+    "frontend": "http://127.0.0.1:5175",
+    "path": "repository -> map -> Flask class -> full_dispatch_request -> Architectural Explanation -> SUPPORTED claim -> evidence chain -> Open source -> return",
+    "acceptance_checks": {
+      "A_no_confidence_verification_conflation": "PASS - map confidence now labeled 'NN% map confidence' with dashed/unfilled badge style, distinct from filled SUPPORTED/Verified pills, at orientation, component, and class/function levels",
+      "B_explanation_states_model_proposes_verifier_checks": "PASS - always-visible legend at top of Architectural Explanation panel: 'The model proposes architectural claims. Laura's then independently checks each one against recovered source evidence -- the model never decides what is true.'",
+      "C_supported_meaning_available_without_settings": "PASS - same legend states SUPPORTED = 'Laura's found deterministic source-derived evidence establishing this proposition,' visible without opening Settings",
+      "D_insufficient_evidence_meaning_without_implying_falsehood": "PASS (copy verified, not exercised live) - legend states 'Laura's does not currently have enough deterministic evidence to establish this proposition. It does NOT automatically mean the statement is false.' No INSUFFICIENT EVIDENCE claim occurred naturally in this round's live generation (all 5 claims were SUPPORTED), consistent with the original audit's finding",
+      "E_evidence_chain_readable_without_hashes": "PASS - evidence item now leads with 'CALLS' (human-readable relation), Open source button, and a collapsed 'Technical details' disclosure holding the raw symbol ids/producer/evidence id; a pre-existing shared CSS rule that clipped this heading to one letter was found and fixed during verification (index.css, .la-evidence-item .la-evidence-item__relation override)",
+      "F_open_source_highlights_exact_span": "PASS - app.py:1014 (the cited line) renders with a persistent gold background and left gutter marker; confirmed still present after 5+ seconds (old behavior cleared it via a 1.5s timer)",
+      "G_return_without_losing_context": "PASS - closing the source viewer returns to the exact same expanded evidence-chain state"
+    },
+    "regressions_checked": {
+      "accessible_table_auto_collapse": "PASS - unaffected, background-click auto-collapse still works",
+      "module_id_404_gating": "PASS - unaffected, Architectural Explanation button/panel logic (isExplainableEntity gating) not modified",
+      "settings_unsaved_state_semantics": "PASS - Settings screen unmodified, verified visually identical (Enabled checked, Provider OpenAI, key masked, Test connection vs Save both present)",
+      "provider_errors_recoverable": "PASS - a real transient 'Architectural explanation unavailable' state occurred during this round's own live verification; Retry recovered it successfully",
+      "one_explanation_load_one_provider_call": "Not independently re-instrumented this round (no code path touching request dedup was changed); prior dedup mechanism in features/architectural-explanation/api.ts left untouched"
+    }
+  },
+  "production_implementation_commit": null
+}

@@ -1,0 +1,122 @@
+{
+  "basis": "Manual comparison of every documented expectation with the immutable fixture source under qa-audit/phase-2/fixtures",
+  "classification_definition": {
+    "supported": "The named target and queried behavior are present in the fixture source.",
+    "partially_supported": "Related source exists, but the documented symbol name or behavior is not exact.",
+    "contradicted": "The named target or queried behavior does not exist, or the fixture directly identifies a different target."
+  },
+  "cases": [
+    {
+      "index": 1,
+      "classification": "supported",
+      "source_evidence": "main.py defines start_analysis and constructs RepositoryService."
+    },
+    {
+      "index": 2,
+      "classification": "contradicted",
+      "source_evidence": "There is no Parser class and no Python-file parsing. app/parser.py defines parse_repository, which constructs RepositoryRecord from a name and path."
+    },
+    {
+      "index": 3,
+      "classification": "contradicted",
+      "source_evidence": "There is no Document symbol and no dependency-storage implementation."
+    },
+    {
+      "index": 4,
+      "classification": "partially_supported",
+      "source_evidence": "app/parser.py raises ValueError for an empty path, but there is no Parser symbol or explicit error-handling component."
+    },
+    {
+      "index": 5,
+      "classification": "contradicted",
+      "source_evidence": "No documentation is generated. RepositoryService.describe only returns RepositoryRecord.label()."
+    },
+    {
+      "index": 6,
+      "classification": "contradicted",
+      "source_evidence": "No Parser class exists; app/parser.py contains the parse_repository function."
+    },
+    {
+      "index": 7,
+      "classification": "contradicted",
+      "source_evidence": "Neither parse_document nor AnalysisService exists. RepositoryService.register calls parse_repository."
+    },
+    {
+      "index": 8,
+      "classification": "supported",
+      "source_evidence": "src/index.ts defines startAnalysis."
+    },
+    {
+      "index": 9,
+      "classification": "supported",
+      "source_evidence": "src/parser.ts defines parseTypeScript; the documented Parser target is source-valid at module/function level, not as a class."
+    },
+    {
+      "index": 10,
+      "classification": "contradicted",
+      "source_evidence": "No dependency-storage behavior exists. src/types.ts defines the AnalysisResult interface."
+    },
+    {
+      "index": 11,
+      "classification": "contradicted",
+      "source_evidence": "src/analyzer.ts delegates to parseTypeScript and contains no error handling."
+    },
+    {
+      "index": 12,
+      "classification": "supported",
+      "source_evidence": "src/docs.ts defines generateDocumentation."
+    },
+    {
+      "index": 13,
+      "classification": "partially_supported",
+      "source_evidence": "The fixture defines RepositoryAnalyzer, not an exact Analyzer symbol."
+    },
+    {
+      "index": 14,
+      "classification": "contradicted",
+      "source_evidence": "src/analyzer.ts imports ./parser. src/index.ts imports ./analyzer and ./docs, not ./parser."
+    },
+    {
+      "index": 15,
+      "classification": "contradicted",
+      "source_evidence": "The mixed fixture has no repository-analysis workflow. backend/api.py starts task creation."
+    },
+    {
+      "index": 16,
+      "classification": "supported",
+      "source_evidence": "backend/services/validator.py defines validate_title, called by TaskService.create."
+    },
+    {
+      "index": 17,
+      "classification": "contradicted",
+      "source_evidence": "No dependency-storage behavior exists. TaskRepository stores Task instances and frontend TaskStore stores TaskView instances."
+    },
+    {
+      "index": 18,
+      "classification": "supported",
+      "source_evidence": "backend/domain/errors.py defines TaskValidationError and frontend/src/errors.ts defines formatError."
+    },
+    {
+      "index": 19,
+      "classification": "contradicted",
+      "source_evidence": "backend/reporting.py summarizes task counts; it does not generate documentation."
+    },
+    {
+      "index": 20,
+      "classification": "supported",
+      "source_evidence": "backend/services/task_service.py defines TaskService."
+    }
+  ],
+  "summary": {
+    "supported_count": 7,
+    "partially_supported_count": 2,
+    "contradicted_count": 11,
+    "literal_documented_string_in_top_five_count": 16,
+    "source_supported_literal_success_count": 7,
+    "literal_success_with_contradicted_expectation_count": 8,
+    "contradicted_literal_success_indices": [2, 5, 6, 10, 11, 15, 17, 19],
+    "partial_literal_success_indices": [13],
+    "partial_literal_miss_indices": [4],
+    "assessment": "The literal 16/20 score is not a semantic-accuracy score. Only seven documented answers are both fully supported by the fixture source and present in the measured top five."
+  }
+}

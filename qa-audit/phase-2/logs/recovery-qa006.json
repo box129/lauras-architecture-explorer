@@ -1,0 +1,90 @@
+{
+  "orientation_requests": [
+    {
+      "index": 0,
+      "status": 200,
+      "elapsed_ms": 190
+    },
+    {
+      "index": 1,
+      "status": 200,
+      "elapsed_ms": 206
+    },
+    {
+      "index": 2,
+      "status": 200,
+      "elapsed_ms": 223
+    },
+    {
+      "index": 3,
+      "status": 200,
+      "elapsed_ms": 222
+    },
+    {
+      "index": 4,
+      "status": 200,
+      "elapsed_ms": 253
+    },
+    {
+      "index": 5,
+      "status": 200,
+      "elapsed_ms": 253
+    },
+    {
+      "index": 6,
+      "status": 200,
+      "elapsed_ms": 252
+    },
+    {
+      "index": 7,
+      "status": 200,
+      "elapsed_ms": 251
+    },
+    {
+      "index": 8,
+      "status": 200,
+      "elapsed_ms": 252
+    },
+    {
+      "index": 9,
+      "status": 200,
+      "elapsed_ms": 250
+    },
+    {
+      "index": 10,
+      "status": 200,
+      "elapsed_ms": 263
+    },
+    {
+      "index": 11,
+      "status": 200,
+      "elapsed_ms": 260
+    }
+  ],
+  "simultaneous_duplicate": {
+    "statuses": [
+      200,
+      200
+    ],
+    "run_ids": [
+      "run:d516a59b2d1041eaa6917254131705e6",
+      "run:f752f5462e7348b38ed7308062e7b1cc"
+    ],
+    "same_run_id": false
+  },
+  "persistence": {
+    "refresh_landing": true,
+    "refresh_text": "Syntax Tree\nOpen legacy workspace\nCodebase observatory\nWhat repo do you want to understand?\n\nSyntax Tree scans a repository and turns it into a calm, source-backed architecture map. You can zoom through concepts, inspect flows, ask questions, and open the exact code behind each answer.\n\nSource-backed\nArchitecture claims stay tied to files, spans, and evidence.\nMeaning first\nThe first screen explains the system shape, not the folder tree.\nGuided progress\nAnalysis stages use human copy instead of raw pipeline jargon.\nStart a scan\n\nPaste a local repository path. Orientation appears first, then the map opens when deeper analysis is ready.\n\nAPI mode\nREPOSITORY PATH\nfixtures/typescript-small\nfixtures/python-nested\nAdvanced analysis settings\nBuild architecture map\n\nThe first repo orientation appears before the full architecture map. If the backend is offline, this screen will say so directly.",
+    "reopened_landing": true
+  },
+  "switching": {
+    "new_run_id": "run:792b39217de64484905d3c43bfc44338",
+    "shows_mixed": true,
+    "shows_python": false,
+    "shows_typescript": false
+  },
+  "first": {
+    "status": 200,
+    "run_id": "run:a4a7de80fa2e4ffc8e645504976618ea"
+  }
+}

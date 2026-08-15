@@ -1,0 +1,66 @@
+{
+  "preselection_timestamp_utc": "2026-08-13T11:15:40Z",
+  "note": "Written BEFORE any real OpenAI architectural-explanation request in this validation round. Selection used ONLY the frozen ground-truth artifact and the frozen D4 before/after evaluation records below, plus a read-only, deterministic (no-OpenAI) UI-reachability check of the same three entities via a reconnaissance analysis run -- Laura's LLM output was never consulted to choose these targets.",
+  "repository": "jd/tenacity",
+  "commit": "26f719dc73d3c5612b9c1b8d18a7883837790ad8",
+  "ground_truth_source": "research/real-repo-pilot/repos/r1-clean/ground_truth/claims.json (frozen pilot artifact, lauras-real-repo-pilot worktree; not modified)",
+  "pre_d4_results_source": "research/real-repo-pilot/repos/r1-clean/results/claims.json (frozen, lauras-real-repo-pilot worktree)",
+  "post_d4_results_source": "research/real-repo-pilot-d4-comparison/r1-clean/{claims.json,failures.json,metrics.json} (frozen, lauras-d4-comparison worktree)",
+  "reachability_check_method": "A reconnaissance repository analysis (POST /api/analyze against the pinned checkout, deterministic parsing only, no LLM/OpenAI call of any kind) confirmed all three target entities are directly reachable via the normal map drilldown before any target was finalized.",
+  "targets": [
+    {
+      "target_label": "A",
+      "category": "baseline-supported (already true and SUPPORTED before D4)",
+      "frozen_claim_id": "R1-TDC-2",
+      "source_entity_to_navigate_to": "BaseRetrying.iter",
+      "proposition": {
+        "kind": "direct_relation",
+        "relation_kind": "calls",
+        "subject": {"file_path": "tenacity/__init__.py", "qualified_name": "BaseRetrying.iter", "kind": "method"},
+        "object": {"file_path": "tenacity/__init__.py", "qualified_name": "BaseRetrying._begin_iter", "kind": "method"}
+      },
+      "expected_truth": "true",
+      "relevant_source_span": "tenacity/__init__.py:435 (call site: self._begin_iter(retry_state)), tenacity/__init__.py:441-456 (definition of _begin_iter)",
+      "historical_j3_status": "analyzer_support_status=supported, outcome=correct_support (pre-D4 results.json) -- one of the frozen pilot's original 7 true-supported claims",
+      "post_d4_status": "unaffected/unchanged by D4 (D4 only concerns inherited self.method() resolution; this is an already-same-class call)",
+      "why_selected": "A single, unambiguous, same-class direct method call already correctly supported before D4 existed -- the plainest 'baseline-supported' representative, confirmed UI-reachable (root -> tenacity/__init__.py -> BaseRetrying -> iter)."
+    },
+    {
+      "target_label": "B",
+      "category": "D4-recovered (inherited self.method() CALLS; incorrect_abstention before D4, correct_support after D4)",
+      "frozen_claim_id": "R1-TDC-1",
+      "source_entity_to_navigate_to": "Retrying.__call__",
+      "proposition": {
+        "kind": "direct_relation",
+        "relation_kind": "calls",
+        "subject": {"file_path": "tenacity/__init__.py", "qualified_name": "Retrying.__call__", "kind": "method"},
+        "object": {"file_path": "tenacity/__init__.py", "qualified_name": "BaseRetrying.begin", "kind": "method"}
+      },
+      "expected_truth": "true",
+      "relevant_source_span": "tenacity/__init__.py:544 (call site: self.begin()), tenacity/__init__.py:407-412 (definition of BaseRetrying.begin)",
+      "historical_j3_status": "analyzer_support_status=insufficient_evidence, outcome=incorrect_abstention, failure_category=call_resolution (pre-D4 results.json) -- 'begin' is inherited from BaseRetrying, not defined on Retrying itself; the pre-D4 python_call_extractor's documented same-class-only self.method() resolution scope left this unresolved.",
+      "post_d4_status": "Recovered -- one of the 3 claims (with R1-TRC-1, R1-TRC-3) whose true_supported count moved from 7 to 10 after the bounded D4 inherited-self-method improvement.",
+      "why_selected": "The canonical, simplest (direct_relation, not multi-hop reachability) example of the exact D4-recovery pattern the task asks for -- confirmed UI-reachable (root -> tenacity/__init__.py -> Retrying -> __call__)."
+    },
+    {
+      "target_label": "C",
+      "category": "additional representative (INHERITS, structurally different file/module from A/B)",
+      "frozen_claim_id": "R1-TDI-2",
+      "source_entity_to_navigate_to": "wait_random_exponential",
+      "proposition": {
+        "kind": "direct_relation",
+        "relation_kind": "inherits",
+        "subject": {"file_path": "tenacity/wait.py", "qualified_name": "wait_random_exponential", "kind": "class"},
+        "object": {"file_path": "tenacity/wait.py", "qualified_name": "wait_exponential", "kind": "class"}
+      },
+      "expected_truth": "true",
+      "relevant_source_span": "tenacity/wait.py:247 (class wait_random_exponential(wait_exponential):), tenacity/wait.py:201-244 (definition of wait_exponential)",
+      "historical_j3_status": "analyzer_support_status=supported, outcome=correct_support (pre-D4 results.json) -- another of the frozen pilot's 7 baseline true-supported claims",
+      "post_d4_status": "unaffected/unchanged by D4",
+      "why_selected": "Deliberately chosen from tenacity/wait.py (not tenacity/__init__.py, where both A and B live) and of a different proposition kind (inherits, not calls) for genuine structural diversity, per the task's explicit preference. Confirmed UI-reachable (root -> tenacity/wait.py -> wait_random_exponential)."
+    }
+  ],
+  "excluded_categories_note": "All three required categories (baseline-supported direct CALLS, D4-recovered inherited self.method() CALLS, structurally-different additional true proposition) are present among the frozen, in-scope, non-uncertain claims, so no substitution was needed.",
+  "nested_function_failures_excluded_from_llm_targets": "R1-TDC-5, R1-TRC-2, R1-FDC-5, R1-FRC-2 (all parser_coverage/resolution_failed) are deliberately NOT among the three LLM targets, per instructions -- handled separately in known-coverage-limitation.json without any OpenAI call.",
+  "targets_excluded_as_uncertain_or_out_of_scope": "R1-FRC-1 (EXCLUDED_AS_UNCERTAIN, out_of_scope) was not considered. All three chosen targets have in_scope=true and truth_label=true in the frozen ground-truth file."
+}

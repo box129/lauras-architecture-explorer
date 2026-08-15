@@ -1,0 +1,421 @@
+{
+  "startedAt": "2026-08-13T20:31:44.762Z",
+  "stevedoreRoot": "C:\\Users\\LENOVO T14\\Development\\lauras-gt-r3-stevedore\\research\\real-repo-pilot\\repos\\r3-challenging\\source",
+  "targets": {
+    "A": {
+      "status": 200,
+      "latencyMs": 5085,
+      "body": {
+        "analysis_run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+        "target_kind": "entity",
+        "target_id": "symbol:b510611202251e7eca4aa8db",
+        "explanation_id": "explanation:2bf16dd43f21f4bb8236c191",
+        "narrative": "What Laura's could establish:\n- __init__ calls _load_plugins.\n- __init__ calls _init_plugins.\n- __init__ reaches _load_one_plugin through a call path.\n- __init__ reaches list_entry_points through a call path.",
+        "claims": [
+          {
+            "id": "claim:79fd10684ec8466ac18f9c17",
+            "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+            "statement": "__init__ calls _load_plugins.",
+            "epistemic_type": "observed",
+            "support_status": "supported",
+            "confidence": null,
+            "producer": {
+              "producer_type": "llm",
+              "name": "architectural-explanation-verification-service",
+              "version": "",
+              "produced_at": "2026-08-13T20:32:13.807221Z"
+            },
+            "evidence_chain": {
+              "id": "evidence-chain:b19cf81618d84bf53d97904b",
+              "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+              "claim_id": "claim:79fd10684ec8466ac18f9c17",
+              "items": [
+                {
+                  "kind": "relationship",
+                  "id": "evidence-rel:2457b2218c1fe90be92392f4",
+                  "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+                  "producer": {
+                    "producer_type": "llm",
+                    "name": "architectural-explanation-verification-service",
+                    "version": "",
+                    "produced_at": "2026-08-13T20:32:13.807221Z"
+                  },
+                  "description": "calls relation symbol:b510611202251e7eca4aa8db -> symbol:0dc4d03ed3ffefc7201c5f7e, observed by python_call_extractor@0.3.0 (resolved, stevedore/extension.py:196-198)",
+                  "relationship_kind": "calls",
+                  "from_symbol_id": "symbol:b510611202251e7eca4aa8db",
+                  "to_symbol_id": "symbol:0dc4d03ed3ffefc7201c5f7e",
+                  "source_region_id": "region:435737d25e5534456f470b86"
+                }
+              ],
+              "reasoning": "",
+              "hop_count": 1
+            },
+            "proposition": {
+              "kind": "direct_relation",
+              "subject_entity_id": "symbol:b510611202251e7eca4aa8db",
+              "relation_kind": "calls",
+              "object_entity_id": "symbol:0dc4d03ed3ffefc7201c5f7e",
+              "path_entity_ids": []
+            },
+            "subject_symbol_ids": [
+              "symbol:b510611202251e7eca4aa8db",
+              "symbol:0dc4d03ed3ffefc7201c5f7e"
+            ],
+            "related_lens_ids": [],
+            "created_at": "2026-08-13T20:32:13.827876Z"
+          },
+          {
+            "id": "claim:6fb9d9fad3d7f82acc426bcf",
+            "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+            "statement": "__init__ calls _init_plugins.",
+            "epistemic_type": "observed",
+            "support_status": "supported",
+            "confidence": null,
+            "producer": {
+              "producer_type": "llm",
+              "name": "architectural-explanation-verification-service",
+              "version": "",
+              "produced_at": "2026-08-13T20:32:13.807221Z"
+            },
+            "evidence_chain": {
+              "id": "evidence-chain:e3f6c8294a02f4088dfc3311",
+              "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+              "claim_id": "claim:6fb9d9fad3d7f82acc426bcf",
+              "items": [
+                {
+                  "kind": "relationship",
+                  "id": "evidence-rel:30fde717150484a226930628",
+                  "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+                  "producer": {
+                    "producer_type": "llm",
+                    "name": "architectural-explanation-verification-service",
+                    "version": "",
+                    "produced_at": "2026-08-13T20:32:13.807221Z"
+                  },
+                  "description": "calls relation symbol:b510611202251e7eca4aa8db -> symbol:6f8e219bc96251e5c7709174, observed by python_call_extractor@0.3.0 (resolved, stevedore/extension.py:200-200)",
+                  "relationship_kind": "calls",
+                  "from_symbol_id": "symbol:b510611202251e7eca4aa8db",
+                  "to_symbol_id": "symbol:6f8e219bc96251e5c7709174",
+                  "source_region_id": "region:ae8c4707c3cdf0b9a25e035c"
+                }
+              ],
+              "reasoning": "",
+              "hop_count": 1
+            },
+            "proposition": {
+              "kind": "direct_relation",
+              "subject_entity_id": "symbol:b510611202251e7eca4aa8db",
+              "relation_kind": "calls",
+              "object_entity_id": "symbol:6f8e219bc96251e5c7709174",
+              "path_entity_ids": []
+            },
+            "subject_symbol_ids": [
+              "symbol:b510611202251e7eca4aa8db",
+              "symbol:6f8e219bc96251e5c7709174"
+            ],
+            "related_lens_ids": [],
+            "created_at": "2026-08-13T20:32:13.842389Z"
+          },
+          {
+            "id": "claim:9381423efb99d65e6b9600f2",
+            "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+            "statement": "__init__ reaches _load_one_plugin through a call path.",
+            "epistemic_type": "observed",
+            "support_status": "supported",
+            "confidence": null,
+            "producer": {
+              "producer_type": "llm",
+              "name": "architectural-explanation-verification-service",
+              "version": "",
+              "produced_at": "2026-08-13T20:32:13.807221Z"
+            },
+            "evidence_chain": {
+              "id": "evidence-chain:3d60da6910435e1afda81eef",
+              "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+              "claim_id": "claim:9381423efb99d65e6b9600f2",
+              "items": [
+                {
+                  "kind": "relationship",
+                  "id": "evidence-rel:2457b2218c1fe90be92392f4",
+                  "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+                  "producer": {
+                    "producer_type": "llm",
+                    "name": "architectural-explanation-verification-service",
+                    "version": "",
+                    "produced_at": "2026-08-13T20:32:13.807221Z"
+                  },
+                  "description": "calls relation symbol:b510611202251e7eca4aa8db -> symbol:0dc4d03ed3ffefc7201c5f7e, observed by python_call_extractor@0.3.0 (resolved, stevedore/extension.py:196-198)",
+                  "relationship_kind": "calls",
+                  "from_symbol_id": "symbol:b510611202251e7eca4aa8db",
+                  "to_symbol_id": "symbol:0dc4d03ed3ffefc7201c5f7e",
+                  "source_region_id": "region:435737d25e5534456f470b86"
+                },
+                {
+                  "kind": "relationship",
+                  "id": "evidence-rel:c56406f832805e941f63b350",
+                  "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+                  "producer": {
+                    "producer_type": "llm",
+                    "name": "architectural-explanation-verification-service",
+                    "version": "",
+                    "produced_at": "2026-08-13T20:32:13.807221Z"
+                  },
+                  "description": "calls relation symbol:0dc4d03ed3ffefc7201c5f7e -> symbol:5708779a865b962cdbbd08f8, observed by python_call_extractor@0.3.0 (resolved, stevedore/extension.py:300-302)",
+                  "relationship_kind": "calls",
+                  "from_symbol_id": "symbol:0dc4d03ed3ffefc7201c5f7e",
+                  "to_symbol_id": "symbol:5708779a865b962cdbbd08f8",
+                  "source_region_id": "region:8520776cc74175e6f3a75c7e"
+                }
+              ],
+              "reasoning": "",
+              "hop_count": 2
+            },
+            "proposition": {
+              "kind": "reachability",
+              "subject_entity_id": "symbol:b510611202251e7eca4aa8db",
+              "relation_kind": "calls",
+              "object_entity_id": "symbol:5708779a865b962cdbbd08f8",
+              "path_entity_ids": [
+                "symbol:b510611202251e7eca4aa8db",
+                "symbol:0dc4d03ed3ffefc7201c5f7e",
+                "symbol:5708779a865b962cdbbd08f8"
+              ]
+            },
+            "subject_symbol_ids": [
+              "symbol:b510611202251e7eca4aa8db",
+              "symbol:5708779a865b962cdbbd08f8"
+            ],
+            "related_lens_ids": [],
+            "created_at": "2026-08-13T20:32:13.880550Z"
+          },
+          {
+            "id": "claim:58361b1605b5b49c39af0cf8",
+            "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+            "statement": "__init__ reaches list_entry_points through a call path.",
+            "epistemic_type": "observed",
+            "support_status": "supported",
+            "confidence": null,
+            "producer": {
+              "producer_type": "llm",
+              "name": "architectural-explanation-verification-service",
+              "version": "",
+              "produced_at": "2026-08-13T20:32:13.807221Z"
+            },
+            "evidence_chain": {
+              "id": "evidence-chain:73a84b00faef9a4f5caf30e4",
+              "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+              "claim_id": "claim:58361b1605b5b49c39af0cf8",
+              "items": [
+                {
+                  "kind": "relationship",
+                  "id": "evidence-rel:2457b2218c1fe90be92392f4",
+                  "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+                  "producer": {
+                    "producer_type": "llm",
+                    "name": "architectural-explanation-verification-service",
+                    "version": "",
+                    "produced_at": "2026-08-13T20:32:13.807221Z"
+                  },
+                  "description": "calls relation symbol:b510611202251e7eca4aa8db -> symbol:0dc4d03ed3ffefc7201c5f7e, observed by python_call_extractor@0.3.0 (resolved, stevedore/extension.py:196-198)",
+                  "relationship_kind": "calls",
+                  "from_symbol_id": "symbol:b510611202251e7eca4aa8db",
+                  "to_symbol_id": "symbol:0dc4d03ed3ffefc7201c5f7e",
+                  "source_region_id": "region:435737d25e5534456f470b86"
+                },
+                {
+                  "kind": "relationship",
+                  "id": "evidence-rel:433809601840eae4e60e17db",
+                  "run_id": "run:dcff63ed33a3496a82974b835c2bf809",
+                  "producer": {
+                    "producer_type": "llm",
+                    "name": "architectural-explanation-verification-service",
+                    "version": "",
+                    "produced_at": "2026-08-13T20:32:13.807221Z"
+                  },
+                  "description": "calls relation symbol:0dc4d03ed3ffefc7201c5f7e -> symbol:f5684e3dcd86b551043f68c1, observed by python_call_extractor@0.3.0 (resolved, stevedore/extension.py:297-297)",
+                  "relationship_kind": "calls",
+                  "from_symbol_id": "symbol:0dc4d03ed3ffefc7201c5f7e",
+                  "to_symbol_id": "symbol:f5684e3dcd86b551043f68c1",
+                  "source_region_id": "region:8b513257fbe1717942e493ac"
+                }
+              ],
+              "reasoning": "",
+              "hop_count": 2
+            },
+            "proposition": {
+              "kind": "reachability",
+              "subject_entity_id": "symbol:b510611202251e7eca4aa8db",
+              "relation_kind": "calls",
+              "object_entity_id": "symbol:f5684e3dcd86b551043f68c1",
+              "path_entity_ids": [
+                "symbol:b510611202251e7eca4aa8db",
+                "symbol:0dc4d03ed3ffefc7201c5f7e",
+                "symbol:f5684e3dcd86b551043f68c1"
+              ]
+            },
+            "subject_symbol_ids": [
+              "symbol:b510611202251e7eca4aa8db",
+              "symbol:f5684e3dcd86b551043f68c1"
+            ],
+            "related_lens_ids": [],
+            "created_at": "2026-08-13T20:32:13.916220Z"
+          }
+        ],
+        "supported_count": 4,
+        "insufficient_evidence_count": 0,
+        "producer": {
+          "producer_type": "llm",
+          "name": "architectural-explanation-verification-service",
+          "version": "",
+          "produced_at": "2026-08-13T20:32:13.916220Z"
+        },
+        "created_at": "2026-08-13T20:32:13.916220Z"
+      },
+      "dedupCheck": {
+        "requestCountObserved": 1,
+        "duplicates": []
+      },
+      "hasInsufficientEvidenceClaim": false,
+      "hasSupportedClaim": true,
+      "openSourceClicked": true,
+      "frozen_claim_id": "R3-TDC-1",
+      "run_id": "run:dcff63ed33a3496a82974b835c2bf809"
+    },
+    "B": {
+      "status": 200,
+      "latencyMs": 2491,
+      "body": {
+        "analysis_run_id": "run:ccb8dc0bc37442ba848cb1061b7a7d0d",
+        "target_kind": "entity",
+        "target_id": "symbol:458ffb0ea4f53f92d61b0afb",
+        "explanation_id": "explanation:3015a80c7a2cf5e6d2c31c1c",
+        "narrative": "What Laura's could not establish:\n- Laura's did not have sufficient deterministic evidence to establish that NamedExtensionManager inherits from NamedExtensionManager.",
+        "claims": [
+          {
+            "id": "claim:ed4969c48cad65f42a7a6ec9",
+            "run_id": "run:ccb8dc0bc37442ba848cb1061b7a7d0d",
+            "statement": "NamedExtensionManager inherits from NamedExtensionManager.",
+            "epistemic_type": "observed",
+            "support_status": "insufficient_evidence",
+            "confidence": null,
+            "producer": {
+              "producer_type": "llm",
+              "name": "architectural-explanation-verification-service",
+              "version": "",
+              "produced_at": "2026-08-13T20:32:50.846216Z"
+            },
+            "evidence_chain": {
+              "id": "evidence-chain:4677e3b59a6e11d86c03dae8",
+              "run_id": "run:ccb8dc0bc37442ba848cb1061b7a7d0d",
+              "claim_id": "claim:ed4969c48cad65f42a7a6ec9",
+              "items": [],
+              "reasoning": "no resolved 'inherits' relation directly connects 'symbol:458ffb0ea4f53f92d61b0afb' to 'symbol:458ffb0ea4f53f92d61b0afb' (a multi-hop path, or a partial/unresolved relation, does not satisfy a direct_relation proposition)",
+              "hop_count": 0
+            },
+            "proposition": {
+              "kind": "direct_relation",
+              "subject_entity_id": "symbol:458ffb0ea4f53f92d61b0afb",
+              "relation_kind": "inherits",
+              "object_entity_id": "symbol:458ffb0ea4f53f92d61b0afb",
+              "path_entity_ids": []
+            },
+            "subject_symbol_ids": [
+              "symbol:458ffb0ea4f53f92d61b0afb",
+              "symbol:458ffb0ea4f53f92d61b0afb"
+            ],
+            "related_lens_ids": [],
+            "created_at": "2026-08-13T20:32:50.847215Z"
+          }
+        ],
+        "supported_count": 0,
+        "insufficient_evidence_count": 1,
+        "producer": {
+          "producer_type": "llm",
+          "name": "architectural-explanation-verification-service",
+          "version": "",
+          "produced_at": "2026-08-13T20:32:50.847215Z"
+        },
+        "created_at": "2026-08-13T20:32:50.847215Z"
+      },
+      "dedupCheck": {
+        "requestCountObserved": 1,
+        "duplicates": []
+      },
+      "hasInsufficientEvidenceClaim": true,
+      "hasSupportedClaim": false,
+      "frozen_claim_id": "R3-TDI-1",
+      "run_id": "run:ccb8dc0bc37442ba848cb1061b7a7d0d"
+    },
+    "C": {
+      "status": 200,
+      "latencyMs": 5339,
+      "body": {
+        "analysis_run_id": "run:956cde13af1b4c6ebe513cd22535456e",
+        "target_kind": "entity",
+        "target_id": "symbol:319cb96c51176ea5bc6e6cac",
+        "explanation_id": "explanation:4a0901813201fbde5350f1f6",
+        "narrative": "What Laura's could not establish:\n- Laura's did not have sufficient deterministic evidence to establish that _load_one_plugin calls __init__.",
+        "claims": [
+          {
+            "id": "claim:0ccf934a6b754a36310ffad3",
+            "run_id": "run:956cde13af1b4c6ebe513cd22535456e",
+            "statement": "_load_one_plugin calls __init__.",
+            "epistemic_type": "observed",
+            "support_status": "insufficient_evidence",
+            "confidence": null,
+            "producer": {
+              "producer_type": "llm",
+              "name": "architectural-explanation-verification-service",
+              "version": "",
+              "produced_at": "2026-08-13T20:33:30.841819Z"
+            },
+            "evidence_chain": {
+              "id": "evidence-chain:61091da95218d6c618a7fb42",
+              "run_id": "run:956cde13af1b4c6ebe513cd22535456e",
+              "claim_id": "claim:0ccf934a6b754a36310ffad3",
+              "items": [],
+              "reasoning": "no resolved 'calls' relation directly connects 'symbol:319cb96c51176ea5bc6e6cac' to 'symbol:9313759e1b719660e808b6e7' (a multi-hop path, or a partial/unresolved relation, does not satisfy a direct_relation proposition)",
+              "hop_count": 0
+            },
+            "proposition": {
+              "kind": "direct_relation",
+              "subject_entity_id": "symbol:319cb96c51176ea5bc6e6cac",
+              "relation_kind": "calls",
+              "object_entity_id": "symbol:9313759e1b719660e808b6e7",
+              "path_entity_ids": []
+            },
+            "subject_symbol_ids": [
+              "symbol:319cb96c51176ea5bc6e6cac",
+              "symbol:9313759e1b719660e808b6e7"
+            ],
+            "related_lens_ids": [],
+            "created_at": "2026-08-13T20:33:30.842822Z"
+          }
+        ],
+        "supported_count": 0,
+        "insufficient_evidence_count": 1,
+        "producer": {
+          "producer_type": "llm",
+          "name": "architectural-explanation-verification-service",
+          "version": "",
+          "produced_at": "2026-08-13T20:33:30.842822Z"
+        },
+        "created_at": "2026-08-13T20:33:30.842822Z"
+      },
+      "dedupCheck": {
+        "requestCountObserved": 1,
+        "duplicates": []
+      },
+      "hasInsufficientEvidenceClaim": true,
+      "hasSupportedClaim": false,
+      "frozen_claim_id": "R3-TDC-5",
+      "run_id": "run:956cde13af1b4c6ebe513cd22535456e"
+    }
+  },
+  "analyzeStatus": 200,
+  "runId": "run:dcff63ed33a3496a82974b835c2bf809",
+  "mapMetadataLlmUsed": false,
+  "mapRootChildrenCount": 38,
+  "consoleErrors": [],
+  "finishedAt": "2026-08-13T20:33:38.990Z"
+}

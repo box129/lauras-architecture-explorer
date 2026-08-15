@@ -1,0 +1,156 @@
+{
+  "purpose": "Product/usability readiness for a non-scored human dry run -- NOT a research validation sample.",
+  "pre_round_state": {
+    "product_head_before_this_round": "314c298",
+    "working_tree_clean_before_this_round": true,
+    "cross_repository_synthesis_commit_present": "314c298",
+    "request_dedup_fix_present_in_product": "confirmed via grep of explanationCache/invalidateArchitecturalExplanationCache in syntax-tree-ui/src/features/architectural-explanation/api.ts"
+  },
+  "known_observation_reaudit": {
+    "A_accessible_table_overlay": {
+      "prior_classification": "documented, not changed (phase4-through-7-ux-audit.md)",
+      "current_finding": "STILL REPRODUCIBLE -- .obs-graph-alternative is still position:absolute, still overlays the canvas, unchanged since the prior audit",
+      "action_taken": "bounded fix: clicking the panel's own background/whitespace (not the summary toggle or a row-navigation button) now auto-collapses it, so a click intended for a canvas node underneath recovers on the next attempt instead of being silently swallowed",
+      "commit": "bf40cea",
+      "tests_added": 2,
+      "tests_passing": true
+    },
+    "B_module_id_404_noise": {
+      "prior_classification": "documented, not changed (phase4-through-7-ux-audit.md)",
+      "current_finding": "STILL REPRODUCIBLE -- the Architectural Explanation button/panel were shown and auto-fetched for ANY selected node, including non-symbol module/package/component-group container ids that api/routes/architectural_explanation.py always 404s for",
+      "action_taken": "bounded fix: the button and panel are now gated to entity ids that start with 'symbol:' (the only ids api/routes/architectural_explanation.py can ever resolve); confirmed live via the readiness walkthrough that the button is absent and no request fires when navigation lands on a genuine container node (app.py)",
+      "commit": "16ff43d",
+      "tests_added": 3,
+      "tests_passing": true,
+      "additional_observation_not_a_defect": "navigating through an INTERMEDIATE node that IS a real symbol (e.g. the Flask class itself, also a ParsedSymbol) while the panel is left open still auto-fetches for it -- this is correct behavior (a real, explainable entity), not 404 noise, and is a separate, lower-priority UX question (should leaving the panel open auto-fetch for every symbol passed through during navigation?) not in scope for this bounded fix"
+    }
+  },
+  "settings_usability": {
+    "gap_found": "A successful 'Test connection' showed only 'Connected successfully.' with no distinction from saved/enabled state -- a reasonable user could believe the feature was now active.",
+    "fix": "Added an isDirty comparison (form vs. last-saved values). A successful test while dirty now appends 'This only checked the connection -- it did not save or enable anything. Click Save to apply these settings.' Any unsaved edit shows a persistent 'Configuration has unsaved changes' hint until Save is clicked.",
+    "commit": "3011bcf",
+    "tests_added": 2,
+    "tests_passing": true,
+    "live_verification": "baseline (clean, already-saved) state screenshot captured (02-settings-current-state.png); the dirty-state hint itself verified via the 2 new component tests rather than an additional live capture"
+  },
+  "startup_shutdown_docs": {
+    "START_HERE_md_reviewed": true,
+    "START_HERE_md_changes_needed": false,
+    "OPENAI_CONFIGURATION_md_reviewed": true,
+    "OPENAI_CONFIGURATION_md_was_stale": true,
+    "OPENAI_CONFIGURATION_md_stale_findings": [
+      "Documented only 3 Provider values (off/openrouter/blackbox); an explicit 'OpenAI' provider value was added to the product since this doc was last written (app/investigation/providers.py, SUPPORTED_PROVIDERS)",
+      "Recommended the stale workaround of selecting 'OpenRouter' and overriding the Base URL to reach OpenAI, when a direct 'OpenAI' option now exists",
+      "Example model was 'gpt-5.6-luna' (never verified against a live account); replaced with 'gpt-5.4-mini', the model actually used and verified across every real-OpenAI validation round in this program",
+      "Did not document the automatic max_completion_tokens/reasoning_effort request-shape switch for OpenAI (commit b2849e8)",
+      "Did not document TLS verification behavior (SYNTAX_TREE_LLM_SSL_VERIFY) or the Save-vs-Test-connection distinction"
+    ],
+    "OPENAI_CONFIGURATION_md_rewritten": true,
+    "doctor_ps1_run": true,
+    "doctor_ps1_result": "READY",
+    "verified_against_running_backend": "GET /api/health confirmed provider=openai matches the corrected doc's guidance"
+  },
+  "dry_run_session_policy": {
+    "launcher": "start-lauras.ps1 / stop-lauras.ps1 (Vite dev server for the frontend + uvicorn dev server for the backend) -- this IS the actual accepted launcher; Laura's is NOT a packaged desktop application, and this is stated honestly in docs/usability-dry-run/README.md",
+    "facilitator_starts_laura_s_beforehand": true,
+    "participant_never_needs": [
+      "git worktrees",
+      "python virtual environments",
+      "backend logs",
+      "internal entity IDs",
+      "environment variables",
+      "developer tools"
+    ]
+  },
+  "dry_run_repository": {
+    "repository": "pallets/flask",
+    "commit": "6a2f545bfd8ed31e19066a299296917e034aca58",
+    "checkout_path": "C:\\Users\\LENOVO T14\\Development\\lauras-gt-r2-flask\\research\\real-repo-pilot\\repos\\r2-medium\\source\\src\\flask",
+    "rationale": "public, already validated, relatively strong deterministic coverage, multiple navigable entities/supported claims known, reduces risk the session becomes a static-analysis-limitation exercise rather than a usability one",
+    "ground_truth_exposed_to_participant": false
+  },
+  "readiness_walkthrough": {
+    "method": "real browser (Playwright + real Chromium) driving the actual UI end to end, no internal API substitution for navigation",
+    "run_summary_path": "readiness-walkthrough-summary.json",
+    "screenshots_dir": "screenshots/",
+    "steps_verified": {
+      "first_launch_ok": true,
+      "settings_key_never_shown_in_dom": true,
+      "analyze_status": 200,
+      "map_rendered_ok": true,
+      "entity_navigation_ok": true,
+      "explanation_request_completed": true,
+      "supported_claim_present_this_run": false,
+      "explanation_button_hidden_on_container_node": true,
+      "no_extra_request_on_container_nav": false,
+      "accessible_table_opened_ok": true,
+      "accessible_table_auto_collapsed_ok": true,
+      "harmless_mistake_recovery_ok": true,
+      "return_navigation_ok": true,
+      "architectural_explanation_request_count": 3,
+      "dedup_invariant_holds_for_every_entity": true,
+      "legacy_provider_traffic": "not applicable to this round -- no legacy investigation-provider calls occurred; only architectural-explanation OpenAI requests were made"
+    },
+    "unplanned_finding_during_walkthrough": {
+      "description": "A real, transient ssl.SSLError ('bad record mac', a corrupted/dropped TLS record mid-response -- a genuine network condition, not a code defect) occurred on the first Architectural Explanation request. It surfaced as a raw, unhandled HTTP 500 with no Retry/Settings guidance, instead of the friendly 'Architectural explanation unavailable' UX every other network-failure class already gets.",
+      "root_cause": "OpenAICompatibleInvestigationModel.complete_json only wrapped urllib.error.HTTPError/URLError into RuntimeError (which _verify_claims_or_503 catches and converts to a friendly 503); a bare ssl.SSLError is not a URLError subclass and escaped unwrapped.",
+      "fix": "Also catch OSError (ssl.SSLError's base class) and wrap it the same way.",
+      "commit": "43608b2",
+      "tests_added": 2,
+      "tests_passing": true,
+      "backend_full_suite_status": "528 passed",
+      "live_recapture_after_fix": "not performed -- the exact transient condition is not reliably reproducible on demand, and the backend restart required to load the fix cleared the runtime-only OpenAI credential (expected, documented behavior -- see docs/OPENAI_CONFIGURATION.md 'Credential handling'). The fix is verified via 2 new, deterministic unit tests instead. Re-entering the credential and re-confirming success is now the first step of docs/usability-dry-run/SESSION_CHECKLIST.md, before any actual participant session.",
+      "second_entity_in_same_run_succeeded": "the wsgi_app entity's explanation request (same run, same backend, before the fix) returned HTTP 200 -- confirming the failure was a one-off transient condition, not a systemic outage"
+    },
+    "backend_dev_reload_incident": {
+      "description": "Editing llm_model.py while the dev backend was live triggered uvicorn's --reload watcher mid-request; the backend process did not come back up cleanly and had to be restarted via stop-lauras.ps1 + start-lauras.ps1. This is a consequence of live-editing product code during this readiness round, not a defect exposed by or relevant to an actual dry-run participant (a participant's session does not edit product source).",
+      "resolved": true,
+      "resulting_credential_loss": "expected/documented -- see docs/OPENAI_CONFIGURATION.md 'Credential handling'; addressed via SESSION_CHECKLIST.md step 4"
+    }
+  },
+  "screenshots": [
+    "screenshots/01-first-launch.png",
+    "screenshots/02-settings-current-state.png",
+    "screenshots/03-analysis-progress.png",
+    "screenshots/04-architecture-map.png",
+    "screenshots/05a-flask-class-selected.png",
+    "screenshots/05b-entity-selected.png",
+    "screenshots/06-explanation-response.png",
+    "screenshots/07-evidence-chain.png",
+    "screenshots/08-open-source.png",
+    "screenshots/09-return-navigation-sibling-entity.png",
+    "screenshots/10-module-node-selected-no-explanation-button.png",
+    "screenshots/11-accessible-table-open.png",
+    "screenshots/12-accessible-table-auto-collapsed.png",
+    "screenshots/13-recovery-corrected-selection.png",
+    "screenshots/14-ready-state.png"
+  ],
+  "docs_usability_dry_run_artifacts": [
+    "docs/usability-dry-run/README.md",
+    "docs/usability-dry-run/FACILITATOR_GUIDE.md",
+    "docs/usability-dry-run/PARTICIPANT_TASKS.md",
+    "docs/usability-dry-run/OBSERVATION_SHEET.md",
+    "docs/usability-dry-run/DEBRIEF_QUESTIONS.md",
+    "docs/usability-dry-run/SESSION_CHECKLIST.md"
+  ],
+  "product_commits_this_round": [
+    { "commit": "3011bcf", "summary": "Distinguish a successful connection test from a saved/enabled configuration" },
+    { "commit": "bf40cea", "summary": "Auto-collapse the accessible-table overlay on a background click" },
+    { "commit": "16ff43d", "summary": "Gate Architectural Explanation to symbol entities only" },
+    { "commit": "43608b2", "summary": "Wrap low-level socket/TLS errors as friendly RuntimeError, not raw 500" }
+  ],
+  "research_mechanism_changed": false,
+  "formal_ab_c_protocol_touched": false,
+  "participant_recruited_or_run": false,
+  "final_state": {
+    "backend_running": true,
+    "frontend_running": true,
+    "backend_health_check": "ok",
+    "openai_credential_currently_present": false,
+    "openai_credential_note": "cleared by the dev-reload/restart incident above; must be re-entered via Settings before an actual participant session (SESSION_CHECKLIST.md step 4) -- this is normal, documented, process-memory-only credential behavior, not a defect",
+    "frontend_unit_tests": "36 passed (5 files)",
+    "backend_tests": "528 passed"
+  },
+  "verdict": "READY FOR NON-SCORED HUMAN DRY RUN",
+  "verdict_rationale": "All explicitly re-audited items resolved with bounded, tested fixes (accessible-table auto-collapse; module-id 404 gating; Settings dirty-state clarity; friendly-error wrapping for low-level network failures). Startup/operator docs verified against current running behavior and one stale doc (OPENAI_CONFIGURATION.md) corrected. Full real-browser walkthrough completed end to end on the chosen dry-run repository (Flask, pinned commit) with zero developer shortcuts. The one live blocker discovered (raw 500 on a transient network error) was found, root-caused, fixed, and verified via targeted unit tests plus the full backend suite -- not deferred. The only outstanding action before a real session is re-entering the OpenAI API key in Settings, which is a normal, already-documented pre-session step now codified as SESSION_CHECKLIST.md's first action, not a product blocker."
+}

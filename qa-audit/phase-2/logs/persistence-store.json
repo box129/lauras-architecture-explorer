@@ -1,0 +1,23 @@
+{
+  "captured_at": "2026-08-06",
+  "health_storage_declaration": {
+    "kind": "sqlite",
+    "path": ".syntax-tree-refurbished/backend.sqlite"
+  },
+  "filesystem_inspection": {
+    "database_file_exists": false,
+    "database_tables_inspected": 0,
+    "stored_repository_records_verified": false,
+    "stored_graph_records_verified": false,
+    "stored_documentation_records_verified": false,
+    "stored_semantic_index_records_verified": false
+  },
+  "browser_observation": {
+    "refresh_restored_active_run": false,
+    "reopen_restored_active_run": false
+  },
+  "restart_observation": {
+    "backend_only_restart": "blocked-by-orphaned-windows-listener",
+    "isolated_combined_instance": "reported-new-pids-but-exited-before-health-check"
+  }
+}

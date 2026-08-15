@@ -1,0 +1,130 @@
+{
+  "target": "C",
+  "clickedAtMs": 1786620119465,
+  "observedAtMs": 1786620121866,
+  "latencyFromClickMs": 2401,
+  "status": 200,
+  "body": {
+    "analysis_run_id": "run:486d620718544604a070c0cc5c7fed6b",
+    "target_kind": "entity",
+    "target_id": "symbol:2b8f9bd7828e1845e2dbd358",
+    "explanation_id": "explanation:c11d14bacc2e617e4264ee6f",
+    "narrative": "What Laura's could establish:\n- wait_exponential inherits from wait_base.\n- wait_random_exponential inherits from wait_exponential.",
+    "claims": [
+      {
+        "id": "claim:03d29c2c3a8efd108b43c635",
+        "run_id": "run:486d620718544604a070c0cc5c7fed6b",
+        "statement": "wait_exponential inherits from wait_base.",
+        "epistemic_type": "observed",
+        "support_status": "supported",
+        "confidence": null,
+        "producer": {
+          "producer_type": "llm",
+          "name": "architectural-explanation-verification-service",
+          "version": "",
+          "produced_at": "2026-08-13T11:22:01.799789Z"
+        },
+        "evidence_chain": {
+          "id": "evidence-chain:058ca5ea0c76a8c5b02afdb0",
+          "run_id": "run:486d620718544604a070c0cc5c7fed6b",
+          "claim_id": "claim:03d29c2c3a8efd108b43c635",
+          "items": [
+            {
+              "kind": "relationship",
+              "id": "evidence-rel:e9b421ea96cae37e39b789a0",
+              "run_id": "run:486d620718544604a070c0cc5c7fed6b",
+              "producer": {
+                "producer_type": "llm",
+                "name": "architectural-explanation-verification-service",
+                "version": "",
+                "produced_at": "2026-08-13T11:22:01.799789Z"
+              },
+              "description": "inherits relation symbol:d9d37900e4ebbff9e4c10ddb -> symbol:0a96f9705cf78f1a0a2b860d, observed by python_inheritance_extractor@0.2.0 (resolved, tenacity/wait.py:201-201)",
+              "relationship_kind": "inherits",
+              "from_symbol_id": "symbol:d9d37900e4ebbff9e4c10ddb",
+              "to_symbol_id": "symbol:0a96f9705cf78f1a0a2b860d",
+              "source_region_id": "region:bd2121c37ecd461a98ce5157"
+            }
+          ],
+          "reasoning": "",
+          "hop_count": 1
+        },
+        "proposition": {
+          "kind": "direct_relation",
+          "subject_entity_id": "symbol:d9d37900e4ebbff9e4c10ddb",
+          "relation_kind": "inherits",
+          "object_entity_id": "symbol:0a96f9705cf78f1a0a2b860d",
+          "path_entity_ids": []
+        },
+        "subject_symbol_ids": [
+          "symbol:d9d37900e4ebbff9e4c10ddb",
+          "symbol:0a96f9705cf78f1a0a2b860d"
+        ],
+        "related_lens_ids": [],
+        "created_at": "2026-08-13T11:22:01.824010Z"
+      },
+      {
+        "id": "claim:0dc10def2ca88a43d7d0999e",
+        "run_id": "run:486d620718544604a070c0cc5c7fed6b",
+        "statement": "wait_random_exponential inherits from wait_exponential.",
+        "epistemic_type": "observed",
+        "support_status": "supported",
+        "confidence": null,
+        "producer": {
+          "producer_type": "llm",
+          "name": "architectural-explanation-verification-service",
+          "version": "",
+          "produced_at": "2026-08-13T11:22:01.799789Z"
+        },
+        "evidence_chain": {
+          "id": "evidence-chain:13a8ae20c30f0322a2756011",
+          "run_id": "run:486d620718544604a070c0cc5c7fed6b",
+          "claim_id": "claim:0dc10def2ca88a43d7d0999e",
+          "items": [
+            {
+              "kind": "relationship",
+              "id": "evidence-rel:77cf5c897362cc2ec1de010f",
+              "run_id": "run:486d620718544604a070c0cc5c7fed6b",
+              "producer": {
+                "producer_type": "llm",
+                "name": "architectural-explanation-verification-service",
+                "version": "",
+                "produced_at": "2026-08-13T11:22:01.799789Z"
+              },
+              "description": "inherits relation symbol:2b8f9bd7828e1845e2dbd358 -> symbol:d9d37900e4ebbff9e4c10ddb, observed by python_inheritance_extractor@0.2.0 (resolved, tenacity/wait.py:247-247)",
+              "relationship_kind": "inherits",
+              "from_symbol_id": "symbol:2b8f9bd7828e1845e2dbd358",
+              "to_symbol_id": "symbol:d9d37900e4ebbff9e4c10ddb",
+              "source_region_id": "region:3352e223d4eea63f7429fffd"
+            }
+          ],
+          "reasoning": "",
+          "hop_count": 1
+        },
+        "proposition": {
+          "kind": "direct_relation",
+          "subject_entity_id": "symbol:2b8f9bd7828e1845e2dbd358",
+          "relation_kind": "inherits",
+          "object_entity_id": "symbol:d9d37900e4ebbff9e4c10ddb",
+          "path_entity_ids": []
+        },
+        "subject_symbol_ids": [
+          "symbol:2b8f9bd7828e1845e2dbd358",
+          "symbol:d9d37900e4ebbff9e4c10ddb"
+        ],
+        "related_lens_ids": [],
+        "created_at": "2026-08-13T11:22:01.852366Z"
+      }
+    ],
+    "supported_count": 2,
+    "insufficient_evidence_count": 0,
+    "producer": {
+      "producer_type": "llm",
+      "name": "architectural-explanation-verification-service",
+      "version": "",
+      "produced_at": "2026-08-13T11:22:01.852366Z"
+    },
+    "created_at": "2026-08-13T11:22:01.852366Z"
+  },
+  "bodyParseError": null
+}

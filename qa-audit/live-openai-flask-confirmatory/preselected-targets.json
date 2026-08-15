@@ -1,0 +1,63 @@
+{
+  "preselection_timestamp_utc": "2026-08-13T08:57:06Z",
+  "note": "This file was written BEFORE any real OpenAI architectural-explanation request was made in this confirmatory validation round. Selection used ONLY the frozen ground-truth artifact below -- Laura's own output was never consulted to choose these targets. This confirmatory run is a SEPARATE run from the earlier exploratory run (qa-audit/live-openai-flask-validation/, frozen at commit 0ce14da) -- it does not overwrite or replace that evidence.",
+  "repository": "pallets/flask",
+  "commit": "6a2f545bfd8ed31e19066a299296917e034aca58",
+  "ground_truth_source": "research/real-repo-pilot/repos/r2-medium/ground_truth/claims.json (frozen pilot artifact, located in the lauras-gt-r2-flask worktree; not modified)",
+  "excluded_claim_ids": ["R2-TDC-2", "R2-TDI-1", "R2-TRC-1", "R2-TDC-3", "R2-TDI-2"],
+  "exclusion_reason": "These 5 frozen claim ids were either an intentional target or a subsequently-matched generated proposition in the prior exploratory run (qa-audit/live-openai-flask-validation/) and must not be reused here.",
+  "targets": [
+    {
+      "target_label": "A",
+      "category": "direct CALLS",
+      "frozen_claim_id": "R2-TDC-1",
+      "source_entity_to_navigate_to": "Flask.run",
+      "proposition": {
+        "kind": "direct_relation",
+        "relation_kind": "calls",
+        "subject": {"file_path": "app.py", "qualified_name": "Flask.run", "kind": "method"},
+        "object": {"file_path": "cli.py", "qualified_name": "load_dotenv", "kind": "function"}
+      },
+      "expected_truth": "true",
+      "relevant_source_span": "src/flask/app.py:31 (module-level `from . import cli`), src/flask/app.py:710 (call site: cli.load_dotenv()), src/flask/cli.py:698 (def load_dotenv declaration)",
+      "why_selected": "Not used or matched in the exploratory run. A CROSS-MODULE direct call (app.py -> cli.py), giving different structural diversity from the exploratory run's same-class Flask method calls."
+    },
+    {
+      "target_label": "B",
+      "category": "INHERITS",
+      "frozen_claim_id": "R2-TDI-3",
+      "source_entity_to_navigate_to": "Blueprint (class, blueprints.py)",
+      "proposition": {
+        "kind": "direct_relation",
+        "relation_kind": "inherits",
+        "subject": {"file_path": "blueprints.py", "qualified_name": "Blueprint", "kind": "class"},
+        "object": {"file_path": "sansio/blueprints.py", "qualified_name": "Blueprint", "kind": "class"}
+      },
+      "expected_truth": "true",
+      "relevant_source_span": "src/flask/blueprints.py:10 (import of Blueprint from .sansio.blueprints as SansioBlueprint), src/flask/blueprints.py:18 (class Blueprint(SansioBlueprint): declaration)",
+      "why_selected": "The only remaining eligible INHERITS claim in the frozen ground truth after exclusion (R2-TDI-1/R2-TDI-2 already used). A distinct entity (flask.blueprints.Blueprint, never navigated to in the exploratory run) and a distinct inheritance case (aliased cross-module import) from the Flask/App/Scaffold chain already explored."
+    },
+    {
+      "target_label": "C",
+      "category": "path-specific REACHABILITY/CALLS",
+      "frozen_claim_id": "R2-TRC-2",
+      "source_entity_to_navigate_to": "Flask.wsgi_app",
+      "proposition": {
+        "kind": "reachability",
+        "relation_kind": "calls",
+        "subject": {"file_path": "app.py", "qualified_name": "Flask.wsgi_app", "kind": "method"},
+        "object": {"file_path": "app.py", "qualified_name": "Flask.dispatch_request", "kind": "method"},
+        "path": [
+          {"file_path": "app.py", "qualified_name": "Flask.wsgi_app", "kind": "method"},
+          {"file_path": "app.py", "qualified_name": "Flask.full_dispatch_request", "kind": "method"},
+          {"file_path": "app.py", "qualified_name": "Flask.dispatch_request", "kind": "method"}
+        ]
+      },
+      "expected_truth": "true",
+      "relevant_source_span": "src/flask/app.py:1597 (hop 1: self.full_dispatch_request(ctx) inside wsgi_app), src/flask/app.py:1016 (hop 2: self.dispatch_request(ctx) inside full_dispatch_request)",
+      "why_selected": "Not used or matched as a target in the exploratory run (R2-TRC-1 was used instead, from Flask.__call__; R2-TRC-3 was not selected here to keep the target ENTITY, Flask.wsgi_app, distinct from every entity directly navigated to as a target in the exploratory run -- wsgi_app only ever appeared there as evidence/an additional proposition within Target C, never as the navigated-to target entity itself)."
+    }
+  ],
+  "excluded_categories_note": "All three required categories (direct CALLS, INHERITS, path-specific REACHABILITY/CALLS) remain present among the eligible (non-excluded) frozen claims, so no nearest-available substitution was needed.",
+  "targets_excluded_as_uncertain_or_out_of_scope": "None selected; all three chosen targets have in_scope=true and truth_label=true in the frozen ground-truth file, and none are FALSE, uncertain, or dynamically indeterminate."
+}

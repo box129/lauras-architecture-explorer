@@ -1,0 +1,94 @@
+{
+  "phase": "semantic-architecture-overview-phase-c1",
+  "starting_head": "40838aa",
+  "design_freeze_commit": "373ebe5",
+  "hierarchy_algorithm": {
+    "name": "build_containment_hierarchy (structural_fallback.py)",
+    "method": "recursive path-compressing directory partition",
+    "compresses_single_child_chains": true,
+    "container_leaf_distinction": "derived (does any node point at this id as parent_group_id), not a second kind value",
+    "max_depth": 6,
+    "real_max_depth_observed": 5
+  },
+  "backend_contract_change": {
+    "new_field": "ArchitectureMapNode.parent_group_id: str | None = None",
+    "new_routes": false,
+    "overview_response_now_eager_for": "every container/leaf-group node at every depth",
+    "leaf_members_still_lazy": true,
+    "new_metadata_field": "containment {total_modules, top_level_regions, total_sections}"
+  },
+  "frontend_mechanism": {
+    "compound_node_support": "@xyflow/react@12.10.2 parentId + extent:'parent' (already installed, no new library)",
+    "new_layout_function": "layoutContainmentNodes (mapLayout.ts)",
+    "expand_collapse_state": "local ephemeral canvas React state, never touches navigation/breadcrumb/URL"
+  },
+  "topic_similarity_mvp_live_numbers": {
+    "total_modules": 267,
+    "total_hierarchy_nodes": 63,
+    "total_groups": 62,
+    "top_level_regions": 6,
+    "container_count": 13,
+    "leaf_count": 49,
+    "max_nesting_depth": 5,
+    "overview_fetch_ms": 20,
+    "container_children_fetch_ms": 334,
+    "leaf_children_fetch_ms": 58,
+    "expansion_network_cost_ms": 0,
+    "example_direct_files_edge_case": "backend (direct files): 8 modules alongside backend/prisma, backend/scripts, backend/src, backend/tests"
+  },
+  "phase_b_vs_c1_visible_object_comparison": {
+    "flask_before_c1_top_level_cards": 3,
+    "flask_after_c1_top_level_cards": 3,
+    "flask_note": "unchanged -- single-level repo, no real branching beyond depth 1",
+    "topic_similarity_mvp_flat_file_count_if_ungrouped": 267,
+    "topic_similarity_mvp_top_level_regions_after_c1": 6,
+    "topic_similarity_mvp_total_sections_after_c1": 62
+  },
+  "viewport_results": {
+    "1920x1080": "not tested (no larger display/window surface available in this environment)",
+    "1366x768": "clean, no overlap",
+    "1280x720": "clean, no overlap, entire Overview fit-to-view"
+  },
+  "flask_regression_result": "identical to Phase B behavior, confirmed live, zero console errors",
+  "phase_a_navigation_regression_result": "pass -- full Overview->Group->Module->Entity->Back x3->Overview chain confirmed live",
+  "participant_1_remediation_regression_result": "pass -- icons, unified Back, breadcrumb all intact",
+  "accessible_representation_result": "pass -- Parent section column added, table mirrors canvas expand/collapse state exactly, container rows toggle expand not navigate",
+  "tests": {
+    "backend_total": 565,
+    "backend_failures": 0,
+    "backend_grouping_tests": 20,
+    "frontend_total": 106,
+    "frontend_failures": 0,
+    "typecheck_build": "pass",
+    "lint": "pass",
+    "canvas_direct_reactflow_click_tests": "not covered (jsdom cannot measure real DOM layout for ReactFlow custom nodes -- pre-existing, documented limitation of this test file); covered by live browser walkthrough instead"
+  },
+  "state_1_mockup_fidelity_score": 78,
+  "state_1_mockup_fidelity_target": 75,
+  "state_1_mockup_fidelity_meets_target": true,
+  "concept_01a_comparison": "large enclosing regions with real nested member cards -- matches closely; relationship lines between regions still absent (deliberate, no deterministic rule exists)",
+  "concept_01b_comparison": "fewer, larger top-level cards achieved (6 regions vs 267 flat files); domain names remain path-based, not invented semantic labels (deliberate)",
+  "participant_2_failure_mechanism_addressed": "The specific visual mechanism behind the observed complaint -- a flat wall of same-looking peer cards with no visible containment -- is now materially addressed: the Overview renders real, multi-level enclosing regions with correct member counts. Whether this alone satisfies a future participant's expectation of *named functional* categories (the other half of the original finding) is not something this implementation can claim -- that is Phase C3's explicit target, not C1's.",
+  "confirmations": {
+    "no_relation_clustering_implemented": true,
+    "no_ai_group_labels_implemented": true,
+    "no_c4_right_panel_redesign_implemented": true,
+    "no_c5_settings_redesign_implemented": true,
+    "research_semantics_unchanged": true,
+    "formal_study_materials_unchanged": true,
+    "no_participant_session_started": true
+  },
+  "artifacts": [
+    "qa-audit/semantic-architecture-c1/REPORT.md",
+    "qa-audit/semantic-architecture-c1/result.json",
+    "qa-audit/semantic-architecture-c1/screenshots/01-topic-overview-nested.jpg",
+    "qa-audit/semantic-architecture-c1/screenshots/02-topic-backend-expanded.jpg",
+    "qa-audit/semantic-architecture-c1/screenshots/03-topic-source-expanded.jpg",
+    "qa-audit/semantic-architecture-c1/screenshots/04-topic-group-drilldown.jpg",
+    "qa-audit/semantic-architecture-c1/screenshots/05-accessible-hierarchy.jpg",
+    "qa-audit/semantic-architecture-c1/screenshots/06-flask-overview-regression.jpg",
+    "qa-audit/semantic-architecture-c1/screenshots/07-topic-overview-1366x768.jpg",
+    "qa-audit/semantic-architecture-c1/screenshots/08-topic-overview-1280x720.jpg"
+  ],
+  "final_classification": "READY FOR C1 VISUAL REVIEW"
+}

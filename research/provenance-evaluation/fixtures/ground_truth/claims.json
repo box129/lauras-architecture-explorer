@@ -1,0 +1,276 @@
+{
+  "schema_version": "1.0",
+  "schema_description": [
+    "Ground truth for the toy 'python_app' fixture (see ../python_app/).",
+    "",
+    "Top-level fields:",
+    "  fixture_root      : path (relative to this file's ../..) of the source tree the claims are about.",
+    "  claims            : list of ClaimGroundTruth objects, described below.",
+    "",
+    "ClaimGroundTruth fields (kept close to the ArchitecturalClaim / EvidenceItem",
+    "vocabulary used elsewhere in this initiative -- claim_id/text/epistemic_type/",
+    "support_status/evidence -- so a future wiring-up to the real domain model is a",
+    "rename, not a redesign):",
+    "  claim_id                : short stable id, referenced by candidate claim sets.",
+    "  text                    : natural-language claim text.",
+    "  category                : one of the 4 evaluation buckets --",
+    "                              'supported_observed'    - true, single evidence item suffices.",
+    "                              'supported_multi_hop'    - true, requires chaining >=2 evidence items.",
+    "                              'insufficient_evidence'  - plausible-sounding but the fixture neither",
+    "                                                          confirms nor denies it (no evidence exists",
+    "                                                          either way). This includes claims about a",
+    "                                                          behavior/relationship the analyzer simply",
+    "                                                          cannot find any code for -- absence of a",
+    "                                                          match is NOT treated as a refutation (see",
+    "                                                          claims C6/C7/C8/C9).",
+    "                              'contradicted'            - false, and the available evidence positively",
+    "                                                          establishes an INCOMPATIBLE fact -- not just an",
+    "                                                          absence of confirming evidence. Reserved for",
+    "                                                          claims about a closed, authoritative structural",
+    "                                                          relation (e.g. an explicit class-inheritance",
+    "                                                          declaration, whose direct base-class list is",
+    "                                                          complete by construction) where the actual fact",
+    "                                                          is provably incompatible with the claim (see C10).",
+    "  expected_support_status : the ClaimSupportStatus a correct system should output --",
+    "                              'supported' | 'insufficient_evidence' | 'contradicted'.",
+    "                              (For category supported_observed/supported_multi_hop this is always",
+    "                              'supported'; for insufficient_evidence/contradicted categories this",
+    "                              equals the category name -- the category IS the expected status.)",
+    "  expected_epistemic_type : the ClaimEpistemicType a correct system should output --",
+    "                              'observed' (directly evidenced by one fact) |",
+    "                              'inferred' (requires chaining/combining evidence).",
+    "  expected_evidence       : ordered list of EvidenceItemGroundTruth (empty list for",
+    "                              insufficient_evidence claims, since no evidence exists either way).",
+    "                              Order matters for multi-hop claims: it is the hop order of the chain.",
+    "",
+    "EvidenceItemGroundTruth fields:",
+    "  evidence_id       : short stable id local to this claim.",
+    "  evidence_type     : 'source_span' | 'relationship'.",
+    "  hop_index          : 1-based position in the evidence chain (null for single-hop claims).",
+    "  file               : path relative to fixtures/ (e.g. 'python_app/controllers/order_controller.py').",
+    "  start_line/end_line: 1-based inclusive line range in `file` that constitutes the evidence.",
+    "  symbol_id           : dotted id of the enclosing symbol, for evidence_type='source_span'.",
+    "  relationship_type   : 'calls' | 'operates_on' | 'inherits', for evidence_type='relationship'.",
+    "  source_symbol_id    : dotted id of the relationship's source symbol, for evidence_type='relationship'.",
+    "  target_symbol_id    : dotted id of the relationship's target symbol, for evidence_type='relationship'.",
+    "  supports_or_refutes : 'supports' | 'refutes'. Almost all evidence items support their claim;",
+    "                         for 'contradicted' claims the cited evidence instead REFUTES the claim",
+    "                         (e.g. OrderRepository's actual, complete base-class list, which a correct",
+    "                         system should cite as the reason claim C10 -- asserting a different base",
+    "                         class -- is false).",
+    "  note               : free-text explanation of why this evidence item is relevant.",
+    "",
+    "Symbol id convention: '<dotted module path>.<ClassName>.<method_name>' or",
+    "'<dotted module path>.<ClassName>' for a class as a whole, rooted at 'python_app'."
+  ],
+  "fixture_root": "python_app",
+  "claims": [
+    {
+      "claim_id": "C1",
+      "text": "OrderController.place_order calls OrderService.create_order.",
+      "category": "supported_observed",
+      "expected_support_status": "supported",
+      "expected_epistemic_type": "observed",
+      "expected_evidence": [
+        {
+          "evidence_id": "C1-E1",
+          "evidence_type": "relationship",
+          "hop_index": null,
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.controllers.order_controller.OrderController.place_order",
+          "target_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "file": "python_app/controllers/order_controller.py",
+          "start_line": 22,
+          "end_line": 22,
+          "supports_or_refutes": "supports",
+          "note": "Call site 'self.order_service.create_order(...)' inside place_order."
+        }
+      ]
+    },
+    {
+      "claim_id": "C2",
+      "text": "OrderService.create_order calls PaymentService.charge to process payment.",
+      "category": "supported_observed",
+      "expected_support_status": "supported",
+      "expected_epistemic_type": "observed",
+      "expected_evidence": [
+        {
+          "evidence_id": "C2-E1",
+          "evidence_type": "relationship",
+          "hop_index": null,
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "target_symbol_id": "python_app.services.payment_service.PaymentService.charge",
+          "file": "python_app/services/order_service.py",
+          "start_line": 34,
+          "end_line": 34,
+          "supports_or_refutes": "supports",
+          "note": "Call site 'self.payment_service.charge(customer_id, amount)' inside create_order."
+        }
+      ]
+    },
+    {
+      "claim_id": "C3",
+      "text": "OrderService.create_order calls OrderRepository.save to persist the order.",
+      "category": "supported_observed",
+      "expected_support_status": "supported",
+      "expected_epistemic_type": "observed",
+      "expected_evidence": [
+        {
+          "evidence_id": "C3-E1",
+          "evidence_type": "relationship",
+          "hop_index": null,
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "target_symbol_id": "python_app.repositories.order_repository.OrderRepository.save",
+          "file": "python_app/services/order_service.py",
+          "start_line": 36,
+          "end_line": 36,
+          "supports_or_refutes": "supports",
+          "note": "Call site 'self.repository.save(order)' inside create_order."
+        }
+      ]
+    },
+    {
+      "claim_id": "C4",
+      "text": "OrderController transitively depends on the Order entity, via OrderService and OrderRepository.",
+      "category": "supported_multi_hop",
+      "expected_support_status": "supported",
+      "expected_epistemic_type": "inferred",
+      "expected_evidence": [
+        {
+          "evidence_id": "C4-E1",
+          "evidence_type": "relationship",
+          "hop_index": 1,
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.controllers.order_controller.OrderController.place_order",
+          "target_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "file": "python_app/controllers/order_controller.py",
+          "start_line": 22,
+          "end_line": 22,
+          "supports_or_refutes": "supports",
+          "note": "Hop 1: Controller calls Service."
+        },
+        {
+          "evidence_id": "C4-E2",
+          "evidence_type": "relationship",
+          "hop_index": 2,
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "target_symbol_id": "python_app.repositories.order_repository.OrderRepository.save",
+          "file": "python_app/services/order_service.py",
+          "start_line": 36,
+          "end_line": 36,
+          "supports_or_refutes": "supports",
+          "note": "Hop 2: Service calls Repository."
+        },
+        {
+          "evidence_id": "C4-E3",
+          "evidence_type": "relationship",
+          "hop_index": 3,
+          "relationship_type": "operates_on",
+          "source_symbol_id": "python_app.repositories.order_repository.OrderRepository.save",
+          "target_symbol_id": "python_app.models.order.Order",
+          "file": "python_app/repositories/order_repository.py",
+          "start_line": 25,
+          "end_line": 25,
+          "supports_or_refutes": "supports",
+          "note": "Hop 3: Repository.save operates on the Order entity ('self._orders[order.order_id] = order')."
+        }
+      ]
+    },
+    {
+      "claim_id": "C5",
+      "text": "OrderController transitively depends on PaymentService for payment processing, via OrderService.",
+      "category": "supported_multi_hop",
+      "expected_support_status": "supported",
+      "expected_epistemic_type": "inferred",
+      "expected_evidence": [
+        {
+          "evidence_id": "C5-E1",
+          "evidence_type": "relationship",
+          "hop_index": 1,
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.controllers.order_controller.OrderController.place_order",
+          "target_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "file": "python_app/controllers/order_controller.py",
+          "start_line": 22,
+          "end_line": 22,
+          "supports_or_refutes": "supports",
+          "note": "Hop 1: Controller calls Service."
+        },
+        {
+          "evidence_id": "C5-E2",
+          "evidence_type": "relationship",
+          "hop_index": 2,
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "target_symbol_id": "python_app.services.payment_service.PaymentService.charge",
+          "file": "python_app/services/order_service.py",
+          "start_line": 34,
+          "end_line": 34,
+          "supports_or_refutes": "supports",
+          "note": "Hop 2: Service calls PaymentService."
+        }
+      ]
+    },
+    {
+      "claim_id": "C6",
+      "text": "OrderController requires the customer to be authenticated via OAuth2 before placing an order.",
+      "category": "insufficient_evidence",
+      "expected_support_status": "insufficient_evidence",
+      "expected_epistemic_type": "observed",
+      "expected_evidence": [],
+      "note": "Nothing in the fixture implements or references authentication of any kind, so this is neither confirmed nor denied -- it is simply unaddressed."
+    },
+    {
+      "claim_id": "C7",
+      "text": "OrderService sends a confirmation email to the customer after placing an order.",
+      "category": "insufficient_evidence",
+      "expected_support_status": "insufficient_evidence",
+      "expected_epistemic_type": "observed",
+      "expected_evidence": [],
+      "note": "create_order() only charges and persists; there is no email/notification code anywhere in the fixture, but also no code that positively rules email out -- unaddressed, not refuted."
+    },
+    {
+      "claim_id": "C8",
+      "text": "PaymentService.charge performs fraud detection (risk scoring / anomaly analysis) on transactions before charging them.",
+      "category": "insufficient_evidence",
+      "expected_support_status": "insufficient_evidence",
+      "expected_epistemic_type": "observed",
+      "expected_evidence": [],
+      "note": "CORRECTED (2026-08-07): previously misclassified as 'contradicted' on the theory that the full visible body of charge() containing no fraud-detection code refutes the claim. That is an absence-of-evidence argument, not a positive incompatible fact -- the analyzed representation only shows what THIS method does, not that fraud detection cannot happen anywhere else (e.g. in a real gateway this mock stands in for, or upstream middleware). Per corrected support-status semantics, absence of a matching relationship/behavior must be insufficient_evidence, never contradicted. See claim C10 for a genuine contradiction built on a closed, authoritative fact instead."
+    },
+    {
+      "claim_id": "C9",
+      "text": "OrderRepository persists Order entities to a SQL database.",
+      "category": "insufficient_evidence",
+      "expected_support_status": "insufficient_evidence",
+      "expected_epistemic_type": "observed",
+      "expected_evidence": [],
+      "note": "CORRECTED (2026-08-07): previously misclassified as 'contradicted' on the theory that the visible in-memory dict storage in this file, with no SQL/ORM/DB client referenced, refutes the claim. That is the same absence-of-evidence flaw as the former C8: not finding SQL usage in one file does not positively establish SQL is never used anywhere in the system. Per corrected support-status semantics this must be insufficient_evidence. See claim C10 for a genuine contradiction built on a closed, authoritative fact (explicit class inheritance) instead."
+    },
+    {
+      "claim_id": "C10",
+      "text": "OrderRepository extends SqlRepository.",
+      "category": "contradicted",
+      "expected_support_status": "contradicted",
+      "expected_epistemic_type": "observed",
+      "expected_evidence": [
+        {
+          "evidence_id": "C10-E1",
+          "evidence_type": "relationship",
+          "hop_index": null,
+          "relationship_type": "inherits",
+          "source_symbol_id": "python_app.repositories.order_repository.OrderRepository",
+          "target_symbol_id": "python_app.repositories.base.InMemoryRepository",
+          "file": "python_app/repositories/order_repository.py",
+          "start_line": 25,
+          "end_line": 25,
+          "supports_or_refutes": "refutes",
+          "note": "'class OrderRepository(InMemoryRepository):' -- a class statement's direct base-class list is complete and AST-visible by construction (unlike runtime behavior, which can never be fully enumerated by reading one file). The actual, complete base list is exactly {InMemoryRepository}; SqlRepository is not, and cannot be, an undeclared additional direct base. This positively establishes a fact (the true base) incompatible with the claim, which is what makes this a genuine CONTRADICTED case rather than an insufficient_evidence one -- contrast with C8/C9."
+        }
+      ]
+    }
+  ]
+}

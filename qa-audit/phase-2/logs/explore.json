@@ -1,0 +1,181 @@
+{
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "responses": [
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/hooks.ts",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/websocket.ts",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/client.ts",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/tokenStore.ts",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/analyze",
+      "method": "POST"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3Ad89169d9b9b04edbaf8000abbe811b9f/orientation",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3Ad89169d9b9b04edbaf8000abbe811b9f/orientation",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/flows?limit=50",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3Ad89169d9b9b04edbaf8000abbe811b9f/orientation",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3Ad89169d9b9b04edbaf8000abbe811b9f/orientation",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3Ad89169d9b9b04edbaf8000abbe811b9f/orientation",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3Ad89169d9b9b04edbaf8000abbe811b9f/orientation",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3Ad89169d9b9b04edbaf8000abbe811b9f/orientation",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3Ad89169d9b9b04edbaf8000abbe811b9f/orientation",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3Ad89169d9b9b04edbaf8000abbe811b9f/orientation",
+      "method": "GET"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3Ad89169d9b9b04edbaf8000abbe811b9f/orientation",
+      "method": "GET"
+    }
+  ],
+  "snapshots": [
+    {
+      "seconds": 0,
+      "url": "http://127.0.0.1:5473/",
+      "text": "Syntax Tree\nOpen legacy workspace\nCodebase observatory\nWhat repo do you want to understand?\n\nSyntax Tree scans a repository and turns it into a calm, source-backed architecture map. You can zoom through concepts, inspect flows, ask questions, and open the exact code behind each answer.\n\nSource-backed\nArchitecture claims stay tied to files, spans, and evidence.\nMeaning first\nThe first screen explains the system shape, not the folder tree.\nGuided progress\nAnalysis stages use human copy instead of raw pipeline jargon.\nStart a scan\n\nPaste a local repository path. Orientation appears first, then the map opens when deeper analysis is ready.\n\nAPI mode\nREPOSITORY PATH\nfixtures/python-nested\nAdvanced analysis settings\nStarting scan\n\nThe first repo orientation appears before the full architecture map. If the backend is offline, this screen will say so directly.\n\nBuilding the architecture map\nQueued for analysis\n\nPreparing the analysis job.\n\nOrientation pending\nOrienting repository\n\nLooking for manifests, framework signals, important areas, and starting points before deeper analysis finishes.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\n\nSuggested files pending\n\nQueued for analysis"
+    },
+    {
+      "seconds": 2,
+      "url": "http://127.0.0.1:5473/",
+      "text": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\npython-nested has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npyproject.toml\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    },
+    {
+      "seconds": 5,
+      "url": "http://127.0.0.1:5473/",
+      "text": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\npython-nested has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npyproject.toml\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    },
+    {
+      "seconds": 10,
+      "url": "http://127.0.0.1:5473/",
+      "text": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\npython-nested has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npyproject.toml\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    },
+    {
+      "seconds": 20,
+      "url": "http://127.0.0.1:5473/",
+      "text": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\npython-nested has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npyproject.toml\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    },
+    {
+      "seconds": 40,
+      "url": "http://127.0.0.1:5473/",
+      "text": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\npython-nested has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npyproject.toml\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    }
+  ],
+  "controls": [
+    {
+      "tag": "BUTTON",
+      "text": "Open navigation",
+      "role": null,
+      "href": null,
+      "disabled": false
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Run Active run\nloading",
+      "role": null,
+      "href": null,
+      "disabled": false
+    },
+    {
+      "tag": "BUTTON",
+      "text": "api mode",
+      "role": null,
+      "href": null,
+      "disabled": false
+    },
+    {
+      "tag": "BUTTON",
+      "text": "What does this architecture area do?",
+      "role": null,
+      "href": null,
+      "disabled": false
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Which code proves this?",
+      "role": null,
+      "href": null,
+      "disabled": false
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Submit question",
+      "role": null,
+      "href": null,
+      "disabled": false
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Lenses",
+      "role": null,
+      "href": null,
+      "disabled": false
+    }
+  ]
+}

@@ -1,0 +1,4178 @@
+{
+  "repo": "axios",
+  "path": "c:\\Users\\woled\\Desktop\\lauras work\\bench-repos\\axios",
+  "started_at": "2026-06-02T02:08:28.255Z",
+  "run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+  "job_id": "job:70dfb33b54a149c8a8944f94d1e618ab",
+  "network": [
+    {
+      "at": "2026-06-02T02:08:33.971Z",
+      "status": 200,
+      "method": "POST",
+      "url": "/api/analyze",
+      "body": {
+        "job_id": "job:70dfb33b54a149c8a8944f94d1e618ab",
+        "run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "status": "completed"
+      }
+    },
+    {
+      "at": "2026-06-02T02:08:34.028Z",
+      "status": 200,
+      "method": "GET",
+      "url": "/api/analyze/job%3A70dfb33b54a149c8a8944f94d1e618ab/status",
+      "body": {
+        "job_id": "job:70dfb33b54a149c8a8944f94d1e618ab",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "status": "completed",
+        "stage": "complete",
+        "repository_path": "c:\\Users\\woled\\Desktop\\lauras work\\bench-repos\\axios",
+        "error": "",
+        "created_at": "2026-06-02T02:08:30.660656Z",
+        "started_at": "2026-06-02T02:08:30.660666Z",
+        "completed_at": "2026-06-02T02:08:31.407602Z",
+        "progress": {
+          "stage": "complete",
+          "total_files": 435,
+          "files_parsed": 435,
+          "files_total": 435,
+          "can_render_frontend": true
+        },
+        "run_metadata": {
+          "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+          "repository_path": "c:\\Users\\woled\\Desktop\\lauras work\\bench-repos\\axios",
+          "comprehension_mode": "refurbished",
+          "scope": "snapshot",
+          "llm_active": false,
+          "fallback_used": false
+        }
+      }
+    },
+    {
+      "at": "2026-06-02T02:08:34.029Z",
+      "status": 200,
+      "method": "GET",
+      "url": "/api/analyze/job:70dfb33b54a149c8a8944f94d1e618ab/status",
+      "body": {
+        "job_id": "job:70dfb33b54a149c8a8944f94d1e618ab",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "status": "completed",
+        "stage": "complete",
+        "repository_path": "c:\\Users\\woled\\Desktop\\lauras work\\bench-repos\\axios",
+        "error": "",
+        "created_at": "2026-06-02T02:08:30.660656Z",
+        "started_at": "2026-06-02T02:08:30.660666Z",
+        "completed_at": "2026-06-02T02:08:31.407602Z",
+        "progress": {
+          "stage": "complete",
+          "total_files": 435,
+          "files_parsed": 435,
+          "files_total": 435,
+          "can_render_frontend": true
+        },
+        "run_metadata": {
+          "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+          "repository_path": "c:\\Users\\woled\\Desktop\\lauras work\\bench-repos\\axios",
+          "comprehension_mode": "refurbished",
+          "scope": "snapshot",
+          "llm_active": false,
+          "fallback_used": false
+        }
+      }
+    },
+    {
+      "at": "2026-06-02T02:10:02.371Z",
+      "status": 200,
+      "method": "GET",
+      "url": "/api/architecture-map",
+      "body": {
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "root": {
+          "id": "arch-root:c4a7c3661b549d60859fce16",
+          "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+          "label": "axios",
+          "kind": "system",
+          "level": 0,
+          "description": "axios is a promise-based HTTP client with a layered pipeline: public API → interceptor chain → adapter dispatch → response transformation. The codebase is organized into core pipeline, adapters, helpers, platform abstractions, and cancellation.",
+          "status": "verified",
+          "confidence": 0.7,
+          "source_refs": {
+            "overview_id": [
+              "overview:94f492f0047f0c9c41796bab"
+            ],
+            "source_region_ids": [
+              "region:e8b62253065100704640f7a2"
+            ]
+          },
+          "evidence_count": 1,
+          "children_count": 10,
+          "can_drilldown": true,
+          "primary_files": [
+            "lib/core/Axios.js"
+          ],
+          "related_concept_ids": [],
+          "related_flow_ids": [],
+          "graph_qn": null,
+          "legacy_type": null,
+          "warnings": [
+            "fetch adapter implementation details not yet read",
+            "adapter selection/auto-detection logic not confirmed from source",
+            "defaults/index.js transform pipeline not read",
+            "CancelToken + AbortController unification not confirmed"
+          ],
+          "unsupported_reason": null
+        },
+        "nodes": [
+          {
+            "id": "arch-root:c4a7c3661b549d60859fce16",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "axios",
+            "kind": "system",
+            "level": 0,
+            "description": "axios is a promise-based HTTP client with a layered pipeline: public API → interceptor chain → adapter dispatch → response transformation. The codebase is organized into core pipeline, adapters, helpers, platform abstractions, and cancellation.",
+            "status": "verified",
+            "confidence": 0.7,
+            "source_refs": {
+              "overview_id": [
+                "overview:94f492f0047f0c9c41796bab"
+              ],
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ]
+            },
+            "evidence_count": 1,
+            "children_count": 10,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "fetch adapter implementation details not yet read",
+              "adapter selection/auto-detection logic not confirmed from source",
+              "defaults/index.js transform pipeline not read",
+              "CancelToken + AbortController unification not confirmed"
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:d8467fff664ec1aa9188cdfe",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Public API Surface",
+            "kind": "component",
+            "level": 1,
+            "description": "axios() callable, axios.create(), axios.all(), axios.spread(), and HTTP method shortcuts (get/post/put/patch/delete/head/options/postForm etc.) exposed from lib/axios.js",
+            "status": "verified",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 1,
+            "children_count": 3,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:5b9ba86cef0764da52f9796f",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Request Pipeline Orchestrator",
+            "kind": "component",
+            "level": 1,
+            "description": "Axios class _request() method that merges config, validates transitional options, flattens headers, and sequences interceptors around dispatchRequest",
+            "status": "verified",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 1,
+            "children_count": 4,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:5ffd810a34cddf76e8121054",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Interceptor System",
+            "kind": "component",
+            "level": 1,
+            "description": "InterceptorManager maintains ordered lists of {fulfilled, rejected, runWhen, synchronous} handlers for both request and response phases; supports use/eject/clear/forEach",
+            "status": "insufficient",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 0,
+            "children_count": 3,
+            "can_drilldown": true,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "No exact source-backed evidence attached."
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:eb477bea6b065a9c568695c4",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Transport Adapters",
+            "kind": "external_boundary",
+            "level": 1,
+            "description": "Three pluggable adapters in lib/adapters/: xhr.js (browser XMLHttpRequest), http.js (Node.js http/https), fetch.js (Fetch API); selected by adapter auto-detection or explicit config",
+            "status": "insufficient",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 0,
+            "children_count": 4,
+            "can_drilldown": true,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "No exact source-backed evidence attached."
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:fdaf22174930bb899a1eaf80",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Response Transformation",
+            "kind": "component",
+            "level": 1,
+            "description": "dispatchRequest.js orchestrates data transformation before sending and after receiving; defaults/index.js defines default transformRequest/transformResponse functions including JSON serialization",
+            "status": "insufficient",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [],
+              "anchor_ids": [],
+              "related_file_paths": [
+                "Request/Response Transformation"
+              ]
+            },
+            "evidence_count": 0,
+            "children_count": 4,
+            "can_drilldown": true,
+            "primary_files": [
+              "Request/Response Transformation"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "No exact source-backed evidence attached."
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:49b3e3bacad9373ca9622993",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Header Management",
+            "kind": "component",
+            "level": 1,
+            "description": "AxiosHeaders class provides case-insensitive header storage, normalization, accessor methods, and concat/merge utilities used throughout the pipeline",
+            "status": "verified",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 1,
+            "children_count": 0,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:d1b3f562a0d688653ca2e6dc",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "URL Construction",
+            "kind": "component",
+            "level": 1,
+            "description": "lib/helpers/buildURL.js serializes params into query strings; lib/core/buildFullPath.js combines baseURL and relative URL; lib/helpers/isAbsoluteURL.js and combineURLs.js support this",
+            "status": "insufficient",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 0,
+            "children_count": 0,
+            "can_drilldown": false,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "No exact source-backed evidence attached."
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:2b9d284ab67d9938b7e517ae",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Cancellation",
+            "kind": "component",
+            "level": 1,
+            "description": "lib/cancel/ provides CancelToken (legacy) and AbortController-based cancellation; CanceledError extends AxiosError with isCancel flag",
+            "status": "verified",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 1,
+            "children_count": 0,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:b5d711a7f986a3eb20cf36dd",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Error Handling",
+            "kind": "component",
+            "level": 1,
+            "description": "AxiosError (lib/core/AxiosError.js) is the standard error class carrying config, request, response, and code; settle.js decides resolve vs reject based on validateStatus",
+            "status": "verified",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 1,
+            "children_count": 0,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:49152b5ef95e43e060054c14",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Platform & Environment Abstraction",
+            "kind": "component",
+            "level": 1,
+            "description": "lib/platform/ exposes environment-specific primitives (FormData, Blob, URLSearchParams, navigator, etc.) so core code stays isomorphic across browser and Node",
+            "status": "insufficient",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 0,
+            "children_count": 0,
+            "can_drilldown": false,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "No exact source-backed evidence attached."
+            ],
+            "unsupported_reason": null
+          }
+        ],
+        "edges": [
+          {
+            "id": "edge:be53cc7531a1fe3b2e5f0527",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:d8467fff664ec1aa9188cdfe",
+            "target": "component:5b9ba86cef0764da52f9796f",
+            "kind": "relationship",
+            "label": "delegates all requests to",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:8839c462369bd362f3a1cd0e",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:5b9ba86cef0764da52f9796f",
+            "target": "component:5ffd810a34cddf76e8121054",
+            "kind": "relationship",
+            "label": "sequences request and response interceptors from",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:7eae938c11b038bafb7bf33d",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:5b9ba86cef0764da52f9796f",
+            "target": "component:fdaf22174930bb899a1eaf80",
+            "kind": "relationship",
+            "label": "calls dispatchRequest which drives",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:f9c62c370a620c9e3c636842",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:fdaf22174930bb899a1eaf80",
+            "target": "component:eb477bea6b065a9c568695c4",
+            "kind": "relationship",
+            "label": "selects and invokes one of",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:54773e33956e50008ed82e12",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:5b9ba86cef0764da52f9796f",
+            "target": "component:49b3e3bacad9373ca9622993",
+            "kind": "relationship",
+            "label": "uses AxiosHeaders.concat to flatten headers",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:9c9e067607834850a0318d2d",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:5b9ba86cef0764da52f9796f",
+            "target": "component:d1b3f562a0d688653ca2e6dc",
+            "kind": "relationship",
+            "label": "uses buildFullPath + buildURL for getUri",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:17dc36ac734f636dfd11b94f",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:eb477bea6b065a9c568695c4",
+            "target": "component:2b9d284ab67d9938b7e517ae",
+            "kind": "relationship",
+            "label": "checks cancel token / AbortSignal before and during request",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:6d4851fb16667b4c987648d5",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:eb477bea6b065a9c568695c4",
+            "target": "component:b5d711a7f986a3eb20cf36dd",
+            "kind": "relationship",
+            "label": "rejects with AxiosError on network/timeout/status errors",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:719a1cd540fcd4d0cdf0c8f6",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:fdaf22174930bb899a1eaf80",
+            "target": "component:49152b5ef95e43e060054c14",
+            "kind": "relationship",
+            "label": "uses platform primitives for FormData detection etc.",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          }
+        ],
+        "diagnostics": {
+          "repo_shape": "python_http_client_library",
+          "projection_version": "system-overview-architecture-map-v1",
+          "warnings": [
+            "fetch adapter implementation details not yet read",
+            "adapter selection/auto-detection logic not confirmed from source",
+            "defaults/index.js transform pipeline not read",
+            "CancelToken + AbortController unification not confirmed",
+            "No exact source-backed evidence attached."
+          ],
+          "suppressed_app_only_nodes": [],
+          "nodes_without_evidence": [
+            "component:5ffd810a34cddf76e8121054",
+            "component:eb477bea6b065a9c568695c4",
+            "component:fdaf22174930bb899a1eaf80",
+            "component:d1b3f562a0d688653ca2e6dc",
+            "component:49152b5ef95e43e060054c14"
+          ],
+          "verified_node_count": 5,
+          "insufficient_node_count": 5,
+          "unsupported_node_count": 0
+        },
+        "metadata": {
+          "repository": {
+            "name": "axios",
+            "root_path": "C:\\Users\\woled\\Desktop\\lauras work\\bench-repos\\axios",
+            "file_count": 435
+          },
+          "overview_id": "overview:94f492f0047f0c9c41796bab",
+          "overview_status": "ready",
+          "overview_cached": false,
+          "llm_used": true,
+          "model": "blackboxai/anthropic/claude-sonnet-4.6"
+        }
+      }
+    },
+    {
+      "at": "2026-06-02T02:10:03.317Z",
+      "status": 200,
+      "method": "GET",
+      "url": "/api/architecture-map/nodes/component%3Ad8467fff664ec1aa9188cdfe/evidence?limit=40",
+      "body": {
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "node_id": "component:d8467fff664ec1aa9188cdfe",
+        "node": {
+          "id": "component:d8467fff664ec1aa9188cdfe",
+          "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+          "label": "Public API Surface",
+          "kind": "component",
+          "level": 1,
+          "description": "axios() callable, axios.create(), axios.all(), axios.spread(), and HTTP method shortcuts (get/post/put/patch/delete/head/options/postForm etc.) exposed from lib/axios.js",
+          "status": "verified",
+          "confidence": 0.5,
+          "source_refs": {
+            "source_region_ids": [
+              "region:e8b62253065100704640f7a2"
+            ],
+            "anchor_ids": [],
+            "related_file_paths": []
+          },
+          "evidence_count": 1,
+          "children_count": 3,
+          "can_drilldown": true,
+          "primary_files": [
+            "lib/core/Axios.js"
+          ],
+          "related_concept_ids": [],
+          "related_flow_ids": [],
+          "graph_qn": null,
+          "legacy_type": null,
+          "warnings": [],
+          "unsupported_reason": null
+        },
+        "evidence": [
+          {
+            "id": "evidence:45c7f7b9282d7336deb75daf",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "node_id": "component:d8467fff664ec1aa9188cdfe",
+            "evidence_kind": "component_source_region",
+            "source_ref_kind": "source_span",
+            "source_ref_id": "region:e8b62253065100704640f7a2",
+            "file_path": "lib/core/Axios.js",
+            "language": "javascript",
+            "start_line": 1,
+            "end_line": 277,
+            "text_preview": "'use strict'; import utils from '../utils.js'; import buildURL from '../helpers/buildURL.js'; import InterceptorManager from './InterceptorManager.js'; import dispatchRequest from './dispatchRequest.js'; import mergeConfig from './mergeConfig.js'; import buildFullPath from './buildFullPath.js'; import validator from '../helpers/validator.js'; import AxiosHea",
+            "status": "verified",
+            "confidence": 1,
+            "score": 1,
+            "reason": "Source region attached to System Overview.",
+            "is_stale": false
+          }
+        ],
+        "total": 1,
+        "limit": 40
+      }
+    },
+    {
+      "at": "2026-06-02T02:10:03.317Z",
+      "status": 200,
+      "method": "GET",
+      "url": "/api/architecture-map/nodes/component%3Ad8467fff664ec1aa9188cdfe/explanation",
+      "body": {
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "node_id": "component:d8467fff664ec1aa9188cdfe",
+        "status": "verified",
+        "generation_status": "cached",
+        "model": "blackboxai/anthropic/claude-sonnet-4.6",
+        "summary": "axios() callable, axios.create(), axios.all(), axios.spread(), and HTTP method shortcuts (get/post/put/patch/delete/head/options/postForm etc.) exposed from lib/axios.js",
+        "simple_explanation": "axios() callable, axios.create(), axios.all(), axios.spread(), and HTTP method shortcuts (get/post/put/patch/delete/head/options/postForm etc.) exposed from lib/axios.js",
+        "technical_explanation": "axios() callable, axios.create(), axios.all(), axios.spread(), and HTTP method shortcuts (get/post/put/patch/delete/head/options/postForm etc.) exposed from lib/axios.js",
+        "responsibilities": [
+          {
+            "text": "axios() callable, axios.create(), axios.all(), axios.spread(), and HTTP method shortcuts (get/post/put/patch/delete/head/options/postForm etc.) exposed from lib/axios.js",
+            "support": "verified",
+            "evidence_ids": [
+              "evidence:45c7f7b9282d7336deb75daf"
+            ]
+          }
+        ],
+        "what_happens": [
+          {
+            "text": "1 source-backed evidence item(s) support this node.",
+            "support": "verified",
+            "evidence_ids": [
+              "evidence:45c7f7b9282d7336deb75daf"
+            ]
+          }
+        ],
+        "key_files": [
+          {
+            "file_path": "lib/core/Axios.js",
+            "reason": "Primary source evidence for this architecture node.",
+            "evidence_ids": [
+              "evidence:45c7f7b9282d7336deb75daf"
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "label": "delegates all requests to",
+            "reason": "",
+            "target_id": "component:5b9ba86cef0764da52f9796f"
+          }
+        ],
+        "gaps": [],
+        "warnings": [],
+        "suggested_questions": [
+          "How does adapter auto-selection work — what is the priority order between fetch, xhr, and http adapters?",
+          "How does the fetch adapter handle streaming responses differently from the XHR adapter?",
+          "What is the full list of config options and their defaults in lib/defaults/index.js?",
+          "How does CancelToken interact with AbortController — are they unified or separate code paths?",
+          "How does AxiosHeaders handle case-insensitive header normalization internally?"
+        ],
+        "evidence_ids": [
+          "evidence:45c7f7b9282d7336deb75daf"
+        ],
+        "prompt_hash": "system-overview",
+        "input_hash": "6eedd78ae31fb11b09fb730acfd5d41006709f39",
+        "reason": null
+      }
+    },
+    {
+      "at": "2026-06-02T02:10:03.337Z",
+      "status": 200,
+      "method": "GET",
+      "url": "/api/architecture-map/nodes/component%3Ad8467fff664ec1aa9188cdfe/implementation",
+      "body": {
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "node_id": "component:d8467fff664ec1aa9188cdfe",
+        "status": "verified",
+        "subject": {
+          "type": "architecture_node",
+          "id": "component:d8467fff664ec1aa9188cdfe"
+        },
+        "title": "Public API Surface",
+        "summary": "axios() callable, axios.create(), axios.all(), axios.spread(), and HTTP method shortcuts (get/post/put/patch/delete/head/options/postForm etc.) exposed from lib/axios.js",
+        "primary_span_id": "region:e8b62253065100704640f7a2",
+        "evidence_strength": 1,
+        "tabs": [
+          {
+            "file_path": "lib/core/Axios.js",
+            "language": "javascript",
+            "role": "primary",
+            "summary": "1 highlighted source region(s).",
+            "reason": "Exact source evidence from the System Overview.",
+            "source_span_ids": [
+              "region:e8b62253065100704640f7a2"
+            ],
+            "highlights": [
+              {
+                "span_id": "region:e8b62253065100704640f7a2",
+                "start_line": 1,
+                "end_line": 277,
+                "status": "verified",
+                "confidence": 1
+              }
+            ],
+            "is_stale": false
+          }
+        ],
+        "gaps": [],
+        "unsupported_reason": "",
+        "warnings": []
+      }
+    },
+    {
+      "at": "2026-06-02T02:10:09.207Z",
+      "status": 200,
+      "method": "GET",
+      "url": "/api/architecture-map/nodes/component%3A5b9ba86cef0764da52f9796f/evidence?limit=40",
+      "body": {
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "node_id": "component:5b9ba86cef0764da52f9796f",
+        "node": {
+          "id": "component:5b9ba86cef0764da52f9796f",
+          "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+          "label": "Request Pipeline Orchestrator",
+          "kind": "component",
+          "level": 1,
+          "description": "Axios class _request() method that merges config, validates transitional options, flattens headers, and sequences interceptors around dispatchRequest",
+          "status": "verified",
+          "confidence": 0.5,
+          "source_refs": {
+            "source_region_ids": [
+              "region:e8b62253065100704640f7a2"
+            ],
+            "anchor_ids": [],
+            "related_file_paths": []
+          },
+          "evidence_count": 1,
+          "children_count": 4,
+          "can_drilldown": true,
+          "primary_files": [
+            "lib/core/Axios.js"
+          ],
+          "related_concept_ids": [],
+          "related_flow_ids": [],
+          "graph_qn": null,
+          "legacy_type": null,
+          "warnings": [],
+          "unsupported_reason": null
+        },
+        "evidence": [
+          {
+            "id": "evidence:6f1bfe1a7e812c79f5f74781",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "node_id": "component:5b9ba86cef0764da52f9796f",
+            "evidence_kind": "component_source_region",
+            "source_ref_kind": "source_span",
+            "source_ref_id": "region:e8b62253065100704640f7a2",
+            "file_path": "lib/core/Axios.js",
+            "language": "javascript",
+            "start_line": 1,
+            "end_line": 277,
+            "text_preview": "'use strict'; import utils from '../utils.js'; import buildURL from '../helpers/buildURL.js'; import InterceptorManager from './InterceptorManager.js'; import dispatchRequest from './dispatchRequest.js'; import mergeConfig from './mergeConfig.js'; import buildFullPath from './buildFullPath.js'; import validator from '../helpers/validator.js'; import AxiosHea",
+            "status": "verified",
+            "confidence": 1,
+            "score": 1,
+            "reason": "Source region attached to System Overview.",
+            "is_stale": false
+          }
+        ],
+        "total": 1,
+        "limit": 40
+      }
+    },
+    {
+      "at": "2026-06-02T02:10:09.208Z",
+      "status": 200,
+      "method": "GET",
+      "url": "/api/architecture-map/nodes/component%3A5b9ba86cef0764da52f9796f/explanation",
+      "body": {
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "node_id": "component:5b9ba86cef0764da52f9796f",
+        "status": "verified",
+        "generation_status": "cached",
+        "model": "blackboxai/anthropic/claude-sonnet-4.6",
+        "summary": "Axios class _request() method that merges config, validates transitional options, flattens headers, and sequences interceptors around dispatchRequest",
+        "simple_explanation": "Axios class _request() method that merges config, validates transitional options, flattens headers, and sequences interceptors around dispatchRequest",
+        "technical_explanation": "Axios class _request() method that merges config, validates transitional options, flattens headers, and sequences interceptors around dispatchRequest",
+        "responsibilities": [
+          {
+            "text": "Axios class _request() method that merges config, validates transitional options, flattens headers, and sequences interceptors around dispatchRequest",
+            "support": "verified",
+            "evidence_ids": [
+              "evidence:6f1bfe1a7e812c79f5f74781"
+            ]
+          }
+        ],
+        "what_happens": [
+          {
+            "text": "1 source-backed evidence item(s) support this node.",
+            "support": "verified",
+            "evidence_ids": [
+              "evidence:6f1bfe1a7e812c79f5f74781"
+            ]
+          }
+        ],
+        "key_files": [
+          {
+            "file_path": "lib/core/Axios.js",
+            "reason": "Primary source evidence for this architecture node.",
+            "evidence_ids": [
+              "evidence:6f1bfe1a7e812c79f5f74781"
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "label": "sequences request and response interceptors from",
+            "reason": "",
+            "target_id": "component:5ffd810a34cddf76e8121054"
+          },
+          {
+            "label": "calls dispatchRequest which drives",
+            "reason": "",
+            "target_id": "component:fdaf22174930bb899a1eaf80"
+          },
+          {
+            "label": "uses AxiosHeaders.concat to flatten headers",
+            "reason": "",
+            "target_id": "component:49b3e3bacad9373ca9622993"
+          },
+          {
+            "label": "uses buildFullPath + buildURL for getUri",
+            "reason": "",
+            "target_id": "component:d1b3f562a0d688653ca2e6dc"
+          }
+        ],
+        "gaps": [],
+        "warnings": [],
+        "suggested_questions": [
+          "How does adapter auto-selection work — what is the priority order between fetch, xhr, and http adapters?",
+          "How does the fetch adapter handle streaming responses differently from the XHR adapter?",
+          "What is the full list of config options and their defaults in lib/defaults/index.js?",
+          "How does CancelToken interact with AbortController — are they unified or separate code paths?",
+          "How does AxiosHeaders handle case-insensitive header normalization internally?"
+        ],
+        "evidence_ids": [
+          "evidence:6f1bfe1a7e812c79f5f74781"
+        ],
+        "prompt_hash": "system-overview",
+        "input_hash": "6eedd78ae31fb11b09fb730acfd5d41006709f39",
+        "reason": null
+      }
+    },
+    {
+      "at": "2026-06-02T02:10:09.265Z",
+      "status": 200,
+      "method": "GET",
+      "url": "/api/architecture-map/nodes/component%3A5b9ba86cef0764da52f9796f/implementation",
+      "body": {
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "node_id": "component:5b9ba86cef0764da52f9796f",
+        "status": "verified",
+        "subject": {
+          "type": "architecture_node",
+          "id": "component:5b9ba86cef0764da52f9796f"
+        },
+        "title": "Request Pipeline Orchestrator",
+        "summary": "Axios class _request() method that merges config, validates transitional options, flattens headers, and sequences interceptors around dispatchRequest",
+        "primary_span_id": "region:e8b62253065100704640f7a2",
+        "evidence_strength": 1,
+        "tabs": [
+          {
+            "file_path": "lib/core/Axios.js",
+            "language": "javascript",
+            "role": "primary",
+            "summary": "1 highlighted source region(s).",
+            "reason": "Exact source evidence from the System Overview.",
+            "source_span_ids": [
+              "region:e8b62253065100704640f7a2"
+            ],
+            "highlights": [
+              {
+                "span_id": "region:e8b62253065100704640f7a2",
+                "start_line": 1,
+                "end_line": 277,
+                "status": "verified",
+                "confidence": 1
+              }
+            ],
+            "is_stale": false
+          }
+        ],
+        "gaps": [],
+        "unsupported_reason": "",
+        "warnings": []
+      }
+    },
+    {
+      "at": "2026-06-02T02:11:06.720Z",
+      "status": 200,
+      "method": "POST",
+      "url": "/api/query",
+      "body": {
+        "answer_text": "The interceptor chain in Axios is built and executed inside Axios._request() in lib/core/Axios.js. It supports two execution paths: a fully async promise-chain path and a synchronous fast-path, selected based on whether all request interceptors are marked synchronous.",
+        "intent": "explanatory",
+        "citations": [
+          {
+            "entity_qn": "claim-1",
+            "entity_name": "requestInterceptorChain is built by iterating this.interceptors.request via forE",
+            "file_path": "lib/core/Axios.js",
+            "line_start": 1,
+            "line_end": 277,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-2",
+            "entity_name": "synchronousRequestInterceptors is true only if every non-skipped request interce",
+            "file_path": "lib/core/Axios.js",
+            "line_start": 1,
+            "line_end": 277,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-3",
+            "entity_name": "In the async path, the full chain is [requestInterceptorChain..., dispatchReques",
+            "file_path": "lib/core/Axios.js",
+            "line_start": 1,
+            "line_end": 277,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-4",
+            "entity_name": "In the sync fast-path, request interceptors run in a try/catch while loop synchr",
+            "file_path": "lib/core/Axios.js",
+            "line_start": 1,
+            "line_end": 277,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-5",
+            "entity_name": "The public Axios.request() is an async method that calls _request() and augments",
+            "file_path": "lib/core/Axios.js",
+            "line_start": 1,
+            "line_end": 277,
+            "support_status": "verified"
+          }
+        ],
+        "confidence": 1,
+        "follow_ups": [
+          "How does InterceptorManager store and iterate interceptors (forEach implementation)?",
+          "What does dispatchRequest do — how does it select adapters and apply request/response transforms?",
+          "How does AxiosHeaders.concat work for header merging?",
+          "What is the mergeConfig strategy for combining instance defaults with per-request config?"
+        ],
+        "diagrams": [],
+        "visual_lenses": [],
+        "lens_count": 0,
+        "unsupported_reasons": [],
+        "evidence_coverage": {
+          "lens_count": 0,
+          "evidence_count": 0,
+          "source_tab_count": 0,
+          "statuses": [],
+          "types": []
+        },
+        "conversation_id": "206cb5d8-9931-49d6-bf9b-6fb4b3a4749d",
+        "turn_number": 1,
+        "run_metadata": {
+          "llm_call_count": 1,
+          "tokens_in": 21237,
+          "tokens_out": 2034,
+          "fallback_used": false,
+          "model": "blackboxai/anthropic/claude-sonnet-4.6",
+          "files_inspected": [],
+          "symbols_inspected": [],
+          "evidence_sources": [],
+          "unresolved_gaps": [
+            "InterceptorManager source not read — forEach iteration order and eject behavior unconfirmed",
+            "dispatchRequest internals not examined"
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-06-02T02:11:11.013Z",
+      "status": 200,
+      "method": "GET",
+      "url": "/api/architecture-map/nodes/component%3Ad8467fff664ec1aa9188cdfe/children",
+      "body": {
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "node_id": "component:d8467fff664ec1aa9188cdfe",
+        "children": [
+          {
+            "id": "lens-child:596261329c364a1b735ae96c",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Public API Entry Point",
+            "kind": "subsystem",
+            "level": 2,
+            "description": "lib/axios.js assembles and exports the axios object: createInstance factory, create(), CancelToken, isCancel, all, spread, AxiosHeaders, AxiosError, mergeConfig, and default instance",
+            "status": "insufficient",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:d8467fff664ec1aa9188cdfe"
+              ],
+              "lens_id": [
+                "lens:58c15f07e21867dc574df889"
+              ]
+            },
+            "evidence_count": 0,
+            "children_count": 2,
+            "can_drilldown": true,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "Adapter selection and fallback logic not traced from source",
+              "CancelToken vs AbortController unification not confirmed",
+              "mergeConfig deep-merge strategy not read from source"
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "lens-child:c22ee36c5ea0496bedcc5846",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Request Lifecycle (Axios core)",
+            "kind": "subsystem",
+            "level": 2,
+            "description": "lib/core/Axios.js: config merging, validation, header flattening, interceptor chain construction (sync and async paths), and dispatchRequest invocation",
+            "status": "verified",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:d8467fff664ec1aa9188cdfe"
+              ],
+              "lens_id": [
+                "lens:58c15f07e21867dc574df889"
+              ]
+            },
+            "evidence_count": 1,
+            "children_count": 3,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "lens-child:7501a73ba2ece2dc4b8e6925",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Interceptor Management",
+            "kind": "subsystem",
+            "level": 2,
+            "description": "lib/core/InterceptorManager.js: stores request and response interceptors, supports use/eject/forEach, runWhen filtering, and synchronous flag",
+            "status": "verified",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:d8467fff664ec1aa9188cdfe"
+              ],
+              "lens_id": [
+                "lens:58c15f07e21867dc574df889"
+              ]
+            },
+            "evidence_count": 1,
+            "children_count": 0,
+            "can_drilldown": false,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "lens-child:619f931c8bb79f528223824c",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Request Dispatch & Transformation",
+            "kind": "subsystem",
+            "level": 2,
+            "description": "lib/core/dispatchRequest.js: applies request transformers, selects adapter, applies response transformers, throws on error status",
+            "status": "verified",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:d8467fff664ec1aa9188cdfe"
+              ],
+              "lens_id": [
+                "lens:58c15f07e21867dc574df889"
+              ]
+            },
+            "evidence_count": 1,
+            "children_count": 2,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "lens-child:df28ad123780a46b62ab1b41",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Adapters",
+            "kind": "subsystem",
+            "level": 2,
+            "description": "lib/adapters/: pluggable transport layer with HTTP (Node.js), XHR (browser), and fetch implementations selected at runtime",
+            "status": "insufficient",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:d8467fff664ec1aa9188cdfe"
+              ],
+              "lens_id": [
+                "lens:58c15f07e21867dc574df889"
+              ]
+            },
+            "evidence_count": 0,
+            "children_count": 4,
+            "can_drilldown": true,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "Adapter selection and fallback logic not traced from source",
+              "CancelToken vs AbortController unification not confirmed",
+              "mergeConfig deep-merge strategy not read from source"
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "lens-child:d6731829e2ce9585578d51b5",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Headers Management",
+            "kind": "subsystem",
+            "level": 2,
+            "description": "lib/core/AxiosHeaders.js: typed header container with normalization, concat, accessor methods, and Content-Type helpers",
+            "status": "verified",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:d8467fff664ec1aa9188cdfe"
+              ],
+              "lens_id": [
+                "lens:58c15f07e21867dc574df889"
+              ]
+            },
+            "evidence_count": 1,
+            "children_count": 0,
+            "can_drilldown": false,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "lens-child:d192e47e54c889bec5dcffaf",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Cancellation",
+            "kind": "subsystem",
+            "level": 2,
+            "description": "lib/cancel/: CancelToken (legacy token-based) and support for AbortController/AbortSignal; isCancel and CanceledError",
+            "status": "insufficient",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:d8467fff664ec1aa9188cdfe"
+              ],
+              "lens_id": [
+                "lens:58c15f07e21867dc574df889"
+              ]
+            },
+            "evidence_count": 0,
+            "children_count": 2,
+            "can_drilldown": true,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "Adapter selection and fallback logic not traced from source",
+              "CancelToken vs AbortController unification not confirmed",
+              "mergeConfig deep-merge strategy not read from source"
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "lens-child:42e3b918d6fe8753e0217d89",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Config & Defaults",
+            "kind": "cross_cutting",
+            "level": 2,
+            "description": "lib/defaults/ and lib/core/mergeConfig.js: default config values, transitional defaults, and deep merge strategy for config objects",
+            "status": "verified",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:d8467fff664ec1aa9188cdfe"
+              ],
+              "lens_id": [
+                "lens:58c15f07e21867dc574df889"
+              ]
+            },
+            "evidence_count": 1,
+            "children_count": 0,
+            "can_drilldown": false,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "lens-child:bbbadbd4d408aa841985bf33",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "URL & Param Helpers",
+            "kind": "subsystem",
+            "level": 2,
+            "description": "lib/helpers/buildURL.js, buildFullPath.js: URL construction, param serialization, base URL resolution, allowAbsoluteUrls enforcement",
+            "status": "insufficient",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:d8467fff664ec1aa9188cdfe"
+              ],
+              "lens_id": [
+                "lens:58c15f07e21867dc574df889"
+              ]
+            },
+            "evidence_count": 0,
+            "children_count": 0,
+            "can_drilldown": false,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "Adapter selection and fallback logic not traced from source",
+              "CancelToken vs AbortController unification not confirmed",
+              "mergeConfig deep-merge strategy not read from source"
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "lens-child:e8b9707106dabed69a058c30",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Validation & Utilities",
+            "kind": "subsystem",
+            "level": 2,
+            "description": "lib/helpers/validator.js and lib/utils.js: option spelling checks, transitional validators, type utilities used across the codebase",
+            "status": "insufficient",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:d8467fff664ec1aa9188cdfe"
+              ],
+              "lens_id": [
+                "lens:58c15f07e21867dc574df889"
+              ]
+            },
+            "evidence_count": 0,
+            "children_count": 0,
+            "can_drilldown": false,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "Adapter selection and fallback logic not traced from source",
+              "CancelToken vs AbortController unification not confirmed",
+              "mergeConfig deep-merge strategy not read from source"
+            ],
+            "unsupported_reason": null
+          }
+        ],
+        "edges": [],
+        "total": 10
+      }
+    },
+    {
+      "at": "2026-06-02T02:11:50.217Z",
+      "status": 200,
+      "method": "GET",
+      "url": "/api/architecture-map",
+      "body": {
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "root": {
+          "id": "arch-root:c4a7c3661b549d60859fce16",
+          "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+          "label": "axios",
+          "kind": "system",
+          "level": 0,
+          "description": "axios is a promise-based HTTP client with a layered pipeline: public API → interceptor chain → adapter dispatch → response transformation. The codebase is organized into core pipeline, adapters, helpers, platform abstractions, and cancellation.",
+          "status": "verified",
+          "confidence": 0.7,
+          "source_refs": {
+            "overview_id": [
+              "overview:94f492f0047f0c9c41796bab"
+            ],
+            "source_region_ids": [
+              "region:e8b62253065100704640f7a2"
+            ]
+          },
+          "evidence_count": 1,
+          "children_count": 10,
+          "can_drilldown": true,
+          "primary_files": [
+            "lib/core/Axios.js"
+          ],
+          "related_concept_ids": [],
+          "related_flow_ids": [],
+          "graph_qn": null,
+          "legacy_type": null,
+          "warnings": [
+            "fetch adapter implementation details not yet read",
+            "adapter selection/auto-detection logic not confirmed from source",
+            "defaults/index.js transform pipeline not read",
+            "CancelToken + AbortController unification not confirmed"
+          ],
+          "unsupported_reason": null
+        },
+        "nodes": [
+          {
+            "id": "arch-root:c4a7c3661b549d60859fce16",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "axios",
+            "kind": "system",
+            "level": 0,
+            "description": "axios is a promise-based HTTP client with a layered pipeline: public API → interceptor chain → adapter dispatch → response transformation. The codebase is organized into core pipeline, adapters, helpers, platform abstractions, and cancellation.",
+            "status": "verified",
+            "confidence": 0.7,
+            "source_refs": {
+              "overview_id": [
+                "overview:94f492f0047f0c9c41796bab"
+              ],
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ]
+            },
+            "evidence_count": 1,
+            "children_count": 10,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "fetch adapter implementation details not yet read",
+              "adapter selection/auto-detection logic not confirmed from source",
+              "defaults/index.js transform pipeline not read",
+              "CancelToken + AbortController unification not confirmed"
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:d8467fff664ec1aa9188cdfe",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Public API Surface",
+            "kind": "component",
+            "level": 1,
+            "description": "axios() callable, axios.create(), axios.all(), axios.spread(), and HTTP method shortcuts (get/post/put/patch/delete/head/options/postForm etc.) exposed from lib/axios.js",
+            "status": "verified",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 1,
+            "children_count": 3,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:5b9ba86cef0764da52f9796f",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Request Pipeline Orchestrator",
+            "kind": "component",
+            "level": 1,
+            "description": "Axios class _request() method that merges config, validates transitional options, flattens headers, and sequences interceptors around dispatchRequest",
+            "status": "verified",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 1,
+            "children_count": 4,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:5ffd810a34cddf76e8121054",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Interceptor System",
+            "kind": "component",
+            "level": 1,
+            "description": "InterceptorManager maintains ordered lists of {fulfilled, rejected, runWhen, synchronous} handlers for both request and response phases; supports use/eject/clear/forEach",
+            "status": "insufficient",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 0,
+            "children_count": 3,
+            "can_drilldown": true,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "No exact source-backed evidence attached."
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:eb477bea6b065a9c568695c4",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Transport Adapters",
+            "kind": "external_boundary",
+            "level": 1,
+            "description": "Three pluggable adapters in lib/adapters/: xhr.js (browser XMLHttpRequest), http.js (Node.js http/https), fetch.js (Fetch API); selected by adapter auto-detection or explicit config",
+            "status": "insufficient",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 0,
+            "children_count": 4,
+            "can_drilldown": true,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "No exact source-backed evidence attached."
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:fdaf22174930bb899a1eaf80",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Response Transformation",
+            "kind": "component",
+            "level": 1,
+            "description": "dispatchRequest.js orchestrates data transformation before sending and after receiving; defaults/index.js defines default transformRequest/transformResponse functions including JSON serialization",
+            "status": "insufficient",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [],
+              "anchor_ids": [],
+              "related_file_paths": [
+                "Request/Response Transformation"
+              ]
+            },
+            "evidence_count": 0,
+            "children_count": 4,
+            "can_drilldown": true,
+            "primary_files": [
+              "Request/Response Transformation"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "No exact source-backed evidence attached."
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:49b3e3bacad9373ca9622993",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Header Management",
+            "kind": "component",
+            "level": 1,
+            "description": "AxiosHeaders class provides case-insensitive header storage, normalization, accessor methods, and concat/merge utilities used throughout the pipeline",
+            "status": "verified",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 1,
+            "children_count": 0,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:d1b3f562a0d688653ca2e6dc",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "URL Construction",
+            "kind": "component",
+            "level": 1,
+            "description": "lib/helpers/buildURL.js serializes params into query strings; lib/core/buildFullPath.js combines baseURL and relative URL; lib/helpers/isAbsoluteURL.js and combineURLs.js support this",
+            "status": "insufficient",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 0,
+            "children_count": 0,
+            "can_drilldown": false,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "No exact source-backed evidence attached."
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:2b9d284ab67d9938b7e517ae",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Cancellation",
+            "kind": "component",
+            "level": 1,
+            "description": "lib/cancel/ provides CancelToken (legacy) and AbortController-based cancellation; CanceledError extends AxiosError with isCancel flag",
+            "status": "verified",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 1,
+            "children_count": 0,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:b5d711a7f986a3eb20cf36dd",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Error Handling",
+            "kind": "component",
+            "level": 1,
+            "description": "AxiosError (lib/core/AxiosError.js) is the standard error class carrying config, request, response, and code; settle.js decides resolve vs reject based on validateStatus",
+            "status": "verified",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 1,
+            "children_count": 0,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "component:49152b5ef95e43e060054c14",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Platform & Environment Abstraction",
+            "kind": "component",
+            "level": 1,
+            "description": "lib/platform/ exposes environment-specific primitives (FormData, Blob, URLSearchParams, navigator, etc.) so core code stays isomorphic across browser and Node",
+            "status": "insufficient",
+            "confidence": 0.5,
+            "source_refs": {
+              "source_region_ids": [],
+              "anchor_ids": [],
+              "related_file_paths": []
+            },
+            "evidence_count": 0,
+            "children_count": 0,
+            "can_drilldown": false,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "No exact source-backed evidence attached."
+            ],
+            "unsupported_reason": null
+          }
+        ],
+        "edges": [
+          {
+            "id": "edge:be53cc7531a1fe3b2e5f0527",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:d8467fff664ec1aa9188cdfe",
+            "target": "component:5b9ba86cef0764da52f9796f",
+            "kind": "relationship",
+            "label": "delegates all requests to",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:8839c462369bd362f3a1cd0e",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:5b9ba86cef0764da52f9796f",
+            "target": "component:5ffd810a34cddf76e8121054",
+            "kind": "relationship",
+            "label": "sequences request and response interceptors from",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:7eae938c11b038bafb7bf33d",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:5b9ba86cef0764da52f9796f",
+            "target": "component:fdaf22174930bb899a1eaf80",
+            "kind": "relationship",
+            "label": "calls dispatchRequest which drives",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:f9c62c370a620c9e3c636842",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:fdaf22174930bb899a1eaf80",
+            "target": "component:eb477bea6b065a9c568695c4",
+            "kind": "relationship",
+            "label": "selects and invokes one of",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:54773e33956e50008ed82e12",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:5b9ba86cef0764da52f9796f",
+            "target": "component:49b3e3bacad9373ca9622993",
+            "kind": "relationship",
+            "label": "uses AxiosHeaders.concat to flatten headers",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:9c9e067607834850a0318d2d",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:5b9ba86cef0764da52f9796f",
+            "target": "component:d1b3f562a0d688653ca2e6dc",
+            "kind": "relationship",
+            "label": "uses buildFullPath + buildURL for getUri",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:17dc36ac734f636dfd11b94f",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:eb477bea6b065a9c568695c4",
+            "target": "component:2b9d284ab67d9938b7e517ae",
+            "kind": "relationship",
+            "label": "checks cancel token / AbortSignal before and during request",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:6d4851fb16667b4c987648d5",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:eb477bea6b065a9c568695c4",
+            "target": "component:b5d711a7f986a3eb20cf36dd",
+            "kind": "relationship",
+            "label": "rejects with AxiosError on network/timeout/status errors",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          },
+          {
+            "id": "edge:719a1cd540fcd4d0cdf0c8f6",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "source": "component:fdaf22174930bb899a1eaf80",
+            "target": "component:49152b5ef95e43e060054c14",
+            "kind": "relationship",
+            "label": "uses platform primitives for FormData detection etc.",
+            "confidence": 0.45,
+            "source_refs": {
+              "source_region_ids": []
+            }
+          }
+        ],
+        "diagnostics": {
+          "repo_shape": "python_http_client_library",
+          "projection_version": "system-overview-architecture-map-v1",
+          "warnings": [
+            "fetch adapter implementation details not yet read",
+            "adapter selection/auto-detection logic not confirmed from source",
+            "defaults/index.js transform pipeline not read",
+            "CancelToken + AbortController unification not confirmed",
+            "No exact source-backed evidence attached."
+          ],
+          "suppressed_app_only_nodes": [],
+          "nodes_without_evidence": [
+            "component:5ffd810a34cddf76e8121054",
+            "component:eb477bea6b065a9c568695c4",
+            "component:fdaf22174930bb899a1eaf80",
+            "component:d1b3f562a0d688653ca2e6dc",
+            "component:49152b5ef95e43e060054c14"
+          ],
+          "verified_node_count": 5,
+          "insufficient_node_count": 5,
+          "unsupported_node_count": 0
+        },
+        "metadata": {
+          "repository": {
+            "name": "axios",
+            "root_path": "C:\\Users\\woled\\Desktop\\lauras work\\bench-repos\\axios",
+            "file_count": 435
+          },
+          "overview_id": "overview:94f492f0047f0c9c41796bab",
+          "overview_status": "ready",
+          "overview_cached": false,
+          "llm_used": true,
+          "model": "blackboxai/anthropic/claude-sonnet-4.6"
+        }
+      }
+    },
+    {
+      "at": "2026-06-02T02:12:41.378Z",
+      "status": 200,
+      "method": "GET",
+      "url": "/api/architecture-map/nodes/component%3A5b9ba86cef0764da52f9796f/children",
+      "body": {
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "node_id": "component:5b9ba86cef0764da52f9796f",
+        "children": [
+          {
+            "id": "lens-child:94ab92af3a1e7f998ad37455",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Config Merging & Transitional Validation",
+            "kind": "cross_cutting",
+            "level": 2,
+            "description": "_request() merges the Axios instance defaults with per-call config, then validates transitional options (e.g. silenceJSONParsingErrors). This is the first stage before any interceptors run.",
+            "status": "insufficient",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:5b9ba86cef0764da52f9796f"
+              ],
+              "lens_id": [
+                "lens:4a3daf753e77f0aa5b7a5c4d"
+              ]
+            },
+            "evidence_count": 0,
+            "children_count": 3,
+            "can_drilldown": true,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "Adapter selection/auto-detection logic not confirmed from source (lib/adapters/index.js not read)",
+              "defaults/index.js transform pipeline not inspected",
+              "CancelToken + AbortController unification point not confirmed",
+              "dispatchRequest.js full source not successfully retrieved — only confirmed adapter is absent via search",
+              "Investigation reached the tool-call budget before final synthesis."
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "lens-child:028f1f4a135b45b1008896c5",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Header Flattening & Normalization",
+            "kind": "subsystem",
+            "level": 2,
+            "description": "After config merge, _request() flattens headers from multiple config layers (common, method-specific, instance-level) into a single AxiosHeaders object. This ensures downstream code sees a consistent header map.",
+            "status": "insufficient",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:5b9ba86cef0764da52f9796f"
+              ],
+              "lens_id": [
+                "lens:4a3daf753e77f0aa5b7a5c4d"
+              ]
+            },
+            "evidence_count": 0,
+            "children_count": 3,
+            "can_drilldown": true,
+            "primary_files": [],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "Adapter selection/auto-detection logic not confirmed from source (lib/adapters/index.js not read)",
+              "defaults/index.js transform pipeline not inspected",
+              "CancelToken + AbortController unification point not confirmed",
+              "dispatchRequest.js full source not successfully retrieved — only confirmed adapter is absent via search",
+              "Investigation reached the tool-call budget before final synthesis."
+            ],
+            "unsupported_reason": null
+          },
+          {
+            "id": "lens-child:8bc44c5ce8e87208001091e1",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "Interceptor Chain Sequencing",
+            "kind": "subsystem",
+            "level": 2,
+            "description": "_request() builds requestInterceptorChain and responseInterceptorChain arrays. When all request interceptors declare synchronous:true it runs them in a tight loop; otherwise it constructs a promise chain of [interceptor.fulfilled, interceptor.rejected] pairs with dispatchRequest at the center. This is the core scheduling logic of the pipeline.",
+            "status": "verified",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:5b9ba86cef0764da52f9796f"
+              ],
+              "lens_id": [
+                "lens:4a3daf753e77f0aa5b7a5c4d"
+              ]
+            },
+            "evidence_count": 1,
+            "children_count": 4,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "lens-child:585243228db09ba937931ac6",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": "dispatchRequest Delegation & Response Transformation",
+            "kind": "subsystem",
+            "level": 2,
+            "description": "The center of the interceptor chain calls dispatchRequest, which applies request transformers, invokes the resolved adapter, then applies response transformers. Adapter selection does not appear to live in dispatchRequest itself (0 search hits for 'adapter' there) — it is resolved upstream, likely via defaults or lib/adapters/.",
+            "status": "verified",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [
+                "region:e8b62253065100704640f7a2"
+              ],
+              "related_file_paths": [],
+              "parent_component_ids": [
+                "component:5b9ba86cef0764da52f9796f"
+              ],
+              "lens_id": [
+                "lens:4a3daf753e77f0aa5b7a5c4d"
+              ]
+            },
+            "evidence_count": 1,
+            "children_count": 4,
+            "can_drilldown": true,
+            "primary_files": [
+              "lib/core/Axios.js"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [],
+            "unsupported_reason": null
+          },
+          {
+            "id": "lens-child:e368728e6bc44bc26de9b4d5",
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "label": " Abortcontroller) Code Group",
+            "kind": "code_group",
+            "level": 2,
+            "description": "Cancellation signals are checked at key points in the pipeline. Axios supports both the legacy CancelToken API and the modern AbortController/AbortSignal API. The exact unification point (whether in _request, dispatchRequest, or the adapter) was not confirmed from source.",
+            "status": "insufficient",
+            "confidence": 0.55,
+            "source_refs": {
+              "source_region_ids": [],
+              "related_file_paths": [
+                "Cancellation Integration (CancelToken / AbortController)"
+              ],
+              "parent_component_ids": [
+                "component:5b9ba86cef0764da52f9796f"
+              ],
+              "lens_id": [
+                "lens:4a3daf753e77f0aa5b7a5c4d"
+              ]
+            },
+            "evidence_count": 0,
+            "children_count": 4,
+            "can_drilldown": true,
+            "primary_files": [
+              "Cancellation Integration (CancelToken / AbortController)"
+            ],
+            "related_concept_ids": [],
+            "related_flow_ids": [],
+            "graph_qn": null,
+            "legacy_type": null,
+            "warnings": [
+              "Adapter selection/auto-detection logic not confirmed from source (lib/adapters/index.js not read)",
+              "defaults/index.js transform pipeline not inspected",
+              "CancelToken + AbortController unification point not confirmed",
+              "dispatchRequest.js full source not successfully retrieved — only confirmed adapter is absent via search",
+              "Investigation reached the tool-call budget before final synthesis."
+            ],
+            "unsupported_reason": null
+          }
+        ],
+        "edges": [],
+        "total": 5
+      }
+    },
+    {
+      "at": "2026-06-02T02:12:59.219Z",
+      "status": 200,
+      "method": "POST",
+      "url": "/api/query",
+      "body": {
+        "answer_text": "Axios handles request cancellation through two complementary mechanisms: the legacy CancelToken API and the modern AbortController/AbortSignal API. Both are wired inside adapters (confirmed in xhr.js).",
+        "intent": "explanatory",
+        "citations": [
+          {
+            "entity_qn": "claim-1",
+            "entity_name": "CancelToken maintains a _listeners array and notifies subscribers synchronously ",
+            "file_path": "lib/cancel/CancelToken.js",
+            "line_start": 1,
+            "line_end": 135,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-2",
+            "entity_name": "The XHR adapter wires cancellation cleanup by calling cancelToken.unsubscribe an",
+            "file_path": "lib/adapters/xhr.js",
+            "line_start": 29,
+            "line_end": 33,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-3",
+            "entity_name": "The XHR adapter checks signal.aborted and attaches an abort event listener that ",
+            "file_path": "lib/adapters/xhr.js",
+            "line_start": 200,
+            "line_end": 204,
+            "support_status": "verified"
+          }
+        ],
+        "confidence": 1,
+        "follow_ups": [
+          "How does CanceledError differ from other AxiosError instances?",
+          "Does the http.js adapter handle cancellation differently from xhr.js?",
+          "How does dispatchRequest.js perform early cancellation before the adapter is called?"
+        ],
+        "diagrams": [],
+        "visual_lenses": [],
+        "lens_count": 0,
+        "unsupported_reasons": [],
+        "evidence_coverage": {
+          "lens_count": 0,
+          "evidence_count": 0,
+          "source_tab_count": 0,
+          "statuses": [],
+          "types": []
+        },
+        "conversation_id": "206cb5d8-9931-49d6-bf9b-6fb4b3a4749d",
+        "turn_number": 1,
+        "run_metadata": {
+          "llm_call_count": 7,
+          "tokens_in": 28779,
+          "tokens_out": 4860,
+          "fallback_used": false,
+          "model": "blackboxai/anthropic/claude-sonnet-4.6",
+          "files_inspected": [],
+          "symbols_inspected": [],
+          "evidence_sources": [],
+          "unresolved_gaps": [
+            "CanceledError source not directly inspected; isCancel flag not source-confirmed",
+            "http.js adapter cancellation behavior not confirmed (tool returned 0 results)",
+            "dispatchRequest.js throwIfRequested/signal check not confirmed by tool trace",
+            "Investigation reached the tool-call budget before final synthesis."
+          ]
+        }
+      }
+    },
+    {
+      "at": "2026-06-02T02:13:51.287Z",
+      "status": 200,
+      "method": "POST",
+      "url": "/api/query",
+      "body": {
+        "answer_text": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+        "intent": "explanatory",
+        "citations": [
+          {
+            "entity_qn": "claim-1",
+            "entity_name": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, co",
+            "file_path": "lib/core/dispatchRequest.js",
+            "line_start": 1,
+            "line_end": 77,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-2",
+            "entity_name": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks ",
+            "file_path": "lib/core/dispatchRequest.js",
+            "line_start": 1,
+            "line_end": 77,
+            "support_status": "verified"
+          }
+        ],
+        "confidence": 1,
+        "follow_ups": [
+          "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+          "What is the default adapter order set in lib/defaults/index.js?",
+          "How does the fetch adapter differ from xhr in streaming or progress support?",
+          "How does cancellation via AbortSignal propagate into each adapter?"
+        ],
+        "diagrams": [],
+        "visual_lenses": [
+          {
+            "id": "C1",
+            "title": "Adapter Resolver",
+            "summary": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+            "simple_explanation": "Axios picks the right network transport (browser XHR, Node.js HTTP, or Fetch API) automatically based on the environment, or you can specify one explicitly in config. The selection logic lives in lib/adapters/adapters.js and the actual request dispatch in lib/core/dispatchRequest.js.",
+            "technical_explanation": "dispatchRequest.js calls adapters.getAdapter(config.adapter || defaults.adapter, config) to resolve the adapter. getAdapter in lib/adapters/adapters.js accepts a string name, a function, or an array of candidates, iterating until a supported adapter is found. Platform defaults (lib/defaults/index.js) set the fallback order. The three concrete adapters are lib/adapters/xhr.js (browser XMLHttpRequest), lib/adapters/http.js (Node.js http/https), and lib/adapters/fetch.js (Fetch API). Each adapter returns a Promise<response>. dispatchRequest then applies request/response transforms and cancellation checks around the adapter call.",
+            "steps": [
+              {
+                "id": "lens-child:4ce37dfcb4022dfeedaaaaec",
+                "label": "Adapter Resolver",
+                "kind": "behavior",
+                "summary": "lib/adapters/adapters.js — getAdapter resolves a name/function/array to a concrete supported adapter",
+                "responsibilities": [],
+                "source_region_ids": [
+                  "region:4687ecfc1551473f508a9d71"
+                ],
+                "related_file_paths": [],
+                "support_status": "uncertain",
+                "confidence": 0.55,
+                "evidence": [
+                  {
+                    "id": "evidence-region:4687ecfc1551473f508a9d71",
+                    "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                    "node_id": "lens-child:4ce37dfcb4022dfeedaaaaec",
+                    "evidence_kind": "lens_child",
+                    "source_ref_kind": "source_region",
+                    "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                    "file_path": "lib/core/dispatchRequest.js",
+                    "language": "javascript",
+                    "start_line": 1,
+                    "end_line": 77,
+                    "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                    "status": "uncertain",
+                    "confidence": 0.55,
+                    "score": 0.55,
+                    "reason": "lib/adapters/adapters.js — getAdapter resolves a name/function/array to a concrete supported adapter",
+                    "is_stale": false
+                  }
+                ]
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-claim-1",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C1",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, config) to select the adapter",
+                "is_stale": false
+              },
+              {
+                "id": "evidence-claim-2",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C1",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks and applies transformData on both request and response",
+                "is_stale": false
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.55,
+            "gaps": [
+              "Exact supported-check implementation per adapter not yet read",
+              "fetch adapter default-enablement policy not confirmed"
+            ],
+            "suggested_questions": [
+              "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+              "What is the default adapter order set in lib/defaults/index.js?",
+              "How does the fetch adapter differ from xhr in streaming or progress support?",
+              "How does cancellation via AbortSignal propagate into each adapter?"
+            ],
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "parent_node_id": "C1",
+            "parent_component_id": "C1"
+          },
+          {
+            "id": "C2",
+            "title": "XHR Adapter",
+            "summary": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+            "simple_explanation": "Axios picks the right network transport (browser XHR, Node.js HTTP, or Fetch API) automatically based on the environment, or you can specify one explicitly in config. The selection logic lives in lib/adapters/adapters.js and the actual request dispatch in lib/core/dispatchRequest.js.",
+            "technical_explanation": "dispatchRequest.js calls adapters.getAdapter(config.adapter || defaults.adapter, config) to resolve the adapter. getAdapter in lib/adapters/adapters.js accepts a string name, a function, or an array of candidates, iterating until a supported adapter is found. Platform defaults (lib/defaults/index.js) set the fallback order. The three concrete adapters are lib/adapters/xhr.js (browser XMLHttpRequest), lib/adapters/http.js (Node.js http/https), and lib/adapters/fetch.js (Fetch API). Each adapter returns a Promise<response>. dispatchRequest then applies request/response transforms and cancellation checks around the adapter call.",
+            "steps": [
+              {
+                "id": "lens-child:8c58f3d5ee05b4845fba0e7d",
+                "label": "XHR Adapter",
+                "kind": "behavior",
+                "summary": "lib/adapters/xhr.js — browser XMLHttpRequest-based transport",
+                "responsibilities": [],
+                "source_region_ids": [
+                  "region:4687ecfc1551473f508a9d71"
+                ],
+                "related_file_paths": [],
+                "support_status": "uncertain",
+                "confidence": 0.55,
+                "evidence": [
+                  {
+                    "id": "evidence-region:4687ecfc1551473f508a9d71",
+                    "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                    "node_id": "lens-child:8c58f3d5ee05b4845fba0e7d",
+                    "evidence_kind": "lens_child",
+                    "source_ref_kind": "source_region",
+                    "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                    "file_path": "lib/core/dispatchRequest.js",
+                    "language": "javascript",
+                    "start_line": 1,
+                    "end_line": 77,
+                    "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                    "status": "uncertain",
+                    "confidence": 0.55,
+                    "score": 0.55,
+                    "reason": "lib/adapters/xhr.js — browser XMLHttpRequest-based transport",
+                    "is_stale": false
+                  }
+                ]
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-claim-1",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C2",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, config) to select the adapter",
+                "is_stale": false
+              },
+              {
+                "id": "evidence-claim-2",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C2",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks and applies transformData on both request and response",
+                "is_stale": false
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.55,
+            "gaps": [
+              "Exact supported-check implementation per adapter not yet read",
+              "fetch adapter default-enablement policy not confirmed"
+            ],
+            "suggested_questions": [
+              "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+              "What is the default adapter order set in lib/defaults/index.js?",
+              "How does the fetch adapter differ from xhr in streaming or progress support?",
+              "How does cancellation via AbortSignal propagate into each adapter?"
+            ],
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "parent_node_id": "C2",
+            "parent_component_id": "C2"
+          },
+          {
+            "id": "C3",
+            "title": "HTTP Adapter",
+            "summary": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+            "simple_explanation": "Axios picks the right network transport (browser XHR, Node.js HTTP, or Fetch API) automatically based on the environment, or you can specify one explicitly in config. The selection logic lives in lib/adapters/adapters.js and the actual request dispatch in lib/core/dispatchRequest.js.",
+            "technical_explanation": "dispatchRequest.js calls adapters.getAdapter(config.adapter || defaults.adapter, config) to resolve the adapter. getAdapter in lib/adapters/adapters.js accepts a string name, a function, or an array of candidates, iterating until a supported adapter is found. Platform defaults (lib/defaults/index.js) set the fallback order. The three concrete adapters are lib/adapters/xhr.js (browser XMLHttpRequest), lib/adapters/http.js (Node.js http/https), and lib/adapters/fetch.js (Fetch API). Each adapter returns a Promise<response>. dispatchRequest then applies request/response transforms and cancellation checks around the adapter call.",
+            "steps": [
+              {
+                "id": "lens-child:051494ddc75367af59abb79e",
+                "label": "HTTP Adapter",
+                "kind": "behavior",
+                "summary": "lib/adapters/http.js — Node.js http/https-based transport",
+                "responsibilities": [],
+                "source_region_ids": [
+                  "region:4687ecfc1551473f508a9d71"
+                ],
+                "related_file_paths": [],
+                "support_status": "uncertain",
+                "confidence": 0.55,
+                "evidence": [
+                  {
+                    "id": "evidence-region:4687ecfc1551473f508a9d71",
+                    "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                    "node_id": "lens-child:051494ddc75367af59abb79e",
+                    "evidence_kind": "lens_child",
+                    "source_ref_kind": "source_region",
+                    "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                    "file_path": "lib/core/dispatchRequest.js",
+                    "language": "javascript",
+                    "start_line": 1,
+                    "end_line": 77,
+                    "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                    "status": "uncertain",
+                    "confidence": 0.55,
+                    "score": 0.55,
+                    "reason": "lib/adapters/http.js — Node.js http/https-based transport",
+                    "is_stale": false
+                  }
+                ]
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-claim-1",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C3",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, config) to select the adapter",
+                "is_stale": false
+              },
+              {
+                "id": "evidence-claim-2",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C3",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks and applies transformData on both request and response",
+                "is_stale": false
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.55,
+            "gaps": [
+              "Exact supported-check implementation per adapter not yet read",
+              "fetch adapter default-enablement policy not confirmed"
+            ],
+            "suggested_questions": [
+              "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+              "What is the default adapter order set in lib/defaults/index.js?",
+              "How does the fetch adapter differ from xhr in streaming or progress support?",
+              "How does cancellation via AbortSignal propagate into each adapter?"
+            ],
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "parent_node_id": "C3",
+            "parent_component_id": "C3"
+          },
+          {
+            "id": "C4",
+            "title": "Fetch Adapter",
+            "summary": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+            "simple_explanation": "Axios picks the right network transport (browser XHR, Node.js HTTP, or Fetch API) automatically based on the environment, or you can specify one explicitly in config. The selection logic lives in lib/adapters/adapters.js and the actual request dispatch in lib/core/dispatchRequest.js.",
+            "technical_explanation": "dispatchRequest.js calls adapters.getAdapter(config.adapter || defaults.adapter, config) to resolve the adapter. getAdapter in lib/adapters/adapters.js accepts a string name, a function, or an array of candidates, iterating until a supported adapter is found. Platform defaults (lib/defaults/index.js) set the fallback order. The three concrete adapters are lib/adapters/xhr.js (browser XMLHttpRequest), lib/adapters/http.js (Node.js http/https), and lib/adapters/fetch.js (Fetch API). Each adapter returns a Promise<response>. dispatchRequest then applies request/response transforms and cancellation checks around the adapter call.",
+            "steps": [
+              {
+                "id": "lens-child:b698c4c20897b5da84684dab",
+                "label": "Fetch Adapter",
+                "kind": "behavior",
+                "summary": "lib/adapters/fetch.js — Fetch API-based transport",
+                "responsibilities": [],
+                "source_region_ids": [
+                  "region:4687ecfc1551473f508a9d71"
+                ],
+                "related_file_paths": [],
+                "support_status": "uncertain",
+                "confidence": 0.55,
+                "evidence": [
+                  {
+                    "id": "evidence-region:4687ecfc1551473f508a9d71",
+                    "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                    "node_id": "lens-child:b698c4c20897b5da84684dab",
+                    "evidence_kind": "lens_child",
+                    "source_ref_kind": "source_region",
+                    "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                    "file_path": "lib/core/dispatchRequest.js",
+                    "language": "javascript",
+                    "start_line": 1,
+                    "end_line": 77,
+                    "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                    "status": "uncertain",
+                    "confidence": 0.55,
+                    "score": 0.55,
+                    "reason": "lib/adapters/fetch.js — Fetch API-based transport",
+                    "is_stale": false
+                  }
+                ]
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-claim-1",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C4",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, config) to select the adapter",
+                "is_stale": false
+              },
+              {
+                "id": "evidence-claim-2",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C4",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks and applies transformData on both request and response",
+                "is_stale": false
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.55,
+            "gaps": [
+              "Exact supported-check implementation per adapter not yet read",
+              "fetch adapter default-enablement policy not confirmed"
+            ],
+            "suggested_questions": [
+              "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+              "What is the default adapter order set in lib/defaults/index.js?",
+              "How does the fetch adapter differ from xhr in streaming or progress support?",
+              "How does cancellation via AbortSignal propagate into each adapter?"
+            ],
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "parent_node_id": "C4",
+            "parent_component_id": "C4"
+          },
+          {
+            "id": "C5",
+            "title": "Request Dispatch Orchestrator",
+            "summary": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+            "simple_explanation": "Axios picks the right network transport (browser XHR, Node.js HTTP, or Fetch API) automatically based on the environment, or you can specify one explicitly in config. The selection logic lives in lib/adapters/adapters.js and the actual request dispatch in lib/core/dispatchRequest.js.",
+            "technical_explanation": "dispatchRequest.js calls adapters.getAdapter(config.adapter || defaults.adapter, config) to resolve the adapter. getAdapter in lib/adapters/adapters.js accepts a string name, a function, or an array of candidates, iterating until a supported adapter is found. Platform defaults (lib/defaults/index.js) set the fallback order. The three concrete adapters are lib/adapters/xhr.js (browser XMLHttpRequest), lib/adapters/http.js (Node.js http/https), and lib/adapters/fetch.js (Fetch API). Each adapter returns a Promise<response>. dispatchRequest then applies request/response transforms and cancellation checks around the adapter call.",
+            "steps": [
+              {
+                "id": "lens-child:f7e9896b54a83a84daa8c05e",
+                "label": "Request Dispatch Orchestrator",
+                "kind": "behavior",
+                "summary": "lib/core/dispatchRequest.js — applies transforms, cancellation checks, invokes adapter, processes response",
+                "responsibilities": [],
+                "source_region_ids": [
+                  "region:4687ecfc1551473f508a9d71"
+                ],
+                "related_file_paths": [],
+                "support_status": "uncertain",
+                "confidence": 0.55,
+                "evidence": [
+                  {
+                    "id": "evidence-region:4687ecfc1551473f508a9d71",
+                    "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                    "node_id": "lens-child:f7e9896b54a83a84daa8c05e",
+                    "evidence_kind": "lens_child",
+                    "source_ref_kind": "source_region",
+                    "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                    "file_path": "lib/core/dispatchRequest.js",
+                    "language": "javascript",
+                    "start_line": 1,
+                    "end_line": 77,
+                    "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                    "status": "uncertain",
+                    "confidence": 0.55,
+                    "score": 0.55,
+                    "reason": "lib/core/dispatchRequest.js — applies transforms, cancellation checks, invokes adapter, processes response",
+                    "is_stale": false
+                  }
+                ]
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-claim-1",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C5",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, config) to select the adapter",
+                "is_stale": false
+              },
+              {
+                "id": "evidence-claim-2",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C5",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks and applies transformData on both request and response",
+                "is_stale": false
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.55,
+            "gaps": [
+              "Exact supported-check implementation per adapter not yet read",
+              "fetch adapter default-enablement policy not confirmed"
+            ],
+            "suggested_questions": [
+              "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+              "What is the default adapter order set in lib/defaults/index.js?",
+              "How does the fetch adapter differ from xhr in streaming or progress support?",
+              "How does cancellation via AbortSignal propagate into each adapter?"
+            ],
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "parent_node_id": "C5",
+            "parent_component_id": "C5"
+          },
+          {
+            "id": "C6",
+            "title": "Platform Defaults",
+            "summary": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+            "simple_explanation": "Axios picks the right network transport (browser XHR, Node.js HTTP, or Fetch API) automatically based on the environment, or you can specify one explicitly in config. The selection logic lives in lib/adapters/adapters.js and the actual request dispatch in lib/core/dispatchRequest.js.",
+            "technical_explanation": "dispatchRequest.js calls adapters.getAdapter(config.adapter || defaults.adapter, config) to resolve the adapter. getAdapter in lib/adapters/adapters.js accepts a string name, a function, or an array of candidates, iterating until a supported adapter is found. Platform defaults (lib/defaults/index.js) set the fallback order. The three concrete adapters are lib/adapters/xhr.js (browser XMLHttpRequest), lib/adapters/http.js (Node.js http/https), and lib/adapters/fetch.js (Fetch API). Each adapter returns a Promise<response>. dispatchRequest then applies request/response transforms and cancellation checks around the adapter call.",
+            "steps": [
+              {
+                "id": "lens-child:06160346b916be5ffd9c8404",
+                "label": "Platform Defaults",
+                "kind": "behavior",
+                "summary": "lib/defaults/index.js — sets default adapter order per environment",
+                "responsibilities": [],
+                "source_region_ids": [
+                  "region:4687ecfc1551473f508a9d71"
+                ],
+                "related_file_paths": [],
+                "support_status": "uncertain",
+                "confidence": 0.55,
+                "evidence": [
+                  {
+                    "id": "evidence-region:4687ecfc1551473f508a9d71",
+                    "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                    "node_id": "lens-child:06160346b916be5ffd9c8404",
+                    "evidence_kind": "lens_child",
+                    "source_ref_kind": "source_region",
+                    "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                    "file_path": "lib/core/dispatchRequest.js",
+                    "language": "javascript",
+                    "start_line": 1,
+                    "end_line": 77,
+                    "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                    "status": "uncertain",
+                    "confidence": 0.55,
+                    "score": 0.55,
+                    "reason": "lib/defaults/index.js — sets default adapter order per environment",
+                    "is_stale": false
+                  }
+                ]
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-claim-1",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C6",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, config) to select the adapter",
+                "is_stale": false
+              },
+              {
+                "id": "evidence-claim-2",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C6",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks and applies transformData on both request and response",
+                "is_stale": false
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.55,
+            "gaps": [
+              "Exact supported-check implementation per adapter not yet read",
+              "fetch adapter default-enablement policy not confirmed"
+            ],
+            "suggested_questions": [
+              "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+              "What is the default adapter order set in lib/defaults/index.js?",
+              "How does the fetch adapter differ from xhr in streaming or progress support?",
+              "How does cancellation via AbortSignal propagate into each adapter?"
+            ],
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "parent_node_id": "C6",
+            "parent_component_id": "C6"
+          }
+        ],
+        "lens_count": 6,
+        "unsupported_reasons": [],
+        "evidence_coverage": {
+          "lens_count": 6,
+          "evidence_count": 12,
+          "source_tab_count": 6,
+          "statuses": [
+            "verified"
+          ],
+          "types": []
+        },
+        "conversation_id": "206cb5d8-9931-49d6-bf9b-6fb4b3a4749d",
+        "turn_number": 1,
+        "run_metadata": {
+          "llm_call_count": 5,
+          "tokens_in": 24616,
+          "tokens_out": 2049,
+          "fallback_used": false,
+          "model": "blackboxai/anthropic/claude-sonnet-4.6",
+          "files_inspected": [],
+          "symbols_inspected": [],
+          "evidence_sources": [],
+          "unresolved_gaps": [
+            "Exact supported-check implementation per adapter not yet read",
+            "fetch adapter default-enablement policy not confirmed"
+          ]
+        }
+      }
+    }
+  ],
+  "console": [
+    {
+      "at": "2026-06-02T02:08:33.977Z",
+      "type": "error",
+      "text": "WebSocket connection to 'ws://127.0.0.1:5173/api/ws/analyze/job:70dfb33b54a149c8a8944f94d1e618ab' failed: Error during WebSocket handshake: Unexpected response code: 403"
+    },
+    {
+      "at": "2026-06-02T02:13:51.285Z",
+      "type": "pageerror",
+      "text": "Cannot read properties of undefined (reading 'replaceAll')"
+    },
+    {
+      "at": "2026-06-02T02:13:51.286Z",
+      "type": "warning",
+      "text": "%s\n\n%s\n An error occurred in the <UnderstandingPane> component. Consider adding an error boundary to your tree to customize error handling behavior.\nVisit https://react.dev/link/error-boundaries to learn more about error boundaries."
+    }
+  ],
+  "screenshots": [
+    "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_progress_complete.png",
+    "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_architecture_map.png",
+    "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_node_1.png",
+    "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_node_2.png",
+    "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_node_3.png",
+    "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_q1.png",
+    "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_q2.png",
+    "c:\\Users\\woled\\Desktop\\lauras work\\syntax-tree-refurbished-backend\\docs\\pr15_screenshots\\axios_q3.png"
+  ],
+  "questions": [
+    {
+      "question": "What is the interceptor chain and how does it process requests?",
+      "response": {
+        "answer_text": "The interceptor chain in Axios is built and executed inside Axios._request() in lib/core/Axios.js. It supports two execution paths: a fully async promise-chain path and a synchronous fast-path, selected based on whether all request interceptors are marked synchronous.",
+        "intent": "explanatory",
+        "citations": [
+          {
+            "entity_qn": "claim-1",
+            "entity_name": "requestInterceptorChain is built by iterating this.interceptors.request via forE",
+            "file_path": "lib/core/Axios.js",
+            "line_start": 1,
+            "line_end": 277,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-2",
+            "entity_name": "synchronousRequestInterceptors is true only if every non-skipped request interce",
+            "file_path": "lib/core/Axios.js",
+            "line_start": 1,
+            "line_end": 277,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-3",
+            "entity_name": "In the async path, the full chain is [requestInterceptorChain..., dispatchReques",
+            "file_path": "lib/core/Axios.js",
+            "line_start": 1,
+            "line_end": 277,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-4",
+            "entity_name": "In the sync fast-path, request interceptors run in a try/catch while loop synchr",
+            "file_path": "lib/core/Axios.js",
+            "line_start": 1,
+            "line_end": 277,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-5",
+            "entity_name": "The public Axios.request() is an async method that calls _request() and augments",
+            "file_path": "lib/core/Axios.js",
+            "line_start": 1,
+            "line_end": 277,
+            "support_status": "verified"
+          }
+        ],
+        "confidence": 1,
+        "follow_ups": [
+          "How does InterceptorManager store and iterate interceptors (forEach implementation)?",
+          "What does dispatchRequest do — how does it select adapters and apply request/response transforms?",
+          "How does AxiosHeaders.concat work for header merging?",
+          "What is the mergeConfig strategy for combining instance defaults with per-request config?"
+        ],
+        "diagrams": [],
+        "visual_lenses": [],
+        "lens_count": 0,
+        "unsupported_reasons": [],
+        "evidence_coverage": {
+          "lens_count": 0,
+          "evidence_count": 0,
+          "source_tab_count": 0,
+          "statuses": [],
+          "types": []
+        },
+        "conversation_id": "206cb5d8-9931-49d6-bf9b-6fb4b3a4749d",
+        "turn_number": 1,
+        "run_metadata": {
+          "llm_call_count": 1,
+          "tokens_in": 21237,
+          "tokens_out": 2034,
+          "fallback_used": false,
+          "model": "blackboxai/anthropic/claude-sonnet-4.6",
+          "files_inspected": [],
+          "symbols_inspected": [],
+          "evidence_sources": [],
+          "unresolved_gaps": [
+            "InterceptorManager source not read — forEach iteration order and eject behavior unconfirmed",
+            "dispatchRequest internals not examined"
+          ]
+        }
+      },
+      "visible_text_excerpt": "axios\naxios\nRun Run run:92742ca0f00f49558c88e5770a8265f3\nactive run\nsystem-overview-architecture-map-v1\nNo visual lens for this answer\n\nThe answer pane can still explain the result, but the backend did not return enough source-backed structure to redraw the canvas.\n\n4 child areas\nCtrl J\nAnswer\nUnderstanding Pane\nWhat is the interceptor chain and how does it process requests?\ncandidate\n100% confidence\n0 evidence\n\nThe interceptor chain in Axios is built and executed inside Axios._request() in lib/core/Axios.js. It supports two execution paths: a fully async promise-chain path and a synchronous fast-path, selected based on whether all request interceptors are marked synchronous.\n\nSimple\nTechnical\nEvidence\nWhat this means\nThe interceptor chain in Axios is built and executed inside Axios._request() in lib/core/Axios.js.\nIt supports two execution paths: a fully async promise-chain path and a synchronous fast-path, selected based on whether all request interceptors are marked synchronous.\nWhat the system proved\n\nNo direct source evidence was returned for this answer.\n\nSuggested next questions\nHow does InterceptorManager store and iterate interceptors (forEach implementation)?\nWhat does dispatchRequest do — how does it select adapters and apply request/response transforms?\nHow does AxiosHeaders.concat work for header merging?\nWhat is the mergeConfig strategy for combining instance defaults with per-request config?\nSaved memory\nLenses & tours\nSave Lens\nDocs Studio\nSaved lenses\nQUESTION\nQuestion Lens\nThe interceptor chain in Axios is built and executed inside Axios._request() in lib/core/Axios.js. It supports two execution paths: a fully async promise-chain path and a synchronous fast-path, selected based on whether all request interceptors are marked synchronous.\n0 evidence\nARCHITECTURE\nRequest Pipeline Orchestrator\nAxios class _request() method that merges config, validates transitional options, flattens headers, and sequences interceptors around dispatchRequest\n1 evidence\nGuided tour\nCreate\nCreate a tour from saved lenses to build a walkthrough.",
+      "score": {
+        "score": 9.2,
+        "keyword_hits": [
+          "InterceptorManager",
+          "request interceptors",
+          "dispatchRequest",
+          "synchronous"
+        ],
+        "expected_keywords": [
+          "InterceptorManager",
+          "request interceptors",
+          "response interceptors",
+          "dispatchRequest",
+          "synchronous"
+        ],
+        "evidence_signals": 9,
+        "confidence": 1
+      }
+    },
+    {
+      "question": "How does axios handle request cancellation?",
+      "response": {
+        "answer_text": "Axios handles request cancellation through two complementary mechanisms: the legacy CancelToken API and the modern AbortController/AbortSignal API. Both are wired inside adapters (confirmed in xhr.js).",
+        "intent": "explanatory",
+        "citations": [
+          {
+            "entity_qn": "claim-1",
+            "entity_name": "CancelToken maintains a _listeners array and notifies subscribers synchronously ",
+            "file_path": "lib/cancel/CancelToken.js",
+            "line_start": 1,
+            "line_end": 135,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-2",
+            "entity_name": "The XHR adapter wires cancellation cleanup by calling cancelToken.unsubscribe an",
+            "file_path": "lib/adapters/xhr.js",
+            "line_start": 29,
+            "line_end": 33,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-3",
+            "entity_name": "The XHR adapter checks signal.aborted and attaches an abort event listener that ",
+            "file_path": "lib/adapters/xhr.js",
+            "line_start": 200,
+            "line_end": 204,
+            "support_status": "verified"
+          }
+        ],
+        "confidence": 1,
+        "follow_ups": [
+          "How does CanceledError differ from other AxiosError instances?",
+          "Does the http.js adapter handle cancellation differently from xhr.js?",
+          "How does dispatchRequest.js perform early cancellation before the adapter is called?"
+        ],
+        "diagrams": [],
+        "visual_lenses": [],
+        "lens_count": 0,
+        "unsupported_reasons": [],
+        "evidence_coverage": {
+          "lens_count": 0,
+          "evidence_count": 0,
+          "source_tab_count": 0,
+          "statuses": [],
+          "types": []
+        },
+        "conversation_id": "206cb5d8-9931-49d6-bf9b-6fb4b3a4749d",
+        "turn_number": 1,
+        "run_metadata": {
+          "llm_call_count": 7,
+          "tokens_in": 28779,
+          "tokens_out": 4860,
+          "fallback_used": false,
+          "model": "blackboxai/anthropic/claude-sonnet-4.6",
+          "files_inspected": [],
+          "symbols_inspected": [],
+          "evidence_sources": [],
+          "unresolved_gaps": [
+            "CanceledError source not directly inspected; isCancel flag not source-confirmed",
+            "http.js adapter cancellation behavior not confirmed (tool returned 0 results)",
+            "dispatchRequest.js throwIfRequested/signal check not confirmed by tool trace",
+            "Investigation reached the tool-call budget before final synthesis."
+          ]
+        }
+      },
+      "visible_text_excerpt": "axios\naxios\nRun Run run:92742ca0f00f49558c88e5770a8265f3\nactive run\nsystem-overview-architecture-map-v1\nNo visual lens for this answer\n\nThe answer pane can still explain the result, but the backend did not return enough source-backed structure to redraw the canvas.\n\n4 child areas\nCtrl J\nAnswer\nUnderstanding Pane\nHow does axios handle request cancellation?\ncandidate\n100% confidence\n0 evidence\n\nAxios handles request cancellation through two complementary mechanisms: the legacy CancelToken API and the modern AbortController/AbortSignal API. Both are wired inside adapters (confirmed in xhr.js).\n\nSimple\nTechnical\nEvidence\nWhat this means\nAxios handles request cancellation through two complementary mechanisms: the legacy CancelToken API and the modern AbortController/AbortSignal API.\nBoth are wired inside adapters (confirmed in xhr.js).\nWhat the system proved\n\nNo direct source evidence was returned for this answer.\n\nSuggested next questions\nHow does CanceledError differ from other AxiosError instances?\nDoes the http.js adapter handle cancellation differently from xhr.js?\nHow does dispatchRequest.js perform early cancellation before the adapter is called?\nSaved memory\nLenses & tours\nSave Lens\nDocs Studio\nSaved lenses\nQUESTION\nQuestion Lens\nAxios handles request cancellation through two complementary mechanisms: the legacy CancelToken API and the modern AbortController/AbortSignal API. Both are wired inside adapters (confirmed in xhr.js).\n0 evidence\nQUESTION\nQuestion Lens\nThe interceptor chain in Axios is built and executed inside Axios._request() in lib/core/Axios.js. It supports two execution paths: a fully async promise-chain path and a synchronous fast-path, selected based on whether all request interceptors are marked synchronous.\n0 evidence\nARCHITECTURE\nRequest Pipeline Orchestrator\nAxios class _request() method that merges config, validates transitional options, flattens headers, and sequences interceptors around dispatchRequest\n1 evidence\nGuided tour\nCreate\nCreate a tour from saved lenses to build a walkthrough.",
+      "score": {
+        "score": 6.8,
+        "keyword_hits": [
+          "CancelToken",
+          "AbortSignal",
+          "CanceledError"
+        ],
+        "expected_keywords": [
+          "CancelToken",
+          "AbortSignal",
+          "throwIfCancellationRequested",
+          "CanceledError"
+        ],
+        "evidence_signals": 7,
+        "confidence": 1
+      }
+    },
+    {
+      "question": "What adapters does axios support and how does it choose one?",
+      "response": {
+        "answer_text": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+        "intent": "explanatory",
+        "citations": [
+          {
+            "entity_qn": "claim-1",
+            "entity_name": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, co",
+            "file_path": "lib/core/dispatchRequest.js",
+            "line_start": 1,
+            "line_end": 77,
+            "support_status": "verified"
+          },
+          {
+            "entity_qn": "claim-2",
+            "entity_name": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks ",
+            "file_path": "lib/core/dispatchRequest.js",
+            "line_start": 1,
+            "line_end": 77,
+            "support_status": "verified"
+          }
+        ],
+        "confidence": 1,
+        "follow_ups": [
+          "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+          "What is the default adapter order set in lib/defaults/index.js?",
+          "How does the fetch adapter differ from xhr in streaming or progress support?",
+          "How does cancellation via AbortSignal propagate into each adapter?"
+        ],
+        "diagrams": [],
+        "visual_lenses": [
+          {
+            "id": "C1",
+            "title": "Adapter Resolver",
+            "summary": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+            "simple_explanation": "Axios picks the right network transport (browser XHR, Node.js HTTP, or Fetch API) automatically based on the environment, or you can specify one explicitly in config. The selection logic lives in lib/adapters/adapters.js and the actual request dispatch in lib/core/dispatchRequest.js.",
+            "technical_explanation": "dispatchRequest.js calls adapters.getAdapter(config.adapter || defaults.adapter, config) to resolve the adapter. getAdapter in lib/adapters/adapters.js accepts a string name, a function, or an array of candidates, iterating until a supported adapter is found. Platform defaults (lib/defaults/index.js) set the fallback order. The three concrete adapters are lib/adapters/xhr.js (browser XMLHttpRequest), lib/adapters/http.js (Node.js http/https), and lib/adapters/fetch.js (Fetch API). Each adapter returns a Promise<response>. dispatchRequest then applies request/response transforms and cancellation checks around the adapter call.",
+            "steps": [
+              {
+                "id": "lens-child:4ce37dfcb4022dfeedaaaaec",
+                "label": "Adapter Resolver",
+                "kind": "behavior",
+                "summary": "lib/adapters/adapters.js — getAdapter resolves a name/function/array to a concrete supported adapter",
+                "responsibilities": [],
+                "source_region_ids": [
+                  "region:4687ecfc1551473f508a9d71"
+                ],
+                "related_file_paths": [],
+                "support_status": "uncertain",
+                "confidence": 0.55,
+                "evidence": [
+                  {
+                    "id": "evidence-region:4687ecfc1551473f508a9d71",
+                    "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                    "node_id": "lens-child:4ce37dfcb4022dfeedaaaaec",
+                    "evidence_kind": "lens_child",
+                    "source_ref_kind": "source_region",
+                    "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                    "file_path": "lib/core/dispatchRequest.js",
+                    "language": "javascript",
+                    "start_line": 1,
+                    "end_line": 77,
+                    "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                    "status": "uncertain",
+                    "confidence": 0.55,
+                    "score": 0.55,
+                    "reason": "lib/adapters/adapters.js — getAdapter resolves a name/function/array to a concrete supported adapter",
+                    "is_stale": false
+                  }
+                ]
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-claim-1",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C1",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, config) to select the adapter",
+                "is_stale": false
+              },
+              {
+                "id": "evidence-claim-2",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C1",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks and applies transformData on both request and response",
+                "is_stale": false
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.55,
+            "gaps": [
+              "Exact supported-check implementation per adapter not yet read",
+              "fetch adapter default-enablement policy not confirmed"
+            ],
+            "suggested_questions": [
+              "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+              "What is the default adapter order set in lib/defaults/index.js?",
+              "How does the fetch adapter differ from xhr in streaming or progress support?",
+              "How does cancellation via AbortSignal propagate into each adapter?"
+            ],
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "parent_node_id": "C1",
+            "parent_component_id": "C1"
+          },
+          {
+            "id": "C2",
+            "title": "XHR Adapter",
+            "summary": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+            "simple_explanation": "Axios picks the right network transport (browser XHR, Node.js HTTP, or Fetch API) automatically based on the environment, or you can specify one explicitly in config. The selection logic lives in lib/adapters/adapters.js and the actual request dispatch in lib/core/dispatchRequest.js.",
+            "technical_explanation": "dispatchRequest.js calls adapters.getAdapter(config.adapter || defaults.adapter, config) to resolve the adapter. getAdapter in lib/adapters/adapters.js accepts a string name, a function, or an array of candidates, iterating until a supported adapter is found. Platform defaults (lib/defaults/index.js) set the fallback order. The three concrete adapters are lib/adapters/xhr.js (browser XMLHttpRequest), lib/adapters/http.js (Node.js http/https), and lib/adapters/fetch.js (Fetch API). Each adapter returns a Promise<response>. dispatchRequest then applies request/response transforms and cancellation checks around the adapter call.",
+            "steps": [
+              {
+                "id": "lens-child:8c58f3d5ee05b4845fba0e7d",
+                "label": "XHR Adapter",
+                "kind": "behavior",
+                "summary": "lib/adapters/xhr.js — browser XMLHttpRequest-based transport",
+                "responsibilities": [],
+                "source_region_ids": [
+                  "region:4687ecfc1551473f508a9d71"
+                ],
+                "related_file_paths": [],
+                "support_status": "uncertain",
+                "confidence": 0.55,
+                "evidence": [
+                  {
+                    "id": "evidence-region:4687ecfc1551473f508a9d71",
+                    "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                    "node_id": "lens-child:8c58f3d5ee05b4845fba0e7d",
+                    "evidence_kind": "lens_child",
+                    "source_ref_kind": "source_region",
+                    "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                    "file_path": "lib/core/dispatchRequest.js",
+                    "language": "javascript",
+                    "start_line": 1,
+                    "end_line": 77,
+                    "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                    "status": "uncertain",
+                    "confidence": 0.55,
+                    "score": 0.55,
+                    "reason": "lib/adapters/xhr.js — browser XMLHttpRequest-based transport",
+                    "is_stale": false
+                  }
+                ]
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-claim-1",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C2",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, config) to select the adapter",
+                "is_stale": false
+              },
+              {
+                "id": "evidence-claim-2",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C2",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks and applies transformData on both request and response",
+                "is_stale": false
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.55,
+            "gaps": [
+              "Exact supported-check implementation per adapter not yet read",
+              "fetch adapter default-enablement policy not confirmed"
+            ],
+            "suggested_questions": [
+              "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+              "What is the default adapter order set in lib/defaults/index.js?",
+              "How does the fetch adapter differ from xhr in streaming or progress support?",
+              "How does cancellation via AbortSignal propagate into each adapter?"
+            ],
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "parent_node_id": "C2",
+            "parent_component_id": "C2"
+          },
+          {
+            "id": "C3",
+            "title": "HTTP Adapter",
+            "summary": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+            "simple_explanation": "Axios picks the right network transport (browser XHR, Node.js HTTP, or Fetch API) automatically based on the environment, or you can specify one explicitly in config. The selection logic lives in lib/adapters/adapters.js and the actual request dispatch in lib/core/dispatchRequest.js.",
+            "technical_explanation": "dispatchRequest.js calls adapters.getAdapter(config.adapter || defaults.adapter, config) to resolve the adapter. getAdapter in lib/adapters/adapters.js accepts a string name, a function, or an array of candidates, iterating until a supported adapter is found. Platform defaults (lib/defaults/index.js) set the fallback order. The three concrete adapters are lib/adapters/xhr.js (browser XMLHttpRequest), lib/adapters/http.js (Node.js http/https), and lib/adapters/fetch.js (Fetch API). Each adapter returns a Promise<response>. dispatchRequest then applies request/response transforms and cancellation checks around the adapter call.",
+            "steps": [
+              {
+                "id": "lens-child:051494ddc75367af59abb79e",
+                "label": "HTTP Adapter",
+                "kind": "behavior",
+                "summary": "lib/adapters/http.js — Node.js http/https-based transport",
+                "responsibilities": [],
+                "source_region_ids": [
+                  "region:4687ecfc1551473f508a9d71"
+                ],
+                "related_file_paths": [],
+                "support_status": "uncertain",
+                "confidence": 0.55,
+                "evidence": [
+                  {
+                    "id": "evidence-region:4687ecfc1551473f508a9d71",
+                    "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                    "node_id": "lens-child:051494ddc75367af59abb79e",
+                    "evidence_kind": "lens_child",
+                    "source_ref_kind": "source_region",
+                    "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                    "file_path": "lib/core/dispatchRequest.js",
+                    "language": "javascript",
+                    "start_line": 1,
+                    "end_line": 77,
+                    "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                    "status": "uncertain",
+                    "confidence": 0.55,
+                    "score": 0.55,
+                    "reason": "lib/adapters/http.js — Node.js http/https-based transport",
+                    "is_stale": false
+                  }
+                ]
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-claim-1",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C3",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, config) to select the adapter",
+                "is_stale": false
+              },
+              {
+                "id": "evidence-claim-2",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C3",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks and applies transformData on both request and response",
+                "is_stale": false
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.55,
+            "gaps": [
+              "Exact supported-check implementation per adapter not yet read",
+              "fetch adapter default-enablement policy not confirmed"
+            ],
+            "suggested_questions": [
+              "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+              "What is the default adapter order set in lib/defaults/index.js?",
+              "How does the fetch adapter differ from xhr in streaming or progress support?",
+              "How does cancellation via AbortSignal propagate into each adapter?"
+            ],
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "parent_node_id": "C3",
+            "parent_component_id": "C3"
+          },
+          {
+            "id": "C4",
+            "title": "Fetch Adapter",
+            "summary": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+            "simple_explanation": "Axios picks the right network transport (browser XHR, Node.js HTTP, or Fetch API) automatically based on the environment, or you can specify one explicitly in config. The selection logic lives in lib/adapters/adapters.js and the actual request dispatch in lib/core/dispatchRequest.js.",
+            "technical_explanation": "dispatchRequest.js calls adapters.getAdapter(config.adapter || defaults.adapter, config) to resolve the adapter. getAdapter in lib/adapters/adapters.js accepts a string name, a function, or an array of candidates, iterating until a supported adapter is found. Platform defaults (lib/defaults/index.js) set the fallback order. The three concrete adapters are lib/adapters/xhr.js (browser XMLHttpRequest), lib/adapters/http.js (Node.js http/https), and lib/adapters/fetch.js (Fetch API). Each adapter returns a Promise<response>. dispatchRequest then applies request/response transforms and cancellation checks around the adapter call.",
+            "steps": [
+              {
+                "id": "lens-child:b698c4c20897b5da84684dab",
+                "label": "Fetch Adapter",
+                "kind": "behavior",
+                "summary": "lib/adapters/fetch.js — Fetch API-based transport",
+                "responsibilities": [],
+                "source_region_ids": [
+                  "region:4687ecfc1551473f508a9d71"
+                ],
+                "related_file_paths": [],
+                "support_status": "uncertain",
+                "confidence": 0.55,
+                "evidence": [
+                  {
+                    "id": "evidence-region:4687ecfc1551473f508a9d71",
+                    "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                    "node_id": "lens-child:b698c4c20897b5da84684dab",
+                    "evidence_kind": "lens_child",
+                    "source_ref_kind": "source_region",
+                    "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                    "file_path": "lib/core/dispatchRequest.js",
+                    "language": "javascript",
+                    "start_line": 1,
+                    "end_line": 77,
+                    "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                    "status": "uncertain",
+                    "confidence": 0.55,
+                    "score": 0.55,
+                    "reason": "lib/adapters/fetch.js — Fetch API-based transport",
+                    "is_stale": false
+                  }
+                ]
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-claim-1",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C4",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, config) to select the adapter",
+                "is_stale": false
+              },
+              {
+                "id": "evidence-claim-2",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C4",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks and applies transformData on both request and response",
+                "is_stale": false
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.55,
+            "gaps": [
+              "Exact supported-check implementation per adapter not yet read",
+              "fetch adapter default-enablement policy not confirmed"
+            ],
+            "suggested_questions": [
+              "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+              "What is the default adapter order set in lib/defaults/index.js?",
+              "How does the fetch adapter differ from xhr in streaming or progress support?",
+              "How does cancellation via AbortSignal propagate into each adapter?"
+            ],
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "parent_node_id": "C4",
+            "parent_component_id": "C4"
+          },
+          {
+            "id": "C5",
+            "title": "Request Dispatch Orchestrator",
+            "summary": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+            "simple_explanation": "Axios picks the right network transport (browser XHR, Node.js HTTP, or Fetch API) automatically based on the environment, or you can specify one explicitly in config. The selection logic lives in lib/adapters/adapters.js and the actual request dispatch in lib/core/dispatchRequest.js.",
+            "technical_explanation": "dispatchRequest.js calls adapters.getAdapter(config.adapter || defaults.adapter, config) to resolve the adapter. getAdapter in lib/adapters/adapters.js accepts a string name, a function, or an array of candidates, iterating until a supported adapter is found. Platform defaults (lib/defaults/index.js) set the fallback order. The three concrete adapters are lib/adapters/xhr.js (browser XMLHttpRequest), lib/adapters/http.js (Node.js http/https), and lib/adapters/fetch.js (Fetch API). Each adapter returns a Promise<response>. dispatchRequest then applies request/response transforms and cancellation checks around the adapter call.",
+            "steps": [
+              {
+                "id": "lens-child:f7e9896b54a83a84daa8c05e",
+                "label": "Request Dispatch Orchestrator",
+                "kind": "behavior",
+                "summary": "lib/core/dispatchRequest.js — applies transforms, cancellation checks, invokes adapter, processes response",
+                "responsibilities": [],
+                "source_region_ids": [
+                  "region:4687ecfc1551473f508a9d71"
+                ],
+                "related_file_paths": [],
+                "support_status": "uncertain",
+                "confidence": 0.55,
+                "evidence": [
+                  {
+                    "id": "evidence-region:4687ecfc1551473f508a9d71",
+                    "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                    "node_id": "lens-child:f7e9896b54a83a84daa8c05e",
+                    "evidence_kind": "lens_child",
+                    "source_ref_kind": "source_region",
+                    "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                    "file_path": "lib/core/dispatchRequest.js",
+                    "language": "javascript",
+                    "start_line": 1,
+                    "end_line": 77,
+                    "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                    "status": "uncertain",
+                    "confidence": 0.55,
+                    "score": 0.55,
+                    "reason": "lib/core/dispatchRequest.js — applies transforms, cancellation checks, invokes adapter, processes response",
+                    "is_stale": false
+                  }
+                ]
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-claim-1",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C5",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, config) to select the adapter",
+                "is_stale": false
+              },
+              {
+                "id": "evidence-claim-2",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C5",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks and applies transformData on both request and response",
+                "is_stale": false
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.55,
+            "gaps": [
+              "Exact supported-check implementation per adapter not yet read",
+              "fetch adapter default-enablement policy not confirmed"
+            ],
+            "suggested_questions": [
+              "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+              "What is the default adapter order set in lib/defaults/index.js?",
+              "How does the fetch adapter differ from xhr in streaming or progress support?",
+              "How does cancellation via AbortSignal propagate into each adapter?"
+            ],
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "parent_node_id": "C5",
+            "parent_component_id": "C5"
+          },
+          {
+            "id": "C6",
+            "title": "Platform Defaults",
+            "summary": "Axios adapter architecture: three adapters (xhr, http, fetch) selected via getAdapter resolver in lib/adapters/adapters.js, invoked by dispatchRequest.js",
+            "simple_explanation": "Axios picks the right network transport (browser XHR, Node.js HTTP, or Fetch API) automatically based on the environment, or you can specify one explicitly in config. The selection logic lives in lib/adapters/adapters.js and the actual request dispatch in lib/core/dispatchRequest.js.",
+            "technical_explanation": "dispatchRequest.js calls adapters.getAdapter(config.adapter || defaults.adapter, config) to resolve the adapter. getAdapter in lib/adapters/adapters.js accepts a string name, a function, or an array of candidates, iterating until a supported adapter is found. Platform defaults (lib/defaults/index.js) set the fallback order. The three concrete adapters are lib/adapters/xhr.js (browser XMLHttpRequest), lib/adapters/http.js (Node.js http/https), and lib/adapters/fetch.js (Fetch API). Each adapter returns a Promise<response>. dispatchRequest then applies request/response transforms and cancellation checks around the adapter call.",
+            "steps": [
+              {
+                "id": "lens-child:06160346b916be5ffd9c8404",
+                "label": "Platform Defaults",
+                "kind": "behavior",
+                "summary": "lib/defaults/index.js — sets default adapter order per environment",
+                "responsibilities": [],
+                "source_region_ids": [
+                  "region:4687ecfc1551473f508a9d71"
+                ],
+                "related_file_paths": [],
+                "support_status": "uncertain",
+                "confidence": 0.55,
+                "evidence": [
+                  {
+                    "id": "evidence-region:4687ecfc1551473f508a9d71",
+                    "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                    "node_id": "lens-child:06160346b916be5ffd9c8404",
+                    "evidence_kind": "lens_child",
+                    "source_ref_kind": "source_region",
+                    "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                    "file_path": "lib/core/dispatchRequest.js",
+                    "language": "javascript",
+                    "start_line": 1,
+                    "end_line": 77,
+                    "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                    "status": "uncertain",
+                    "confidence": 0.55,
+                    "score": 0.55,
+                    "reason": "lib/defaults/index.js — sets default adapter order per environment",
+                    "is_stale": false
+                  }
+                ]
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-claim-1",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C6",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest calls adapters.getAdapter(config.adapter || defaults.adapter, config) to select the adapter",
+                "is_stale": false
+              },
+              {
+                "id": "evidence-claim-2",
+                "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+                "node_id": "C6",
+                "evidence_kind": "claim",
+                "source_ref_kind": "source_region",
+                "source_ref_id": "region:4687ecfc1551473f508a9d71",
+                "file_path": "lib/core/dispatchRequest.js",
+                "language": "javascript",
+                "start_line": 1,
+                "end_line": 77,
+                "text_preview": "'use strict';\n\nimport transformData from './transformData.js';\nimport isCancel from '../cancel/isCancel.js';\nimport defaults from '../defaults/index.js';\nimport CanceledError from '../cancel/CanceledE",
+                "status": "verified",
+                "confidence": 1,
+                "score": 1,
+                "reason": "dispatchRequest wraps the adapter call with throwIfCancellationRequested checks and applies transformData on both request and response",
+                "is_stale": false
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.55,
+            "gaps": [
+              "Exact supported-check implementation per adapter not yet read",
+              "fetch adapter default-enablement policy not confirmed"
+            ],
+            "suggested_questions": [
+              "How does each adapter declare environment support (isSupported/isEnvironmentSupported)?",
+              "What is the default adapter order set in lib/defaults/index.js?",
+              "How does the fetch adapter differ from xhr in streaming or progress support?",
+              "How does cancellation via AbortSignal propagate into each adapter?"
+            ],
+            "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+            "parent_node_id": "C6",
+            "parent_component_id": "C6"
+          }
+        ],
+        "lens_count": 6,
+        "unsupported_reasons": [],
+        "evidence_coverage": {
+          "lens_count": 6,
+          "evidence_count": 12,
+          "source_tab_count": 6,
+          "statuses": [
+            "verified"
+          ],
+          "types": []
+        },
+        "conversation_id": "206cb5d8-9931-49d6-bf9b-6fb4b3a4749d",
+        "turn_number": 1,
+        "run_metadata": {
+          "llm_call_count": 5,
+          "tokens_in": 24616,
+          "tokens_out": 2049,
+          "fallback_used": false,
+          "model": "blackboxai/anthropic/claude-sonnet-4.6",
+          "files_inspected": [],
+          "symbols_inspected": [],
+          "evidence_sources": [],
+          "unresolved_gaps": [
+            "Exact supported-check implementation per adapter not yet read",
+            "fetch adapter default-enablement policy not confirmed"
+          ]
+        }
+      },
+      "visible_text_excerpt": "",
+      "score": {
+        "score": 8,
+        "keyword_hits": [
+          "http",
+          "xhr",
+          "fetch",
+          "getAdapter",
+          "adapter"
+        ],
+        "expected_keywords": [
+          "http",
+          "xhr",
+          "fetch",
+          "getAdapter",
+          "adapter"
+        ],
+        "evidence_signals": 108,
+        "confidence": 1
+      }
+    }
+  ],
+  "docs": [],
+  "metrics": null,
+  "stages": null,
+  "architectureMap": {
+    "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+    "root": {
+      "id": "arch-root:c4a7c3661b549d60859fce16",
+      "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+      "label": "axios",
+      "kind": "system",
+      "level": 0,
+      "description": "axios is a promise-based HTTP client with a layered pipeline: public API → interceptor chain → adapter dispatch → response transformation. The codebase is organized into core pipeline, adapters, helpers, platform abstractions, and cancellation.",
+      "status": "verified",
+      "confidence": 0.7,
+      "source_refs": {
+        "overview_id": [
+          "overview:94f492f0047f0c9c41796bab"
+        ],
+        "source_region_ids": [
+          "region:e8b62253065100704640f7a2"
+        ]
+      },
+      "evidence_count": 1,
+      "children_count": 10,
+      "can_drilldown": true,
+      "primary_files": [
+        "lib/core/Axios.js"
+      ],
+      "related_concept_ids": [],
+      "related_flow_ids": [],
+      "graph_qn": null,
+      "legacy_type": null,
+      "warnings": [
+        "fetch adapter implementation details not yet read",
+        "adapter selection/auto-detection logic not confirmed from source",
+        "defaults/index.js transform pipeline not read",
+        "CancelToken + AbortController unification not confirmed"
+      ],
+      "unsupported_reason": null
+    },
+    "nodes": [
+      {
+        "id": "arch-root:c4a7c3661b549d60859fce16",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "label": "axios",
+        "kind": "system",
+        "level": 0,
+        "description": "axios is a promise-based HTTP client with a layered pipeline: public API → interceptor chain → adapter dispatch → response transformation. The codebase is organized into core pipeline, adapters, helpers, platform abstractions, and cancellation.",
+        "status": "verified",
+        "confidence": 0.7,
+        "source_refs": {
+          "overview_id": [
+            "overview:94f492f0047f0c9c41796bab"
+          ],
+          "source_region_ids": [
+            "region:e8b62253065100704640f7a2"
+          ]
+        },
+        "evidence_count": 1,
+        "children_count": 10,
+        "can_drilldown": true,
+        "primary_files": [
+          "lib/core/Axios.js"
+        ],
+        "related_concept_ids": [],
+        "related_flow_ids": [],
+        "graph_qn": null,
+        "legacy_type": null,
+        "warnings": [
+          "fetch adapter implementation details not yet read",
+          "adapter selection/auto-detection logic not confirmed from source",
+          "defaults/index.js transform pipeline not read",
+          "CancelToken + AbortController unification not confirmed"
+        ],
+        "unsupported_reason": null
+      },
+      {
+        "id": "component:d8467fff664ec1aa9188cdfe",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "label": "Public API Surface",
+        "kind": "component",
+        "level": 1,
+        "description": "axios() callable, axios.create(), axios.all(), axios.spread(), and HTTP method shortcuts (get/post/put/patch/delete/head/options/postForm etc.) exposed from lib/axios.js",
+        "status": "verified",
+        "confidence": 0.5,
+        "source_refs": {
+          "source_region_ids": [
+            "region:e8b62253065100704640f7a2"
+          ],
+          "anchor_ids": [],
+          "related_file_paths": []
+        },
+        "evidence_count": 1,
+        "children_count": 3,
+        "can_drilldown": true,
+        "primary_files": [
+          "lib/core/Axios.js"
+        ],
+        "related_concept_ids": [],
+        "related_flow_ids": [],
+        "graph_qn": null,
+        "legacy_type": null,
+        "warnings": [],
+        "unsupported_reason": null
+      },
+      {
+        "id": "component:5b9ba86cef0764da52f9796f",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "label": "Request Pipeline Orchestrator",
+        "kind": "component",
+        "level": 1,
+        "description": "Axios class _request() method that merges config, validates transitional options, flattens headers, and sequences interceptors around dispatchRequest",
+        "status": "verified",
+        "confidence": 0.5,
+        "source_refs": {
+          "source_region_ids": [
+            "region:e8b62253065100704640f7a2"
+          ],
+          "anchor_ids": [],
+          "related_file_paths": []
+        },
+        "evidence_count": 1,
+        "children_count": 4,
+        "can_drilldown": true,
+        "primary_files": [
+          "lib/core/Axios.js"
+        ],
+        "related_concept_ids": [],
+        "related_flow_ids": [],
+        "graph_qn": null,
+        "legacy_type": null,
+        "warnings": [],
+        "unsupported_reason": null
+      },
+      {
+        "id": "component:5ffd810a34cddf76e8121054",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "label": "Interceptor System",
+        "kind": "component",
+        "level": 1,
+        "description": "InterceptorManager maintains ordered lists of {fulfilled, rejected, runWhen, synchronous} handlers for both request and response phases; supports use/eject/clear/forEach",
+        "status": "insufficient",
+        "confidence": 0.5,
+        "source_refs": {
+          "source_region_ids": [],
+          "anchor_ids": [],
+          "related_file_paths": []
+        },
+        "evidence_count": 0,
+        "children_count": 3,
+        "can_drilldown": true,
+        "primary_files": [],
+        "related_concept_ids": [],
+        "related_flow_ids": [],
+        "graph_qn": null,
+        "legacy_type": null,
+        "warnings": [
+          "No exact source-backed evidence attached."
+        ],
+        "unsupported_reason": null
+      },
+      {
+        "id": "component:eb477bea6b065a9c568695c4",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "label": "Transport Adapters",
+        "kind": "external_boundary",
+        "level": 1,
+        "description": "Three pluggable adapters in lib/adapters/: xhr.js (browser XMLHttpRequest), http.js (Node.js http/https), fetch.js (Fetch API); selected by adapter auto-detection or explicit config",
+        "status": "insufficient",
+        "confidence": 0.5,
+        "source_refs": {
+          "source_region_ids": [],
+          "anchor_ids": [],
+          "related_file_paths": []
+        },
+        "evidence_count": 0,
+        "children_count": 4,
+        "can_drilldown": true,
+        "primary_files": [],
+        "related_concept_ids": [],
+        "related_flow_ids": [],
+        "graph_qn": null,
+        "legacy_type": null,
+        "warnings": [
+          "No exact source-backed evidence attached."
+        ],
+        "unsupported_reason": null
+      },
+      {
+        "id": "component:fdaf22174930bb899a1eaf80",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "label": "Response Transformation",
+        "kind": "component",
+        "level": 1,
+        "description": "dispatchRequest.js orchestrates data transformation before sending and after receiving; defaults/index.js defines default transformRequest/transformResponse functions including JSON serialization",
+        "status": "insufficient",
+        "confidence": 0.5,
+        "source_refs": {
+          "source_region_ids": [],
+          "anchor_ids": [],
+          "related_file_paths": [
+            "Request/Response Transformation"
+          ]
+        },
+        "evidence_count": 0,
+        "children_count": 4,
+        "can_drilldown": true,
+        "primary_files": [
+          "Request/Response Transformation"
+        ],
+        "related_concept_ids": [],
+        "related_flow_ids": [],
+        "graph_qn": null,
+        "legacy_type": null,
+        "warnings": [
+          "No exact source-backed evidence attached."
+        ],
+        "unsupported_reason": null
+      },
+      {
+        "id": "component:49b3e3bacad9373ca9622993",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "label": "Header Management",
+        "kind": "component",
+        "level": 1,
+        "description": "AxiosHeaders class provides case-insensitive header storage, normalization, accessor methods, and concat/merge utilities used throughout the pipeline",
+        "status": "verified",
+        "confidence": 0.5,
+        "source_refs": {
+          "source_region_ids": [
+            "region:e8b62253065100704640f7a2"
+          ],
+          "anchor_ids": [],
+          "related_file_paths": []
+        },
+        "evidence_count": 1,
+        "children_count": 0,
+        "can_drilldown": true,
+        "primary_files": [
+          "lib/core/Axios.js"
+        ],
+        "related_concept_ids": [],
+        "related_flow_ids": [],
+        "graph_qn": null,
+        "legacy_type": null,
+        "warnings": [],
+        "unsupported_reason": null
+      },
+      {
+        "id": "component:d1b3f562a0d688653ca2e6dc",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "label": "URL Construction",
+        "kind": "component",
+        "level": 1,
+        "description": "lib/helpers/buildURL.js serializes params into query strings; lib/core/buildFullPath.js combines baseURL and relative URL; lib/helpers/isAbsoluteURL.js and combineURLs.js support this",
+        "status": "insufficient",
+        "confidence": 0.5,
+        "source_refs": {
+          "source_region_ids": [],
+          "anchor_ids": [],
+          "related_file_paths": []
+        },
+        "evidence_count": 0,
+        "children_count": 0,
+        "can_drilldown": false,
+        "primary_files": [],
+        "related_concept_ids": [],
+        "related_flow_ids": [],
+        "graph_qn": null,
+        "legacy_type": null,
+        "warnings": [
+          "No exact source-backed evidence attached."
+        ],
+        "unsupported_reason": null
+      },
+      {
+        "id": "component:2b9d284ab67d9938b7e517ae",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "label": "Cancellation",
+        "kind": "component",
+        "level": 1,
+        "description": "lib/cancel/ provides CancelToken (legacy) and AbortController-based cancellation; CanceledError extends AxiosError with isCancel flag",
+        "status": "verified",
+        "confidence": 0.5,
+        "source_refs": {
+          "source_region_ids": [
+            "region:e8b62253065100704640f7a2"
+          ],
+          "anchor_ids": [],
+          "related_file_paths": []
+        },
+        "evidence_count": 1,
+        "children_count": 0,
+        "can_drilldown": true,
+        "primary_files": [
+          "lib/core/Axios.js"
+        ],
+        "related_concept_ids": [],
+        "related_flow_ids": [],
+        "graph_qn": null,
+        "legacy_type": null,
+        "warnings": [],
+        "unsupported_reason": null
+      },
+      {
+        "id": "component:b5d711a7f986a3eb20cf36dd",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "label": "Error Handling",
+        "kind": "component",
+        "level": 1,
+        "description": "AxiosError (lib/core/AxiosError.js) is the standard error class carrying config, request, response, and code; settle.js decides resolve vs reject based on validateStatus",
+        "status": "verified",
+        "confidence": 0.5,
+        "source_refs": {
+          "source_region_ids": [
+            "region:e8b62253065100704640f7a2"
+          ],
+          "anchor_ids": [],
+          "related_file_paths": []
+        },
+        "evidence_count": 1,
+        "children_count": 0,
+        "can_drilldown": true,
+        "primary_files": [
+          "lib/core/Axios.js"
+        ],
+        "related_concept_ids": [],
+        "related_flow_ids": [],
+        "graph_qn": null,
+        "legacy_type": null,
+        "warnings": [],
+        "unsupported_reason": null
+      },
+      {
+        "id": "component:49152b5ef95e43e060054c14",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "label": "Platform & Environment Abstraction",
+        "kind": "component",
+        "level": 1,
+        "description": "lib/platform/ exposes environment-specific primitives (FormData, Blob, URLSearchParams, navigator, etc.) so core code stays isomorphic across browser and Node",
+        "status": "insufficient",
+        "confidence": 0.5,
+        "source_refs": {
+          "source_region_ids": [],
+          "anchor_ids": [],
+          "related_file_paths": []
+        },
+        "evidence_count": 0,
+        "children_count": 0,
+        "can_drilldown": false,
+        "primary_files": [],
+        "related_concept_ids": [],
+        "related_flow_ids": [],
+        "graph_qn": null,
+        "legacy_type": null,
+        "warnings": [
+          "No exact source-backed evidence attached."
+        ],
+        "unsupported_reason": null
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge:be53cc7531a1fe3b2e5f0527",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "source": "component:d8467fff664ec1aa9188cdfe",
+        "target": "component:5b9ba86cef0764da52f9796f",
+        "kind": "relationship",
+        "label": "delegates all requests to",
+        "confidence": 0.45,
+        "source_refs": {
+          "source_region_ids": []
+        }
+      },
+      {
+        "id": "edge:8839c462369bd362f3a1cd0e",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "source": "component:5b9ba86cef0764da52f9796f",
+        "target": "component:5ffd810a34cddf76e8121054",
+        "kind": "relationship",
+        "label": "sequences request and response interceptors from",
+        "confidence": 0.45,
+        "source_refs": {
+          "source_region_ids": []
+        }
+      },
+      {
+        "id": "edge:7eae938c11b038bafb7bf33d",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "source": "component:5b9ba86cef0764da52f9796f",
+        "target": "component:fdaf22174930bb899a1eaf80",
+        "kind": "relationship",
+        "label": "calls dispatchRequest which drives",
+        "confidence": 0.45,
+        "source_refs": {
+          "source_region_ids": []
+        }
+      },
+      {
+        "id": "edge:f9c62c370a620c9e3c636842",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "source": "component:fdaf22174930bb899a1eaf80",
+        "target": "component:eb477bea6b065a9c568695c4",
+        "kind": "relationship",
+        "label": "selects and invokes one of",
+        "confidence": 0.45,
+        "source_refs": {
+          "source_region_ids": []
+        }
+      },
+      {
+        "id": "edge:54773e33956e50008ed82e12",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "source": "component:5b9ba86cef0764da52f9796f",
+        "target": "component:49b3e3bacad9373ca9622993",
+        "kind": "relationship",
+        "label": "uses AxiosHeaders.concat to flatten headers",
+        "confidence": 0.45,
+        "source_refs": {
+          "source_region_ids": []
+        }
+      },
+      {
+        "id": "edge:9c9e067607834850a0318d2d",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "source": "component:5b9ba86cef0764da52f9796f",
+        "target": "component:d1b3f562a0d688653ca2e6dc",
+        "kind": "relationship",
+        "label": "uses buildFullPath + buildURL for getUri",
+        "confidence": 0.45,
+        "source_refs": {
+          "source_region_ids": []
+        }
+      },
+      {
+        "id": "edge:17dc36ac734f636dfd11b94f",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "source": "component:eb477bea6b065a9c568695c4",
+        "target": "component:2b9d284ab67d9938b7e517ae",
+        "kind": "relationship",
+        "label": "checks cancel token / AbortSignal before and during request",
+        "confidence": 0.45,
+        "source_refs": {
+          "source_region_ids": []
+        }
+      },
+      {
+        "id": "edge:6d4851fb16667b4c987648d5",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "source": "component:eb477bea6b065a9c568695c4",
+        "target": "component:b5d711a7f986a3eb20cf36dd",
+        "kind": "relationship",
+        "label": "rejects with AxiosError on network/timeout/status errors",
+        "confidence": 0.45,
+        "source_refs": {
+          "source_region_ids": []
+        }
+      },
+      {
+        "id": "edge:719a1cd540fcd4d0cdf0c8f6",
+        "analysis_run_id": "run:92742ca0f00f49558c88e5770a8265f3",
+        "source": "component:fdaf22174930bb899a1eaf80",
+        "target": "component:49152b5ef95e43e060054c14",
+        "kind": "relationship",
+        "label": "uses platform primitives for FormData detection etc.",
+        "confidence": 0.45,
+        "source_refs": {
+          "source_region_ids": []
+        }
+      }
+    ],
+    "diagnostics": {
+      "repo_shape": "python_http_client_library",
+      "projection_version": "system-overview-architecture-map-v1",
+      "warnings": [
+        "fetch adapter implementation details not yet read",
+        "adapter selection/auto-detection logic not confirmed from source",
+        "defaults/index.js transform pipeline not read",
+        "CancelToken + AbortController unification not confirmed",
+        "No exact source-backed evidence attached."
+      ],
+      "suppressed_app_only_nodes": [],
+      "nodes_without_evidence": [
+        "component:5ffd810a34cddf76e8121054",
+        "component:eb477bea6b065a9c568695c4",
+        "component:fdaf22174930bb899a1eaf80",
+        "component:d1b3f562a0d688653ca2e6dc",
+        "component:49152b5ef95e43e060054c14"
+      ],
+      "verified_node_count": 5,
+      "insufficient_node_count": 5,
+      "unsupported_node_count": 0
+    },
+    "metadata": {
+      "repository": {
+        "name": "axios",
+        "root_path": "C:\\Users\\woled\\Desktop\\lauras work\\bench-repos\\axios",
+        "file_count": 435
+      },
+      "overview_id": "overview:94f492f0047f0c9c41796bab",
+      "overview_status": "ready",
+      "overview_cached": false,
+      "llm_used": true,
+      "model": "blackboxai/anthropic/claude-sonnet-4.6"
+    }
+  },
+  "tokenLedger": {
+    "observed_tokens_in": 149264,
+    "observed_tokens_out": 17886,
+    "metrics_tokens_in": 0,
+    "metrics_tokens_out": 0
+  },
+  "grades": null
+}

@@ -1,0 +1,14 @@
+Backend access log lines matching the exact entity id used in the ONE
+bounded real-OpenAI QA verification (symbol:c3ebfe26f9af8244ba3e0bf5,
+Flask class, app.py:109-1625), captured read-only after the check.
+
+GET  /api/architecture-map/nodes/symbol%3Ac3ebfe26f9af8244ba3e0bf5/explanation        200 OK   (legacy node-explanation, deterministic, unrelated to this fix)
+GET  /api/architecture-map/nodes/symbol%3Ac3ebfe26f9af8244ba3e0bf5/evidence?limit=40  200 OK   (legacy, deterministic)
+GET  /api/architecture-map/nodes/symbol%3Ac3ebfe26f9af8244ba3e0bf5/children           200 OK   (legacy, deterministic)
+GET  /api/architecture-map/nodes/symbol%3Ac3ebfe26f9af8244ba3e0bf5/implementation     200 OK   (legacy, deterministic)
+POST /api/entities/symbol%3Ac3ebfe26f9af8244ba3e0bf5/architectural-explanation        200 OK   <-- exactly ONE occurrence
+
+Exactly one POST .../architectural-explanation line for this entity --
+no duplicate. Full log window also independently confirmed zero
+ERROR/WARN/Exception/Traceback lines and zero openrouter/blackbox
+references (no legacy provider traffic).

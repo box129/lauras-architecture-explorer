@@ -1,0 +1,286 @@
+{
+  "browser": "webkit",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "fixture": "mixed",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    }
+  ],
+  "page_errors": [],
+  "failed_requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5473/api/architecture-map",
+      "failure": "Load request cancelled"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5473/api/architecture-map",
+      "failure": "Load request cancelled"
+    }
+  ],
+  "responses": [
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/hooks.ts"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/tokenStore.ts"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/client.ts"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/src/api/websocket.ts"
+    },
+    {
+      "method": "POST",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/analyze"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3A0ee13f99865143688ee42ed54d4e2ce3/orientation"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3A0ee13f99865143688ee42ed54d4e2ce3/orientation"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/flows?limit=50"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3A0ee13f99865143688ee42ed54d4e2ce3/orientation"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "url": "http://127.0.0.1:5473/api/runs/run%3A0ee13f99865143688ee42ed54d4e2ce3/orientation"
+    },
+    {
+      "method": "GET",
+      "status": 304,
+      "url": "http://127.0.0.1:5473/src/api/hooks.ts"
+    },
+    {
+      "method": "GET",
+      "status": 304,
+      "url": "http://127.0.0.1:5473/src/api/tokenStore.ts"
+    },
+    {
+      "method": "GET",
+      "status": 304,
+      "url": "http://127.0.0.1:5473/src/api/client.ts"
+    },
+    {
+      "method": "GET",
+      "status": 304,
+      "url": "http://127.0.0.1:5473/src/api/websocket.ts"
+    }
+  ],
+  "websockets": [
+    {
+      "url": "ws://127.0.0.1:5473/?token=<REDACTED-HMR-TOKEN>",
+      "sent": [],
+      "received": [
+        "{\"type\":\"connected\"}"
+      ],
+      "closed": true,
+      "error": null
+    },
+    {
+      "url": "ws://127.0.0.1:5473/api/ws/analyze/job:1d528be813cb4a2dac2ef5ccc4b4ced6",
+      "sent": [],
+      "received": [
+        "{\"event\":\"status_update\",\"data\":{\"job_id\":\"job:1d528be813cb4a2dac2ef5ccc4b4ced6\",\"analysis_run_id\":\"run:0ee13f99865143688ee42ed54d4e2ce3\",\"status\":\"running\",\"stage\":\"parsing\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\mixed-moderate\",\"error\":\"\",\"created_at\":\"2026-08-06T11:27:20.823529Z\",\"started_at\":\"2026-08-06T11:27:20.823529Z\",\"completed_at\":null,\"progress\":{\"stage\":\"parsing\",\"total_files\":18,\"files_parsed\":0,\"files_total\":18,\"can_render_frontend\":false},\"run_metadata\":{\"analysis_run_id\":\"run:0ee13f99865143688ee42ed54d4e2ce3\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\mixed-moderate\",\"comprehension_mode\":\"refurbished\",\"scope\":\"snapshot\",\"llm_active\":false,\"fallback_used\":false}}}",
+        "{\"event\":\"status_update\",\"data\":{\"job_id\":\"job:1d528be813cb4a2dac2ef5ccc4b4ced6\",\"analysis_run_id\":\"run:0ee13f99865143688ee42ed54d4e2ce3\",\"status\":\"completed\",\"stage\":\"complete\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\mixed-moderate\",\"error\":\"\",\"created_at\":\"2026-08-06T11:27:20.823529Z\",\"started_at\":\"2026-08-06T11:27:20.823529Z\",\"completed_at\":\"2026-08-06T11:27:21.156992Z\",\"progress\":{\"stage\":\"complete\",\"total_files\":18,\"files_parsed\":18,\"files_total\":18,\"can_render_frontend\":true},\"run_metadata\":{\"analysis_run_id\":\"run:0ee13f99865143688ee42ed54d4e2ce3\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\mixed-moderate\",\"comprehension_mode\":\"refurbished\",\"scope\":\"snapshot\",\"llm_active\":false,\"fallback_used\":false}}}",
+        "{\"event\":\"pipeline_complete\",\"data\":{\"job_id\":\"job:1d528be813cb4a2dac2ef5ccc4b4ced6\",\"analysis_run_id\":\"run:0ee13f99865143688ee42ed54d4e2ce3\",\"status\":\"completed\",\"stage\":\"complete\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\mixed-moderate\",\"error\":\"\",\"created_at\":\"2026-08-06T11:27:20.823529Z\",\"started_at\":\"2026-08-06T11:27:20.823529Z\",\"completed_at\":\"2026-08-06T11:27:21.156992Z\",\"progress\":{\"stage\":\"complete\",\"total_files\":18,\"files_parsed\":18,\"files_total\":18,\"can_render_frontend\":true},\"run_metadata\":{\"analysis_run_id\":\"run:0ee13f99865143688ee42ed54d4e2ce3\",\"repository_path\":\"C:\\\\Users\\\\LENOVO T14\\\\Development\\\\lauras\\\\qa-audit\\\\phase-2\\\\fixtures\\\\mixed-moderate\",\"comprehension_mode\":\"refurbished\",\"scope\":\"snapshot\",\"llm_active\":false,\"fallback_used\":false}}}"
+      ],
+      "closed": true,
+      "error": null
+    },
+    {
+      "url": "ws://127.0.0.1:5473/?token=<REDACTED-HMR-TOKEN>",
+      "sent": [],
+      "received": [
+        "{\"type\":\"connected\"}"
+      ],
+      "closed": false,
+      "error": null
+    }
+  ],
+  "initial_load_ms": 2065,
+  "keyboard": [
+    {
+      "tag": "INPUT",
+      "name": "Enter an absolute local repository path",
+      "outline": "rgb(26, 25, 22) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgba(52, 132, 228, 0.8) auto 5px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "BODY",
+      "name": "Syntax TreeOpen legacy workspaceCodebase observatoryWhat repo do you want to understand?Syntax Tree ",
+      "outline": "rgb(224, 224, 232) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "INPUT",
+      "name": "Enter an absolute local repository path",
+      "outline": "rgb(26, 25, 22) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgba(52, 132, 228, 0.8) auto 5px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "BODY",
+      "name": "Syntax TreeOpen legacy workspaceCodebase observatoryWhat repo do you want to understand?Syntax Tree ",
+      "outline": "rgb(224, 224, 232) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "INPUT",
+      "name": "Enter an absolute local repository path",
+      "outline": "rgb(26, 25, 22) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgba(52, 132, 228, 0.8) auto 5px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "BODY",
+      "name": "Syntax TreeOpen legacy workspaceCodebase observatoryWhat repo do you want to understand?Syntax Tree ",
+      "outline": "rgb(224, 224, 232) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "INPUT",
+      "name": "Enter an absolute local repository path",
+      "outline": "rgb(26, 25, 22) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgba(52, 132, 228, 0.8) auto 5px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "BODY",
+      "name": "Syntax TreeOpen legacy workspaceCodebase observatoryWhat repo do you want to understand?Syntax Tree ",
+      "outline": "rgb(224, 224, 232) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "INPUT",
+      "name": "Enter an absolute local repository path",
+      "outline": "rgb(26, 25, 22) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgba(52, 132, 228, 0.8) auto 5px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "BODY",
+      "name": "Syntax TreeOpen legacy workspaceCodebase observatoryWhat repo do you want to understand?Syntax Tree ",
+      "outline": "rgb(224, 224, 232) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "INPUT",
+      "name": "Enter an absolute local repository path",
+      "outline": "rgb(26, 25, 22) none 0px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "SUMMARY",
+      "name": "Advanced analysis settings",
+      "outline": "rgba(52, 132, 228, 0.8) auto 5px",
+      "boxShadow": "none"
+    },
+    {
+      "tag": "BODY",
+      "name": "Syntax TreeOpen legacy workspaceCodebase observatoryWhat repo do you want to understand?Syntax Tree ",
+      "outline": "rgb(224, 224, 232) none 0px",
+      "boxShadow": "none"
+    }
+  ],
+  "analysis": {
+    "fixture": "mixed",
+    "acknowledgement_ms": 850,
+    "observed_for_ms": 7139,
+    "status": 200,
+    "run_id": "run:0ee13f99865143688ee42ed54d4e2ce3",
+    "active_run_loading_after_7s": false,
+    "orientation_ready": true,
+    "page_text_excerpt": "\nArchitecture map\nSyntax Tree\n\nRun Active run\nloading\napi mode\n\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\n\nOrientation ready\nSnapshot orientation\n50% confidence\nmixed-moderate has 3 high-priority orientation files available as guidance-only context.\nImportant areas\nNo strong areas yet\nStart reading\nREADME.md\nreadme guidance-only material, not proof.\n50%\npackage.json\nmanifest guidance-only material, not proof.\n50%\npyproject.toml\nmanifest guidance-only material, not proof.\n50%\nStill investigating\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\nLenses"
+  },
+  "graph": {
+    "node_count": 0,
+    "edge_count": 0,
+    "graph_api_requested": false,
+    "meaningful_empty_state": false
+  },
+  "accessibility": {
+    "unlabeled": [],
+    "landmarks": [
+      "HEADER",
+      "NAV",
+      "MAIN",
+      "ASIDE"
+    ],
+    "h1_count": 0,
+    "images_missing_alt": 0,
+    "color_only_visual_candidates": 35
+  },
+  "refresh": {
+    "url": "http://127.0.0.1:5473/",
+    "text": "Syntax Tree\nOpen legacy workspace\nCodebase observatory\nWhat repo do you want to understand?\nSyntax Tree scans a repository and turns it into a calm, source-backed architecture map. You can zoom through concepts, inspect flows, ask questions, and open the exact code behind each answer.\nSource-backed\nArchitecture claims stay tied to files, spans, and evidence.\nMeaning first\nThe first screen explains the system shape, not the folder tree.\nGuided progress\nAnalysis stages use human copy instead of raw pipeline jargon.\nStart a scan\nPaste a local repository path. Orientation appears first, then the map opens when deeper analysis is ready.\nAPI mode\nREPOSITORY PATH\n\nfixtures/mixed-moderate\nAdvanced analysis settings\nBuild architecture map\nThe first repo orientation appears before the full architecture map. If the backend is offline, this screen will say so directly."
+  },
+  "outcome": "completed"
+}

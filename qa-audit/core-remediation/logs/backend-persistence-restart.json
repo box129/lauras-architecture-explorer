@@ -1,0 +1,29 @@
+{
+  "method": "Analyze a real TypeScript fixture with SQLite, create a second application instance against the same database, and exercise recovered graph, documentation, and query routes",
+  "fixture_path": "qa-audit/phase-2/fixtures/typescript-small",
+  "database_created": true,
+  "status_before_restart": "completed",
+  "restored_status": "completed",
+  "selected_run_header": "X-Syntax-Tree-Run-Id",
+  "graph_status_code": 200,
+  "graph_run_matches_selected": true,
+  "graph_node_count": 6,
+  "graph_edge_count": 6,
+  "docs_status_code": 200,
+  "docs_run_matches_selected": true,
+  "docs_root_item_count": 5,
+  "query_status_code": 200,
+  "query_run_matches_selected": true,
+  "query_top_five": [
+    "generateDocumentation",
+    "src/docs.ts",
+    "src/index.ts",
+    "startAnalysis"
+  ],
+  "temporary_database_cleanup_succeeded": true,
+  "notes": [
+    "No external model was used.",
+    "The temporary database path and generated run identifiers are intentionally omitted.",
+    "A Windows file-handle issue discovered during this exercise was corrected and covered by a regression test."
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "schema_version": "1.0",
+  "schema_description": [
+    "A candidate claim set: what a system under evaluation (hand-written here; an",
+    "LLM later) produced for the python_app fixture. Structurally mirrors",
+    "ClaimGroundTruth/EvidenceItemGroundTruth in ../ground_truth/claims.json, but",
+    "represents an ASSERTION rather than a known-true fact.",
+    "",
+    "Candidate object fields:",
+    "  claim_id       : id of the ground-truth claim being answered (e.g. 'C1'). Use a",
+    "                    'novel:<slug>' id for a claim the candidate generated on its own that",
+    "                    has no ground-truth counterpart (open-ended claim generation); such",
+    "                    claims are excluded from recall/precision-against-ground-truth and",
+    "                    reported separately by the evaluator, since there is nothing to check",
+    "                    them against.",
+    "  text           : the claim text asserted by the candidate (informational only; matching",
+    "                    against ground truth is by claim_id, not by text similarity).",
+    "  support_status : the candidate's asserted ClaimSupportStatus --",
+    "                    'supported' | 'insufficient_evidence' | 'contradicted'.",
+    "  epistemic_type : the candidate's asserted ClaimEpistemicType -- 'observed' | 'inferred'.",
+    "  evidence       : list of evidence items the candidate cites in support of its",
+    "                    support_status, same shape as EvidenceItemGroundTruth minus",
+    "                    hop_index/supports_or_refutes/note bookkeeping fields (hop order is",
+    "                    simply list order here)."
+  ],
+  "description": "Candidate set A: intended to be fully correct against fixtures/ground_truth/claims.json, exercising the 'system did everything right' path through the metrics.",
+  "claims": [
+    {
+      "claim_id": "C1",
+      "text": "OrderController.place_order calls OrderService.create_order.",
+      "support_status": "supported",
+      "epistemic_type": "observed",
+      "evidence": [
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.controllers.order_controller.OrderController.place_order",
+          "target_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "file": "python_app/controllers/order_controller.py",
+          "start_line": 22,
+          "end_line": 22
+        }
+      ]
+    },
+    {
+      "claim_id": "C2",
+      "text": "OrderService.create_order calls PaymentService.charge to process payment.",
+      "support_status": "supported",
+      "epistemic_type": "observed",
+      "evidence": [
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "target_symbol_id": "python_app.services.payment_service.PaymentService.charge",
+          "file": "python_app/services/order_service.py",
+          "start_line": 34,
+          "end_line": 34
+        }
+      ]
+    },
+    {
+      "claim_id": "C3",
+      "text": "OrderService.create_order calls OrderRepository.save to persist the order.",
+      "support_status": "supported",
+      "epistemic_type": "observed",
+      "evidence": [
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "target_symbol_id": "python_app.repositories.order_repository.OrderRepository.save",
+          "file": "python_app/services/order_service.py",
+          "start_line": 36,
+          "end_line": 36
+        }
+      ]
+    },
+    {
+      "claim_id": "C4",
+      "text": "OrderController transitively depends on the Order entity, via OrderService and OrderRepository.",
+      "support_status": "supported",
+      "epistemic_type": "inferred",
+      "evidence": [
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.controllers.order_controller.OrderController.place_order",
+          "target_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "file": "python_app/controllers/order_controller.py",
+          "start_line": 22,
+          "end_line": 22
+        },
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "target_symbol_id": "python_app.repositories.order_repository.OrderRepository.save",
+          "file": "python_app/services/order_service.py",
+          "start_line": 36,
+          "end_line": 36
+        },
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "operates_on",
+          "source_symbol_id": "python_app.repositories.order_repository.OrderRepository.save",
+          "target_symbol_id": "python_app.models.order.Order",
+          "file": "python_app/repositories/order_repository.py",
+          "start_line": 25,
+          "end_line": 25
+        }
+      ]
+    },
+    {
+      "claim_id": "C5",
+      "text": "OrderController transitively depends on PaymentService for payment processing, via OrderService.",
+      "support_status": "supported",
+      "epistemic_type": "inferred",
+      "evidence": [
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.controllers.order_controller.OrderController.place_order",
+          "target_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "file": "python_app/controllers/order_controller.py",
+          "start_line": 22,
+          "end_line": 22
+        },
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "calls",
+          "source_symbol_id": "python_app.services.order_service.OrderService.create_order",
+          "target_symbol_id": "python_app.services.payment_service.PaymentService.charge",
+          "file": "python_app/services/order_service.py",
+          "start_line": 34,
+          "end_line": 34
+        }
+      ]
+    },
+    {
+      "claim_id": "C6",
+      "text": "OrderController requires the customer to be authenticated via OAuth2 before placing an order.",
+      "support_status": "insufficient_evidence",
+      "epistemic_type": "observed",
+      "evidence": []
+    },
+    {
+      "claim_id": "C7",
+      "text": "OrderService sends a confirmation email to the customer after placing an order.",
+      "support_status": "insufficient_evidence",
+      "epistemic_type": "observed",
+      "evidence": []
+    },
+    {
+      "claim_id": "C8",
+      "text": "PaymentService.charge performs fraud detection (risk scoring / anomaly analysis) on transactions before charging them.",
+      "support_status": "insufficient_evidence",
+      "epistemic_type": "observed",
+      "evidence": []
+    },
+    {
+      "claim_id": "C9",
+      "text": "OrderRepository persists Order entities to a SQL database.",
+      "support_status": "insufficient_evidence",
+      "epistemic_type": "observed",
+      "evidence": []
+    },
+    {
+      "claim_id": "C10",
+      "text": "OrderRepository extends SqlRepository.",
+      "support_status": "contradicted",
+      "epistemic_type": "observed",
+      "evidence": [
+        {
+          "evidence_type": "relationship",
+          "relationship_type": "inherits",
+          "source_symbol_id": "python_app.repositories.order_repository.OrderRepository",
+          "target_symbol_id": "python_app.repositories.base.InMemoryRepository",
+          "file": "python_app/repositories/order_repository.py",
+          "start_line": 25,
+          "end_line": 25
+        }
+      ]
+    }
+  ]
+}

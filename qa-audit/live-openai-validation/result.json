@@ -1,0 +1,209 @@
+{
+  "validation": "real-openai-vertical-slice-phase3",
+  "run_at": "2026-08-13T07:04:49.663Z",
+  "product_commits_in_scope": ["d4ab177", "788c234"],
+  "runtime_configuration": {
+    "checked_via": ["GET /api/settings/architectural-explanation", "GET /api/health"],
+    "enabled": true,
+    "configured": true,
+    "provider": "openai",
+    "model": "gpt-5.4-mini",
+    "base_url": "https://api.openai.com/v1",
+    "credentials_present": true,
+    "credential_source": "runtime",
+    "environment": "development",
+    "legacy_llm_configured_but_unused_by_this_flow": true
+  },
+  "fixture": {
+    "path": "research/provenance-evaluation/fixtures/python_app/",
+    "target_entity": "OrderService.create_order",
+    "target_entity_id": "symbol:5cc0ef1c4a8197ba85c52bb4",
+    "run_id": "run:f5276e1b50254d589490242d1ee7ec68"
+  },
+  "navigation": {
+    "method": "real browser UI only, no raw API entity ids typed by hand",
+    "path": [
+      "repository path entry -> Build architecture map",
+      "map: services (package/component node)",
+      "map: order_service.py",
+      "map: OrderService",
+      "map: create_order",
+      "Architectural Explanation button"
+    ],
+    "map_metadata_llm_used": false,
+    "map_root_children_count": 11
+  },
+  "real_openai_invocation_evidence": {
+    "http_status": 200,
+    "wall_clock_latency_ms": 4788,
+    "network_timing_ms": {
+      "requestStart_to_responseStart": 4703.5,
+      "responseStart_to_responseEnd": 4.57
+    },
+    "code_path_proof": "api/routes/architectural_explanation.py:_proposer() returns LLMClaimProposer(make_arch_explanation_model(...)) whenever settings.environment != 'test' AND settings.arch_explanation_llm_configured is True (else NullClaimProposer, which returns zero claims). Runtime state was independently confirmed True via GET /api/settings/architectural-explanation and GET /api/health immediately before this run, and this session never injected any test/fake model.",
+    "empirical_contrast": "NullClaimProposer / provider=off returns zero claims with near-instant (<10ms) latency (established in the prior remediation round's regression tests); this call returned 4 non-empty, real-evidence-backed claims after a 4.79s round trip -- consistent with a genuine external HTTPS call, not a local/fake/legacy stub.",
+    "non_blocking_product_observation": "The development runtime caused duplicate architectural-explanation requests for one UI action. The validation uses the first response only. This does not affect deterministic verification or the PASS, but can duplicate external-provider usage/cost during development. (Detail: backend access log shows TWO POST /api/entities/symbol:5cc0ef1c.../architectural-explanation requests, both 200 OK, for this single click; root cause is React StrictMode (src/main.tsx) intentionally double-invoking effects in the Vite dev server, absent in a production build. The second response is not counted as another validation sample.)"
+  },
+  "claim_proposals": [
+    {
+      "claim_id": "claim:661d8c3dd1adb347238a7d91",
+      "statement": "create_order calls charge.",
+      "proposition": {
+        "kind": "direct_relation",
+        "subject_entity_id": "symbol:5cc0ef1c4a8197ba85c52bb4",
+        "subject_name": "OrderService.create_order",
+        "relation_kind": "calls",
+        "object_entity_id": "symbol:13bb10fc21c15820634b59ab",
+        "object_name": "PaymentService.charge"
+      },
+      "verifier_result": "supported",
+      "evidence_source_region": {
+        "id": "region:9a7eb6822c877c903de9f0b2",
+        "path": "services/order_service.py",
+        "start_line": 34,
+        "end_line": 34,
+        "text": "self.payment_service.charge(customer_id, amount)"
+      },
+      "ground_truth_match": "C2 (OrderService.create_order calls PaymentService.charge) -- expected_support_status=supported. Evidence line (order_service.py:34) matches C2-E1 exactly."
+    },
+    {
+      "claim_id": "claim:30cd35b8b3de446bccf48c8e",
+      "statement": "create_order calls save.",
+      "proposition": {
+        "kind": "direct_relation",
+        "subject_entity_id": "symbol:5cc0ef1c4a8197ba85c52bb4",
+        "subject_name": "OrderService.create_order",
+        "relation_kind": "calls",
+        "object_entity_id": "symbol:91ddc08a646e95fc986927a1",
+        "object_name": "OrderRepository.save"
+      },
+      "verifier_result": "supported",
+      "evidence_source_region": {
+        "id": "region:53e460fcd4676fd704b18155",
+        "path": "services/order_service.py",
+        "start_line": 36,
+        "end_line": 36,
+        "text": "self.repository.save(order)"
+      },
+      "ground_truth_match": "C3 (OrderService.create_order calls OrderRepository.save) -- expected_support_status=supported. Evidence line (order_service.py:36) matches C3-E1 exactly."
+    },
+    {
+      "claim_id": "claim:c88709d0a48bef5505c1eca5",
+      "statement": "place_order reaches charge through a call path.",
+      "proposition": {
+        "kind": "reachability",
+        "subject_entity_id": "symbol:34ac7ae5d198e9230571d7f5",
+        "subject_name": "OrderController.place_order",
+        "relation_kind": "calls",
+        "object_entity_id": "symbol:13bb10fc21c15820634b59ab",
+        "object_name": "PaymentService.charge",
+        "path_entity_ids": [
+          "symbol:34ac7ae5d198e9230571d7f5",
+          "symbol:5cc0ef1c4a8197ba85c52bb4",
+          "symbol:13bb10fc21c15820634b59ab"
+        ],
+        "path_names": ["OrderController.place_order", "OrderService.create_order", "PaymentService.charge"]
+      },
+      "verifier_result": "supported",
+      "evidence_source_regions": [
+        {"id": "region:48a5edf0d1f6e1e09fb643a0", "path": "controllers/order_controller.py", "start_line": 22, "end_line": 22, "text": "order = self.order_service.create_order(customer_id, item_id, amount)"},
+        {"id": "region:9a7eb6822c877c903de9f0b2", "path": "services/order_service.py", "start_line": 34, "end_line": 34, "text": "self.payment_service.charge(customer_id, amount)"}
+      ],
+      "ground_truth_match": "C5 (OrderController transitively depends on PaymentService via OrderService) -- expected_support_status=supported. Both hop lines match C5-E1/C5-E2 exactly."
+    },
+    {
+      "claim_id": "claim:ad54a2c56084c1c6e4d5c4e2",
+      "statement": "place_order reaches save through a call path.",
+      "proposition": {
+        "kind": "reachability",
+        "subject_entity_id": "symbol:34ac7ae5d198e9230571d7f5",
+        "subject_name": "OrderController.place_order",
+        "relation_kind": "calls",
+        "object_entity_id": "symbol:91ddc08a646e95fc986927a1",
+        "object_name": "OrderRepository.save",
+        "path_entity_ids": [
+          "symbol:34ac7ae5d198e9230571d7f5",
+          "symbol:5cc0ef1c4a8197ba85c52bb4",
+          "symbol:91ddc08a646e95fc986927a1"
+        ],
+        "path_names": ["OrderController.place_order", "OrderService.create_order", "OrderRepository.save"]
+      },
+      "verifier_result": "supported",
+      "evidence_source_regions": [
+        {"id": "region:48a5edf0d1f6e1e09fb643a0", "path": "controllers/order_controller.py", "start_line": 22, "end_line": 22, "text": "order = self.order_service.create_order(customer_id, item_id, amount)"},
+        {"id": "region:53e460fcd4676fd704b18155", "path": "services/order_service.py", "start_line": 36, "end_line": 36, "text": "self.repository.save(order)"}
+      ],
+      "ground_truth_match": "Not a partial match of C4. C4's full claim (OrderController transitively depends on the Order entity) requires an 'operates_on' third hop (OrderRepository.save operates_on Order), which is outside Laura's currently supported proposition vocabulary (ALLOWED_PROPOSITION_SHAPES: direct_relation/calls, direct_relation/inherits, reachability/calls only) -- C4 as stated could never be represented as a ClaimProposal at all. This is instead one additional, independently source-verified, in-scope calls-reachability proposition (OrderController.place_order -> OrderService.create_order -> OrderRepository.save) that is not represented among the 10 frozen ground-truth claims. Both hops match real evidence lines also cited by C4 (C4-E1/C4-E2), but the proposition itself is a new, distinct, in-scope fact, not a subset of C4."
+    }
+  ],
+  "bounded_evidence_compliance": {
+    "schema_valid": true,
+    "vocabulary_in_scope": "All 4 proposals use (kind, relation_kind) shapes within ALLOWED_PROPOSITION_SHAPES (direct_relation/calls, reachability/calls). No inherits or out-of-vocabulary shape was proposed or needed to be rejected.",
+    "entities_within_bounded_packet": "All subject/object/path entity ids independently resolved via GET /api/runs/{run_id}/symbols to exactly OrderService.create_order, PaymentService.charge, OrderRepository.save, and OrderController.place_order -- all within the 2-hop neighborhood gather_bounded_evidence builds around the target entity. Zero out-of-scope ids.",
+    "fabricated_entity_relation_or_path": "None found. Every relation cited resolves to a real, resolved ObservedProgramRelation with a real, independently-fetched SourceRegion (path/line/text) matching the ground-truth evidence exactly.",
+    "wording_faithful_to_proposition": "All 4 statements were produced by the deterministic render_proposition_statement() function directly from each proposition's own fields (never raw LLM prose) -- 'X calls Y.' / 'X reaches Y through a call path.' -- confirmed by source inspection of core/models/provenance.py."
+  },
+  "deterministic_verification": {
+    "verifier_function": "core.models.provenance.verify_proposition (called via app.provenance.relation_adapter.claim_from_proposition)",
+    "llm_role": "LLMClaimProposer only ever constructs ClaimProposal values, which cannot structurally carry a support status (see ClaimProposal's own contract) -- the LLM never determines SUPPORTED/INSUFFICIENT_EVIDENCE/CONTRADICTED.",
+    "per_claim_verifier_status": {
+      "claim:661d8c3dd1adb347238a7d91": "supported",
+      "claim:30cd35b8b3de446bccf48c8e": "supported",
+      "claim:c88709d0a48bef5505c1eca5": "supported",
+      "claim:ad54a2c56084c1c6e4d5c4e2": "supported"
+    },
+    "false_controlled_proposition_marked_supported": false
+  },
+  "counts": {
+    "proposal_count": 4,
+    "supported_count": 4,
+    "insufficient_evidence_count": 0,
+    "contradicted_count": 0,
+    "bounded_evidence_symbol_count_for_target": null
+  },
+  "source_navigation": {
+    "ui_action": "Claim card expand -> Evidence chain -> Open source (create_order calls charge claim)",
+    "screenshot": "screenshots/06-source-navigation.png",
+    "screenshot_caveat": "Captured 800ms after click, while the Monaco editor pane was still mounting (spinner visible); the tab header already shows the correct target file 'order_service.py', confirming navigation occurred.",
+    "independent_precision_check": "GET /api/source-regions/region:9a7eb6822c877c903de9f0b2 (read-only, no new LLM call, resolves data already produced by this run) returned path=services/order_service.py, start_line=34, end_line=34, text='self.payment_service.charge(customer_id, amount)' -- an exact line-level match to the claim's cited evidence, confirming navigation targets the specific supporting statement, not just the file or a same-named symbol elsewhere.",
+    "result": "correct"
+  },
+  "legacy_provider_traffic": {
+    "result": "none observed",
+    "context": "The legacy investigation provider (blackbox/openrouter) IS genuinely configured with real credentials on this backend (GET /api/health: llm.configured=true), making this a meaningful live test of the prior remediation (commit 788c234) rather than a vacuous one.",
+    "evidence": "Backend access log for this session's full request window contains zero ERROR/WARN/Exception lines and zero references to openrouter/blackbox; GET /api/architecture-map's own metadata.llm_used=false throughout.",
+    "only_external_traffic_observed": "POST /api/entities/{id}/architectural-explanation (OpenAI, twice due to a development-runtime duplicate request -- see real_openai_invocation_evidence.non_blocking_product_observation)"
+  },
+  "metrics": {
+    "generation_latency_ms": 4788,
+    "input_tokens": "not exposed by this endpoint (LLMClaimProposer discards ModelReply.tokens_in/tokens_out; not estimated per instructions)",
+    "output_tokens": "not exposed by this endpoint",
+    "total_tokens": "not exposed by this endpoint",
+    "bounded_evidence_fact_count": "not directly exposed in the API response; independently confirmed via source inspection that gather_bounded_evidence's hop_limit=2 default was used",
+    "proposal_count": 4,
+    "supported_count": 4,
+    "insufficient_count": 0,
+    "contradicted_count": 0
+  },
+  "insufficient_evidence_path": {
+    "naturally_occurred": false,
+    "note": "Live insufficient-evidence path not naturally exercised in this run. All 4 proposed claims were directly or transitively supported by real observed relations around OrderService.create_order; the model was not manipulated to force an insufficient-evidence proposal."
+  },
+  "evidence_artifacts": {
+    "screenshots": [
+      "screenshots/01-openai-runtime-config.png",
+      "screenshots/02-controlled-repository-loaded.png",
+      "screenshots/03-real-openai-explanation.png",
+      "screenshots/04-supported-claim.png",
+      "screenshots/05-evidence-chain.png",
+      "screenshots/06-source-navigation.png"
+    ],
+    "insufficient_evidence_screenshot": "not applicable (07-insufficient-evidence.png not produced -- none occurred naturally)",
+    "recording": "recording-real-openai-provenance-flow.webm",
+    "raw_capture": "raw-capture.json"
+  },
+  "production_code_changed": false,
+  "verdict": "PASS",
+  "new_blocker_discovered": false,
+  "notable_non_blocking_observation": "Non-blocking product observation: the development runtime caused duplicate architectural-explanation requests for one UI action. The validation uses the first response only. This does not affect deterministic verification or the PASS, but can duplicate external-provider usage/cost during development."
+}

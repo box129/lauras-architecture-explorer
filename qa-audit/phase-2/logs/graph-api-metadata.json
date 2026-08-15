@@ -1,0 +1,24 @@
+{
+  "captured_at": "2026-08-06",
+  "request": {
+    "method": "GET",
+    "path": "/api/architecture-map",
+    "run_id": "run:d89169d9b9b04edbaf8000abbe811b9f",
+    "fixture": "python-nested"
+  },
+  "response": {
+    "http_status": 200,
+    "bytes": 3075,
+    "projection_status": "insufficient",
+    "root_children_count": 0,
+    "component_count": 0,
+    "repository_identity_matches_fixture": true,
+    "warnings_present": true
+  },
+  "ui_observation": {
+    "rendered_node_count": 0,
+    "rendered_edge_count": 0,
+    "meaningful_empty_state": false
+  },
+  "redaction": "Warning text was omitted because it contained external-provider account diagnostics not needed to prove the result."
+}

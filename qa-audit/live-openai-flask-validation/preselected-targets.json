@@ -1,0 +1,61 @@
+{
+  "preselection_timestamp_utc": "2026-08-13T07:47:43Z",
+  "note": "This file was written BEFORE any real OpenAI architectural-explanation request was made for this validation round. Selection used ONLY the frozen ground-truth artifact below -- Laura's own output was never consulted to choose these targets.",
+  "repository": "pallets/flask",
+  "commit": "6a2f545bfd8ed31e19066a299296917e034aca58",
+  "ground_truth_source": "research/real-repo-pilot/repos/r2-medium/ground_truth/claims.json (frozen pilot artifact, located in the lauras-gt-r2-flask worktree; not modified)",
+  "targets": [
+    {
+      "target_label": "A",
+      "category": "straightforward known-TRUE direct CALLS proposition",
+      "frozen_claim_id": "R2-TDC-2",
+      "source_entity_to_navigate_to": "Flask.full_dispatch_request",
+      "proposition": {
+        "kind": "direct_relation",
+        "relation_kind": "calls",
+        "subject": {"file_path": "app.py", "qualified_name": "Flask.full_dispatch_request", "kind": "method"},
+        "object": {"file_path": "app.py", "qualified_name": "Flask.dispatch_request", "kind": "method"}
+      },
+      "expected_truth": "true",
+      "relevant_source_span": "src/flask/app.py:1016 (call site: rv = self.dispatch_request(ctx)), src/flask/app.py:966 (def dispatch_request declaration)",
+      "why_selected": "A single, unambiguous, same-class direct method call at the heart of Flask's request-dispatch lifecycle -- the plainest possible 'known-TRUE direct calls' representative in the frozen ground truth, not one of the deeper multi-branch cases (e.g. Flask.wsgi_app, which has more surrounding control flow)."
+    },
+    {
+      "target_label": "B",
+      "category": "known-TRUE INHERITS proposition",
+      "frozen_claim_id": "R2-TDI-1",
+      "source_entity_to_navigate_to": "Flask (class)",
+      "proposition": {
+        "kind": "direct_relation",
+        "relation_kind": "inherits",
+        "subject": {"file_path": "app.py", "qualified_name": "Flask", "kind": "class"},
+        "object": {"file_path": "sansio/app.py", "qualified_name": "App", "kind": "class"}
+      },
+      "expected_truth": "true",
+      "relevant_source_span": "src/flask/app.py:44 (import of App from .sansio.app), src/flask/app.py:109 (class Flask(App): declaration)",
+      "why_selected": "The single most prominent, most-likely-navigable class in the whole repository (the Flask class itself), with an unambiguous single-base inheritance declaration -- the clearest 'known-TRUE inherits' representative, and the one most likely to actually be reachable through ordinary map navigation given it is the repository's namesake entry point."
+    },
+    {
+      "target_label": "C",
+      "category": "known-TRUE path-specific REACHABILITY/CALLS proposition",
+      "frozen_claim_id": "R2-TRC-1",
+      "source_entity_to_navigate_to": "Flask.__call__",
+      "proposition": {
+        "kind": "reachability",
+        "relation_kind": "calls",
+        "subject": {"file_path": "app.py", "qualified_name": "Flask.__call__", "kind": "method"},
+        "object": {"file_path": "app.py", "qualified_name": "Flask.full_dispatch_request", "kind": "method"},
+        "path": [
+          {"file_path": "app.py", "qualified_name": "Flask.__call__", "kind": "method"},
+          {"file_path": "app.py", "qualified_name": "Flask.wsgi_app", "kind": "method"},
+          {"file_path": "app.py", "qualified_name": "Flask.full_dispatch_request", "kind": "method"}
+        ]
+      },
+      "expected_truth": "true",
+      "relevant_source_span": "src/flask/app.py:1625 (hop 1: self.wsgi_app(environ, start_response) inside __call__), src/flask/app.py:1597 (hop 2: self.full_dispatch_request(ctx) inside wsgi_app)",
+      "why_selected": "A real, exactly-2-hop call-reachability chain (__call__ -> wsgi_app -> full_dispatch_request) starting from Flask's WSGI entry point -- the natural, most conceptually meaningful 'path-specific reachability' representative, and its 2-hop depth matches gather_bounded_evidence's default hop_limit=2, giving the proposer a realistic chance of seeing the full path from this single target's bounded neighborhood."
+    }
+  ],
+  "excluded_categories_note": "All three required categories (direct CALLS, INHERITS, path-specific REACHABILITY/CALLS) are present in the frozen ground truth, so no nearest-available substitution was needed.",
+  "targets_excluded_as_uncertain_or_out_of_scope": "None selected; all three chosen targets have in_scope=true and truth_label=true in the frozen ground-truth file."
+}

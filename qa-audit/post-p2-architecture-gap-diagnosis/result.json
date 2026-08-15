@@ -1,0 +1,112 @@
+{
+  "investigation": "post-p2-architecture-gap-diagnosis",
+  "mode": "read-only diagnosis, no product changes",
+  "current_head": "fdd77aa",
+  "phase_a_present": true,
+  "phase_b_present": true,
+  "phase_c_implemented": false,
+  "working_tree_clean_at_investigation_end": true,
+  "participant_session_started": false,
+  "findings_investigated": ["P2-A: grouping still not perceived as architecture", "P2-B: expected AI contribution not visible"],
+  "pipeline": {
+    "backend_entry_point": "GET /api/architecture-map (api/routes/architecture_map.py)",
+    "overview_source": "SystemOverviewGenerator._degraded_overview() via app/analysis/static_structure.py:build_static_structure",
+    "grouping_function": "structural_fallback.group_overview_components() (directory containment only)",
+    "grouping_signal_used": "OverviewComponent.label directory path only",
+    "grouping_signal_ignored": "already-recovered ObservedProgramRelation layer (imports; calls/inherits are Python-only) is not consumed by grouping at all",
+    "llm_involvement_in_this_path": "none"
+  },
+  "deterministic_capability": {
+    "relation_kinds_extracted": ["contains", "imports", "calls", "inherits"],
+    "calls_inherits_language_scope": "Python-only",
+    "imports_language_scope": "all SUPPORTED_LANGUAGES (python, javascript, typescript, tsx, jsx)",
+    "topic_similarity_mvp_exercise": {
+      "repo_shape": "Node/Express backend, 100% JS",
+      "directory_grouping_sections": 6,
+      "worst_section": "services/ (50 files, flat, no subdirectories)",
+      "import_edges_found": 88,
+      "cross_directory_edge_pct": 86,
+      "whole_repo_clustering_result": "collapses to one 48/51-file blob via 2 shared-infra hub files; needs hub suppression to be usable",
+      "services_subgraph_clusters_found": 5,
+      "services_subgraph_files_with_sibling_edges": 26,
+      "services_subgraph_total_files": 50,
+      "clustering_stable_for_fixed_algorithm": true,
+      "clustering_canonically_unique": false,
+      "improves_on_directory_grouping": true,
+      "cross_repo_generality": "unproven beyond this case; depends on relation-extraction language coverage and hub-suppression quality"
+    },
+    "deterministic_semantic_naming_possible": false,
+    "deterministic_semantic_naming_reason": "PropositionKind is closed to direct_relation/reachability over ProgramRelationKind edges; concept/behavior labels cannot be phrased as a ClaimProposition at all, by deliberate design (core/models/provenance.py)"
+  },
+  "llm_routing": {
+    "settings_ui_surface": "SettingsPanel.tsx (\"Architectural Explanations\") -- the only AI config screen in the product",
+    "settings_persistence": "in-memory only (ArchExplanationRuntimeConfig), does not survive backend restart",
+    "live_config_check_result": {
+      "enabled": true,
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "configured": true,
+      "credentials_present": true,
+      "credential_source": "runtime"
+    },
+    "two_separate_llm_boundaries": {
+      "boundary_1_arch_explanation_llm": "controlled by Settings UI; read only by api/routes/architectural_explanation.py",
+      "boundary_2_investigation_model": "controlled only by env var SYNTAX_TREE_LLM_PROVIDER/LLM_PROVIDER, default off; no UI control exists; gates Overview/children/Doc Studio"
+    },
+    "surfaces": [
+      {"surface": "Architecture Overview", "llm_possible": false, "reason": "hard-wired NoConfiguredModel() unless model injected into app.state (never done in production code)"},
+      {"surface": "Group/module drill-down", "llm_possible": false, "reason": "same gate as Overview"},
+      {"surface": "Entity Focus / neighborhood", "llm_possible": false, "reason": "pure deterministic graph traversal"},
+      {"surface": "Architectural Explanation panel", "llm_possible": true, "reason": "boundary_1; entity-only, symbol: id required, client-gated"},
+      {"surface": "Doc Studio", "llm_possible": "conditional", "reason": "boundary_2 (env var), unset in this deployment so effectively deterministic today"},
+      {"surface": "Narrator / Play Guide", "llm_possible": false, "reason": "outside Observatory/map data model entirely"},
+      {"surface": "Orientation/README summary", "llm_possible": false, "reason": "deterministic, source-derived only"},
+      {"surface": "Legacy Simple Explanation", "llm_possible": false, "reason": "same gate as Overview"}
+    ],
+    "advanced_settings_actual_effect": "only changes the model identity/credentials behind the entity-only Architectural Explanation panel; no product control strengthens AI use anywhere else",
+    "root_cause_of_no_visible_ai_contribution": [
+      "routing/gating: Overview/children/Entity Focus intentionally hard-blocked regardless of settings (primary)",
+      "scope mismatch: the one LLM-honoring surface is entity-only and was likely never opened by the participant (primary)",
+      "UI discoverability: no per-surface AI-used/not-used signal exists in the product (contributing)"
+    ],
+    "ruled_out": ["credential/runtime failure", "save/test ordering issue", "silent model call failure", "generated-but-unlabelled content"],
+    "provider_configuration_failure_occurred": false
+  },
+  "product_mental_model_gap": true,
+  "strategies": {
+    "A_deterministic_only": "addresses part of P2-A, does not address P2-B at all",
+    "B_deterministic_groups_llm_labels": "addresses both P2-A and P2-B; low-moderate risk; membership stays deterministic; label always marked inferred, never verifiable",
+    "C_llm_proposed_groups_deterministic_evidence": "addresses both but requires new proposition kind + verifier rule for LLM-proposed membership; materially higher risk; not evidenced as necessary by P2 findings",
+    "D_two_layer_map": "not an independent mechanism; equivalent to B or C plus a mandatory explicit UI toggle"
+  },
+  "recommended_strategy": "B",
+  "recommended_strategy_note": "with Strategy D's explicit-toggle/labelling discipline folded into B rather than treated as a separate option",
+  "llm_allowed_role_under_recommendation": "propose a human-readable group name and short description for an already-deterministic group; always displayed as explicitly inferred/AI-interpreted, never as verified",
+  "llm_disallowed_role_under_recommendation": "deciding group membership, deciding whether a group exists, or having any output presented as SUPPORTED/verified",
+  "deterministic_role_retained": "all group membership/boundaries; all evidence the label claim can be checked against",
+  "ai_content_labeling_requirement": "visually and lexically distinct from SUPPORTED/INSUFFICIENT EVIDENCE/CONTRADICTED claim vocabulary, consistent with existing map-confidence-vs-claim-status convention",
+  "evidence_provenance_presentation_requirement": "show the real member list and supporting relation facts underneath any AI-generated label/description so the user can judge it against real evidence",
+  "new_proposition_required": false,
+  "verifier_extension_required": false,
+  "thesis_methodology_contribution_altered": false,
+  "research_semantic_impact_classification": "PRODUCT-ONLY (for recommended Strategy B); Strategy C would REQUIRE RESEARCH-SEMANTIC EXTENSION and is not recommended",
+  "is_deterministic_structure_enough": "PARTIALLY",
+  "do_we_need_the_llm": "YES, FOR SEMANTIC LABELING ONLY",
+  "recommended_next_step": "design review of a Strategy-B group-labeling feature (deterministic membership unchanged/enhanced with import-density clustering per DETERMINISTIC_CAPABILITY.md; LLM adds name+description only, explicitly marked inferred) -- not started, pending explicit approval",
+  "artifacts": [
+    "qa-audit/post-p2-architecture-gap-diagnosis/REPORT.md",
+    "qa-audit/post-p2-architecture-gap-diagnosis/result.json",
+    "qa-audit/post-p2-architecture-gap-diagnosis/CURRENT_PIPELINE.md",
+    "qa-audit/post-p2-architecture-gap-diagnosis/DETERMINISTIC_CAPABILITY.md",
+    "qa-audit/post-p2-architecture-gap-diagnosis/LLM_ROUTING.md",
+    "qa-audit/post-p2-architecture-gap-diagnosis/STRATEGY_COMPARISON.md"
+  ],
+  "confirmations": {
+    "no_product_source_changed": true,
+    "no_research_semantics_changed": true,
+    "no_formal_study_materials_changed": true,
+    "no_participant_session_started": true,
+    "no_existing_tags_moved": true,
+    "no_participant_data_included_in_artifacts": true
+  }
+}

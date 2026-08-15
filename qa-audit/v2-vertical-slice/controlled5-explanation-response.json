@@ -1,0 +1,105 @@
+{
+  "analysis_run_id": "run:5e35216898194154a96185aed53300cc",
+  "target_kind": "entity",
+  "target_id": "symbol:95051311033e94f2e6e8105d",
+  "explanation_id": "explanation:5349368fea2fa5dc6e53b07c",
+  "narrative": "What Laura's could establish:\n- register calls parse_repository.\n\nWhat Laura's could not establish:\n- Laura's did not have sufficient deterministic evidence to establish that register calls RepositoryRecord.",
+  "claims": [
+    {
+      "id": "claim:6e18f0b934b912d20ec9ca63",
+      "run_id": "run:5e35216898194154a96185aed53300cc",
+      "statement": "register calls parse_repository.",
+      "epistemic_type": "observed",
+      "support_status": "supported",
+      "confidence": null,
+      "producer": {
+        "producer_type": "llm",
+        "name": "architectural-explanation-verification-service",
+        "version": "",
+        "produced_at": "2026-08-10T14:10:36.540933Z"
+      },
+      "evidence_chain": {
+        "id": "evidence-chain:b0d8d3d0b8bcdea31fb92d66",
+        "run_id": "run:5e35216898194154a96185aed53300cc",
+        "claim_id": "claim:6e18f0b934b912d20ec9ca63",
+        "items": [
+          {
+            "kind": "relationship",
+            "id": "evidence-rel:fb32cebaa849cb318a6d43f5",
+            "run_id": "run:5e35216898194154a96185aed53300cc",
+            "producer": {
+              "producer_type": "llm",
+              "name": "architectural-explanation-verification-service",
+              "version": "",
+              "produced_at": "2026-08-10T14:10:36.540933Z"
+            },
+            "description": "calls relation symbol:95051311033e94f2e6e8105d -> symbol:a89fa9eb7af2dbaa649c01a8, observed by python_call_extractor@0.3.0 (resolved, app/service.py:9-9)",
+            "relationship_kind": "calls",
+            "from_symbol_id": "symbol:95051311033e94f2e6e8105d",
+            "to_symbol_id": "symbol:a89fa9eb7af2dbaa649c01a8",
+            "source_region_id": null
+          }
+        ],
+        "reasoning": "",
+        "hop_count": 1
+      },
+      "proposition": {
+        "kind": "direct_relation",
+        "subject_entity_id": "symbol:95051311033e94f2e6e8105d",
+        "relation_kind": "calls",
+        "object_entity_id": "symbol:a89fa9eb7af2dbaa649c01a8",
+        "path_entity_ids": []
+      },
+      "subject_symbol_ids": [
+        "symbol:95051311033e94f2e6e8105d",
+        "symbol:a89fa9eb7af2dbaa649c01a8"
+      ],
+      "related_lens_ids": [],
+      "created_at": "2026-08-10T14:10:36.541280Z"
+    },
+    {
+      "id": "claim:7f9387a165133ce7d0d6f80d",
+      "run_id": "run:5e35216898194154a96185aed53300cc",
+      "statement": "register calls RepositoryRecord.",
+      "epistemic_type": "observed",
+      "support_status": "insufficient_evidence",
+      "confidence": null,
+      "producer": {
+        "producer_type": "llm",
+        "name": "architectural-explanation-verification-service",
+        "version": "",
+        "produced_at": "2026-08-10T14:10:36.540933Z"
+      },
+      "evidence_chain": {
+        "id": "evidence-chain:1add9763abf53a9f2be8c883",
+        "run_id": "run:5e35216898194154a96185aed53300cc",
+        "claim_id": "claim:7f9387a165133ce7d0d6f80d",
+        "items": [],
+        "reasoning": "no resolved 'calls' relation directly connects 'symbol:95051311033e94f2e6e8105d' to 'symbol:1c481ecf4d836b68764d9677' (a multi-hop path, or a partial/unresolved relation, does not satisfy a direct_relation proposition)",
+        "hop_count": 0
+      },
+      "proposition": {
+        "kind": "direct_relation",
+        "subject_entity_id": "symbol:95051311033e94f2e6e8105d",
+        "relation_kind": "calls",
+        "object_entity_id": "symbol:1c481ecf4d836b68764d9677",
+        "path_entity_ids": []
+      },
+      "subject_symbol_ids": [
+        "symbol:95051311033e94f2e6e8105d",
+        "symbol:1c481ecf4d836b68764d9677"
+      ],
+      "related_lens_ids": [],
+      "created_at": "2026-08-10T14:10:36.541403Z"
+    }
+  ],
+  "supported_count": 1,
+  "insufficient_evidence_count": 1,
+  "producer": {
+    "producer_type": "llm",
+    "name": "architectural-explanation-verification-service",
+    "version": "",
+    "produced_at": "2026-08-10T14:10:36.541447Z"
+  },
+  "created_at": "2026-08-10T14:10:36.541498Z"
+}

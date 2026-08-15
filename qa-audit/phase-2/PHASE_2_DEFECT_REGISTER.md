@@ -1,0 +1,20 @@
+# Phase 2 Defect Register
+
+No production code was changed during this audit.
+
+| ID | Severity | Status | User-visible defect | Reproduction / evidence |
+|---|---|---|---|---|
+| QA-006 | Low | STILL OPEN — NON-BLOCKING | A failed invalid-path analysis triggers two orientation requests returning 409. The correct failure is also shown in an `aria-live="polite"` region, so the 409 does not conceal or corrupt the primary error. Twelve concurrent reads during a valid run all returned 200; automatic recovery after the invalid run was not observed. | Submit `fixtures/does-not-exist`; see `logs/accessibility.json`. Valid concurrency: `logs/recovery-qa006.json`. |
+| QA-007 | Blocker | OPEN | Completed analysis does not produce a visible architecture graph. All fixtures and browsers show 0 nodes and 0 edges, with no meaningful empty/error state. The UI can remain on repository orientation despite a `pipeline_complete` WebSocket frame. | `screenshots/*-graph.png`, `logs/graph-api-metadata.json`, `logs/docs-chromium-*.json`, `traces/chromium-1440x900-*.zip`. |
+| QA-008 | High | OPEN | Graph API work is late or stalls after analysis completion. Requests are observed only after the first graph inspection, and multiple graph requests are aborted during navigation/refresh. This prevents graph interaction and source validation. | API request sequences and failed requests in `logs/docs-chromium-*.json`; backend request log. |
+| QA-009 | Blocker | OPEN | Docs Studio is not the advertised component documentation portal. It exposes no repository hierarchy, modules, classes, functions, methods, source, or syntax highlighting. The same generic six-section onboarding copy appears for different repositories, with `0 lenses`; backend generation remains loading. | `screenshots/chromium-*-docs.png` (visually identical), `logs/docs-chromium-*.json`. |
+| QA-010 | Blocker | OPEN | Semantic queries never return through the UI and leave submission disabled. No ranked results, relevance, excerpts, component navigation, no-results state, or recoverable error is provided. Top-five success is 0/20. | `logs/semantic-20.json`, `screenshots/semantic-search-stalled.png`, `traces/semantic-20.zip`. |
+| QA-011 | High | OPEN | Analysis state is not persisted across browser refresh or reopening. Both return to repository entry. The configured SQLite file is absent, so no server-side repository, graph, docs, or semantic-index records could be verified. | `logs/recovery-qa006.json`; `logs/persistence-store.json`; refresh fields in `logs/matrix-*.json`. |
+| QA-012 | Medium | OPEN | Two simultaneous UI submissions of the same repository both return 200 and create different run IDs. No deduplication/idempotency behavior is visible. | `logs/recovery-qa006.json`. |
+| QA-013 | Medium | OPEN | The landing-page `Open navigation` control has no visible effect and offers no route to graph/docs/search. Docs can only be discovered indirectly through the post-analysis Lenses drawer. | `logs/explore-nav.json`, `screenshots/explore-nav.png`. |
+| QA-014 | Medium | OPEN | Keyboard focus on the primary repository input has no outline or shadow; no `h1` exists on the analyzed view; custom contrast scanning found 25 text failures, including ratios 3.15:1 and 3.29:1 against a 4.5:1 threshold. No accessible alternative exists for the absent graph. | `logs/accessibility.json`, `screenshots/keyboard-focus-input.png`. |
+| QA-015 | Medium | OPEN | Clean-clone setup was not completed in the isolated audit copy. The first attempt failed on external package resolution; a retry progressed using cached packages but exceeded 120 seconds during backend dependency installation. | `logs/clean-setup-retry.log`; Phase 2 startup notes in the acceptance report. |
+
+## Root-cause boundaries
+
+The observations above are black-box conclusions. Source was consulted only to locate advertised navigation controls after `Open navigation` did nothing; source presence is not used as acceptance evidence. Probable implementation causes are intentionally not promoted to facts without runtime proof.

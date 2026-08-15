@@ -1,0 +1,52 @@
+import type { editor } from 'monaco-editor';
+
+export const syntaxTreeDarkTheme: editor.IStandaloneThemeData = {
+  base: 'vs-dark',
+  inherit: true,
+  rules: [
+    { token: 'comment', foreground: '888899', fontStyle: 'italic' },
+    { token: 'keyword', foreground: 'E94560' },
+    { token: 'string', foreground: '4CAF50' },
+    { token: 'number', foreground: 'FFA726' },
+    { token: 'type', foreground: '42A5F5' },
+    { token: 'function', foreground: '7C4DFF' },
+    { token: 'variable', foreground: 'E0E0E8' },
+    { token: 'operator', foreground: 'E94560' },
+    { token: 'delimiter', foreground: '888899' },
+  ],
+  colors: {
+    'editor.background': '#0F0F1A',
+    'editor.foreground': '#E0E0E8',
+    'editor.lineHighlightBackground': '#1A1A2E',
+    'editor.selectionBackground': '#E9456040',
+    'editor.inactiveSelectionBackground': '#E9456020',
+    'editorLineNumber.foreground': '#888899',
+    'editorLineNumber.activeForeground': '#E0E0E8',
+    'editorGutter.background': '#0F0F1A',
+    'editor.findMatchBackground': '#E9456040',
+    'editor.findMatchHighlightBackground': '#E9456020',
+    'editorOverviewRuler.border': '#2A2A3E',
+    'editorCursor.foreground': '#E94560',
+    'minimap.background': '#1A1A2E',
+    'scrollbar.shadow': '#00000000',
+    'scrollbarSlider.background': '#2A2A3E80',
+    'scrollbarSlider.hoverBackground': '#3A3A4E80',
+    'scrollbarSlider.activeBackground': '#3A3A4EA0',
+  },
+};
+
+export const monacoOptions: editor.IStandaloneEditorConstructionOptions = {
+  readOnly: true,
+  theme: 'syntax-tree-dark',
+  fontSize: 13,
+  fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+  minimap: { enabled: true, side: 'right' },
+  lineNumbers: 'on',
+  scrollBeyondLastLine: false,
+  renderLineHighlight: 'gutter',
+  guides: { indentation: true },
+  wordWrap: 'off',
+  glyphMargin: true,
+  folding: true,
+  automaticLayout: true,
+};

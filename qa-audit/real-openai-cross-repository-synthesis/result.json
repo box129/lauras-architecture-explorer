@@ -1,0 +1,222 @@
+{
+  "synthesis_type": "reporting-only, no new OpenAI requests, no product changes",
+  "source_artifacts": {
+    "controlled_python_app": "qa-audit/live-openai-validation/result.json",
+    "flask_exploratory": "qa-audit/live-openai-flask-validation/result.json",
+    "flask_confirmatory": "qa-audit/live-openai-flask-confirmatory/result.json",
+    "tenacity": "qa-audit/live-openai-tenacity-validation/result.json",
+    "stevedore": "qa-audit/live-openai-stevedore-validation/result.json",
+    "deterministic_pilot_aggregate_J3": "research/real-repo-pilot/results/aggregate.json (lauras-real-repo-pilot worktree, historical comparison only)",
+    "d4_comparison": "research/real-repo-pilot-d4-comparison/comparison_report.json (lauras-d4-comparison worktree, historical comparison only)"
+  },
+  "experiment_classification": {
+    "controlled_python_app": "PASS",
+    "flask_exploratory": "EXPLORATORY PASS WITH PROTOCOL DEVIATION",
+    "flask_confirmatory": "CONFIRMATORY PASS",
+    "tenacity": "PASS",
+    "stevedore": "PASS"
+  },
+  "per_run_table": [
+    {
+      "run": "controlled_python_app",
+      "repository_or_fixture": "research/provenance-evaluation/fixtures/python_app/ (controlled fixture, no pinned commit -- fixture path only)",
+      "pinned_commit": "n/a (controlled fixture)",
+      "model": "gpt-5.4-mini",
+      "target_count": 1,
+      "proposal_count": 4,
+      "schema_valid_proposals": 4,
+      "bounded_reference_violations": 0,
+      "vocabulary_violations": 0,
+      "supported": 4,
+      "insufficient_evidence": 0,
+      "contradicted": 0,
+      "supported_claim_correctness": "4/4",
+      "false_support_count": 0,
+      "selected_target_proposal_coverage": "not applicable in this run's original design (single fixture target, no 3-target preselection protocol used yet); 2/4 proposals matched frozen ground-truth claims exactly (C2, C3), 1/4 matched via full transitive path (C5), 1/4 was an additional independently-verified in-scope fact not represented in the 10 frozen ground-truth claims",
+      "source_navigation_correctness": "1/1 checked, exact line match",
+      "verdict": "PASS"
+    },
+    {
+      "run": "flask_exploratory",
+      "repository_or_fixture": "pallets/flask",
+      "pinned_commit": "6a2f545bfd8ed31e19066a299296917e034aca58",
+      "model": "gpt-5.4-mini",
+      "target_count": 3,
+      "proposal_count": 11,
+      "schema_valid_proposals": 11,
+      "bounded_reference_violations": 0,
+      "vocabulary_violations": 0,
+      "supported": 10,
+      "insufficient_evidence": 1,
+      "contradicted": 0,
+      "supported_claim_correctness": "10/10",
+      "false_support_count": 0,
+      "selected_target_proposal_coverage": "3/3 preselected true targets (R2-TDC-2, R2-TDI-1, R2-TRC-1) proposed and supported -- BUT 2 of 3 samples (A, B) are later-generation exploratory samples, not the genuine first response, due to an unrecoverable validation-script crash. Protocol qualification: only target C is a genuine first sample.",
+      "source_navigation_correctness": "3/3 checked",
+      "verdict": "EXPLORATORY PASS WITH PROTOCOL DEVIATION"
+    },
+    {
+      "run": "flask_confirmatory",
+      "repository_or_fixture": "pallets/flask",
+      "pinned_commit": "6a2f545bfd8ed31e19066a299296917e034aca58",
+      "model": "gpt-5.4-mini",
+      "target_count": 3,
+      "proposal_count": 12,
+      "schema_valid_proposals": 12,
+      "bounded_reference_violations": 0,
+      "vocabulary_violations": 0,
+      "supported": 12,
+      "insufficient_evidence": 0,
+      "contradicted": 0,
+      "supported_claim_correctness": "12/12",
+      "false_support_count": 0,
+      "selected_target_proposal_coverage": "1/3 -- only target B's persisted first claim exactly matched its preselected proposition (R2-TDI-3). Targets A and C proposed real, true, in-scope, independently-verified facts but not the exact preselected propositions. All 3 first responses genuinely retained (0 crash) via a redesigned atomic-persistence capture mechanism, resolving the exploratory run's protocol deviation.",
+      "source_navigation_correctness": "3/3 checked (target B's screenshots depict a separate, later StrictMode-duplicate generation and are disclosed as non-authoritative for the sample; the persisted sample's source navigation was independently confirmed via read-only region re-fetch instead)",
+      "verdict": "CONFIRMATORY PASS"
+    },
+    {
+      "run": "tenacity",
+      "repository_or_fixture": "jd/tenacity",
+      "pinned_commit": "26f719dc73d3c5612b9c1b8d18a7883837790ad8",
+      "model": "gpt-5.4-mini",
+      "target_count": 3,
+      "proposal_count": 8,
+      "schema_valid_proposals": 8,
+      "bounded_reference_violations": 0,
+      "vocabulary_violations": 0,
+      "supported": 7,
+      "insufficient_evidence": 1,
+      "contradicted": 0,
+      "supported_claim_correctness": "7/7",
+      "false_support_count": 0,
+      "selected_target_proposal_coverage": "3/3 preselected true targets (R1-TDC-2, R1-TDC-1 [D4-recovered], R1-TDI-2) proposed and supported. All 3 genuine first responses retained (0 crash); request-dedup invariant held (1 semantic load = 1 POST = 1 generation, all 3 targets).",
+      "source_navigation_correctness": "3/3 checked",
+      "verdict": "PASS"
+    },
+    {
+      "run": "stevedore",
+      "repository_or_fixture": "openstack/stevedore",
+      "pinned_commit": "d3a55f33fb310f43833c7c3eb5ba417e46a9a928",
+      "model": "gpt-5.4-mini",
+      "target_count": 3,
+      "proposal_count": 6,
+      "schema_valid_proposals": 6,
+      "bounded_reference_violations": 0,
+      "vocabulary_violations": 0,
+      "supported": 4,
+      "insufficient_evidence": 2,
+      "contradicted": 0,
+      "supported_claim_correctness": "4/4",
+      "false_support_count": 0,
+      "selected_target_proposal_coverage": "1/3 -- only target A's preselected true target (R3-TDC-1) proposed and supported. Targets B and C's preselected hard facts (R3-TDI-1 generic-inheritance, R3-TDC-5 super()) were NOT proposed by the model; instead the model produced one different, ungrounded/false proposition for each, and both were correctly withheld as INSUFFICIENT_EVIDENCE (zero false support). All 3 genuine first responses retained (0 crash); request-dedup invariant held.",
+      "source_navigation_correctness": "4/4 checked (target A's 4 supported claims; B/C produced no supported claims to navigate)",
+      "verdict": "PASS"
+    }
+  ],
+  "descriptive_totals_across_runs": {
+    "label": "descriptive counts across targeted validation runs",
+    "caveat": "These are descriptive counts across targeted validation runs only -- NOT a pooled population-level statistic. Runs differ in protocol maturity (exploratory vs. confirmatory; the Flask exploratory run carries a disclosed protocol deviation), target-selection method, and repository difficulty. Do not treat as an aggregate accuracy, precision, or recall figure.",
+    "total_real_openai_generations_used_as_evidence": 13,
+    "total_proposals_across_runs": 41,
+    "total_schema_valid_proposals": 41,
+    "total_bounded_reference_violations": 0,
+    "total_vocabulary_violations": 0,
+    "total_supported": 37,
+    "total_insufficient_evidence": 4,
+    "total_contradicted": 0,
+    "false_support_finding": "No false supports were observed among 37 claims presented as SUPPORTED; all 37 were independently verified true.",
+    "total_independently_checked_supported_claim_correctness": "37/37"
+  },
+  "three_dimensions": {
+    "A_proposal_validity_boundedness": "Across all 5 runs (41 total schema-valid proposals from 13 real generations), the model returned exclusively schema-valid propositions using real, bounded, in-packet entities under legal (kind, relation_kind) vocabulary shapes. Zero bounded-reference violations, zero vocabulary violations, in every run including Stevedore where the model's actual output was semantically degenerate (self-referential) or factually wrong -- it still stayed within the structural contract (real entity IDs, legal shape) even when it was substantively wrong about what those entities were related by.",
+    "B_proposal_usefulness_coverage": "Highly variable and repository/target-dependent. Controlled fixture: model proposed the intended facts directly. Flask exploratory: 3/3 selected-target coverage (but 2/3 samples were not genuine first responses). Flask confirmatory: 1/3 -- the model frequently proposed different, still-true, in-scope facts rather than the exact preselected proposition. Tenacity: 3/3, including successful utilization of a D4-recovered fact. Stevedore: 1/3 overall, and 0/2 on the two deliberately hard targets -- the model did not propose either intended hard fact at all, instead fabricating unrelated propositions. This dimension is about what the model chooses to say, not about whether the system can be fooled.",
+    "C_verification_safety": "No false supports were observed among 37 claims presented as SUPPORTED across all 5 runs; all 37 were independently verified true. Every case where a proposition's required relation was missing, unresolved, or entirely unfounded (including a proposition composed of real entities but a wrong relation kind [Flask exploratory: CALLS proposed where only INHERITS existed], a self-referential proposition [Stevedore target B], and an independently-confirmed-false proposition [Stevedore target C]) resulted in INSUFFICIENT_EVIDENCE, never a false SUPPORTED and never an incorrect CONTRADICTED. This is the dimension the validation program was primarily designed to test, and it is the dimension with the cleanest, most consistent result."
+  },
+  "notable_observed_cases": [
+    {
+      "case": "controlled_fixture",
+      "description": "Real OpenAI -> real structured propositions -> deterministic support -> evidence -> exact source navigation, end to end, with no anomaly."
+    },
+    {
+      "case": "flask_exploratory_wrong_relation_kind",
+      "description": "Model composed a CALLS reachability proposition (Flask reaches Scaffold through a call path) over real bounded entities (Flask, App, Scaffold) whose actual available relations were INHERITS, not CALLS. Verifier returned INSUFFICIENT_EVIDENCE. Real entities, legal vocabulary shape, but no positive structural support -- correctly abstained."
+    },
+    {
+      "case": "flask_confirmatory_coverage_vs_correctness",
+      "description": "All 12 supported claims across all 3 targets were independently confirmed correct, while selected-target proposal coverage was only 1/3 (targets A and C proposed different true facts than the ones preselected). Demonstrates that correctness/safety and proposal coverage are genuinely separate properties -- a run can be fully safe and fully correct while still missing the specific fact a preselection targeted."
+    },
+    {
+      "case": "tenacity_d4_recovery_plus_abstention",
+      "description": "The live proposer successfully utilized a D4-recovered inherited-self relation (Retrying.__call__ calls begin, resolved only because of D4's inheritance-aware self.method() resolution) and, separately in the same run, a different, unrelated proposition (a 4-hop reachability claim) was safely abstained from when the required hop was missing."
+    },
+    {
+      "case": "stevedore_hard_target_miss_plus_safe_abstention",
+      "description": "The model failed to propose either deliberately difficult selected fact (generic-inheritance INHERITS, super() CALLS) and instead produced different ungrounded/false propositions (a self-referential inherits claim; a same-class calls claim independently confirmed false against real source). Both were withheld as INSUFFICIENT_EVIDENCE. The baseline supported path (target A, 4 claims) remained fully correct in the same run."
+    }
+  ],
+  "contradiction_semantics_note": "Laura's verifier distinguishes SUPPORTED (positive evidence establishes the proposition), INSUFFICIENT_EVIDENCE (available evidence does not establish it), and CONTRADICTED (positive incompatible evidence exists). A source-level false proposition does not automatically receive CONTRADICTED. The Stevedore target-C false proposal ('_load_one_plugin calls __init__', independently confirmed false via source inspection) correctly received INSUFFICIENT_EVIDENCE because no relation of any kind connects those two symbols in the extracted evidence -- there is no positive, incompatible evidence to contradict it with, only an absence. This is not a verifier error; absence is not contradiction, and converting absence into CONTRADICTED would itself be a defect this system deliberately avoids.",
+  "qualitative_pattern_deterministic_pilot": {
+    "flask_R2_pre_D4_recall": 0.9166666666666666,
+    "tenacity_R1_pre_D4_recall": 0.7,
+    "tenacity_R1_post_D4_recall": 1.0,
+    "stevedore_R3_pre_and_post_D4_recall": 0.3333333333333333,
+    "interpretation": "Flask had comparatively strong deterministic coverage before any live-model validation (11/12 true claims supported). Tenacity was intermediate pre-D4 (7/10) and reached full deterministic recall (10/10) post-D4, since D4 specifically recovers inherited self.method() CALLS resolution, which Tenacity's true-positive gap consisted of. Stevedore remained the weakest (4/12, unchanged by D4) because its known-difficult claims are blocked by generic parameterized inheritance and super() resolution, neither of which D4 addresses -- D4's inherited-self-method fallback requires an already-resolved inherits relation to walk, and Stevedore's base relations themselves never resolve.",
+    "real_model_verification_safety_vs_deterministic_difficulty": "Verification safety did not degrade as deterministic coverage became harder across these three repositories: Stevedore, despite having the weakest deterministic coverage and despite the live model producing its least useful/most hallucinated proposals of any run, still had no false supports observed among its 4 SUPPORTED claims (independently verified true). This is consistent with (not proof of) the hypothesis that the deterministic verifier's safety property is structurally independent of how much of the codebase it can currently resolve -- the harder the repository, the more often it says 'I don't know,' not the more often it is wrong. This observation is drawn from three repositories and should not be treated as causally established."
+  },
+  "research_safe_conclusion": "Across these five targeted real-model validation runs (13 real gpt-5.4-mini generations, 41 proposals, 3 public repositories plus one controlled fixture), proposal usefulness varied considerably, particularly on structurally difficult cases (Stevedore's two hard targets: 0/2 proposed), but deterministic verification consistently prevented every observed unsupported or false proposition from being presented as a supported architectural fact. No false supports were observed among 37 claims presented as SUPPORTED; all 37 were independently verified true. This pattern held even when the live model's raw output for a target was itself factually wrong or structurally degenerate. These are targeted samples across three public repositories using one model (gpt-5.4-mini); they do not establish population-level generalizability, and they are not a substitute for human evaluation.",
+  "explicit_limitations": [
+    "All 5 runs are targeted, human-preselected samples (1-3 targets each), not random or exhaustive sampling.",
+    "Only three public repositories (Flask, Tenacity, Stevedore) plus one controlled fixture were tested; no claim of generalization to other codebases or languages is made.",
+    "Only one model (gpt-5.4-mini) and one provider (OpenAI) were tested.",
+    "The Flask exploratory run's targets A and B are not genuine first-response samples (validation-tooling defect, not a product defect); this is preserved as an explicit protocol qualification, not silently pooled with confirmatory data.",
+    "Token usage was not exposed by the runtime in any run and was not estimated.",
+    "This synthesis is a reporting exercise over already-frozen evidence; no new OpenAI requests were made and no frozen artifact was modified.",
+    "No false supports being observed among the 37 claims presented as SUPPORTED (all 37 independently verified true) is a strong result for THIS validation program's scope, but is not evidence that hallucination is eliminated, that Laura's is 100% accurate, or that correctness is guaranteed in general -- it specifically reflects that the deterministic verifier, when it has no positive resolved evidence, abstains rather than fabricates, in every case observed so far."
+  ],
+  "product_findings": {
+    "note": "Separate from the research/validation outcome above. These are engineering defects and clarifications discovered and fixed during this initiative's validation work, each with a real product commit.",
+    "findings": [
+      {
+        "title": "Modern OpenAI token-parameter compatibility",
+        "commit": "b2849e8",
+        "description": "OpenAI's Chat Completions endpoint rejects the legacy 'max_tokens' field for current model families (HTTP 400, gpt-5.4-mini), requiring 'max_completion_tokens' instead; OpenRouter/Blackbox and other OpenAI-compatible proxies still expect 'max_tokens'. Fixed via a shared, provider-aware request-body builder that sends the correct field per provider."
+      },
+      {
+        "title": "TLS configuration diagnosis",
+        "commit": "f5cccab",
+        "description": "Investigated a reported TLS-verification concern; found no code defect (a single source of truth, SYNTAX_TREE_LLM_SSL_VERIFY-gated SSL context, used identically by both the real generation path and the Settings 'Test connection' path). Hardened self-diagnosis and warning behavior rather than changing any TLS logic, since none was found to be wrong."
+      },
+      {
+        "title": "Settings Save/Enabled clarity",
+        "commits": ["dfd06ca", "6acc64b"],
+        "description": "Corrected end-user-facing documentation describing where the Settings entry point lives (differs by screen) and shipped the Settings UI, LLM-failure fallback, and claim-status help copy that make the Enabled/Provider/Model/Key configuration state legible to an end user."
+      },
+      {
+        "title": "Small-repository architecture-map navigation",
+        "commit": "d4ab177",
+        "description": "Fixed a structural-fallback gap and a legacy-explanation error leak that affected navigation on small repositories."
+      },
+      {
+        "title": "SystemOverview cache-mode isolation",
+        "commit": "788c234",
+        "description": "Isolated the architecture-map overview cache by generation mode, and removed legacy live-model resolution from architecture-map routes, so map navigation no longer triggers automatic legacy-provider LLM traffic."
+      },
+      {
+        "title": "Legacy explanation-provider isolation",
+        "commit": "788c234",
+        "description": "Same commit as above: confirmed and enforced that architecture-map/navigation flows never call the legacy investigation provider; only the explicit Architectural Explanation action can trigger a real model call. Independently reverified as zero legacy traffic in all 5 live-OpenAI validation runs in this synthesis."
+      },
+      {
+        "title": "React StrictMode external-request deduplication",
+        "commits": ["a3fdd8d", "875e00f"],
+        "description": "React StrictMode's intentional double effect-invocation was causing two real backend POSTs (and two real external-provider generations) per single user Architectural Explanation action in development. Fixed via a promise-keyed request cache (features/architectural-explanation/api.ts) so StrictMode's duplicate effect reuses the in-flight request. Verified fail-before/pass-after with new regression tests, and independently reverified holding under real OpenAI load across the Tenacity and Stevedore validation runs (1 semantic load = 1 POST = 1 generation, no exceptions)."
+      }
+    ]
+  },
+  "no_openai_requests_made_in_this_synthesis": true,
+  "no_production_source_changed_in_this_synthesis": true,
+  "artifact_paths": {
+    "report": "qa-audit/real-openai-cross-repository-synthesis/REPORT.md",
+    "result": "qa-audit/real-openai-cross-repository-synthesis/result.json"
+  }
+}

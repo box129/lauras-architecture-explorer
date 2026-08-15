@@ -1,0 +1,25 @@
+{
+  "note": "This audit involves ZERO OpenAI/LLM calls of any kind -- deterministic analyzed-representation inspection only, via the reconnaissance analysis run already performed for target-reachability checking (preselected-targets.json). Not one of the three LLM validation targets.",
+  "selected_frozen_failure": {
+    "claim_id": "R1-TDC-5",
+    "frozen_truth_label": "true",
+    "expected_source_level_proposition": {
+      "kind": "direct_relation",
+      "relation_kind": "calls",
+      "subject": {"file_path": "tenacity/__init__.py", "qualified_name": "BaseRetrying.wraps.wrapped_f", "kind": "function"},
+      "object": {"file_path": "tenacity/__init__.py", "qualified_name": "BaseRetrying.copy", "kind": "method"}
+    },
+    "expected_source_span": "tenacity/__init__.py:386 (call site `copy = self.copy()` inside wrapped_f), tenacity/__init__.py:279-312 (definition of BaseRetrying.copy)"
+  },
+  "why_the_frozen_r1_pilot_classified_this_as_resolution_failed": "Per results.json (frozen, pre-D4): 'BaseRetrying.wraps.wrapped_f is a function nested inside BaseRetrying.wraps's body (tenacity/__init__.py:381, a closure). Confirmed by direct source read. Laura's real python_symbol_parser does not descend into a function/method body to discover nested function definitions, so no ParsedSymbol was ever produced for wrapped_f.' failure_category=parser_coverage, outcome=resolution_failed, analyzer_support_status=not_evaluated. This same root cause was recorded as shared by R1-TDC-5, R1-TRC-2 (before_log.log_it), R1-FDC-5, and R1-FRC-2 -- all four of R1's claim-resolution failures.",
+  "current_deterministic_representation_check": {
+    "method": "Read-only inspection of the current analyzed symbol graph (GET /api/architecture-map/nodes/{id}/children, and GET /api/source-regions/{id}) for the exact same pinned checkout and analysis root used by the frozen pilot -- no OpenAI call.",
+    "finding": "wrapped_f IS NOW represented as a real, well-formed ParsedSymbol: id=symbol:de5187dcb904154b307fef8b, graph_qn='python:tenacity/__init__.py::BaseRetrying.wraps.wrapped_f', a direct child of BaseRetrying.wraps in the map. Its source region was independently re-fetched and returned path='tenacity/__init__.py', start_line=381, end_line=395, text beginning 'def wrapped_f(*args...)' -- an EXACT match to the frozen ground truth's own cited span.",
+    "second_case_spot_checked": "tenacity/before.py's before_log.log_it (the same root-cause failure underlying R1-TRC-2/R1-FRC-2) was also checked and is likewise now represented as a real symbol (symbol:d3c922b2a1f4c963bfa4f2c2), directly reachable as a child of before_log. This indicates the observation below is a general current-parser characteristic, not specific to R1-TDC-5's one function.",
+    "interpretation": "This is a genuinely new, non-blocking observation, not a fix performed as part of this validation and not something this task investigated further (no parser-code reading, no attempt to determine WHEN or WHY this changed relative to whatever Laura's version R1 originally ran against). It is reported plainly: the specific nested-function parser-coverage gap R1's frozen evaluation documented does not reproduce as originally characterized against the CURRENT backend, for at least these two of the four historical cases. This does not alter, recompute, or invalidate any frozen R1/D4 metric -- those numbers describe what was true when that pilot ran, and are left untouched."
+  },
+  "ui_addressable": true,
+  "ui_addressable_note": "wrapped_f is reachable through ordinary map navigation: root -> tenacity/__init__.py -> BaseRetrying -> wraps -> wrapped_f, all real drilldown clicks, no raw API/internal id entry required.",
+  "no_openai_call_made_for_this_section": true,
+  "no_remediation_performed": "Parser coverage was not modified, inspected at the source-code level, repaired, or improved as part of this or any other action in this validation round."
+}

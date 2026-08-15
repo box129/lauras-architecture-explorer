@@ -1,0 +1,101 @@
+{
+  "scope": "architecture_navigation_phase_a",
+  "design_basis": "docs/design-proposals/architecture-navigation/IMPLEMENTATION_PLAN.md, Phase A only",
+  "design_freeze_commit": "3bb49ed",
+  "phase_a_scope_implemented": {
+    "back_unification": "implemented",
+    "unified_breadcrumb": "implemented",
+    "browser_history_integration": "implemented",
+    "entity_focus_neighborhood": "implemented",
+    "entity_focus_visual_state": "implemented",
+    "architectural_explanation_integration": "preserved_unchanged",
+    "accessible_table_scope_sync": "already_correct_by_construction",
+    "responsive_graph_foundation": "verified_no_regression_no_change_needed",
+    "narrator_protection": "verified_no_regression_out_of_surface_area"
+  },
+  "backend_changes": {
+    "new_route": "GET /api/architecture-map/nodes/{node_id}/neighborhood (syntax-tree-refurbished-backend/src/syntax_tree_refurbished/api/routes/architecture_map.py)",
+    "new_dto": "ArchitectureMapNeighborhoodResponse (api/dto/architecture_map.py)",
+    "new_projector_method": "ArchitectureMapProjector.neighborhood() (app/architecture_map/projection.py)",
+    "data_source": "app.analysis.run_store.get_relations() -- real ObservedProgramRelation facts, never before exposed via any architecture-map route",
+    "truthfulness_guarantees": [
+      "relations with no real target_entity_id (unresolved, or partial with no entity match) are skipped, never upgraded to a definite neighbor",
+      "edge confidence passed through unchanged: null for resolved relations, real value for partial/unresolved",
+      "relation_kind rendered literally (calls/imports/inherits/contains), never normalized or renamed"
+    ],
+    "no_research_semantics_changed": true,
+    "no_verifier_or_proposition_vocabulary_changed": true
+  },
+  "frontend_changes": {
+    "files": [
+      "syntax-tree-ui/src/features/architecture-map/apiTypes.ts",
+      "syntax-tree-ui/src/features/architecture-map/lensCache.ts",
+      "syntax-tree-ui/src/features/architecture-map/lensUrlState.ts",
+      "syntax-tree-ui/src/features/architecture-map/mapAdapter.ts",
+      "syntax-tree-ui/src/features/architecture-map/mapLayout.ts",
+      "syntax-tree-ui/src/features/architecture-map/useArchitectureLens.ts",
+      "syntax-tree-ui/src/features/code-companion/proofUrlState.ts",
+      "syntax-tree-ui/src/features/observatory/BreadcrumbTrail.tsx",
+      "syntax-tree-ui/src/features/observatory/ObservatoryShell.tsx",
+      "syntax-tree-ui/src/features/observatory/ObservatoryTopBar.tsx"
+    ],
+    "removed": "useArchitectureLens.ts: goBackLens (superseded by unifiedBack in ObservatoryShell.tsx, its only call site)",
+    "back_semantics": "unifiedBack in ObservatoryShell.tsx: pops Evidence -> Entity -> Group -> Overview, one level per call, used identically by the topbar Back control and the entity panel's 'Back to parent'",
+    "browser_history": "pushObservatoryUrlState (lens) and setProofUrlState (evidence) now use history.pushState instead of replaceState for user-initiated navigation; popstate listeners in useArchitectureLens.ts and ObservatoryShell.tsx reconcile state on browser Back/Forward",
+    "entity_focus_trigger": "selectedNode set and distinct from the current scope's own focal/parent node (i.e. a genuine child selection, not enterNode's drilldown self-selection side effect)"
+  },
+  "test_totals": {
+    "backend_before_and_after": { "tests": 536, "delta": "+2 (neighborhood tests), other suite counts stable" },
+    "frontend_before": { "test_files": 11, "tests": 67 },
+    "frontend_after": { "test_files": 13, "tests": 75 },
+    "new_frontend_test_file": "syntax-tree-ui/src/features/architecture-map/lensUrlState.test.ts",
+    "extended_frontend_test_file": "syntax-tree-ui/src/features/architecture-map/mapAdapter.test.ts",
+    "new_backend_tests": [
+      "test_node_neighborhood_returns_real_one_hop_relations",
+      "test_node_neighborhood_404_for_unknown_node"
+    ],
+    "all_passing": true
+  },
+  "typecheck": "clean (tsc -b)",
+  "lint": "clean (eslint .)",
+  "build": "succeeded (vite build)",
+  "backend_tests": "full suite passing (536), no regressions",
+  "live_replay": {
+    "repository": "lauras-gt-r2-flask/research/real-repo-pilot/repos/r2-medium/source/src/flask (pinned Flask repository)",
+    "environment_note": "As in the Participant-1 remediation session, the long-running dev backend already listening on port 8000 was running pre-edit code and could not be reliably identified/restarted via available tooling in this environment. Verified instead against a freshly started, correctly-configured backend instance on port 8001, with the frontend explicitly pointed at it via VITE_API_TARGET. This is a recurring environment characteristic, not specific to this change.",
+    "verified_live": [
+      "Overview: 24 modules, flat file-level projection, unchanged",
+      "Group drill-down (app.py -> Flask -> methods): breadcrumb, right panel, map-confidence/status separation all correct",
+      "Entity Focus (full_dispatch_request): canvas narrowed to exactly 6 nodes / 5 edges (selected + 1 dependent + 4 dependencies), correct edge direction and relation kind (calls), dependent on the left / dependencies on the right",
+      "Accessible table scope matches Entity Focus canvas scope exactly (same 6 areas / 5 relationships)",
+      "Map confidence 'Not supplied' correctly shown for resolved calls relations (no fabricated percentage)",
+      "Back chain: 4 consecutive presses walked Evidence -> Entity -> Group -> Group -> Overview, one level each",
+      "Breadcrumb: correct at every level, click-navigable; Evidence crumb reads as a distinct file:line locator (fixed live after first observing label duplication)",
+      "Browser Back from Entity Focus landed on Overview (not outside the app); browser Forward restored Entity Focus; hard refresh mid-flow restored the exact same lens/entity/evidence state from the URL",
+      "Evidence/source: app.py:992-1019 opened via the Evidence tab; SUPPORTED/INSUFFICIENT EVIDENCE legend and 'model proposes, Laura's verifies' copy unchanged",
+      "Re-centering: clicking a neighbor node in Entity Focus re-centered the graph on that neighbor without pushing a new breadcrumb level, as designed"
+    ],
+    "known_limitation_not_introduced_by_this_phase": [
+      "no live LLM configured in this dev environment -> 'No architectural statements were returned for this entity' for full_dispatch_request; expected, honest behavior (fallback no llm badge), not exercised end-to-end to a SUPPORTED claim click-through",
+      "drilling into a component with many children (Flask class, 35 methods) is visibly slow to render (pre-existing ReactFlow layout cost, unrelated to Entity Focus)"
+    ],
+    "confirmed_dead_code": "syntax-tree-ui/src/features/observatory/ObservatoryCanvas.tsx (the component the feasibility review's 'hard 1040px width' finding referred to) is unused anywhere in the app; the live map (ArchitectureMapCanvas.tsx) has no such constraint and was visually clipping-free at 1366x768 and 1280x720"
+  },
+  "protected_participant_1_fixes_checked": {
+    "B1_map_interaction_hint_and_kind_chip": "intact, unmodified",
+    "M2_kind_icon_wins_over_heuristic": "intact, unmodified (mapAdapter.ts's adaptArchitectureNode untouched)",
+    "M3_architectural_statement_terminology": "intact, confirmed live in Architectural Explanation panel",
+    "map_confidence_vs_claim_status_separation": "intact, confirmed live at every panel",
+    "accessible_table": "intact, extended coverage (now follows Entity Focus scope) rather than regressed",
+    "M1_folder_browser_dialog": "not touched by this change; its own test file (FolderBrowserDialog.test.tsx) still passing in the full suite; not independently re-exercised live in this session (zero code overlap, no plausible regression path)",
+    "M4_code_overlay_back": "not touched; still ArrowLeft + 'Back', still exits to whatever was underneath (proof panel / entity focus) unchanged",
+    "M5_docs_studio": "not touched, out of Phase A's surface area",
+    "M6_narrator": "not touched; confirmed still fully outside the Observatory/architecture-map surface (legacy /legacy route only), so this phase's changes have no interaction with it"
+  },
+  "no_phase_b_grouping_implemented": true,
+  "no_phase_c_redesign_implemented": true,
+  "no_new_architectural_inference_added": true,
+  "research_semantics_unchanged": true,
+  "participant_2_not_started": true,
+  "final_classification": "READY_FOR_PHASE_B"
+}

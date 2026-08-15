@@ -1,0 +1,128 @@
+[
+  {
+    "browser": "chromium",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "fixture": "python",
+    "outcome": "completed",
+    "graph": {
+      "node_count": 0,
+      "edge_count": 0,
+      "graph_api_requested": false,
+      "meaningful_empty_state": false
+    },
+    "analysis": {
+      "fixture": "python",
+      "acknowledgement_ms": 580,
+      "observed_for_ms": 7074,
+      "status": 200,
+      "run_id": "run:73cf41a1319b46f1894417a28a1cfeb0",
+      "active_run_loading_after_7s": false,
+      "orientation_ready": true,
+      "page_text_excerpt": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\npython-nested has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npyproject.toml\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    },
+    "docs": {
+      "navigation": "visible-ui",
+      "open_ms": 1753,
+      "url": "http://127.0.0.1:5473/docs",
+      "text_before": "Back to Observatory\nDocs Studio\n0% source-backed\nGenerate Outline\nGenerate Markdown\nMarkdown\nHTML soon\nSaved Lenses\nSource-backed architecture lens\narchitecture - 3 evidence\nOutline\nAdd\nGenerate an outline from saved lenses to start composing source-backed docs.\nArchitecture Onboarding\nThe preview will appear here once an outline exists.",
+      "hierarchy_items": 0,
+      "outline_status": null,
+      "markdown_responses": [
+        {
+          "url": "http://127.0.0.1:5473/api/docs/plan",
+          "status": 200
+        }
+      ],
+      "text_after": "Back to Observatory\nDocs Studio\n17% source-backed\nGenerate Outline\nGenerate Markdown\nMarkdown\nHTML soon\nWriting markdown from saved lenses...\nSaved Lenses\nSource-backed architecture lens\narchitecture - 3 evidence\nOutline\nAdd\n1\nProject Overview\n0 lenses\n2\nHigh-Level Architecture\n0 lenses\n3\nKey Flows\n0 lenses\n4\nImportant Source Proof\n0 lenses\n5\nGaps And Uncertainties\n0 lenses\n6\nHow To Extend Safely\n0 lenses\nArchitecture Onboarding\nOpen in Observatory\nProject Overview\n\nIntroduce the codebase through the saved architecture and question lenses, using source-backed language where available.\n\nOpen in Observatory\nHigh-Level Architecture\n\nExplain the main system areas and where the strongest architecture evidence appears.\n\nOpen in Observatory\nKey Flows\n\nDescribe how important user actions move through the system in plain English before showing technical details.\n\nOpen in Observatory\nImportant Source Proof\n\nList the exact files and proof-backed spans that support the walkthrough.\n\nOpen in Observatory\nGaps And Uncertainties\n\nCall out partial, inferred, unsupported, or stale areas honestly so readers know what still needs review.\n\nOpen in Observatory\nHow To Extend Safely\n\nSummarize the safest next steps for modifying the system based on the saved lenses and source proof.",
+      "generated_nonempty": true,
+      "ai_identified": true
+    }
+  },
+  {
+    "browser": "chromium",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "fixture": "typescript",
+    "outcome": "completed",
+    "graph": {
+      "node_count": 0,
+      "edge_count": 0,
+      "graph_api_requested": false,
+      "meaningful_empty_state": false
+    },
+    "analysis": {
+      "fixture": "typescript",
+      "acknowledgement_ms": 800,
+      "observed_for_ms": 7326,
+      "status": 200,
+      "run_id": "run:6694bf35c8114d59b84f331950a6f981",
+      "active_run_loading_after_7s": false,
+      "orientation_ready": true,
+      "page_text_excerpt": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\ntypescript-small has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npackage.json\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    },
+    "docs": {
+      "navigation": "visible-ui",
+      "open_ms": 1908,
+      "url": "http://127.0.0.1:5473/docs",
+      "text_before": "Back to Observatory\nDocs Studio\n0% source-backed\nGenerate Outline\nGenerate Markdown\nMarkdown\nHTML soon\nSaved Lenses\nSource-backed architecture lens\narchitecture - 3 evidence\nOutline\nAdd\nGenerate an outline from saved lenses to start composing source-backed docs.\nArchitecture Onboarding\nThe preview will appear here once an outline exists.",
+      "hierarchy_items": 0,
+      "outline_status": null,
+      "markdown_responses": [
+        {
+          "url": "http://127.0.0.1:5473/api/docs/plan",
+          "status": 200
+        }
+      ],
+      "text_after": "Back to Observatory\nDocs Studio\n17% source-backed\nGenerate Outline\nGenerate Markdown\nMarkdown\nHTML soon\nWriting markdown from saved lenses...\nSaved Lenses\nSource-backed architecture lens\narchitecture - 3 evidence\nOutline\nAdd\n1\nProject Overview\n0 lenses\n2\nHigh-Level Architecture\n0 lenses\n3\nKey Flows\n0 lenses\n4\nImportant Source Proof\n0 lenses\n5\nGaps And Uncertainties\n0 lenses\n6\nHow To Extend Safely\n0 lenses\nArchitecture Onboarding\nOpen in Observatory\nProject Overview\n\nIntroduce the codebase through the saved architecture and question lenses, using source-backed language where available.\n\nOpen in Observatory\nHigh-Level Architecture\n\nExplain the main system areas and where the strongest architecture evidence appears.\n\nOpen in Observatory\nKey Flows\n\nDescribe how important user actions move through the system in plain English before showing technical details.\n\nOpen in Observatory\nImportant Source Proof\n\nList the exact files and proof-backed spans that support the walkthrough.\n\nOpen in Observatory\nGaps And Uncertainties\n\nCall out partial, inferred, unsupported, or stale areas honestly so readers know what still needs review.\n\nOpen in Observatory\nHow To Extend Safely\n\nSummarize the safest next steps for modifying the system based on the saved lenses and source proof.",
+      "generated_nonempty": true,
+      "ai_identified": true
+    }
+  },
+  {
+    "browser": "chromium",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "fixture": "mixed",
+    "outcome": "completed",
+    "graph": {
+      "node_count": 0,
+      "edge_count": 0,
+      "graph_api_requested": false,
+      "meaningful_empty_state": false
+    },
+    "analysis": {
+      "fixture": "mixed",
+      "acknowledgement_ms": 784,
+      "observed_for_ms": 7315,
+      "status": 200,
+      "run_id": "run:91cf4961e0354248be0be08ad3b5f6f2",
+      "active_run_loading_after_7s": false,
+      "orientation_ready": true,
+      "page_text_excerpt": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\nmixed-moderate has 3 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\nREADME.md\n\nreadme guidance-only material, not proof.\n\n50%\npackage.json\n\nmanifest guidance-only material, not proof.\n\n50%\npyproject.toml\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    },
+    "docs": {
+      "navigation": "visible-ui",
+      "open_ms": 1825,
+      "url": "http://127.0.0.1:5473/docs",
+      "text_before": "Back to Observatory\nDocs Studio\n0% source-backed\nGenerate Outline\nGenerate Markdown\nMarkdown\nHTML soon\nSaved Lenses\nSource-backed architecture lens\narchitecture - 3 evidence\nOutline\nAdd\nGenerate an outline from saved lenses to start composing source-backed docs.\nArchitecture Onboarding\nThe preview will appear here once an outline exists.",
+      "hierarchy_items": 0,
+      "outline_status": null,
+      "markdown_responses": [
+        {
+          "url": "http://127.0.0.1:5473/api/docs/plan",
+          "status": 200
+        }
+      ],
+      "text_after": "Back to Observatory\nDocs Studio\n17% source-backed\nGenerate Outline\nGenerate Markdown\nMarkdown\nHTML soon\nWriting markdown from saved lenses...\nSaved Lenses\nSource-backed architecture lens\narchitecture - 3 evidence\nOutline\nAdd\n1\nProject Overview\n0 lenses\n2\nHigh-Level Architecture\n0 lenses\n3\nKey Flows\n0 lenses\n4\nImportant Source Proof\n0 lenses\n5\nGaps And Uncertainties\n0 lenses\n6\nHow To Extend Safely\n0 lenses\nArchitecture Onboarding\nOpen in Observatory\nProject Overview\n\nIntroduce the codebase through the saved architecture and question lenses, using source-backed language where available.\n\nOpen in Observatory\nHigh-Level Architecture\n\nExplain the main system areas and where the strongest architecture evidence appears.\n\nOpen in Observatory\nKey Flows\n\nDescribe how important user actions move through the system in plain English before showing technical details.\n\nOpen in Observatory\nImportant Source Proof\n\nList the exact files and proof-backed spans that support the walkthrough.\n\nOpen in Observatory\nGaps And Uncertainties\n\nCall out partial, inferred, unsupported, or stale areas honestly so readers know what still needs review.\n\nOpen in Observatory\nHow To Extend Safely\n\nSummarize the safest next steps for modifying the system based on the saved lenses and source proof.",
+      "generated_nonempty": true,
+      "ai_identified": true
+    }
+  }
+]

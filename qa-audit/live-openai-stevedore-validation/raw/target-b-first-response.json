@@ -1,0 +1,61 @@
+{
+  "target": "B",
+  "clickedAtMs": 1786653168367,
+  "observedAtMs": 1786653170858,
+  "latencyFromClickMs": 2491,
+  "status": 200,
+  "body": {
+    "analysis_run_id": "run:ccb8dc0bc37442ba848cb1061b7a7d0d",
+    "target_kind": "entity",
+    "target_id": "symbol:458ffb0ea4f53f92d61b0afb",
+    "explanation_id": "explanation:3015a80c7a2cf5e6d2c31c1c",
+    "narrative": "What Laura's could not establish:\n- Laura's did not have sufficient deterministic evidence to establish that NamedExtensionManager inherits from NamedExtensionManager.",
+    "claims": [
+      {
+        "id": "claim:ed4969c48cad65f42a7a6ec9",
+        "run_id": "run:ccb8dc0bc37442ba848cb1061b7a7d0d",
+        "statement": "NamedExtensionManager inherits from NamedExtensionManager.",
+        "epistemic_type": "observed",
+        "support_status": "insufficient_evidence",
+        "confidence": null,
+        "producer": {
+          "producer_type": "llm",
+          "name": "architectural-explanation-verification-service",
+          "version": "",
+          "produced_at": "2026-08-13T20:32:50.846216Z"
+        },
+        "evidence_chain": {
+          "id": "evidence-chain:4677e3b59a6e11d86c03dae8",
+          "run_id": "run:ccb8dc0bc37442ba848cb1061b7a7d0d",
+          "claim_id": "claim:ed4969c48cad65f42a7a6ec9",
+          "items": [],
+          "reasoning": "no resolved 'inherits' relation directly connects 'symbol:458ffb0ea4f53f92d61b0afb' to 'symbol:458ffb0ea4f53f92d61b0afb' (a multi-hop path, or a partial/unresolved relation, does not satisfy a direct_relation proposition)",
+          "hop_count": 0
+        },
+        "proposition": {
+          "kind": "direct_relation",
+          "subject_entity_id": "symbol:458ffb0ea4f53f92d61b0afb",
+          "relation_kind": "inherits",
+          "object_entity_id": "symbol:458ffb0ea4f53f92d61b0afb",
+          "path_entity_ids": []
+        },
+        "subject_symbol_ids": [
+          "symbol:458ffb0ea4f53f92d61b0afb",
+          "symbol:458ffb0ea4f53f92d61b0afb"
+        ],
+        "related_lens_ids": [],
+        "created_at": "2026-08-13T20:32:50.847215Z"
+      }
+    ],
+    "supported_count": 0,
+    "insufficient_evidence_count": 1,
+    "producer": {
+      "producer_type": "llm",
+      "name": "architectural-explanation-verification-service",
+      "version": "",
+      "produced_at": "2026-08-13T20:32:50.847215Z"
+    },
+    "created_at": "2026-08-13T20:32:50.847215Z"
+  },
+  "bodyParseError": null
+}

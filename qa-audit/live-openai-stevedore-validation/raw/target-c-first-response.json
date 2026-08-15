@@ -1,0 +1,61 @@
+{
+  "target": "C",
+  "clickedAtMs": 1786653205511,
+  "observedAtMs": 1786653210850,
+  "latencyFromClickMs": 5339,
+  "status": 200,
+  "body": {
+    "analysis_run_id": "run:956cde13af1b4c6ebe513cd22535456e",
+    "target_kind": "entity",
+    "target_id": "symbol:319cb96c51176ea5bc6e6cac",
+    "explanation_id": "explanation:4a0901813201fbde5350f1f6",
+    "narrative": "What Laura's could not establish:\n- Laura's did not have sufficient deterministic evidence to establish that _load_one_plugin calls __init__.",
+    "claims": [
+      {
+        "id": "claim:0ccf934a6b754a36310ffad3",
+        "run_id": "run:956cde13af1b4c6ebe513cd22535456e",
+        "statement": "_load_one_plugin calls __init__.",
+        "epistemic_type": "observed",
+        "support_status": "insufficient_evidence",
+        "confidence": null,
+        "producer": {
+          "producer_type": "llm",
+          "name": "architectural-explanation-verification-service",
+          "version": "",
+          "produced_at": "2026-08-13T20:33:30.841819Z"
+        },
+        "evidence_chain": {
+          "id": "evidence-chain:61091da95218d6c618a7fb42",
+          "run_id": "run:956cde13af1b4c6ebe513cd22535456e",
+          "claim_id": "claim:0ccf934a6b754a36310ffad3",
+          "items": [],
+          "reasoning": "no resolved 'calls' relation directly connects 'symbol:319cb96c51176ea5bc6e6cac' to 'symbol:9313759e1b719660e808b6e7' (a multi-hop path, or a partial/unresolved relation, does not satisfy a direct_relation proposition)",
+          "hop_count": 0
+        },
+        "proposition": {
+          "kind": "direct_relation",
+          "subject_entity_id": "symbol:319cb96c51176ea5bc6e6cac",
+          "relation_kind": "calls",
+          "object_entity_id": "symbol:9313759e1b719660e808b6e7",
+          "path_entity_ids": []
+        },
+        "subject_symbol_ids": [
+          "symbol:319cb96c51176ea5bc6e6cac",
+          "symbol:9313759e1b719660e808b6e7"
+        ],
+        "related_lens_ids": [],
+        "created_at": "2026-08-13T20:33:30.842822Z"
+      }
+    ],
+    "supported_count": 0,
+    "insufficient_evidence_count": 1,
+    "producer": {
+      "producer_type": "llm",
+      "name": "architectural-explanation-verification-service",
+      "version": "",
+      "produced_at": "2026-08-13T20:33:30.842822Z"
+    },
+    "created_at": "2026-08-13T20:33:30.842822Z"
+  },
+  "bodyParseError": null
+}

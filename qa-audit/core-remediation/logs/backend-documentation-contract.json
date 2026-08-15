@@ -1,0 +1,110 @@
+{
+  "method": "FastAPI TestClient against completed real fixture analyses",
+  "run_selection": "X-Syntax-Tree-Run-Id header supplied on every request",
+  "external_model_used": false,
+  "fixtures": {
+    "python-nested": {
+      "fixture_path": "qa-audit/phase-2/fixtures/python-nested",
+      "hierarchy_status_code": 200,
+      "response_run_matches_selected": true,
+      "root_item_count": 5,
+      "total_item_count": 13,
+      "kind_counts": {
+        "module": 5,
+        "class": 2,
+        "function": 2,
+        "method": 4
+      },
+      "root_names": [
+        "app/__init__.py",
+        "app/models.py",
+        "app/parser.py",
+        "app/service.py",
+        "main.py"
+      ],
+      "selected_detail": {
+        "requested_name": "RepositoryService",
+        "status_code": 200,
+        "kind": "class",
+        "qualified_name": "python:app/service.py::RepositoryService",
+        "source_path": "app/service.py",
+        "source_line_range": [5, 12],
+        "source_contains_declaration": true,
+        "documentation_is_source_grounded": true
+      }
+    },
+    "typescript-small": {
+      "fixture_path": "qa-audit/phase-2/fixtures/typescript-small",
+      "hierarchy_status_code": 200,
+      "response_run_matches_selected": true,
+      "root_item_count": 5,
+      "total_item_count": 11,
+      "kind_counts": {
+        "module": 5,
+        "class": 1,
+        "function": 3,
+        "interface": 1,
+        "method": 1
+      },
+      "root_names": [
+        "src/analyzer.ts",
+        "src/docs.ts",
+        "src/index.ts",
+        "src/parser.ts",
+        "src/types.ts"
+      ],
+      "selected_detail": {
+        "requested_name": "RepositoryAnalyzer",
+        "status_code": 200,
+        "kind": "class",
+        "qualified_name": "typescript:src/analyzer.ts::RepositoryAnalyzer",
+        "source_path": "src/analyzer.ts",
+        "source_line_range": [4, 8],
+        "source_contains_declaration": true,
+        "documentation_is_source_grounded": true
+      }
+    },
+    "mixed-moderate": {
+      "fixture_path": "qa-audit/phase-2/fixtures/mixed-moderate",
+      "hierarchy_status_code": 200,
+      "response_run_matches_selected": true,
+      "root_item_count": 15,
+      "total_item_count": 36,
+      "kind_counts": {
+        "module": 15,
+        "class": 5,
+        "function": 6,
+        "method": 9,
+        "type_alias": 1
+      },
+      "root_names": [
+        "backend/__init__.py",
+        "backend/api.py",
+        "backend/domain/__init__.py",
+        "backend/domain/errors.py",
+        "backend/domain/task.py",
+        "backend/reporting.py",
+        "backend/services/__init__.py",
+        "backend/services/repository.py",
+        "backend/services/task_service.py",
+        "backend/services/validator.py",
+        "frontend/src/api.ts",
+        "frontend/src/controller.ts",
+        "frontend/src/errors.ts",
+        "frontend/src/store.ts",
+        "frontend/src/types.ts"
+      ],
+      "selected_detail": {
+        "requested_name": "TaskService",
+        "status_code": 200,
+        "kind": "class",
+        "qualified_name": "python:backend/services/task_service.py::TaskService",
+        "source_path": "backend/services/task_service.py",
+        "source_line_range": [6, 18],
+        "source_contains_declaration": true,
+        "documentation_is_source_grounded": true
+      }
+    }
+  },
+  "inspection_note": "Hierarchy and detail are derived from parsed modules and symbols. Detail text identifies the exact source declaration and returns its real source span; generic onboarding content was not returned. Dependency lists are lexical declaration references and may include a component's own members."
+}

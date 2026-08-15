@@ -1,0 +1,259 @@
+{
+  "keyboard": {
+    "input_focused": true,
+    "focus_style": {
+      "outline": "rgb(26, 25, 22) none 0px",
+      "box_shadow": "none",
+      "border_color": "rgb(26, 25, 22)"
+    },
+    "enter_submitted": true
+  },
+  "invalid_path": {
+    "body_text": "Syntax Tree\nOpen legacy workspace\nCodebase observatory\nWhat repo do you want to understand?\n\nSyntax Tree scans a repository and turns it into a calm, source-backed architecture map. You can zoom through concepts, inspect flows, ask questions, and open the exact code behind each answer.\n\nSource-backed\nArchitecture claims stay tied to files, spans, and evidence.\nMeaning first\nThe first screen explains the system shape, not the folder tree.\nGuided progress\nAnalysis stages use human copy instead of raw pipeline jargon.\nStart a scan\n\nPaste a local repository path. Orientation appears first, then the map opens when deeper analysis is ready.\n\nAPI mode\nREPOSITORY PATH\nfixtures/does-not-exist\nfixtures/python-nested\nAdvanced analysis settings\nRepository path does not exist or is not a directory: C:\\Users\\LENOVO T14\\Development\\lauras\\qa-audit\\phase-2\\fixtures\\does-not-exist\nBuild architecture map\n\nThe first repo orientation appears before the full architecture map. If the backend is offline, this screen will say so directly.\n\nScan stopped\nThe scan needs attention\nReset\nRepository path does not exist or is not a directory: C:\\Users\\LENOVO T14\\Development\\lauras\\qa-audit\\phase-2\\fixtures\\does-not-exist\n\nPreparing the analysis job.\n\nOrientation pending\nOrienting repository\n\nLooking for manifests, framework signals, important areas, and starting points before deeper analysis finishes.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\n\nSuggested files pending\n\nStill investigating\n\nWarning: Repo snapshot is not ready.\n\nFailed\n\nConfigured model\nrefurbished mode\nNo live LLM",
+    "api_responses": [
+      {
+        "method": "GET",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/src/api/tokenStore.ts"
+      },
+      {
+        "method": "GET",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/src/api/hooks.ts"
+      },
+      {
+        "method": "GET",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/src/api/client.ts"
+      },
+      {
+        "method": "GET",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/src/api/websocket.ts"
+      },
+      {
+        "method": "POST",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/api/analyze"
+      },
+      {
+        "method": "GET",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/api/runs/run%3A6ade6c6a440c4f0e9cedbb1c13865bee/orientation"
+      },
+      {
+        "method": "GET",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/api/runs/run%3A6ade6c6a440c4f0e9cedbb1c13865bee/orientation"
+      },
+      {
+        "method": "GET",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/api/flows?limit=50"
+      },
+      {
+        "method": "GET",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/api/runs/run%3A6ade6c6a440c4f0e9cedbb1c13865bee/orientation"
+      },
+      {
+        "method": "GET",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/src/api/hooks.ts"
+      },
+      {
+        "method": "GET",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/src/api/tokenStore.ts"
+      },
+      {
+        "method": "GET",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/src/api/websocket.ts"
+      },
+      {
+        "method": "GET",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/src/api/client.ts"
+      },
+      {
+        "method": "POST",
+        "status": 200,
+        "url": "http://127.0.0.1:5473/api/analyze"
+      },
+      {
+        "method": "GET",
+        "status": 409,
+        "url": "http://127.0.0.1:5473/api/runs/run%3Acace553da93f40ab8093efcaa5709bee/orientation"
+      },
+      {
+        "method": "GET",
+        "status": 409,
+        "url": "http://127.0.0.1:5473/api/runs/run%3Acace553da93f40ab8093efcaa5709bee/orientation"
+      }
+    ],
+    "live_regions": [
+      {
+        "role": null,
+        "live": "polite",
+        "text": "Scan stoppedThe scan needs attentionResetRepository path does not exist or is not a directory: C:\\Users\\LENOVO T14\\Development\\lauras\\qa-audit\\phase-2\\fixtures\\does-not-existPreparing the analysis job.Orientation pendingOrienting repositoryLooking for manifests, framework signals, important areas, and starting points before deeper analysis finishes.Important areasNo strong areas yetStart readingSuggested files pendingStill investigatingWarning: Repo snapshot is not ready.FailedConfigured modelrefurbished modeNo live LLM"
+      }
+    ]
+  },
+  "contrast": {
+    "tested_text_nodes": 162,
+    "failures": [
+      {
+        "tag": "SPAN",
+        "text": "Architecture claims stay tied to files, spans, and evidence.",
+        "ratio": 3.15,
+        "threshold": 4.5
+      },
+      {
+        "tag": "SPAN",
+        "text": "The first screen explains the system shape, not the folder tree.",
+        "ratio": 3.15,
+        "threshold": 4.5
+      },
+      {
+        "tag": "SPAN",
+        "text": "Analysis stages use human copy instead of raw pipeline jargon.",
+        "ratio": 3.15,
+        "threshold": 4.5
+      },
+      {
+        "tag": "P",
+        "text": "Paste a local repository path. Orientation appears first, then the map opens when deeper analysis is",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "LABEL",
+        "text": "Repository path",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "BUTTON",
+        "text": "fixtures/does-not-exist",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "BUTTON",
+        "text": "fixtures/python-nested",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "SPAN",
+        "text": "Analysis mode",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Validation",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "SPAN",
+        "text": "Comprehension mode",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Classic",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "SPAN",
+        "text": "Budget",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Balanced",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Max quality",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "SPAN",
+        "text": "Scope",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Full repo",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "LABEL",
+        "text": "Model override",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "SPAN",
+        "text": "Repository path does not exist or is not a directory: C:\\Users\\LENOVO T14\\Development\\lauras\\qa-audi",
+        "ratio": 4.41,
+        "threshold": 4.5
+      },
+      {
+        "tag": "P",
+        "text": "The first repo orientation appears before the full architecture map. If the backend is offline, this",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "SPAN",
+        "text": "Repository path does not exist or is not a directory: C:\\Users\\LENOVO T14\\Development\\lauras\\qa-audi",
+        "ratio": 4.41,
+        "threshold": 4.5
+      },
+      {
+        "tag": "P",
+        "text": "Preparing the analysis job.",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "P",
+        "text": "Failed",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "SPAN",
+        "text": "Configured model",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "SPAN",
+        "text": "refurbished mode",
+        "ratio": 3.29,
+        "threshold": 4.5
+      },
+      {
+        "tag": "SPAN",
+        "text": "No live LLM",
+        "ratio": 3.29,
+        "threshold": 4.5
+      }
+    ],
+    "failure_count": 25
+  }
+}

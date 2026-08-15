@@ -1,0 +1,40 @@
+{
+  "text": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\ntypescript-small has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npackage.json\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses",
+  "controls": [
+    {
+      "tag": "BUTTON",
+      "text": "Open navigation",
+      "href": null
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Run Active run\nloading",
+      "href": null
+    },
+    {
+      "tag": "BUTTON",
+      "text": "api mode",
+      "href": null
+    },
+    {
+      "tag": "BUTTON",
+      "text": "What does this architecture area do?",
+      "href": null
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Which code proves this?",
+      "href": null
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Submit question",
+      "href": null
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Lenses",
+      "href": null
+    }
+  ]
+}

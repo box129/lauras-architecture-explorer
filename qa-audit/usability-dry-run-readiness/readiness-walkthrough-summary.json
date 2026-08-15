@@ -1,0 +1,48 @@
+{
+  "startedAt": "2026-08-14T03:58:48.497Z",
+  "flaskRoot": "C:\\Users\\LENOVO T14\\Development\\lauras-gt-r2-flask\\research\\real-repo-pilot\\repos\\r2-medium\\source\\src\\flask",
+  "steps": {
+    "firstLaunchOk": true,
+    "settingsKeyNeverShownInDom": true,
+    "analyzeStatus": 200,
+    "runId": "run:0195c065fee24c22a06574f8c418e4dc",
+    "mapRenderedOk": true,
+    "entityNavigationOk": true,
+    "supportedClaimPresent": false,
+    "explanationLatencyMs": 2073,
+    "returnNavigationOk": true,
+    "explanationButtonHiddenOnContainerNode": true,
+    "noExtraArchExplanationRequestOnContainerNav": false,
+    "accessibleTableOpenedOk": true,
+    "accessibleTableAutoCollapsedOk": true,
+    "harmlessMistakeRecoveryOk": true,
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+    ],
+    "architecturalExplanationRequestCount": 3,
+    "architecturalExplanationRequests": [
+      {
+        "url": "http://127.0.0.1:5175/api/entities/symbol%3A345b67932fb6e7f8ed1df97e/architectural-explanation",
+        "status": 500,
+        "atMs": 1786679947718
+      },
+      {
+        "url": "http://127.0.0.1:5175/api/entities/symbol%3Ac7ee2ecf92aceff99cc4ce62/architectural-explanation",
+        "status": 200,
+        "atMs": 1786679951842
+      },
+      {
+        "url": "http://127.0.0.1:5175/api/entities/symbol%3A90c549e56f290bb0106c9369/architectural-explanation",
+        "status": 200,
+        "atMs": 1786679953687
+      }
+    ],
+    "requestCountByEntity": {
+      "symbol:345b67932fb6e7f8ed1df97e": 1,
+      "symbol:c7ee2ecf92aceff99cc4ce62": 1,
+      "symbol:90c549e56f290bb0106c9369": 1
+    },
+    "dedupInvariantHoldsForEveryEntity": true
+  },
+  "finishedAt": "2026-08-14T03:59:19.368Z"
+}

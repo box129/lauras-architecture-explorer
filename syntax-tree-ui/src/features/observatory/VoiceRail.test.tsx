@@ -1,0 +1,89 @@
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+import VoiceRail from './VoiceRail';
+import type { ObservatoryNode } from './types';
+
+// Architectural Explanation only ever resolves against a real parsed
+// symbol (api/routes/architectural_explanation.py 404s "Entity not found"
+// for anything else). A prior usability audit documented that leaving the
+// panel open while navigation transiently selects a non-symbol (module/
+// package/component-group) node produced pointless 404 console noise --
+// this file locks in the fix: the button (and therefore any fetch) is
+// gated to symbol-kind entities only.
+vi.mock('../../api/client', () => ({
+  fetchApi: vi.fn().mockResolvedValue(null),
+  ApiError: class extends Error {},
+}));
+
+function buildNode(overrides: Partial<ObservatoryNode>): ObservatoryNode {
+  return {
+    id: 'symbol:abc123',
+    label: 'OrderService.create_order',
+    kind: 'code_group',
+    description: '',
+    status: 'verified',
+    confidence: 1,
+    evidenceCount: 1,
+    childrenCount: 0,
+    canDrilldown: false,
+    primaryFiles: [],
+    accent: 'blue',
+    icon: 'FileCode2',
+    position: { x: 0, y: 0 },
+    summary: '',
+    whatHappens: [],
+    relatedLenses: [],
+    ...overrides,
+  } as ObservatoryNode;
+}
+
+describe('VoiceRail Architectural Explanation gating', () => {
+  it('shows the Architectural Explanation button for a real symbol entity', () => {
+    render(<VoiceRail node={buildNode({ id: 'symbol:abc123' })} onClose={vi.fn()} />);
+    expect(screen.getByRole('button', { name: /architectural explanation/i })).toBeInTheDocument();
+  });
+
+  it('hides the Architectural Explanation button for a structural-module container node', () => {
+    render(<VoiceRail node={buildNode({ id: 'structural-module:def456', canDrilldown: true })} onClose={vi.fn()} />);
+    expect(screen.queryByRole('button', { name: /architectural explanation/i })).not.toBeInTheDocument();
+  });
+
+  it('hides the Architectural Explanation button for a synthetic architecture-grouping node', () => {
+    render(<VoiceRail node={buildNode({ id: 'arch-child:789abc', canDrilldown: true })} onClose={vi.fn()} />);
+    expect(screen.queryByRole('button', { name: /architectural explanation/i })).not.toBeInTheDocument();
+  });
+});
+
+/**
+ * Regression coverage for Claude Design UX audit finding F01: this node's
+ * static-analysis "confidence" percentage previously rendered as bare "NN%
+ * confidence", visually and lexically indistinguishable from a claim's
+ * SUPPORTED/INSUFFICIENT EVIDENCE verification status. It must now read
+ * unambiguously as a map/structural score, never as claim verification or
+ * AI confidence.
+ */
+describe('VoiceRail map-confidence labeling', () => {
+  it('labels the node confidence percentage as map confidence, not a verification status', () => {
+    render(<VoiceRail node={buildNode({ confidence: 0.72 })} onClose={vi.fn()} />);
+
+    const confidenceEl = screen.getByText('72% map confidence');
+    expect(confidenceEl).toBeInTheDocument();
+    // Must never read as if it were the claim-level vocabulary.
+    expect(screen.queryByText(/^SUPPORTED$/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/^INSUFFICIENT EVIDENCE$/)).not.toBeInTheDocument();
+  });
+
+  it('exposes the map-confidence meaning in accessible text, not hover-only', () => {
+    render(<VoiceRail node={buildNode({ confidence: 0.5 })} onClose={vi.fn()} />);
+
+    const confidenceEl = screen.getByText('50% map confidence');
+    expect(confidenceEl.getAttribute('aria-label')).toMatch(/not a claim.*verification status/i);
+  });
+
+  it('never shows a fabricated "0% map confidence" for a node with no confidence metric (e.g. a Phase B structural_group) -- shows no percentage at all', () => {
+    render(<VoiceRail node={buildNode({ kind: 'structural_group', confidence: null })} onClose={vi.fn()} />);
+
+    expect(screen.queryByText(/0% map confidence/)).not.toBeInTheDocument();
+    expect(screen.getByText('map confidence not available')).toBeInTheDocument();
+  });
+});

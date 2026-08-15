@@ -1,0 +1,58 @@
+[flask-remove_ctx] symbol:52a789fd4ee48a9b0b6907e9 -> 200 126ms claims=1 supported=0 insufficient=1
+[flask-add_ctx] symbol:07b13f53a8bbe27bcf5cabe4 -> 200 20ms claims=1 supported=0 insufficient=1
+[flask-find_best_app] symbol:97888d12a8b510ded41b17e8 -> 200 95ms claims=2 supported=2 insufficient=0
+[flask-find_app_by_string] symbol:e1f947cdfc3c5e50691a84a1 -> 200 41ms claims=2 supported=1 insufficient=1
+[flask-setupmethod] symbol:abeed0b1125b5c0db049fbdb -> 200 13ms claims=0 supported=0 insufficient=0
+---SUMMARY---
+[
+  {
+    "label": "flask-remove_ctx",
+    "entity_id": "symbol:52a789fd4ee48a9b0b6907e9",
+    "status": 200,
+    "latency_ms": 126,
+    "claim_count": 1,
+    "supported_count": 0,
+    "insufficient_evidence_count": 1,
+    "error": null
+  },
+  {
+    "label": "flask-add_ctx",
+    "entity_id": "symbol:07b13f53a8bbe27bcf5cabe4",
+    "status": 200,
+    "latency_ms": 20,
+    "claim_count": 1,
+    "supported_count": 0,
+    "insufficient_evidence_count": 1,
+    "error": null
+  },
+  {
+    "label": "flask-find_best_app",
+    "entity_id": "symbol:97888d12a8b510ded41b17e8",
+    "status": 200,
+    "latency_ms": 95,
+    "claim_count": 2,
+    "supported_count": 2,
+    "insufficient_evidence_count": 0,
+    "error": null
+  },
+  {
+    "label": "flask-find_app_by_string",
+    "entity_id": "symbol:e1f947cdfc3c5e50691a84a1",
+    "status": 200,
+    "latency_ms": 41,
+    "claim_count": 2,
+    "supported_count": 1,
+    "insufficient_evidence_count": 1,
+    "error": null
+  },
+  {
+    "label": "flask-setupmethod",
+    "entity_id": "symbol:abeed0b1125b5c0db049fbdb",
+    "status": 200,
+    "latency_ms": 13,
+    "claim_count": 0,
+    "supported_count": 0,
+    "insufficient_evidence_count": 0,
+    "error": null
+  }
+]

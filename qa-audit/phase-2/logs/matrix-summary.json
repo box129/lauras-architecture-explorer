@@ -1,0 +1,127 @@
+[
+  {
+    "browser": "chromium",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "fixture": "python",
+    "outcome": "completed",
+    "graph": {
+      "node_count": 0,
+      "edge_count": 0,
+      "graph_api_requested": false,
+      "meaningful_empty_state": false
+    },
+    "analysis": {
+      "fixture": "python",
+      "acknowledgement_ms": 789,
+      "observed_for_ms": 7118,
+      "status": 200,
+      "run_id": "run:b1a77b10696e4e1ca779cfac832118dc",
+      "active_run_loading_after_7s": false,
+      "orientation_ready": true,
+      "page_text_excerpt": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\npython-nested has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npyproject.toml\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    }
+  },
+  {
+    "browser": "chromium",
+    "viewport": {
+      "width": 768,
+      "height": 1024
+    },
+    "fixture": "python",
+    "outcome": "completed",
+    "graph": {
+      "node_count": 0,
+      "edge_count": 0,
+      "graph_api_requested": false,
+      "meaningful_empty_state": false
+    },
+    "analysis": {
+      "fixture": "python",
+      "acknowledgement_ms": 730,
+      "observed_for_ms": 7079,
+      "status": 200,
+      "run_id": "run:57a0793f26c64b09ab4e919021beabcf",
+      "active_run_loading_after_7s": false,
+      "orientation_ready": true,
+      "page_text_excerpt": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\npython-nested has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npyproject.toml\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    }
+  },
+  {
+    "browser": "chromium",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "fixture": "python",
+    "outcome": "completed",
+    "graph": {
+      "node_count": 0,
+      "edge_count": 0,
+      "graph_api_requested": false,
+      "meaningful_empty_state": false
+    },
+    "analysis": {
+      "fixture": "python",
+      "acknowledgement_ms": 623,
+      "observed_for_ms": 7242,
+      "status": 200,
+      "run_id": "run:24ee5d1caf3443638d474391b5680e56",
+      "active_run_loading_after_7s": false,
+      "orientation_ready": true,
+      "page_text_excerpt": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\npython-nested has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npyproject.toml\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    }
+  },
+  {
+    "browser": "firefox",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "fixture": "typescript",
+    "outcome": "completed",
+    "graph": {
+      "node_count": 0,
+      "edge_count": 0,
+      "graph_api_requested": false,
+      "meaningful_empty_state": false
+    },
+    "analysis": {
+      "fixture": "typescript",
+      "acknowledgement_ms": 741,
+      "observed_for_ms": 7056,
+      "status": 200,
+      "run_id": "run:9770c5134d8d494ab52b21af734f853b",
+      "active_run_loading_after_7s": false,
+      "orientation_ready": true,
+      "page_text_excerpt": "Architecture map\nSyntax Tree\nRun Active run\nloading\napi mode\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\nOrientation ready\nSnapshot orientation\n50% confidence\n\ntypescript-small has 1 high-priority orientation files available as guidance-only context.\n\nImportant areas\n\nNo strong areas yet\n\nStart reading\npackage.json\n\nmanifest guidance-only material, not proof.\n\n50%\nStill investigating\n\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\n\nLenses"
+    }
+  },
+  {
+    "browser": "webkit",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "fixture": "mixed",
+    "outcome": "completed",
+    "graph": {
+      "node_count": 0,
+      "edge_count": 0,
+      "graph_api_requested": false,
+      "meaningful_empty_state": false
+    },
+    "analysis": {
+      "fixture": "mixed",
+      "acknowledgement_ms": 850,
+      "observed_for_ms": 7139,
+      "status": 200,
+      "run_id": "run:0ee13f99865143688ee42ed54d4e2ce3",
+      "active_run_loading_after_7s": false,
+      "orientation_ready": true,
+      "page_text_excerpt": "\nArchitecture map\nSyntax Tree\n\nRun Active run\nloading\napi mode\n\nWhat does this architecture area do?\nWhich code proves this?\nCtrl J\n\nOrientation ready\nSnapshot orientation\n50% confidence\nmixed-moderate has 3 high-priority orientation files available as guidance-only context.\nImportant areas\nNo strong areas yet\nStart reading\nREADME.md\nreadme guidance-only material, not proof.\n50%\npackage.json\nmanifest guidance-only material, not proof.\n50%\npyproject.toml\nmanifest guidance-only material, not proof.\n50%\nStill investigating\nWarning: Orientation material is guidance-only and does not verify runtime behavior.\nLenses"
+    }
+  }
+]

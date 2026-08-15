@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, BookOpen, FolderSearch, Menu, Settings as SettingsIcon } from 'lucide-react';
+import { ArrowLeft, BookOpen, FolderSearch, Menu, Network, Settings as SettingsIcon } from 'lucide-react';
 import { useSyntaxTreeStore } from '../../store';
 import BreadcrumbTrail, { type BreadcrumbItem } from './BreadcrumbTrail';
 import RunPicker from './RunPicker';
@@ -71,9 +71,13 @@ export default function ObservatoryTopBar({
           </button>
           {!canGoBack && navigationOpen && (
             <div className="obs-topbar__nav-menu" id="observatory-navigation-menu" role="menu" aria-label="Repository navigation">
+              <div className="obs-topbar__nav-current" role="presentation">
+                <Network size={15} />
+                <span><strong>Architecture</strong><small>Explore the recovered structure</small></span>
+              </div>
               <button type="button" role="menuitem" onClick={() => { setNavigationOpen(false); onOpenDocs(); }}>
                 <BookOpen size={15} />
-                <span><strong>Repository documentation</strong><small>Browse components and source</small></span>
+                <span><strong>Documentation / Doc Studio</strong><small>Browse components and source</small></span>
               </button>
               <button type="button" role="menuitem" onClick={() => { setNavigationOpen(false); onAnalyzeAnotherRepository(); }}>
                 <FolderSearch size={15} />

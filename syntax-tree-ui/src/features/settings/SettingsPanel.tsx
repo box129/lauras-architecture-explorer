@@ -181,7 +181,10 @@ export default function SettingsPanel() {
               decides what is true. Repository analysis and the architecture map work fully without this
               configured.
             </p>
-            <p className="obs-settings__hint">AI is used for architectural explanations and optional cluster interpretations. Always deterministic: source parsing, relation extraction, structural grouping, cluster membership, and evidence verification.</p>
+            <div className="obs-settings__clarity-grid">
+              <div><strong>AI is used for</strong><ul><li>Architectural explanations</li><li>Optional cluster interpretations</li></ul></div>
+              <div><strong>Always deterministic</strong><ul><li>Source parsing and relationship extraction</li><li>Structural grouping and cluster membership</li><li>Evidence verification</li></ul></div>
+            </div>
 
             {loading && <p role="status">Loading current settings&hellip;</p>}
             {loadError && (
@@ -316,6 +319,10 @@ export default function SettingsPanel() {
                   fallback whenever nothing has been saved here.
                 </p>
               </div>
+            )}
+
+            {!loading && !loadError && !enabled && (
+              <p className="obs-settings__availability" role="status"><strong>AI features unavailable</strong> Deterministic analysis and architecture exploration still work.</p>
             )}
           </section>
         </div>

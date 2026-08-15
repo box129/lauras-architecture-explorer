@@ -6,7 +6,6 @@ import {
   CheckCircle2,
   ChevronDown,
   Clock,
-  ExternalLink,
   FolderOpen,
   GitBranch,
   Loader2,
@@ -151,7 +150,7 @@ export default function ObservatoryEntry() {
       <section className="observatory-entry__topbar">
         <div className="observatory-entry__brand">
           <GitBranch size={18} strokeWidth={1.9} />
-          <span>Syntax Tree</span>
+          <span>Laura's</span>
         </div>
         <div className="observatory-entry__topbar-actions">
           <button
@@ -163,10 +162,6 @@ export default function ObservatoryEntry() {
             <SettingsIcon size={15} strokeWidth={1.8} />
             Settings
           </button>
-          <a className="observatory-entry__legacy-link" href="/legacy">
-            Open legacy workspace
-            <ExternalLink size={13} strokeWidth={1.8} />
-          </a>
         </div>
       </section>
 
@@ -174,28 +169,28 @@ export default function ObservatoryEntry() {
         <div className="observatory-entry__copy">
           <div className="observatory-entry__eyebrow">
             <Sparkles size={14} strokeWidth={1.8} />
-            Codebase observatory
+            Codebase comprehension
           </div>
-          <h1>What repo do you want to understand?</h1>
+          <h1>Understand an unfamiliar codebase</h1>
           <p>
-            Syntax Tree scans a repository and turns it into a calm, source-backed
-            architecture map. You can zoom through concepts, inspect flows, ask
-            questions, and open the exact code behind each answer.
+            Laura's analyzes source structure, recovers relationships, and builds an
+            architecture view you can explore from regions to modules and exact source.
+            Optional AI explanations add context while deterministic evidence stays visible.
           </p>
           <div className="observatory-entry__promise-grid">
-            <PromiseItem icon={<ShieldCheck size={17} />} title="Source-backed" text="Architecture claims stay tied to files, spans, and evidence." />
-            <PromiseItem icon={<GitBranch size={17} />} title="Meaning first" text="The first screen explains the system shape, not the folder tree." />
-            <PromiseItem icon={<Clock size={17} />} title="Guided progress" text="Analysis stages use human copy instead of raw pipeline jargon." />
+            <PromiseItem icon={<ShieldCheck size={17} />} title="Deterministic foundation" text="Source parsing, relationships, grouping, and verification remain evidence-led." />
+            <PromiseItem icon={<GitBranch size={17} />} title="Architecture view" text="Move from structural regions to relation-derived clusters and modules." />
+            <PromiseItem icon={<Clock size={17} />} title="Exact source" text="Follow evidence back to the file and relevant source lines." />
           </div>
         </div>
 
         <div className="observatory-entry__panel" aria-label="Start repository analysis">
           <div className="observatory-entry__panel-header">
           <div>
-            <h2>Start a scan</h2>
-            <p>Paste a local repository path. Orientation appears first, then the map opens when deeper analysis is ready.</p>
+            <h2>Choose repository</h2>
+            <p>Select a local folder to begin analysis. The architecture overview opens when the source is ready.</p>
             </div>
-            <span className="observatory-entry__status-pill">API mode</span>
+            <span className="observatory-entry__status-pill">Local folder</span>
           </div>
 
           <label className="observatory-entry__label" htmlFor="observatory-repo-path">Repository path</label>
@@ -236,7 +231,7 @@ export default function ObservatoryEntry() {
           >
             <summary>
               <ChevronDown size={14} className={advancedOpen ? '' : 'observatory-entry__chevron--closed'} />
-              Advanced analysis settings
+              Optional analysis settings
             </summary>
             <div className="observatory-entry__advanced-body">
               <SegmentedField
@@ -318,15 +313,15 @@ export default function ObservatoryEntry() {
               </>
             ) : (
               <>
-                Build architecture map
+                Choose repository
                 <ArrowRight size={16} />
               </>
             )}
           </button>
 
           <p className="observatory-entry__hint">
-            The first repo orientation appears before the full architecture map. If the backend is offline,
-            this screen will say so directly.
+            Laura's reads the repository locally through the connected analysis service. If analysis cannot start,
+            this screen will explain what needs attention.
           </p>
         </div>
       </section>

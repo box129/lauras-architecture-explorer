@@ -144,7 +144,7 @@ function RepositoryDocsPortal({ onBack }: Pick<DocsStudioProps, 'onBack'>) {
   return (
     <main className="obs-docs-studio obs-docs-portal" aria-label="Repository documentation">
       <header className="obs-docs-topbar">
-        <button type="button" onClick={onBack}><ArrowLeft size={15} /> Back to Observatory</button>
+        <button type="button" onClick={onBack}><ArrowLeft size={15} /> Back to Architecture</button>
         <div>
           <span>Repository documentation</span>
           <h1>{hierarchy?.repository_name || repositoryDisplayName(repositoryPath)}</h1>

@@ -88,7 +88,7 @@ export default function ArchitecturalExplanationPanel({
           <p>
             <strong>Architectural explanation unavailable</strong>
           </p>
-          <p>The configured language-model provider could not be reached.</p>
+          <p>AI features unavailable. Deterministic analysis and architecture exploration still work.</p>
           <p className="obs-settings__hint--small">
             Repository analysis and the architecture map are unaffected &mdash; only claim-level
             explanations for this entity are unavailable right now.

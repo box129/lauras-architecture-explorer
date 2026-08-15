@@ -436,7 +436,7 @@ export default function ObservatoryShell() {
   const canvasFixture = lens.isEntityFocus ? (lens.entityFocusLandscape ?? lens.landscape) : lens.landscape;
   // Root structural selection is graph-local context, not an entity-focus
   // navigation event. Only Enter changes `lensPath` and leaves this canvas.
-  const isRootArchitectureGraph = Boolean(canvasFixture && source === 'api' && lens.lensPath.length === 0 && !showQuestionLens && !showFlowLens);
+  const isArchitectureGraph = Boolean(canvasFixture && source === 'api' && !lens.isEntityFocus && !showQuestionLens && !showFlowLens);
 
   let canvas = showQuestionLens ? (
     <QuestionLensCanvas
@@ -460,7 +460,7 @@ export default function ObservatoryShell() {
       onSelectStep={flowLens.selectStep}
       selectedStepId={flowLens.selectedStepId}
     />
-  ) : isRootArchitectureGraph ? (
+  ) : isArchitectureGraph ? (
     <ArchitectureGraphOverview
       runId={analysisRunId}
       selectedNode={lens.selectedNode}
@@ -468,6 +468,7 @@ export default function ObservatoryShell() {
       onHoverNode={lens.prefetchNode}
       onSelectNode={selectNode}
       requestedExpandId={requestedGraphExpansion}
+      scopeGroupId={lens.lensPath.at(-1) ?? null}
     />
   ) : (canvasFixture) ? (
     <ArchitectureMapCanvas
@@ -558,7 +559,7 @@ export default function ObservatoryShell() {
           />
           {!showFlowLens && (
             <QuestionDock
-              compact={isRootArchitectureGraph}
+              compact={isArchitectureGraph}
               contextLabel={lens.selectedNode?.label ?? lens.focalNode?.label ?? shellMeta.repoTitle}
               draftPrompt={draftPrompt}
               loading={questionLens.loading}
@@ -596,11 +597,12 @@ export default function ObservatoryShell() {
             onSaveLens={saveCurrentLens}
             selectedStep={flowLens.selectedStep}
           />
-        ) : isRootArchitectureGraph ? (
+        ) : isArchitectureGraph ? (
           <ArchitectureGraphInspector
             node={lens.selectedNode}
             onEnter={lens.enterNode}
             onExpand={(node) => setRequestedGraphExpansion(node.id)}
+            scopeGroupId={lens.lensPath.at(-1) ?? null}
           />
         ) : (
           <VoiceRail

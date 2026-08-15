@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { adaptArchitectureGraph, visibleGraphEdges } from './graphAdapter';
+import { adaptArchitectureGraph, architectureGraphScope, visibleGraphEdges, visibleGroupIds } from './graphAdapter';
 import type { ArchitectureGraphResponse } from './graphTypes';
 
 const response: ArchitectureGraphResponse = { schema_version: 'architecture-graph/v1', analysis_run_id: 'run:1', groups: [
@@ -20,5 +20,20 @@ describe('architecture graph adapter', () => {
     expect(visibleGraphEdges(graph.edges, 0.5)).toHaveLength(1);
     expect(visibleGraphEdges([{ ...graph.edges[0], sourceRefs: { member_relation_count: [1] } }], 0.5)).toHaveLength(0);
     expect(visibleGraphEdges([{ ...graph.edges[0], sourceRefs: { member_relation_count: [1] } }], 0.8)).toHaveLength(1);
+  });
+  it('projects an entered structural scope without inventing boundary relations', () => {
+    const scoped = architectureGraphScope({
+      ...response,
+      groups: [...response.groups, { id: 'api', analysis_run_id: 'run:1', label: 'api', structural_path: 'backend/api', parent_group_id: 'backend', kind: 'structural_leaf', direct_member_module_ids: ['module:2'], direct_child_group_ids: [], recursive_module_count: 1, can_drilldown: true }, { id: 'frontend', analysis_run_id: 'run:1', label: 'frontend', structural_path: 'frontend', parent_group_id: null, kind: 'structural_leaf', direct_member_module_ids: ['module:3'], direct_child_group_ids: [], recursive_module_count: 1, can_drilldown: true }],
+      aggregate_edges: [...response.aggregate_edges, { ...response.aggregate_edges[0], id: 'boundary', source_group_id: 'services', target_group_id: 'frontend' }],
+    }, 'backend');
+    expect(scoped?.groups.map((group) => [group.id, group.parent_group_id])).toEqual([['services', null], ['api', null]]);
+    expect(scoped?.aggregate_edges).toEqual([]);
+  });
+  it('keeps deep containment hidden until every ancestor is explicitly expanded', () => {
+    const graph = adaptArchitectureGraph({ ...response, groups: [...response.groups, { ...response.groups[1], id: 'deep', parent_group_id: 'services', structural_path: 'backend/services/deep' }] });
+    expect([...visibleGroupIds(graph.nodes, new Set())]).toEqual(['backend']);
+    expect([...visibleGroupIds(graph.nodes, new Set(['backend']))]).toEqual(['backend', 'services']);
+    expect([...visibleGroupIds(graph.nodes, new Set(['backend', 'services']))]).toEqual(['backend', 'services', 'deep']);
   });
 });

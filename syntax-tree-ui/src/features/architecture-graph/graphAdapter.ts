@@ -7,6 +7,27 @@ export interface ArchitectureGraphOverview {
   internalCounts: Map<string, number>;
 }
 
+/** Keeps Enter on the deterministic graph contract as a strict subtree projection. */
+export function architectureGraphScope(response: ArchitectureGraphResponse, scopeGroupId?: string | null): ArchitectureGraphResponse | null {
+  if (!scopeGroupId) return response;
+  const byId = new Map(response.groups.map((group) => [group.id, group]));
+  if (!byId.has(scopeGroupId)) return null;
+  const inScope = new Set<string>();
+  for (const group of response.groups) {
+    let current: string | null = group.id;
+    while (current) {
+      if (current === scopeGroupId) { inScope.add(group.id); break; }
+      current = byId.get(current)?.parent_group_id ?? null;
+    }
+  }
+  return {
+    ...response,
+    groups: response.groups.filter((group) => group.id !== scopeGroupId && inScope.has(group.id)).map((group) => group.parent_group_id === scopeGroupId ? { ...group, parent_group_id: null } : group),
+    aggregate_edges: response.aggregate_edges.filter((edge) => inScope.has(edge.source_group_id) && edge.source_group_id !== scopeGroupId && inScope.has(edge.target_group_id) && edge.target_group_id !== scopeGroupId),
+    internal_relation_counts: response.internal_relation_counts.filter((value) => inScope.has(value.group_id) && value.group_id !== scopeGroupId),
+  };
+}
+
 /** The final structural path segment is a truthful, compact map label. The
  * complete path remains available as `summary` for provenance. */
 function mapLabel(label: string): string {

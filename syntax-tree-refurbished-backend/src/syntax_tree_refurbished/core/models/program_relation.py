@@ -156,7 +156,12 @@ ResolutionStatus = Literal["resolved", "partial", "unresolved"]
 """
 
 
-ResolutionBasis = Literal["constructor_binding", "direct_construction", "inherited_self_method"]
+ResolutionBasis = Literal[
+    "constructor_binding",
+    "direct_construction",
+    "inherited_self_method",
+    "static_super",
+]
 """The technique used to resolve a relation's target, beyond ordinary
 direct syntactic resolution (which leaves ``resolution_basis`` unset).
 New bases are added here only once a real producer emits them, matching
@@ -184,7 +189,24 @@ New bases are added here only once a real producer emits them, matching
   ``super().method()`` call, never an ambiguous or partially-resolved
   inheritance chain. ``supporting_resolution_spans`` carries the
   ``inherits`` relation's own span (the base-class declaration this
-  resolution walked through)."""
+  resolution walked through).
+- "static_super": the target of a zero-argument ``super().method()`` call
+  was resolved by walking the calling class's declared inheritance chain
+  upward through already-resolved ``inherits`` relations, under the
+  strictest deterministic conditions: every class on the walk (the
+  calling class and every ancestor looked past) has exactly one base and
+  that base is resolved (any multiple inheritance or unresolved/external
+  base anywhere on the walk refuses resolution), and exactly one ancestor
+  defines the method (the nearest definer, exactly where Python's own MRO
+  for that single chain would stop). ``supporting_resolution_spans``
+  carries every ``inherits`` relation walked, in order -- the chain of
+  base-class declarations the resolution depended on. Residual static
+  approximation, shared with "inherited_self_method": cooperative
+  multiple inheritance introduced by some *other* class subclassing the
+  caller could reroute ``super()`` at runtime for instances of that
+  subclass; the single-base-chain restriction is what keeps the resolved
+  edge the statically correct one for the defining class's own
+  hierarchy."""
 
 
 def _validate_literal(value: str, allowed: tuple[str, ...], field_name: str) -> None:

@@ -270,14 +270,39 @@ already builds from the caller-supplied ``symbols``). The call resolves
 whose target is the ancestor the method was found on (the specific base
 declaration this resolution depended on) -- the call site's own span
 remains the relation's primary span, unchanged. This fallback never
-resolves a ``super().method()`` call (a structurally different AST shape,
-explicitly out of scope -- see below), never walks through a class this
+resolves a ``super().method()`` call (a structurally different AST shape
+with its own separate ``static_super`` fallback -- see below), never
+walks through a class this
 extractor's own same-class lookup already resolved (so an overriding
 ``method`` defined directly on ``C`` is always preferred, exactly as
 Python's own method resolution would pick the subclass's own definition
 first), and never fires at all when ``inherits`` is omitted/empty --
 every existing caller that does not pass ``inherits`` sees byte-identical
 behavior to before this fallback existed.
+
+Guarded static super() resolution (``resolution_basis="static_super"``)
+------------------------------------------------------------------------
+For a zero-argument ``super().method(...)`` call site inside a method of
+class ``C``, and only when the caller passed ``inherits``: walk upward
+from ``C`` through the caller-supplied resolved ``inherits`` relations,
+requiring at every step (``C`` itself and every ancestor looked past)
+exactly one declared base, fully resolved -- any multiple inheritance or
+any unresolved/external base anywhere on the walk refuses resolution for
+the whole call site, since the runtime MRO could then consult a class
+this extractor cannot see or order. The nearest ancestor that defines
+``method`` (exactly one matching real ``kind="method"`` symbol) is the
+target -- exactly where Python's own MRO for that single-base chain would
+stop; zero definers by chain end, or a duplicate definition on one
+ancestor, refuses. ``super(C, self)`` (explicit two-argument form),
+``super()`` calls in nested functions, and every other shape are never
+touched. ``supporting_resolution_spans`` carries every ``inherits``
+relation walked, in order (the chain of base declarations the resolution
+depended on); the call site's own span remains the relation's primary
+span. Residual static approximation, shared with ``inherited_self_method``
+above: a *different* class using ``C`` in cooperative multiple
+inheritance could reroute ``super()`` at runtime for instances of that
+subclass -- the single-base-chain restriction keeps the resolved edge the
+statically correct one for ``C``'s own declared hierarchy.
 
 Variable-type tracking (the heuristic behind "partial" matches):
 For each function/method body, every direct ``name = SomeConstructorCall()``
@@ -306,9 +331,15 @@ What is explicitly OUT of scope (left "unresolved" on purpose)
   attribute access other than ``self.method()`` itself (e.g.
   ``self.attribute.method()`` still requires the constructor-binding or
   direct-construction fallbacks, unaffected by this one).
-- ``super().method()`` calls (would require MRO resolution) -- still out
-  of scope; not touched by the ``inherited_self_method`` fallback, which
-  only ever matches a bare ``self.method()`` attribute-call shape.
+- ``super().method()`` calls are IN scope only in the one statically
+  safe configuration handled by the ``static_super`` fallback (see
+  "Guarded static super() resolution" below): zero-argument ``super()``,
+  a fully resolved, strictly single-base inheritance chain, and exactly
+  one (nearest) defining ancestor. Everything else -- ``super(C, self)``,
+  any multiple inheritance or unresolved base on the walk, no unique
+  definer -- remains out of scope and unresolved. The
+  ``inherited_self_method`` fallback itself still never matches a
+  ``super()`` shape.
 - Star imports (``from x import *``): names introduced this way are not
   tracked at all, so calls to them are unresolved like any other unknown
   name.
@@ -357,7 +388,7 @@ from syntax_tree_refurbished.core.models.program_relation import (
 )
 
 EXTRACTOR_NAME = "python_call_extractor"
-EXTRACTOR_VERSION = "0.4.0"
+EXTRACTOR_VERSION = "0.5.0"
 
 _PARTIAL_VAR_TRACKING_CONFIDENCE = 0.8
 
@@ -1206,6 +1237,109 @@ def _resolve_via_inheritance(
     return method_symbol.id, (span,)
 
 
+def _resolve_via_static_super(
+    func_expr: ast.expr, ctx: _Ctx
+) -> tuple[str, tuple[ResolutionEvidenceSpan, ...]] | None:
+    """Fallback resolution for a zero-argument ``super().method()`` call
+    site (see module docstring, "Guarded static super() resolution").
+    Returns ``(real_method_entity_id, supporting_resolution_spans)`` only
+    when the calling class's declared inheritance chain is fully resolved,
+    strictly single-base at every step, and exactly one ancestor (the
+    nearest) defines the method; ``None`` otherwise -- never a guess.
+
+    Guards, in order:
+
+    - AST shape: ``super().<name>(...)`` with a bare, zero-argument
+      ``super()`` only. The two-argument ``super(C, self)`` form (which can
+      deliberately re-anchor the lookup anywhere) is refused.
+    - Scope: the call must be directly inside a method of a class this
+      module's own walk tracked (``ctx.current_class``); nested functions
+      (which get ``current_class=None`` -- see ``_process_function``) never
+      fire this fallback.
+    - The caller must have supplied ``inherits`` relations at all (same
+      opt-in rule as the ``inherited_self_method`` fallback).
+    - Chain walk, starting AT the calling class (``super()`` skips the
+      calling class's own definition of the method by construction): every
+      class the walk stands on must have exactly one declared base, and
+      that base must be resolved. A class with any unresolved/external
+      base, or with two or more bases (multiple inheritance -- where the
+      runtime MRO could interleave the other branch), refuses resolution
+      for the whole call site.
+    - The first ancestor that defines the method (exactly one real
+      ``kind="method"`` symbol of that name under it) is the target --
+      precisely where Python's own MRO for a single-base chain stops. An
+      ancestor defining the method more than once (duplicate defs) refuses.
+      A chain that ends (a class with zero declared bases) without any
+      definer refuses -- no unique defining ancestor.
+    """
+    if not isinstance(func_expr, ast.Attribute):
+        return None
+    method_name = func_expr.attr
+
+    inner = func_expr.value
+    if not (
+        isinstance(inner, ast.Call)
+        and isinstance(inner.func, ast.Name)
+        and inner.func.id == "super"
+        and not inner.args
+        and not inner.keywords
+    ):
+        return None
+
+    if ctx.current_class is None:
+        return None
+    class_symbol = _lookup_real_symbol(ctx.current_class.qualname, ctx.globals_ctx)
+    if class_symbol is None:
+        return None
+
+    if not ctx.globals_ctx.inherits_by_source and not ctx.globals_ctx.has_unresolved_base:
+        # No `inherits` collection was supplied at all -- deliberate no-op,
+        # same rule as `_resolve_via_inheritance`.
+        return None
+
+    visited: set[str] = {class_symbol.id}
+    current_id = class_symbol.id
+    spans: list[ResolutionEvidenceSpan] = []
+    while True:
+        if current_id in ctx.globals_ctx.has_unresolved_base:
+            # An unresolved/external base could define (or reorder the
+            # lookup of) the method at exactly this point -- never guess.
+            return None
+        base_relations = ctx.globals_ctx.inherits_by_source.get(current_id, ())
+        if len(base_relations) != 1:
+            # Zero bases: the chain ended without a defining ancestor.
+            # Two or more resolved bases: multiple inheritance, where the
+            # runtime MRO after `current_id` may interleave the other
+            # branch -- refused either way.
+            return None
+        rel = base_relations[0]
+        parent_id = rel.target_entity_id
+        if parent_id is None or parent_id in visited:
+            return None
+        visited.add(parent_id)
+        spans.append(
+            ResolutionEvidenceSpan(
+                path=rel.span_path or ctx.module_idx.file_path,
+                start_line=rel.span_start_line or 0,
+                end_line=rel.span_end_line or rel.span_start_line or 0,
+                description="inherits relation walked to resolve super().method() along a single-base chain",
+            )
+        )
+        candidates = [
+            symbol
+            for symbol in ctx.globals_ctx.methods_by_parent.get(parent_id, [])
+            if symbol.name == method_name
+        ]
+        if len(candidates) > 1:
+            return None  # duplicate defs on one class -- genuinely ambiguous
+        if len(candidates) == 1:
+            return candidates[0].id, tuple(spans)
+        # `parent_id` does not define the method -- keep walking past it;
+        # its own base-shape/resolution guards apply at the top of the next
+        # iteration, exactly because the lookup must look PAST it.
+        current_id = parent_id
+
+
 # ---------------------------------------------------------------------------
 # Own-scope traversal helpers
 # ---------------------------------------------------------------------------
@@ -1483,6 +1617,22 @@ def _make_relation(
                     target_reference = None
                     confidence = None
                     resolution_basis = "inherited_self_method"
+                else:
+                    # Fourth, structurally separate additive fallback: a
+                    # zero-argument super().method() call -- see module
+                    # docstring "Guarded static super() resolution".
+                    # Mutually exclusive by AST shape with all three
+                    # fallbacks above (those require a bare `self` Name at
+                    # the root of the attribute chain; this one requires a
+                    # `super()` Call there), so there is no ordering
+                    # ambiguity between them.
+                    static_super_hit = _resolve_via_static_super(call_node.func, ctx)
+                    if static_super_hit is not None:
+                        target_entity_id, supporting_resolution_spans = static_super_hit
+                        status = "resolved"
+                        target_reference = None
+                        confidence = None
+                        resolution_basis = "static_super"
 
     end_line = call_node.end_lineno if call_node.end_lineno is not None else call_node.lineno
     return ObservedProgramRelation.create(

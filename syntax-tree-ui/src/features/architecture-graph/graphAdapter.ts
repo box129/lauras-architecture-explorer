@@ -42,12 +42,12 @@ export function adaptArchitectureGraph(response: ArchitectureGraphResponse): Arc
   return {
     internalCounts,
     nodes: response.groups.map((group) => ({
-      id: group.id, label: group.parent_group_id ? mapLabel(group.label) : group.label, kind: 'structural_group', description: `Structural basis: ${group.structural_path}`,
+      id: group.id, label: group.kind === 'relation_residual' ? group.label : (group.parent_group_id ? mapLabel(group.label) : group.label), kind: group.kind === 'module' ? 'structural_module' : 'structural_group', description: group.kind === 'relation_cluster' ? 'Derived mechanically from resolved source relationships.' : group.kind === 'relation_residual' ? 'These modules were not placed in a deterministic relation cluster from the currently recovered resolved relationships.' : `Structural basis: ${group.structural_path}`,
       status: 'verified', confidence: null, evidenceCount: 0, childrenCount: group.recursive_module_count,
       canDrilldown: group.can_drilldown, primaryFiles: [], accent: group.kind === 'root_file_bucket' ? 'stone' : 'slateBlue',
       icon: group.kind === 'structural_container' ? 'FolderTree' : 'Folder', position: { x: 0, y: 0 },
       summary: group.structural_path, whatHappens: [`${group.recursive_module_count} source module${group.recursive_module_count === 1 ? '' : 's'}.`], relatedLenses: [],
-      parentGroupId: group.parent_group_id, sourceRefs: { direct_member_module_ids: group.direct_member_module_ids, direct_child_group_ids: group.direct_child_group_ids },
+      parentGroupId: group.parent_group_id, sourceRefs: { direct_member_module_ids: group.direct_member_module_ids, direct_child_group_ids: group.direct_child_group_ids, graph_kind: [group.kind], residual: [Boolean(group.residual)], internal_relation_count: [group.internal_relation_count ?? 0], internal_relation_kind_counts: [group.internal_relation_kind_counts ?? []], boundary_relation_count: [group.boundary_relation_count ?? 0], boundary_relation_kind_counts: [group.boundary_relation_kind_counts ?? []], algorithm: [group.algorithm ?? ''] },
     })),
     edges: response.aggregate_edges.map((edge) => ({
       id: edge.id, source: edge.source_group_id, target: edge.target_group_id, kind: edge.relation_kind,

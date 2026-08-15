@@ -1,15 +1,22 @@
-/** Neutral G0 contract mirror. No model or AI fields are permitted. */
+/** Neutral deterministic contract mirror. No model or AI fields are permitted. */
 export interface ArchitectureGraphGroupDTO {
   analysis_run_id: string;
   id: string;
   label: string;
   structural_path: string;
   parent_group_id: string | null;
-  kind: 'structural_container' | 'structural_leaf' | 'root_file_bucket';
+  kind: 'structural_container' | 'structural_leaf' | 'root_file_bucket' | 'relation_cluster' | 'relation_residual' | 'module';
   direct_member_module_ids: string[];
   direct_child_group_ids: string[];
   recursive_module_count: number;
   can_drilldown: boolean;
+  cluster_id?: string | null;
+  residual?: boolean;
+  internal_relation_count?: number;
+  internal_relation_kind_counts?: [string, number][];
+  boundary_relation_count?: number;
+  boundary_relation_kind_counts?: [string, number][];
+  algorithm?: string | null;
 }
 
 export interface ArchitectureGraphAggregateEdgeDTO {
@@ -27,7 +34,7 @@ export interface ArchitectureGraphAggregateEdgeDTO {
 }
 
 export interface ArchitectureGraphResponse {
-  schema_version: 'architecture-graph/v1';
+  schema_version: 'architecture-graph/v1' | 'architecture-graph/v2';
   analysis_run_id: string;
   groups: ArchitectureGraphGroupDTO[];
   aggregate_edges: ArchitectureGraphAggregateEdgeDTO[];

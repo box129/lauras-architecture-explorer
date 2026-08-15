@@ -37,7 +37,7 @@ def test_graph_resolved_only_aggregation_membership_and_legacy_compatibility(tmp
     graph = client.get(f"/api/architecture-graph?run_id={run_id}")
     assert graph.status_code == 200
     body = graph.json()
-    assert body["schema_version"] == "architecture-graph/v1"
+    assert body["schema_version"] == "architecture-graph/v2"
     api = next(group for group in body["groups"] if group["label"] == "api")
     assert api["direct_member_module_ids"] and api["direct_child_group_ids"] == []
     calls = [edge for edge in body["aggregate_edges"] if edge["relation_kind"] == "calls"]
@@ -56,6 +56,26 @@ def test_visible_representative_is_nearest_collapsed_ancestor() -> None:
     assert visible_representative("leaf", parents, {"area"}) == "area"
     assert visible_representative("leaf", parents, {"region", "area"}) == "area"
     assert visible_representative("other", parents, {"area"}) == "other"
+
+def test_graph_projects_g2_cluster_membership_and_preserves_zero_cluster_regions(tmp_path: Path) -> None:
+    """G3 consumes the G2 projection; it does not re-cluster graph data."""
+    for name in ("a", "b", "c", "lonely"):
+        _write(tmp_path / "services" / f"{name}.py", f"def {name}():\n return 1\n")
+    _write(tmp_path / "api" / "entry.py", "def entry():\n return 1\n")
+    app, client, run_id = _ready(tmp_path)
+    symbols = {symbol.path: symbol for symbol in app.state.run_store.get_symbols(run_id) if not symbol.parent_symbol_id}
+    def resolved(source: str, target: str):
+        return ObservedProgramRelation.create(run_id=run_id, relation_kind="calls", source_entity_id=symbols[source].id, target_entity_id=symbols[target].id, extractor_name="test", extractor_version="1", resolution_status="resolved", span_path=source, span_start_line=1, span_end_line=1)
+    # A triangle is a non-bridge core; lonely.py remains the G2 residual.
+    app.state.run_store.put_relations(run_id, (resolved("services/a.py", "services/b.py"), resolved("services/b.py", "services/c.py"), resolved("services/c.py", "services/a.py")))
+    body = client.get(f"/api/architecture-graph?run_id={run_id}").json()
+    clusters = [group for group in body["groups"] if group["kind"] == "relation_cluster"]
+    assert len(clusters) == 1
+    assert clusters[0]["label"] == "Structural cluster 1"
+    assert len(clusters[0]["direct_member_module_ids"]) == 3
+    residuals = [group for group in body["groups"] if group["kind"] == "relation_residual"]
+    assert len(residuals) == 1 and len(residuals[0]["direct_member_module_ids"]) == 1
+    assert not [edge for edge in body["aggregate_edges"] if edge["source_group_id"] == clusters[0]["id"] and edge["target_group_id"] == clusters[0]["id"]]
 
 def test_structural_graph_scale_smoke_20_200_2000() -> None:
     """Collapsed graph foundation must remain bounded before any leaf rendering."""

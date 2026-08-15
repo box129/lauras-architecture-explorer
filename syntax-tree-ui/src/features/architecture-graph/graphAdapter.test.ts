@@ -36,4 +36,14 @@ describe('architecture graph adapter', () => {
     expect([...visibleGroupIds(graph.nodes, new Set(['backend']))]).toEqual(['backend', 'services']);
     expect([...visibleGroupIds(graph.nodes, new Set(['backend', 'services']))]).toEqual(['backend', 'services', 'deep']);
   });
+  it('preserves backend-projected cluster and residual hierarchy without client clustering', () => {
+    const graph = adaptArchitectureGraph({ ...response, schema_version: 'architecture-graph/v2', groups: [...response.groups,
+      { id: 'cluster:1', analysis_run_id: 'run:1', label: 'Structural cluster 1', structural_path: 'backend/services', parent_group_id: 'services', kind: 'relation_cluster', direct_member_module_ids: ['module:1'], direct_child_group_ids: ['module:1'], recursive_module_count: 1, can_drilldown: false, cluster_id: 'cluster:1', internal_relation_count: 3, boundary_relation_count: 1 },
+      { id: 'residual:1', analysis_run_id: 'run:1', label: 'Unclustered by recovered relations', structural_path: 'backend/services', parent_group_id: 'services', kind: 'relation_residual', direct_member_module_ids: ['module:2'], direct_child_group_ids: ['module:2'], recursive_module_count: 1, can_drilldown: false, residual: true },
+      { id: 'module:1', analysis_run_id: 'run:1', label: 'a.py', structural_path: 'backend/services', parent_group_id: 'cluster:1', kind: 'module', direct_member_module_ids: [], direct_child_group_ids: [], recursive_module_count: 1, can_drilldown: false },
+    ] });
+    expect(graph.nodes.find((node) => node.id === 'cluster:1')?.sourceRefs?.graph_kind).toEqual(['relation_cluster']);
+    expect(graph.nodes.find((node) => node.id === 'residual:1')?.description).toContain('not placed');
+    expect([...visibleGroupIds(graph.nodes, new Set(['backend', 'services', 'cluster:1']))]).toContain('module:1');
+  });
 });

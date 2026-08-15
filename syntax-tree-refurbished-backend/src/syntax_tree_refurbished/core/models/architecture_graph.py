@@ -4,7 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-ARCHITECTURE_GRAPH_SCHEMA_VERSION = "architecture-graph/v1"
+ARCHITECTURE_GRAPH_SCHEMA_VERSION = "architecture-graph/v2"
 GraphRelationKind = Literal["contains", "imports", "calls", "inherits"]
 
 @dataclass(frozen=True)
@@ -15,11 +15,19 @@ class ArchitectureGraphGroup:
     label: str
     structural_path: str
     parent_group_id: str | None
-    kind: Literal["structural_container", "structural_leaf", "root_file_bucket"]
+    kind: Literal["structural_container", "structural_leaf", "root_file_bucket", "relation_cluster", "relation_residual", "module"]
     direct_member_module_ids: tuple[str, ...]
     direct_child_group_ids: tuple[str, ...]
     recursive_module_count: int
     can_drilldown: bool
+    # G3 additions. These fields intentionally contain only G2-derived facts.
+    cluster_id: str | None = None
+    residual: bool = False
+    internal_relation_count: int = 0
+    internal_relation_kind_counts: tuple[tuple[str, int], ...] = ()
+    boundary_relation_count: int = 0
+    boundary_relation_kind_counts: tuple[tuple[str, int], ...] = ()
+    algorithm: str | None = None
 
 @dataclass(frozen=True)
 class ArchitectureGraphInternalRelationCount:

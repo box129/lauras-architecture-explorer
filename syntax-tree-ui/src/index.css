@@ -5074,6 +5074,11 @@ html.observatory-active .react-flow__controls-button:hover {
 .architecture-region-node { position:relative; box-sizing:border-box; width:100%; height:100%; border-radius:14px; color:#edf3ff; overflow:hidden; transition:border-color 150ms ease, box-shadow 150ms ease, opacity 150ms ease; }
 .architecture-region-node--region { display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; border:1px solid rgba(126,171,234,.5); background:linear-gradient(135deg, rgba(67,111,168,.2), rgba(20,29,42,.72)); box-shadow:inset 0 1px 0 rgba(255,255,255,.07), 0 14px 35px rgba(4,11,21,.16); }
 .architecture-region-node--group { border:1px solid rgba(179,202,235,.3); background:rgba(21,30,43,.74); border-radius:9px; padding:10px 12px; box-shadow:none; }
+.architecture-region-node--cluster { border-color:rgba(116,211,184,.62); background:linear-gradient(135deg,rgba(28,89,76,.56),rgba(16,35,38,.88)); }
+.architecture-region-node--cluster .architecture-region-node__eyebrow { color:#93dfc9; }
+.architecture-region-node--residual { border-color:rgba(163,178,198,.34); background:rgba(27,35,46,.58); color:#d4dde8; }
+.architecture-region-node--residual .architecture-region-node__eyebrow { color:#b7c2d1; }
+.architecture-region-node--module { border-color:rgba(147,166,192,.22); background:rgba(18,25,35,.72); }
 .architecture-region-node--selected { border-color:#8fc2ff; box-shadow:0 0 0 2px rgba(108,171,255,.45), 0 16px 38px rgba(17,56,108,.36); }
 .architecture-region-node__header { display:flex; flex-direction:column; align-items:flex-start; gap:3px; min-width:0; }
 .architecture-region-node--region .architecture-region-node__header { width:100%; padding:14px 17px 9px; border-bottom:1px solid rgba(156,190,239,.18); background:rgba(8,15,26,.12); }

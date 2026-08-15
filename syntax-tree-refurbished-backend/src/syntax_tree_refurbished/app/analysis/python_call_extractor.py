@@ -312,10 +312,16 @@ What is explicitly OUT of scope (left "unresolved" on purpose)
 - Star imports (``from x import *``): names introduced this way are not
   tracked at all, so calls to them are unresolved like any other unknown
   name.
-- Relative imports with level >= 2, or bare ``from . import name``
-  (package-level re-export ambiguity) -- only the explicit
-  ``from .sibling_module import name`` (level == 1, module named) form is
-  resolved.
+- Relative imports with level >= 2. Bare ``from . import name`` (level ==
+  1, no module clause) IS now resolved, but only in the one
+  deterministically safe configuration: ``name`` maps to an analyzed
+  submodule ``package.name``, and the package's ``__init__`` (when
+  analyzed) does not bind ``name`` any other way -- a def/class of that
+  name in the ``__init__`` resolves to that attribute instead (Python's
+  own precedence), and any module-scope assignment or different import
+  binding of the same name refuses resolution entirely rather than
+  guessing between attribute and submodule. See
+  ``_package_init_shadows_submodule``.
 - Multi-segment dotted ``import pkg.sub.mod`` attribute-chain call sites
   (``pkg.sub.mod.func()``) -- only single-name ``import module[as alias]``
   plus ``alias.func()`` is resolved.
@@ -351,7 +357,7 @@ from syntax_tree_refurbished.core.models.program_relation import (
 )
 
 EXTRACTOR_NAME = "python_call_extractor"
-EXTRACTOR_VERSION = "0.3.0"
+EXTRACTOR_VERSION = "0.4.0"
 
 _PARTIAL_VAR_TRACKING_CONFIDENCE = 0.8
 
@@ -375,6 +381,12 @@ class _ImportBinding:
     kind: str  # "from" | "module"
     target_module: str | None  # resolved absolute dotted module path, or None if unresolvable syntactically
     imported_name: str | None  # for kind == "from": the original imported name
+    bare_package_import: bool = False
+    """True only for the bare ``from . import X`` form (``level == 1``,
+    no module clause): ``target_module`` is then the current *package*
+    path itself ("" for a root-level module set), and ``X`` may resolve
+    to the analyzed submodule ``package.X`` when the package ``__init__``
+    does not shadow that name -- see ``_resolve_imports_for_module``."""
 
 
 @dataclass
@@ -394,6 +406,14 @@ class _ModuleIndex:
     ``app.parsing.python_symbol_parser`` for the same symbol (e.g.
     ``"python:pkg/mod.py::Foo.bar"``), for every function/method/class node
     this module's own syntactic walk saw -- see module docstring."""
+    module_scope_assigned: frozenset[str] = frozenset()
+    """Every name bound by a Store context at this module's own scope
+    (assignments, for/with targets, walrus, etc. -- never inside a nested
+    function/class/lambda body). Consulted only by the bare
+    ``from . import X`` submodule-binding resolution's shadowing guard: a
+    package ``__init__`` that assigns ``X`` at module scope makes the
+    runtime attribute win over the submodule, so the binding is refused
+    rather than guessed."""
 
 
 @dataclass
@@ -431,8 +451,15 @@ def _resolve_from_module(node: ast.ImportFrom, package_path: str | None) -> str 
         if package_path:
             return f"{package_path}.{node.module}"
         return node.module
-    # Bare `from . import x` (module is None) or level >= 2: not supported
-    # precisely enough to resolve deterministically -- see module docstring.
+    if node.level == 1 and node.module is None:
+        # Bare `from . import X`: anchor at the current package itself (""
+        # for a root-level module set). Whether X then binds an attribute of
+        # the package __init__ or the analyzed submodule `package.X` is
+        # decided at cross-module resolution time -- see
+        # `_resolve_imports_for_module` and the module docstring.
+        return package_path if package_path is not None else ""
+    # level >= 2 relative imports: not supported precisely enough to resolve
+    # deterministically -- see module docstring.
     return None
 
 
@@ -453,7 +480,12 @@ def _record_import(node: ast.stmt, imports: dict[str, _ImportBinding], package_p
                 continue  # star import: cannot resolve deterministically
             bind_name = alias.asname or alias.name
             target_module = _resolve_from_module(node, package_path)
-            imports[bind_name] = _ImportBinding(kind="from", target_module=target_module, imported_name=alias.name)
+            imports[bind_name] = _ImportBinding(
+                kind="from",
+                target_module=target_module,
+                imported_name=alias.name,
+                bare_package_import=(node.module is None and node.level == 1),
+            )
 
 
 def _build_module_index(file_path: str, source: str, language: str) -> _ModuleIndex:
@@ -520,7 +552,29 @@ def _build_module_index(file_path: str, source: str, language: str) -> _ModuleIn
         imports=imports,
         qualnames=qualnames,
         internal_to_real_qn=internal_to_real_qn,
+        module_scope_assigned=_module_scope_assigned_names(tree),
     )
+
+
+def _module_scope_assigned_names(tree: ast.Module) -> frozenset[str]:
+    """Collect every name bound by a Store context at module scope (never
+    descending into nested function/class/lambda bodies). Deliberately
+    over-inclusive (e.g. comprehension targets at module level are counted
+    even though Python scopes them separately): this feeds a *refusal*
+    guard, so over-detection can only ever keep a binding unresolved --
+    never produce a wrong resolution."""
+    names: set[str] = set()
+
+    def walk(node: ast.AST) -> None:
+        for child in ast.iter_child_nodes(node):
+            if isinstance(child, _SCOPE_BOUNDARY):
+                continue
+            if isinstance(child, ast.Name) and isinstance(child.ctx, ast.Store):
+                names.add(child.id)
+            walk(child)
+
+    walk(tree)
+    return frozenset(names)
 
 
 # ---------------------------------------------------------------------------
@@ -535,12 +589,37 @@ def _resolve_imports_for_module(
     for local_name, binding in module_idx.imports.items():
         if binding.kind == "from":
             target_module = binding.target_module
-            target_idx = modules_by_path.get(target_module) if target_module else None
+            # `is not None` (not truthiness): "" is the legitimate root
+            # package for the bare `from . import X` form in a root-level
+            # module set, and its __init__ module indexes under "".
+            target_idx = modules_by_path.get(target_module) if target_module is not None else None
             if target_idx is not None and binding.imported_name is not None:
                 hit = target_idx.top_level.get(binding.imported_name)
                 if hit is not None:
+                    # A def/class of this name in the target module wins --
+                    # for the bare package form this is exactly Python's own
+                    # semantics (the package attribute shadows the
+                    # submodule).
                     kind, qn = hit
                     resolved[local_name] = _ResolvedImport(kind=kind, qualname=qn)
+                    continue
+            if (
+                binding.bare_package_import
+                and binding.imported_name is not None
+                and target_module is not None
+            ):
+                # Bare `from . import X`: bind X as the analyzed submodule
+                # `package.X`, but only when the package __init__ (if
+                # analyzed) does not shadow the name -- see
+                # `_package_init_shadows_submodule`. Anything ambiguous
+                # stays unresolved, never guessed.
+                submodule = (
+                    f"{target_module}.{binding.imported_name}" if target_module else binding.imported_name
+                )
+                if submodule in modules_by_path and not _package_init_shadows_submodule(
+                    target_idx, binding.imported_name
+                ):
+                    resolved[local_name] = _ResolvedImport(kind="module", target=submodule)
                     continue
             resolved[local_name] = _ResolvedImport(kind="unresolved")
         else:  # "module"
@@ -550,6 +629,46 @@ def _resolve_imports_for_module(
             else:
                 resolved[local_name] = _ResolvedImport(kind="unresolved")
     return resolved
+
+
+def _package_init_shadows_submodule(
+    package_idx: _ModuleIndex | None, name: str
+) -> bool:
+    """Shadowing guard for the bare ``from . import X`` submodule binding:
+    Python binds the package's own attribute ``X`` in preference to the
+    submodule whenever the package ``__init__`` defines one. The caller has
+    already handled the def/class case (top_level hit wins outright); this
+    guard refuses the submodule binding when the analyzed ``__init__``
+    could bind ``X`` any other way:
+
+    - a module-scope assignment of any Store form (``X = ...``, ``for X
+      in ...``, ``with ... as X``, walrus);
+    - an import binding of ``X`` that is anything other than the package's
+      own bare ``from . import X`` of this very submodule (that specific
+      self-consistent form binds the submodule itself, so it does not
+      shadow).
+
+    ``package_idx is None`` means the package ``__init__`` is not in the
+    analyzed/parsed module set at all -- nothing observed can shadow, and a
+    package whose ``__init__`` genuinely failed to parse could not be
+    imported at runtime either, so the binding is allowed."""
+    if package_idx is None:
+        return False
+    if name in package_idx.top_level:
+        return True  # defensive: caller normally resolved this case already
+    if name in package_idx.module_scope_assigned:
+        return True
+    own_binding = package_idx.imports.get(name)
+    if own_binding is not None:
+        is_same_bare_submodule_import = (
+            own_binding.kind == "from"
+            and own_binding.bare_package_import
+            and own_binding.imported_name == name
+            and own_binding.target_module == package_idx.module_path
+        )
+        if not is_same_bare_submodule_import:
+            return True
+    return False
 
 
 @dataclass

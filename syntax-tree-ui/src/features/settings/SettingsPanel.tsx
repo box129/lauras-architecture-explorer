@@ -181,6 +181,7 @@ export default function SettingsPanel() {
               decides what is true. Repository analysis and the architecture map work fully without this
               configured.
             </p>
+            <p className="obs-settings__hint">AI is used for architectural explanations and optional cluster interpretations. Always deterministic: source parsing, relation extraction, structural grouping, cluster membership, and evidence verification.</p>
 
             {loading && <p role="status">Loading current settings&hellip;</p>}
             {loadError && (

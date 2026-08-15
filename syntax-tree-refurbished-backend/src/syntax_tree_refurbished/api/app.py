@@ -8,6 +8,7 @@ from syntax_tree_refurbished import __version__
 from syntax_tree_refurbished.api.routes.analyze import router as analyze_router
 from syntax_tree_refurbished.api.routes.architecture_map import router as architecture_map_router
 from syntax_tree_refurbished.api.routes.architecture_graph import router as architecture_graph_router
+from syntax_tree_refurbished.api.routes.cluster_interpretation import router as cluster_interpretation_router
 from syntax_tree_refurbished.api.routes.architectural_explanation import (
     router as architectural_explanation_router,
 )
@@ -55,6 +56,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(analyze_router, prefix="/api")
     app.include_router(architecture_map_router, prefix="/api")
     app.include_router(architecture_graph_router, prefix="/api")
+    app.include_router(cluster_interpretation_router, prefix="/api")
     app.include_router(architectural_explanation_router, prefix="/api")
     app.include_router(anchors_router, prefix="/api")
     app.include_router(browse_router, prefix="/api")

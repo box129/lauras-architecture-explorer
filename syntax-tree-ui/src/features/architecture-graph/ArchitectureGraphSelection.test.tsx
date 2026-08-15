@@ -12,7 +12,7 @@ const response: ArchitectureGraphResponse = {
   ], aggregate_edges: [], internal_relation_counts: [],
 };
 
-vi.mock('../../api/client', () => ({ fetchApi: vi.fn(async () => response) }));
+vi.mock('../../api/client', () => ({ fetchApi: vi.fn(async (path: string) => path.includes('/interpretation') ? { analysis_run_id: 'run:test', cluster_id: 'cluster', status: 'available', interpretation: { cluster_id: 'cluster', label: 'Request Context', description: 'This cluster appears centered on request context.', provider: 'openai', model: 'test-model' } } : response) }));
 vi.mock('./elkCompoundProof', () => ({ layoutArchitectureGraphProof: vi.fn(async (groups: Array<{ id: string; parent_group_id: string | null }>) => ({ routedEdgeIds: [], nodes: groups.map((group) => ({ id: group.id, parentId: group.parent_group_id, position: { x: 0, y: 0 }, width: 240, height: 120 })) })) }));
 vi.mock('@xyflow/react', () => ({
   Background: () => null, Controls: () => null, MiniMap: () => null, ReactFlowProvider: ({ children }: { children: ReactNode }) => children,
@@ -55,5 +55,17 @@ describe('architecture graph selection synchronization', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Expand' }));
     expect(onSelect).not.toHaveBeenCalled();
     expect(await screen.findByText('Structural cluster 1')).toBeInTheDocument();
+  });
+
+  it('generates a labelled interpretation while keeping deterministic facts visible', async () => {
+    render(<Harness />);
+    await waitFor(() => expect(screen.getByText('Repository root files')).toBeInTheDocument());
+    fireEvent.click(screen.getByRole('button', { name: 'Expand' }));
+    fireEvent.click((await screen.findAllByRole('button', { name: 'Structural cluster 1' })).at(-1)!);
+    fireEvent.click(screen.getByRole('button', { name: 'Generate interpretation' }));
+    expect(await screen.findByRole('heading', { name: 'Request Context' })).toBeInTheDocument();
+    expect(screen.getByText('AI interpretation')).toBeInTheDocument();
+    expect(screen.getByText('Deterministic identity · Structural cluster 1')).toBeInTheDocument();
+    expect(screen.getByText('Internal relations')).toBeInTheDocument();
   });
 });

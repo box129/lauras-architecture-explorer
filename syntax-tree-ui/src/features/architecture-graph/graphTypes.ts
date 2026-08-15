@@ -40,3 +40,5 @@ export interface ArchitectureGraphResponse {
   aggregate_edges: ArchitectureGraphAggregateEdgeDTO[];
   internal_relation_counts: { group_id: string; relation_kind: string; member_relation_count: number }[];
 }
+
+export interface ClusterInterpretationResponse { analysis_run_id: string; cluster_id: string; status: 'available' | 'unavailable'; interpretation?: { cluster_id: string; label: string; description: string; provider: string; model: string } | null; }

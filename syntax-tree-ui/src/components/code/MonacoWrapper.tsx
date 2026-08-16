@@ -54,10 +54,14 @@ export default function MonacoWrapper({ fileContent, targetLine, targetLineEnd =
   // line 1 instead of the requested line.
   const [editorReady, setEditorReady] = useState(false);
 
-  // Register custom theme
+  // Register custom theme. setTheme is applied explicitly because the
+  // Editor can mount before this definition exists, in which case Monaco
+  // silently falls back to its default LIGHT theme and never re-reads the
+  // name (the white source pane seen in the exact-source overlay).
   useEffect(() => {
     if (monaco) {
       monaco.editor.defineTheme('syntax-tree-dark', syntaxTreeDarkTheme);
+      monaco.editor.setTheme('syntax-tree-dark');
     }
   }, [monaco]);
 

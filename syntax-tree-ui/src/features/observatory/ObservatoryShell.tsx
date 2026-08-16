@@ -596,17 +596,64 @@ export default function ObservatoryShell() {
   }
 
   if (isDocsStudio) {
+    // Doc Studio wears the same persistent shell as every other surface:
+    // the standard top bar (wordmark, one Back, one breadcrumb stack,
+    // global navigation, theme control, run chip) frames the validated
+    // documentation content unchanged.
     return (
-      <DocsStudio
-        drafts={library.drafts}
-        lenses={savedLenses}
-        onBack={() => navigateToObservatory(source, analysisRunId, analysisRepositoryPath)}
-        onOpenLens={(savedLens) => restoreSavedLens(savedLens, undefined, undefined, source, analysisRunId, analysisRepositoryPath)}
-        onSaveDraft={library.saveDraft}
-        scopeKey={scopeKey}
-        source={source}
-        tours={savedTours}
-      />
+      <div className="observatory-shell">
+        <ObservatoryTopBar
+          breadcrumb={[
+            { id: 'architecture', label: shellMeta.repoTitle, title: 'Back to Architecture' },
+            { id: 'docs', label: 'Documentation' },
+          ]}
+          canGoBack
+          onBack={() => navigateToObservatory(source, analysisRunId, analysisRepositoryPath)}
+          onBreadcrumbSelect={(index) => {
+            if (index === 0) navigateToObservatory(source, analysisRunId, analysisRepositoryPath);
+          }}
+          freshness={shellMeta.freshness}
+          lastScanned={shellMeta.lastScanned}
+          onOpenDocs={() => navigateToDocs(source, analysisRunId, analysisRepositoryPath)}
+          onAnalyzeAnotherRepository={analyzeAnotherRepository}
+          repoTitle={shellMeta.repoTitle}
+          runId={shellMeta.runId}
+        />
+        <div className="observatory-shell__docs">
+          <DocsStudio
+            drafts={library.drafts}
+            lenses={savedLenses}
+            onBack={() => navigateToObservatory(source, analysisRunId, analysisRepositoryPath)}
+            onOpenLens={(savedLens) => restoreSavedLens(savedLens, undefined, undefined, source, analysisRunId, analysisRepositoryPath)}
+            onSaveDraft={library.saveDraft}
+            scopeKey={scopeKey}
+            source={source}
+            tours={savedTours}
+          />
+        </div>
+        {/* "Open source" on a claim's evidence uses the store's goToCode →
+            mainSurface 'code' mechanism; the docs branch must render the
+            same exact-source overlay the architecture branch does, or the
+            action silently does nothing (latent gap in the standalone
+            docs page, surfaced by live-AI acceptance). */}
+        {mainSurface === 'code' && (
+          <div className="obs-code-overlay" role="dialog" aria-label="Source code">
+            <div className="obs-code-overlay__panel">
+              <button
+                type="button"
+                className="obs-code-overlay__back"
+                aria-label="Back to documentation"
+                onClick={() => setMainSurface('architecture')}
+              >
+                <ArrowLeft size={15} strokeWidth={1.8} /> Back
+              </button>
+              <Suspense fallback={<div className="obs-code-overlay__loading">Loading source...</div>}>
+                <CodeViewer />
+              </Suspense>
+            </div>
+          </div>
+        )}
+      </div>
     );
   }
 

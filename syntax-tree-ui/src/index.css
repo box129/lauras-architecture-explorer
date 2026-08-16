@@ -4774,6 +4774,56 @@ html.observatory-active .react-flow__controls-button:hover {
   overflow: hidden;
 }
 
+/* Doc Studio inside the persistent shell: content fills the space under
+   the standard 48px top bar; the studio inherits the shell surface. */
+.observatory-shell__docs { height: calc(100vh - 48px); min-height: 0; }
+.observatory-shell__docs .obs-docs-studio { height: 100%; background: transparent; }
+
+/* Page heading row (replaces the old broken obs-docs-topbar grid whose
+   Refresh action overlapped the intro copy). */
+.obs-docs-pagehead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 22px 10px;
+  border-bottom: 1px solid var(--obs-border);
+  background: color-mix(in srgb, var(--obs-paper) 90%, transparent);
+}
+.obs-docs-pagehead > div { display: grid; gap: 2px; min-width: 0; }
+.obs-docs-pagehead__eyebrow {
+  color: var(--obs-stone);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.obs-docs-pagehead h1 { margin: 0; font-size: 18px; font-weight: 720; }
+.obs-docs-pagehead button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding: 6px 12px;
+  border: 1px solid var(--obs-border);
+  border-radius: 8px;
+  background: var(--bg-elevated);
+  color: var(--obs-slate-blue);
+  cursor: pointer;
+  font: 600 12px var(--font-sans);
+}
+.obs-docs-pagehead button:hover:not(:disabled) { border-color: var(--focus-ring); background: var(--action-ghost-hover); }
+
+/* Entity Focus at short windows: floating canvas chrome (question dock,
+   accessible-tables toggle) must sit above the statements strip instead
+   of overlapping it (layout only). */
+.observatory-shell__main:has(.entity-statements) .obs-question-dock {
+  bottom: calc(38vh + 14px);
+}
+.observatory-shell__main:has(.entity-statements) .obs-graph-alternative {
+  bottom: calc(38vh + 68px);
+}
+
 .obs-docs-topbar {
   display: grid;
   grid-template-columns: auto minmax(220px, 1fr);

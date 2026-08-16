@@ -3,6 +3,7 @@ import { ArrowLeft, ChevronRight, Code2, FileText, Network, RefreshCw } from 'lu
 import { ApiError, fetchApi } from '../../api/client';
 import { useSyntaxTreeStore } from '../../store';
 import type { DocsStudioDraft, LensTour, SavedLens } from '../lens-library/types';
+import GeneratedDocsSection from './GeneratedDocs';
 import SourceCode from './SourceCode';
 
 interface DocsStudioProps {
@@ -245,6 +246,10 @@ function DocumentationDetail({
         <code>{detail.qualified_name}</code>
         {detail.summary && <p>{detail.summary}</p>}
       </header>
+
+      {/* keyed so a component switch resets generation state instead of
+          showing another component's AI output */}
+      <GeneratedDocsSection componentId={detail.id} key={detail.id} />
 
       <section className="obs-docs-detail__section" aria-labelledby="documentation-heading">
         <h3 id="documentation-heading">Documentation</h3>

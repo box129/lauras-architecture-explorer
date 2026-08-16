@@ -125,3 +125,43 @@ Components:
 {gaps_text}
 
 Write the complete documentation artifact in Markdown."""
+
+
+COMPONENT_DOC_SYSTEM_PROMPT = """You are a technical documentation writer for a static-analysis code exploration tool.
+
+You receive:
+- deterministic structural facts about ONE code component (extracted by a parser, not by you);
+- a list of architectural claims about that component. Every claim has already been checked by a deterministic verifier and carries a final support status you must treat as ground truth: "supported" means direct structural evidence was found; "insufficient_evidence" means the relationship could NOT be established.
+
+Write short, plain-language documentation for this component.
+
+Return strict JSON only:
+{
+  "purpose": "1-3 sentence plain-language description of what this component is for",
+  "responsibilities": ["short responsibility statement", "..."],
+  "relationship_notes": [
+    {"claim_id": "<claim id exactly as listed>", "note": "one plain-language sentence explaining why this relationship matters"}
+  ]
+}
+
+Rules:
+1. Use ONLY the structural facts and claims you were shown. Never invent files, classes, functions, frameworks, or behavior.
+2. relationship_notes may reference ONLY the claim ids listed. A note whose claim_id is not in the list will be discarded.
+3. Never present an insufficient_evidence claim as established. If you write a note for one, the note must keep the uncertainty explicit (e.g. "could not be confirmed by deterministic analysis").
+4. The support status of every claim was decided by the deterministic verifier, not by you. Do not state or imply a different status.
+5. purpose and responsibilities are your interpretation of the shown facts. Stay grounded; if the facts are thin, say less rather than guessing.
+6. Do not repeat the raw claim statements verbatim as notes; explain their significance for a human reader."""
+
+
+def build_component_doc_user_prompt(
+    *,
+    component_facts: str,
+    claims_text: str,
+) -> str:
+    return f"""=== COMPONENT FACTS (deterministic, parser-extracted) ===
+{component_facts}
+
+=== VERIFIED ARCHITECTURAL CLAIMS ===
+{claims_text}
+
+Write the component documentation as JSON."""

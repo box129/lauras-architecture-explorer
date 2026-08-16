@@ -34,7 +34,13 @@ function extractAndRecordTokens(obj: unknown) {
   }
 }
 
-export async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
+export async function fetchApi<T>(
+  path: string,
+  options?: RequestInit,
+  // LLM-backed endpoints (e.g. documentation generation) legitimately run
+  // longer than the default; callers pass a larger budget explicitly.
+  timeoutMs: number = DEFAULT_TIMEOUT_MS,
+): Promise<T> {
   const url = `${API_BASE}${path}`;
   const headers = new Headers(options?.headers);
   headers.set('Content-Type', headers.get('Content-Type') || 'application/json');
@@ -56,8 +62,8 @@ export async function fetchApi<T>(path: string, options?: RequestInit): Promise<
     upstreamSignal?.addEventListener('abort', abortFromUpstream, { once: true });
   }
   const timeout = globalThis.setTimeout(() => {
-    controller.abort(new DOMException(`Request exceeded ${DEFAULT_TIMEOUT_MS / 1000} seconds.`, 'TimeoutError'));
-  }, DEFAULT_TIMEOUT_MS);
+    controller.abort(new DOMException(`Request exceeded ${timeoutMs / 1000} seconds.`, 'TimeoutError'));
+  }, timeoutMs);
 
   try {
     const res = await fetch(url, {
@@ -85,7 +91,7 @@ export async function fetchApi<T>(path: string, options?: RequestInit): Promise<
     return data as T;
   } catch (error) {
     if (controller.signal.aborted && !upstreamSignal?.aborted) {
-      throw new ApiError(408, 'The request timed out after 15 seconds. You can retry safely.');
+      throw new ApiError(408, `The request timed out after ${timeoutMs / 1000} seconds. You can retry safely.`);
     }
     throw error;
   } finally {

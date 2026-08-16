@@ -1614,6 +1614,109 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   white-space: pre;
 }
 
+/* AI documentation (Doc Studio "Generate documentation") ------------- */
+
+.obs-docs-generated h4 {
+  margin: 20px 0 8px;
+  font-size: 13px;
+}
+
+.obs-docs-generated__intro p,
+.obs-docs-generated__disclaimer {
+  max-width: 760px;
+  margin: 0 0 12px;
+  color: var(--obs-stone);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.obs-docs-generated__generate,
+.obs-docs-generated__actions button,
+.obs-docs-generated__unavailable button,
+.obs-docs-generated__meta button {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 7px 12px;
+  color: var(--obs-ink);
+  font-size: 12px;
+  background: var(--obs-paper);
+  border: 1px solid var(--obs-border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.obs-docs-generated__status {
+  color: var(--obs-stone);
+  font-size: 13px;
+}
+
+.obs-docs-generated__unavailable {
+  max-width: 760px;
+  padding: 13px 14px;
+  color: color-mix(in srgb, var(--obs-ink) 76%, var(--obs-clay));
+  font-size: 13px;
+  background: color-mix(in srgb, var(--obs-clay) 7%, var(--obs-paper));
+  border: 1px solid color-mix(in srgb, var(--obs-clay) 18%, var(--obs-border));
+  border-radius: 8px;
+}
+
+.obs-docs-generated__unavailable p {
+  margin: 0 0 8px;
+}
+
+.obs-docs-generated__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.obs-docs-generated__meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.obs-docs-generated__badge {
+  font-weight: 600;
+}
+
+.obs-docs-generated__purpose {
+  max-width: 760px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.obs-docs-generated__responsibilities {
+  max-width: 760px;
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.obs-docs-generated__notes {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.obs-docs-generated__note {
+  max-width: 760px;
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.obs-docs-generated__note-chip {
+  height: 20px;
+  margin-right: 8px;
+  font-size: 10px;
+}
+
 .obs-code-token--comment {
   color: #AAA7B2;
   font-style: italic;

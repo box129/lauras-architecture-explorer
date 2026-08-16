@@ -1053,7 +1053,7 @@ body {
   padding: 16px;
   border: 1px solid var(--obs-border);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.86);
+  background: color-mix(in srgb, var(--bg-elevated) 86%, transparent);
   color: var(--obs-text);
 }
 
@@ -2563,7 +2563,7 @@ html.observatory-active .react-flow__controls-button:hover {
   background: linear-gradient(
     90deg,
     color-mix(in srgb, var(--obs-paper) 72%, transparent),
-    rgba(255, 255, 255, 0.9),
+    color-mix(in srgb, var(--bg-elevated) 90%, transparent),
     color-mix(in srgb, var(--obs-paper) 72%, transparent)
   );
   border: 1px solid var(--obs-border);
@@ -2895,7 +2895,7 @@ html.observatory-active .react-flow__controls-button:hover {
   min-height: 24px;
   padding: 0 8px;
   color: color-mix(in srgb, var(--obs-ink) 72%, var(--obs-stone));
-  background: rgba(255, 255, 255, 0.42);
+  background: color-mix(in srgb, var(--bg-elevated) 42%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 999px;
   font-size: 11px;
@@ -2936,7 +2936,7 @@ html.observatory-active .react-flow__controls-button:hover {
 
 .obs-voice__actions button:disabled {
   color: var(--obs-stone);
-  background: rgba(255, 255, 255, 0.32);
+  background: color-mix(in srgb, var(--bg-elevated) 32%, transparent);
   cursor: not-allowed;
 }
 
@@ -2946,7 +2946,7 @@ html.observatory-active .react-flow__controls-button:hover {
   gap: 4px;
   padding: 4px;
   margin-top: 24px;
-  background: rgba(255, 255, 255, 0.38);
+  background: color-mix(in srgb, var(--bg-elevated) 38%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 10px;
 }
@@ -3285,7 +3285,7 @@ html.observatory-active .react-flow__controls-button:hover {
 .obs-question-dock kbd {
   padding: 3px 7px;
   color: var(--obs-stone);
-  background: rgba(255, 255, 255, 0.5);
+  background: color-mix(in srgb, var(--bg-elevated) 50%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 6px;
   font-family: var(--font-mono);
@@ -3400,7 +3400,7 @@ html.observatory-active .react-flow__controls-button:hover {
   height: 22px;
   padding: 3px 8px;
   color: var(--obs-stone);
-  background: rgba(255, 255, 255, 0.48);
+  background: color-mix(in srgb, var(--bg-elevated) 48%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 999px;
   font-family: var(--font-mono);
@@ -3447,7 +3447,7 @@ html.observatory-active .react-flow__controls-button:hover {
   padding: 8px 10px;
   color: color-mix(in srgb, var(--obs-ink) 72%, var(--obs-stone));
   text-align: left;
-  background: rgba(255, 255, 255, 0.36);
+  background: color-mix(in srgb, var(--bg-elevated) 62%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 9px;
   cursor: pointer;
@@ -3619,8 +3619,9 @@ html.observatory-active .react-flow__controls-button:hover {
 }
 
 .obs-code-static-preview {
-  background: var(--obs-paper);
-  color: var(--obs-ink);
+  /* Same dark code surface as Monaco — one recipe in both themes. */
+  background: var(--bg-code);
+  color: #ECEAF0;
   font-family: var(--obs-font-mono);
   font-size: 12.5px;
   line-height: 1.55;
@@ -5400,7 +5401,7 @@ html.observatory-active .react-flow__controls-button:hover {
 .architecture-graph-overview { background: radial-gradient(circle, var(--canvas-dot) 1px, transparent 1px) 0 0 / 24px 24px, var(--obs-canvas); }
 .observatory-shell__body:has(.architecture-graph-overview) { grid-template-columns:minmax(0, 1fr) 292px; }
 .observatory-shell__body:has(.architecture-graph-inspector--collapsed) { grid-template-columns:minmax(0, 1fr) 44px; }
-.architecture-graph-overview__hint { position:absolute; left:20px; bottom:18px; z-index:5; padding:8px 11px; border-radius:8px; border:1px solid var(--obs-border); background:color-mix(in srgb, var(--obs-paper) 92%, transparent); color:var(--obs-stone); font-size:12px; }
+.architecture-graph-overview__hint { position:absolute; left:20px; bottom:18px; z-index:5; max-width:calc(50% - 240px); padding:8px 11px; border-radius:8px; border:1px solid var(--obs-border); background:color-mix(in srgb, var(--obs-paper) 92%, transparent); color:var(--obs-stone); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .architecture-graph-overview__body { position:absolute; inset:0; display:flex; }
 .architecture-graph-overview__canvas { position:relative; flex:1 1 auto; min-width:0; }
 .architecture-graph-overview__body--outline .architecture-graph-overview__canvas { display:none; }
@@ -5518,6 +5519,7 @@ html.observatory-active .react-flow__controls-button:hover {
 .architecture-graph-inspector__collapse { position:absolute; top:10px; right:10px; }
 .architecture-graph-inspector--collapsed .architecture-graph-inspector__collapse { position:static; }
 .architecture-graph-inspector__origin { font-size:11px !important; font-weight:650 !important; }
+.architecture-graph-inspector__module-name { font-family:var(--font-mono); font-size:16px !important; }
 .architecture-graph-inspector__relations { margin-top:14px; }
 .architecture-graph-inspector__relation-row { display:flex; justify-content:space-between; gap:8px; padding:5px 8px; border:1px solid var(--obs-border); border-radius:6px; margin:4px 0 !important; font-size:11px !important; }
 .architecture-graph-inspector__relation-row code { font-family:var(--font-mono); font-size:10.5px; }

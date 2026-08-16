@@ -78,7 +78,10 @@ export default function ArchitectureRegionNode({ data }: NodeProps) {
       {region && detail !== 'far' && node.summary !== node.label && (
         <p className="argn__basis" title={node.summary}>{node.summary}</p>
       )}
-      {(cluster || residual || section) && detail === 'near' && members.length > 0 && (
+      {/* Member chips summarize a COLLAPSED container; once expanded, the
+          real nested module nodes render inside it and the chips would
+          duplicate them. */}
+      {(region || cluster || residual || section) && !node.isExpanded && detail === 'near' && members.length > 0 && (
         <div className="argn__members" aria-hidden="true">
           {members.map((label) => <code key={label}>{label}</code>)}
           {moreMembers > 0 && <span className="argn__more">+{moreMembers}</span>}

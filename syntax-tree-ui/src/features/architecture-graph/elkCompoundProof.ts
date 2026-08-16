@@ -41,13 +41,17 @@ export async function layoutArchitectureGraphProof(groups: ArchitectureGraphGrou
   const build = (group: ArchitectureGraphGroupDTO): ElkNode => {
     const hasChildren = children.has(group.id);
     const isTopLevel = !group.parent_group_id || !byId.has(group.parent_group_id);
+    // A module is a compact monospace chip at every position — including as
+    // a top-level node inside an entered cluster/region scope — never a
+    // region-sized empty box.
+    const isModule = group.kind === 'module';
     return {
       id: group.id,
       // These are minima, not authored map coordinates. Containers grow when
       // their packed children need more room; top-level regions reserve the
       // map-scale surface that makes containment secondary to relations.
-      width: hasChildren ? (isTopLevel ? 460 : 300) : (isTopLevel ? 280 : 176),
-      height: hasChildren ? (isTopLevel ? 270 : 132) : (isTopLevel ? 142 : 76),
+      width: isModule ? 190 : hasChildren ? (isTopLevel ? 460 : 300) : (isTopLevel ? 280 : 176),
+      height: isModule ? 44 : hasChildren ? (isTopLevel ? 270 : 132) : (isTopLevel ? 142 : 76),
       layoutOptions: compoundOptions,
       children: (children.get(group.id) ?? []).sort((a, b) => a.id.localeCompare(b.id)).map(build),
     };

@@ -128,6 +128,24 @@ export default function ArchitectureGraphInspector({ node, onEnter, onExpand, sc
     );
   }
 
+  if (selected.kind === 'module') {
+    const parent = scoped.groups.find((group) => group.id === selected.parent_group_id) ?? null;
+    return (
+      <aside className="architecture-graph-inspector" aria-label="Selected module">
+        {collapseButton}
+        <p className="architecture-graph-inspector__eyebrow">Module</p>
+        <LayerChip layer="structure" />
+        <h2 className="architecture-graph-inspector__module-name">{selected.label}</h2>
+        <p className="architecture-graph-inspector__path">{selected.structural_path}</p>
+        <dl>
+          {parent && <div><dt>{parent.kind === 'relation_cluster' ? 'Cluster' : parent.kind === 'relation_residual' ? 'Grouping' : 'Section'}</dt><dd className="architecture-graph-inspector__origin">{parent.kind === 'relation_residual' ? 'Ungrouped' : parent.label}</dd></div>}
+          <div><dt>Origin</dt><dd className="architecture-graph-inspector__origin">Source file</dd></div>
+        </dl>
+        <p className="architecture-graph-inspector__copy">A single analyzed source module. Its relations are counted in the containing {parent?.kind === 'relation_cluster' ? 'cluster' : 'region'} aggregates above this level.</p>
+      </aside>
+    );
+  }
+
   if (selected.kind === 'relation_residual') {
     return (
       <aside className="architecture-graph-inspector" aria-label="Selected residual group">

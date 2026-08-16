@@ -38,7 +38,7 @@ export default function RunPicker({ runId, freshness, lastScanned }: RunPickerPr
 
   return (
     <div className="obs-run-picker" aria-label="Current analysis run">
-      <button className="obs-run-picker__button" type="button" title={`Full run id: ${runId}`}>
+      <button className="obs-run-picker__button" type="button" title={`Full run id: ${runId} · ${freshness}`}>
         <span className="obs-run-picker__dot" />
         <span className="obs-run-picker__age">{lastScanned}</span>
         <span className="obs-run-picker__id" aria-label={`Run id ${runId}`}>
@@ -46,10 +46,11 @@ export default function RunPicker({ runId, freshness, lastScanned }: RunPickerPr
         </span>
         <ChevronDown size={13} strokeWidth={1.8} />
       </button>
-      <button className="obs-run-picker__freshness" type="button">
-        {freshness}
-        <ChevronDown size={13} strokeWidth={1.8} />
-      </button>
+      {/* The projection/freshness identifier (e.g.
+          "system-overview-architecture-map-v3") is an internal string; the
+          design-system vocabulary cleanup moves it off the shell entirely
+          (Settings › Technical details is its home). `freshness` stays in
+          the props contract for compatibility but is no longer rendered. */}
       <button
         className="obs-run-picker__copy"
         type="button"

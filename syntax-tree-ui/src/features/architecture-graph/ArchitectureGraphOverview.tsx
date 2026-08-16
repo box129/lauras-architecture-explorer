@@ -60,6 +60,10 @@ function GraphSurface({ data, selectedNode, onSelectNode, onEnterNode, onHoverNo
   useEffect(() => {
     let cancelled = false;
     const groups = data.groups.filter((group) => visibleIds.has(group.id));
+    // Selection dims unrelated architecture only when the selected node is
+    // actually on this canvas — an entered scope keeps its (now off-canvas)
+    // parent selected, which must not grey out the whole entered view.
+    const dimAgainstId = selectedNodeId && visibleIds.has(selectedNodeId) ? selectedNodeId : null;
     void layoutArchitectureGraphProof(groups, data.aggregate_edges.filter((edge) => visibleIds.has(edge.source_group_id) && visibleIds.has(edge.target_group_id))).then((result) => {
       if (cancelled) return;
       setLayout({
@@ -67,7 +71,7 @@ function GraphSurface({ data, selectedNode, onSelectNode, onEnterNode, onHoverNo
         nodes: result.nodes.map((item) => {
           const source = sourceNodes.find((node) => node.id === item.id)!;
           const isContainer = sourceNodes.some((node) => node.parentGroupId === item.id);
-          const connected = !selectedNodeId || source.id === selectedNodeId || sourceEdges.some((edge) => (edge.source === selectedNodeId && edge.target === source.id) || (edge.target === selectedNodeId && edge.source === source.id));
+          const connected = !dimAgainstId || source.id === dimAgainstId || sourceEdges.some((edge) => (edge.source === dimAgainstId && edge.target === source.id) || (edge.target === dimAgainstId && edge.source === source.id));
           const memberEntry = members.get(item.id);
           return {
             id: item.id,
@@ -75,7 +79,7 @@ function GraphSurface({ data, selectedNode, onSelectNode, onEnterNode, onHoverNo
             position: item.position,
             parentId: item.parentId,
             extent: item.parentId ? 'parent' : undefined,
-            className: selectedNodeId && !connected ? 'architecture-graph-node--dimmed' : undefined,
+            className: dimAgainstId && !connected ? 'architecture-graph-node--dimmed' : undefined,
             style: { width: item.width, height: item.height },
             data: {
               ...source,

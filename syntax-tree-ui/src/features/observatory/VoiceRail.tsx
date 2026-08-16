@@ -120,7 +120,11 @@ export default function VoiceRail({
           <p>{summary}</p>
           <div className="obs-voice__facts">
             <span>{displayNode.kind.replaceAll('_', ' ')}</span>
-            {displayNode.confidence != null ? (
+            {/* Where no meaningful confidence value exists, nothing is
+                shown — the old "map confidence not available" line is
+                removed rather than rephrased (02_INFORMATION_ARCHITECTURE
+                vocabulary cleanup). */}
+            {displayNode.confidence != null && (
               <span
                 className="obs-voice__map-confidence"
                 title={MAP_CONFIDENCE_EXPLANATION}
@@ -128,18 +132,9 @@ export default function VoiceRail({
               >
                 {formatMapConfidencePercent(displayNode.confidence)}% map confidence
               </span>
-            ) : (
-              // No fabricated percentage: a Phase B structural_group (and
-              // any other node with no independently justified confidence
-              // metric) has no map-confidence number to show at all,
-              // rather than a misleading "0%" that would read as "we are
-              // 0% confident" instead of "not applicable."
-              <span className="obs-voice__map-confidence" title={MAP_CONFIDENCE_EXPLANATION}>
-                map confidence not available
-              </span>
             )}
-            <span>{displayNode.evidenceCount} evidence</span>
-            <span>{displayNode.childrenCount} child areas</span>
+            <span>{displayNode.evidenceCount === 0 ? 'no evidence found' : `${displayNode.evidenceCount} evidence item${displayNode.evidenceCount === 1 ? '' : 's'}`}</span>
+            <span>{displayNode.childrenCount} module{displayNode.childrenCount === 1 ? '' : 's'}</span>
             <span>{explanationLabel(explanationStatus)}</span>
           </div>
           <div className="obs-voice__actions">
@@ -174,7 +169,7 @@ export default function VoiceRail({
                 type="button"
               >
                 <Sparkles size={14} strokeWidth={1.8} />
-                Architectural Explanation
+                Architectural statements
               </button>
             )}
             {onSaveLens && (

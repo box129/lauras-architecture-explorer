@@ -1,10 +1,28 @@
 import { Handle, Position, type NodeProps } from '@xyflow/react';
-import { ArrowUpRight, ChevronDown, FolderTree, Network } from 'lucide-react';
+import { ArrowUpRight, ChevronDown, ChevronUp, CircleDashed, FileCode2, FolderTree, Waypoints } from 'lucide-react';
 import type { ObservatoryNode } from '../observatory/types';
 
-type RegionData = ObservatoryNode & { isContainer?: boolean; internalRelationCount?: number; isSelected?: boolean; detailLevel?: 'far' | 'mid' | 'near'; onExpand?: (id: string) => void; onEnter?: (node: ObservatoryNode) => void };
+type RegionData = ObservatoryNode & {
+  isContainer?: boolean;
+  isExpanded?: boolean;
+  internalRelationCount?: number;
+  isSelected?: boolean;
+  detailLevel?: 'far' | 'mid' | 'near';
+  memberPreview?: string[];
+  memberModuleCount?: number;
+  onExpand?: (id: string) => void;
+  onEnter?: (node: ObservatoryNode) => void;
+};
 
-/** Root graph vocabulary: spatial regions first, structural paths second. */
+/**
+ * The three map visual languages (19_ARCHITECTURE_GRAPH_SPEC):
+ * A — structural region: enclosing container with its own header band;
+ * B — structural cluster: contained relation-derived card, waypoints icon;
+ * C — module: compact monospace chip.
+ * The residual bucket renders as a dashed, low-weight card so it can never
+ * read as a sixth cluster. Containment is literal — children lay out
+ * inside the parent rect via the existing C1 compound hierarchy.
+ */
 export default function ArchitectureRegionNode({ data }: NodeProps) {
   const node = data as unknown as RegionData;
   const graphKind = (node.sourceRefs?.graph_kind as string[] | undefined)?.[0] ?? 'structural_leaf';
@@ -14,24 +32,76 @@ export default function ArchitectureRegionNode({ data }: NodeProps) {
   const cluster = graphKind === 'relation_cluster';
   const residual = graphKind === 'relation_residual';
   const moduleNode = graphKind === 'module';
-  const group = !region && !cluster && !residual && !moduleNode;
+  const section = !region && !cluster && !residual && !moduleNode;
   const detail = node.detailLevel ?? 'near';
-  return <section className={`architecture-region-node ${region ? 'architecture-region-node--region' : 'architecture-region-node--group'} ${cluster ? 'architecture-region-node--cluster' : ''} ${residual ? 'architecture-region-node--residual' : ''} ${moduleNode ? 'architecture-region-node--module' : ''} ${node.isSelected ? 'architecture-region-node--selected' : ''}`}>
-    <Handle type="target" position={Position.Left} className="architecture-region-node__handle" />
-    <header className="architecture-region-node__header">
-      <span className="architecture-region-node__eyebrow">{cluster ? 'Relation cluster' : residual ? 'Residual group' : moduleNode ? 'Module' : region ? 'Structural region' : 'Structural group'}</span>
-      <strong>{node.label}</strong>
-      {region && detail !== 'far' && <span className="architecture-region-node__basis" title={node.summary}>{node.summary}</span>}
-    </header>
-    <div className="architecture-region-node__metrics">
-      <span>{node.childrenCount} module{node.childrenCount === 1 ? '' : 's'}</span>
-      {detail === 'near' && !!node.internalRelationCount && <span><Network size={12} /> {node.internalRelationCount} internal</span>}
-    </div>
-    {(region || cluster) && detail !== 'far' && <footer className="architecture-region-node__actions">
-      {node.isContainer && <button type="button" onClick={(event) => { event.stopPropagation(); node.onExpand?.(node.id); }}><ChevronDown size={14} /> Expand</button>}
-      {node.canDrilldown && <button type="button" onClick={(event) => { event.stopPropagation(); node.onEnter?.(node); }}><ArrowUpRight size={14} /> Enter</button>}
-    </footer>}
-    {(group || moduleNode) && <FolderTree className="architecture-region-node__mark" size={15} aria-hidden="true" />}
-    <Handle type="source" position={Position.Right} className="architecture-region-node__handle" />
-  </section>;
+  const members = node.memberPreview ?? [];
+  const moreMembers = Math.max(0, (node.memberModuleCount ?? 0) - members.length);
+  const relationCount = node.internalRelationCount ?? 0;
+
+  if (moduleNode) {
+    return (
+      <section className={`argn argn--module ${node.isSelected ? 'argn--selected' : ''}`}>
+        <Handle type="target" position={Position.Left} className="argn__handle" />
+        <FileCode2 size={12} aria-hidden="true" />
+        <code>{node.label}</code>
+        <Handle type="source" position={Position.Right} className="argn__handle" />
+      </section>
+    );
+  }
+
+  return (
+    <section
+      className={[
+        'argn',
+        region ? 'argn--region' : '',
+        section ? 'argn--section' : '',
+        cluster ? 'argn--cluster' : '',
+        residual ? 'argn--residual' : '',
+        node.isSelected ? 'argn--selected' : '',
+      ].filter(Boolean).join(' ')}
+    >
+      <Handle type="target" position={Position.Left} className="argn__handle" />
+      <header className="argn__header">
+        <span className="sr-only">{cluster ? 'Structural cluster' : residual ? 'Ungrouped modules' : region ? 'Structural region' : 'Repository section'}</span>
+        <span className="argn__title">
+          {cluster ? <Waypoints size={13} aria-hidden="true" /> : residual ? <CircleDashed size={13} aria-hidden="true" /> : <FolderTree size={13} aria-hidden="true" />}
+          <strong>{node.label}</strong>
+        </span>
+        <span className="argn__counts">
+          {cluster
+            ? `${node.childrenCount} module${node.childrenCount === 1 ? '' : 's'}${relationCount ? ` · ${relationCount} relation${relationCount === 1 ? '' : 's'}` : ''}`
+            : residual
+              ? `${node.childrenCount} module${node.childrenCount === 1 ? '' : 's'}`
+              : `${node.childrenCount} module${node.childrenCount === 1 ? '' : 's'}`}
+        </span>
+      </header>
+      {region && detail !== 'far' && node.summary !== node.label && (
+        <p className="argn__basis" title={node.summary}>{node.summary}</p>
+      )}
+      {(cluster || residual || section) && detail === 'near' && members.length > 0 && (
+        <div className="argn__members" aria-hidden="true">
+          {members.map((label) => <code key={label}>{label}</code>)}
+          {moreMembers > 0 && <span className="argn__more">+{moreMembers}</span>}
+        </div>
+      )}
+      {residual && detail !== 'far' && (
+        <p className="argn__residual-note">no relation to any cluster in this run</p>
+      )}
+      {(region || cluster || section) && detail !== 'far' && (node.isContainer || node.canDrilldown) && (
+        <footer className="argn__actions">
+          {node.isContainer && (
+            <button type="button" onClick={(event) => { event.stopPropagation(); node.onExpand?.(node.id); }}>
+              {node.isExpanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />} {node.isExpanded ? 'Collapse' : 'Expand'}
+            </button>
+          )}
+          {node.canDrilldown && (
+            <button type="button" onClick={(event) => { event.stopPropagation(); node.onEnter?.(node); }}>
+              <ArrowUpRight size={13} /> Enter
+            </button>
+          )}
+        </footer>
+      )}
+      <Handle type="source" position={Position.Right} className="argn__handle" />
+    </section>
+  );
 }

@@ -54,6 +54,8 @@ interface LensNodeData extends Record<string, unknown> {
   isContainer?: boolean;
   isExpanded?: boolean;
   directChildCount?: number;
+  /** Entity Focus: this node is the centred entity — visually dominant. */
+  isFocal?: boolean;
 }
 
 interface LensNodeProps {
@@ -113,7 +115,7 @@ const LensNode = memo(({ data, selected = false }: LensNodeProps) => {
   const additionalMemberCount = Math.max(0, node.childrenCount - representativeMembers.length);
   return (
     <button
-      className={`obs-rf-node ${isGroup ? 'obs-rf-node--group' : ''} ${isSelected ? 'obs-rf-node--selected' : ''}`}
+      className={`obs-rf-node ${isGroup ? 'obs-rf-node--group' : ''} ${isSelected ? 'obs-rf-node--selected' : ''} ${data.isFocal === true ? 'obs-rf-node--focal' : ''}`}
       type="button"
       aria-label={`${node.label}, ${kindLabel}, ${node.status}, ${accessibleAction}`}
     >

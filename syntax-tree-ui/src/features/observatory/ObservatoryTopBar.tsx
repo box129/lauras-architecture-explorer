@@ -1,8 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, BookOpen, FolderSearch, Library, Menu, Network, Settings as SettingsIcon } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowLeft, BookOpen, FolderSearch, GitBranch, Library, Menu, Network, Search, Settings as SettingsIcon } from 'lucide-react';
 import { useSyntaxTreeStore } from '../../store';
+import ThemeToggle from '../../components/shared/ThemeToggle';
 import BreadcrumbTrail, { type BreadcrumbItem } from './BreadcrumbTrail';
 import RunPicker from './RunPicker';
+
+export interface ArchitectureSearchItem {
+  id: string;
+  label: string;
+  path: string;
+  kind: string;
+}
 
 interface ObservatoryTopBarProps {
   breadcrumb: BreadcrumbItem[];
@@ -16,6 +24,8 @@ interface ObservatoryTopBarProps {
   onOpenDocs: () => void;
   onAnalyzeAnotherRepository: () => void;
   onOpenLenses?: () => void;
+  searchItems?: ArchitectureSearchItem[];
+  onSearchSelect?: (item: ArchitectureSearchItem) => void;
 }
 
 export default function ObservatoryTopBar({
@@ -30,10 +40,32 @@ export default function ObservatoryTopBar({
   onOpenDocs,
   onAnalyzeAnotherRepository,
   onOpenLenses,
+  searchItems,
+  onSearchSelect,
 }: ObservatoryTopBarProps) {
   const [navigationOpen, setNavigationOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
   const navigationRef = useRef<HTMLDivElement | null>(null);
+  const searchRef = useRef<HTMLDivElement | null>(null);
   const openSettings = useSyntaxTreeStore((s) => s.openSettings);
+
+  const searchMatches = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query || !searchItems?.length) return [];
+    return searchItems
+      .filter((item) => item.label.toLowerCase().includes(query) || item.path.toLowerCase().includes(query))
+      .slice(0, 8);
+  }, [searchItems, searchQuery]);
+
+  useEffect(() => {
+    if (!searchOpen) return;
+    const closeOnPointerDown = (event: PointerEvent) => {
+      if (!searchRef.current?.contains(event.target as Node)) setSearchOpen(false);
+    };
+    document.addEventListener('pointerdown', closeOnPointerDown);
+    return () => document.removeEventListener('pointerdown', closeOnPointerDown);
+  }, [searchOpen]);
 
   useEffect(() => {
     if (!navigationOpen) return;
@@ -54,6 +86,10 @@ export default function ObservatoryTopBar({
   return (
     <header className="obs-topbar">
       <div className="obs-topbar__left">
+        <div className="obs-topbar__brand" aria-label="Laura's">
+          <GitBranch size={16} strokeWidth={1.9} />
+          <span>Laura&rsquo;s</span>
+        </div>
         {/* Global navigation (Architecture / Documentation / Settings /
             Analyze another repository) and architectural-history Back are
             separate concepts and must both stay reachable at every depth:
@@ -115,6 +151,50 @@ export default function ObservatoryTopBar({
       <div className="obs-topbar__title">{repoTitle}</div>
 
       <div className="obs-topbar__right">
+        {searchItems && searchItems.length > 0 && onSearchSelect && (
+          <div className="obs-topbar__search" ref={searchRef}>
+            <Search size={13} strokeWidth={1.8} aria-hidden="true" />
+            <input
+              type="search"
+              value={searchQuery}
+              placeholder="Find a module, cluster or region"
+              aria-label="Find a module, cluster or region"
+              onFocus={() => setSearchOpen(true)}
+              onChange={(event) => {
+                setSearchQuery(event.target.value);
+                setSearchOpen(true);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' && searchMatches[0]) {
+                  onSearchSelect(searchMatches[0]);
+                  setSearchOpen(false);
+                  setSearchQuery('');
+                }
+                if (event.key === 'Escape') setSearchOpen(false);
+              }}
+            />
+            {searchOpen && searchMatches.length > 0 && (
+              <ul className="obs-topbar__search-results" role="listbox" aria-label="Architecture search results">
+                {searchMatches.map((item) => (
+                  <li key={item.id}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onSearchSelect(item);
+                        setSearchOpen(false);
+                        setSearchQuery('');
+                      }}
+                    >
+                      <span>{item.label}</span>
+                      <small>{item.kind} · {item.path}</small>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+        <ThemeToggle />
         <RunPicker runId={runId} freshness={freshness} lastScanned={lastScanned} />
       </div>
     </header>

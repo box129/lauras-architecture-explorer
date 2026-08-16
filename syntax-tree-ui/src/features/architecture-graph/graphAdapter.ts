@@ -42,7 +42,7 @@ export function adaptArchitectureGraph(response: ArchitectureGraphResponse): Arc
   return {
     internalCounts,
     nodes: response.groups.map((group) => ({
-      id: group.id, label: group.kind === 'relation_residual' ? group.label : (group.parent_group_id ? mapLabel(group.label) : group.label), kind: group.kind === 'module' ? 'structural_module' : 'structural_group', description: group.kind === 'relation_cluster' ? 'Derived mechanically from resolved source relationships.' : group.kind === 'relation_residual' ? 'These modules were not placed in a deterministic relation cluster from the currently recovered resolved relationships.' : `Structural basis: ${group.structural_path}`,
+      id: group.id, label: group.kind === 'relation_residual' ? 'Ungrouped' : (group.parent_group_id ? mapLabel(group.label) : group.label), kind: group.kind === 'module' ? 'structural_module' : 'structural_group', description: group.kind === 'relation_cluster' ? 'Derived mechanically from resolved source relationships.' : group.kind === 'relation_residual' ? 'These modules were not placed in a deterministic relation cluster from the currently recovered resolved relationships.' : `Structural basis: ${group.structural_path}`,
       // Structural regions, relation clusters, and residual groups are
       // deterministic structural facts, not verified evidence-backed
       // claims -- applying the "Verified" status here would misuse the
@@ -66,6 +66,65 @@ export function adaptArchitectureGraph(response: ArchitectureGraphResponse): Arc
 export function visibleGraphEdges(edges: ObservatoryEdge[], zoom: number): ObservatoryEdge[] {
   const minimum = zoom < 0.68 ? 3 : zoom < 0.95 ? 1 : 0;
   return edges.filter((edge) => Number((edge.sourceRefs?.member_relation_count as number[] | undefined)?.[0] ?? 0) >= minimum);
+}
+
+/** Relation filter for the map control cluster (19_ARCHITECTURE_GRAPH_SPEC).
+ * `strongest` keeps aggregate edges at or above the spec threshold of 6 —
+ * relaxed to the strongest real aggregate when nothing reaches 6, so a
+ * sparse repository still shows its strongest genuine relations instead of
+ * a silently empty map. Every count is a sum of real member relations. */
+export type RelationFilter = 'strongest' | 'all' | 'imports' | 'calls' | 'inherits' | 'none';
+
+const STRONGEST_AGGREGATE_THRESHOLD = 6;
+
+function edgeCount(edge: ObservatoryEdge): number {
+  return Number((edge.sourceRefs?.member_relation_count as number[] | undefined)?.[0] ?? 0);
+}
+
+export function filterGraphEdges(edges: ObservatoryEdge[], filter: RelationFilter): ObservatoryEdge[] {
+  if (filter === 'none') return [];
+  if (filter === 'all') return edges;
+  if (filter === 'strongest') {
+    const maxCount = edges.reduce((max, edge) => Math.max(max, edgeCount(edge)), 0);
+    const threshold = Math.min(STRONGEST_AGGREGATE_THRESHOLD, maxCount);
+    return edges.filter((edge) => edgeCount(edge) >= threshold && edgeCount(edge) > 0);
+  }
+  return edges.filter((edge) => edge.kind === filter);
+}
+
+/** Real child-module labels for a group, for the cluster/section member
+ * chips. Only genuine `kind === 'module'` children are listed — nothing is
+ * synthesized when the backend returned no module nodes for a group. */
+export function memberPreviews(response: ArchitectureGraphResponse, limit = 4): Map<string, { labels: string[]; moduleCount: number }> {
+  const result = new Map<string, { labels: string[]; moduleCount: number }>();
+  for (const group of response.groups) {
+    if (group.kind !== 'module' || !group.parent_group_id) continue;
+    const entry = result.get(group.parent_group_id) ?? { labels: [], moduleCount: 0 };
+    entry.moduleCount += 1;
+    if (entry.labels.length < limit) entry.labels.push(group.label);
+    result.set(group.parent_group_id, entry);
+  }
+  return result;
+}
+
+export interface ArchitectureGraphSummary {
+  sourceModules: number;
+  topLevelRegions: number;
+  sections: number;
+  structuralClusters: number;
+  ungroupedModules: number;
+}
+
+/** Real counts only (04_ARCHITECTURE_OVERVIEW_SPEC's summary line). */
+export function summarizeArchitectureGraph(response: ArchitectureGraphResponse): ArchitectureGraphSummary {
+  const topLevel = response.groups.filter((group) => !group.parent_group_id);
+  return {
+    sourceModules: topLevel.reduce((count, group) => count + group.recursive_module_count, 0),
+    topLevelRegions: topLevel.length,
+    sections: response.groups.filter((group) => group.kind === 'structural_container' && group.parent_group_id).length,
+    structuralClusters: response.groups.filter((group) => group.kind === 'relation_cluster').length,
+    ungroupedModules: response.groups.filter((group) => group.kind === 'relation_residual').reduce((count, group) => count + group.recursive_module_count, 0),
+  };
 }
 
 export function visibleGroupIds(nodes: ObservatoryNode[], expandedIds: ReadonlySet<string>): Set<string> {

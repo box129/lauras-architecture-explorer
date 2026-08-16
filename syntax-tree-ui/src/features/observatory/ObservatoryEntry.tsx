@@ -12,7 +12,6 @@ import {
   RotateCcw,
   Settings as SettingsIcon,
   ShieldCheck,
-  Sparkles,
   XCircle,
 } from 'lucide-react';
 import { ApiError, fetchApi } from '../../api/client';
@@ -20,6 +19,7 @@ import { useRunOrientation } from '../../api/hooks';
 import type { RunMetadata } from '../../api/types';
 import { buildWebSocketUrl } from '../../api/websocket';
 import RepoOrientationPanel from '../../components/shared/RepoOrientationPanel';
+import ThemeToggle from '../../components/shared/ThemeToggle';
 import { readinessStagesFromPayload } from '../../components/shared/readinessStageUtils';
 import { useSyntaxTreeStore } from '../../store';
 import FolderBrowserDialog from './FolderBrowserDialog';
@@ -150,9 +150,10 @@ export default function ObservatoryEntry() {
       <section className="observatory-entry__topbar">
         <div className="observatory-entry__brand">
           <GitBranch size={18} strokeWidth={1.9} />
-          <span>Laura's</span>
+          <span>Laura&rsquo;s</span>
         </div>
         <div className="observatory-entry__topbar-actions">
+          <ThemeToggle />
           <button
             type="button"
             className="observatory-entry__settings-button"
@@ -167,20 +168,20 @@ export default function ObservatoryEntry() {
 
       <section className="observatory-entry__hero">
         <div className="observatory-entry__copy">
-          <div className="observatory-entry__eyebrow">
-            <Sparkles size={14} strokeWidth={1.8} />
-            Codebase comprehension
-          </div>
-          <h1>Understand an unfamiliar codebase</h1>
+          <h1>Understand an unfamiliar codebase.</h1>
           <p>
-            Laura's analyzes source structure, recovers relationships, and builds an
-            architecture view you can explore from regions to modules and exact source.
-            Optional AI explanations add context while deterministic evidence stays visible.
+            Laura&rsquo;s reads a repository on your machine, maps how it is put together,
+            and keeps every architectural statement attached to the exact source that
+            supports it.
+          </p>
+          <p className="observatory-entry__no-ai-note">
+            Source analysis runs entirely without AI. A model is optional, and only ever
+            adds interpretation on top.
           </p>
           <div className="observatory-entry__promise-grid">
-            <PromiseItem icon={<ShieldCheck size={17} />} title="Deterministic foundation" text="Source parsing, relationships, grouping, and verification remain evidence-led." />
-            <PromiseItem icon={<GitBranch size={17} />} title="Architecture view" text="Move from structural regions to relation-derived clusters and modules." />
-            <PromiseItem icon={<Clock size={17} />} title="Exact source" text="Follow evidence back to the file and relevant source lines." />
+            <PromiseItem icon={<GitBranch size={17} />} title="Architecture" text="See the regions a repository is actually made of, and what contains what." />
+            <PromiseItem icon={<Clock size={17} />} title="Explore" text="Drill from a region into a cluster, into a module, into a single function." />
+            <PromiseItem icon={<ShieldCheck size={17} />} title="Verify" text="Follow any architectural statement to the file and lines behind it." />
           </div>
         </div>
 
@@ -313,7 +314,7 @@ export default function ObservatoryEntry() {
               </>
             ) : (
               <>
-                Choose repository
+                Browse repository
                 <ArrowRight size={16} />
               </>
             )}

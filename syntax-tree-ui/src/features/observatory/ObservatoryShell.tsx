@@ -27,10 +27,14 @@ import QuestionLensCanvas from '../question-lens/QuestionLensCanvas';
 import UnderstandingPane from '../question-lens/UnderstandingPane';
 import { questionLensProofSelection, questionStepProofSelection } from '../question-lens/questionLensProof';
 import { useQuestionLens } from '../question-lens/useQuestionLens';
-import ObservatoryTopBar from './ObservatoryTopBar';
+import ObservatoryTopBar, { type ArchitectureSearchItem } from './ObservatoryTopBar';
+import { adaptArchitectureGraph } from '../architecture-graph/graphAdapter';
+import type { ArchitectureGraphResponse } from '../architecture-graph/graphTypes';
+import { fetchApi } from '../../api/client';
 import type { BreadcrumbItem } from './BreadcrumbTrail';
 import type { ObservatoryNode } from './types';
 import QuestionDock from './QuestionDock';
+import EntityStatements from './EntityStatements';
 import VoiceRail from './VoiceRail';
 import { getFixtureExplanation } from './fixtures/openWebuiExplanations';
 import { useSyntaxTreeStore } from '../../store';
@@ -466,6 +470,37 @@ export default function ObservatoryShell() {
     playTour(Math.max(tourStep - 1, 0));
   }, [playTour, tourStep]);
 
+  // Architecture-aware search index (19.6): every group in the current
+  // deterministic graph, searchable by name or structural path. Selecting
+  // a result expands its ancestors on the canvas and selects it, without
+  // touching the breadcrumb.
+  const [searchGraph, setSearchGraph] = useState<ArchitectureGraphResponse | null>(null);
+  useEffect(() => {
+    if (source !== 'api') return undefined;
+    let cancelled = false;
+    void fetchApi<ArchitectureGraphResponse>('/architecture-graph')
+      .then((value) => { if (!cancelled) setSearchGraph(value); })
+      .catch(() => { if (!cancelled) setSearchGraph(null); });
+    return () => { cancelled = true; };
+  }, [source, analysisRunId]);
+  const searchItems = useMemo<ArchitectureSearchItem[]>(() => {
+    if (!searchGraph) return [];
+    return searchGraph.groups.map((group) => ({
+      id: group.id,
+      label: group.kind === 'relation_residual' ? 'Ungrouped' : group.label,
+      path: group.structural_path,
+      kind: group.kind === 'relation_cluster' ? 'structural cluster' : group.kind === 'relation_residual' ? 'ungrouped' : group.kind === 'module' ? 'module' : 'region',
+    }));
+  }, [searchGraph]);
+  const handleSearchSelect = useCallback((item: ArchitectureSearchItem) => {
+    if (!searchGraph) return;
+    const adapted = adaptArchitectureGraph(searchGraph);
+    const target = adapted.nodes.find((node) => node.id === item.id);
+    if (!target) return;
+    setRequestedGraphExpansion(target.parentGroupId ?? target.id);
+    setGraphSelectedNode(target);
+  }, [searchGraph]);
+
   const canvasFixture = lens.isEntityFocus ? (lens.entityFocusLandscape ?? lens.landscape) : lens.landscape;
   // Root structural selection is graph-local context, not an entity-focus
   // navigation event. Only Enter changes `lensPath` and leaves this canvas.
@@ -507,6 +542,7 @@ export default function ObservatoryShell() {
     <ArchitectureMapCanvas
       fixture={canvasFixture}
       focalNode={lens.isEntityFocus ? lens.selectedNode : lens.focalNode}
+      entityFocus={lens.isEntityFocus}
       onEnterNode={lens.enterNode}
       onHoverNode={lens.prefetchNode}
       onSelectNode={selectNode}
@@ -578,10 +614,20 @@ export default function ObservatoryShell() {
         onOpenLenses={() => setDrawerOpen(true)}
         repoTitle={shellMeta.repoTitle}
         runId={shellMeta.runId}
+        searchItems={isArchitectureGraph ? searchItems : undefined}
+        onSearchSelect={isArchitectureGraph ? handleSearchSelect : undefined}
       />
       <div className={showQuestionLens ? 'observatory-shell__body observatory-shell__body--question' : 'observatory-shell__body'}>
         <div className="observatory-shell__main">
           {canvas}
+          {lens.isEntityFocus && explanationNode && !showFlowLens && !showQuestionLens && (
+            <EntityStatements
+              node={explanationNode}
+              explanation={explanationState.explanation}
+              evidence={explanationState.evidence}
+              onOpenProof={openProof}
+            />
+          )}
           <CodeCompanion
             mode={proofMode}
             onModeChange={setProofModeAndUrl}

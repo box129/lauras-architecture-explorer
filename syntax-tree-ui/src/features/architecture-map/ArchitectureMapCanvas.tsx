@@ -23,6 +23,10 @@ interface ArchitectureMapCanvasProps {
   onSelectNode: (node: ObservatoryNode | null) => void;
   onEnterNode: (node: ObservatoryNode, selectOnly?: boolean) => void;
   onHoverNode: (node: ObservatoryNode) => void;
+  /** Entity Focus (06_ENTITY_FOCUS_SPEC): incoming ▸ entity ▸ outgoing,
+   * left to right; the centred entity renders visually dominant and the
+   * two side columns are named. */
+  entityFocus?: boolean;
 }
 
 const nodeTypes = { lensNode: LensNode };
@@ -40,6 +44,7 @@ export default function ArchitectureMapCanvas({
   onSelectNode,
   onEnterNode,
   onHoverNode,
+  entityFocus = false,
 }: ArchitectureMapCanvasProps) {
   const graphAlternativeRef = useRef<HTMLDetailsElement>(null);
 
@@ -64,7 +69,11 @@ export default function ArchitectureMapCanvas({
         id: node.id,
         type: 'lensNode',
         position: node.position,
-        data: { ...node, isSelected: selectedNode?.id === node.id } as unknown as Record<string, unknown>,
+        data: {
+          ...node,
+          isSelected: selectedNode?.id === node.id,
+          isFocal: entityFocus && focalNode?.id === node.id,
+        } as unknown as Record<string, unknown>,
         draggable: false,
       }));
     }
@@ -94,7 +103,7 @@ export default function ArchitectureMapCanvas({
         draggable: false,
       };
     });
-  }, [fixture.hasContainment, fixture.nodes, expandedIds, nodesById, selectedNode?.id]);
+  }, [fixture.hasContainment, fixture.nodes, expandedIds, nodesById, selectedNode?.id, entityFocus, focalNode?.id]);
 
   const visibleIds = useMemo(() => new Set(nodes.map((node) => node.id)), [nodes]);
   const edges = useMemo<RFEdge[]>(() => (
@@ -105,7 +114,9 @@ export default function ArchitectureMapCanvas({
         source: edge.source,
         target: edge.target,
         type: 'semantic',
-        data: { ...edge },
+        // Every edge names its relation kind (06_ENTITY_FOCUS_SPEC): the
+        // label is the real recovered kind, never colour alone.
+        data: { ...edge, edgeLabel: edge.label || edge.kind.replaceAll('_', ' ') },
       }))
   ), [fixture.edges, visibleIds]);
 
@@ -150,12 +161,18 @@ export default function ArchitectureMapCanvas({
 
   return (
     <main className="obs-canvas obs-canvas--react-flow" aria-label="Semantic architecture map">
+      {entityFocus && (
+        <div className="obs-entity-columns" aria-hidden="true">
+          <span>Depended on by</span>
+          <span>Depends on</span>
+        </div>
+      )}
       <section className="obs-canvas__summary obs-canvas__summary--floating">
         {focalNode && (
           <div className="obs-focal-header">
             <span>{focalNode.kind.replaceAll('_', ' ')}</span>
             <strong>{focalNode.label}</strong>
-            <small>{focalNode.childrenCount} child areas</small>
+            <small>{focalNode.childrenCount} module{focalNode.childrenCount === 1 ? '' : 's'}</small>
           </div>
         )}
         <p>{fixture.summary}</p>

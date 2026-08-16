@@ -419,6 +419,115 @@ body {
   padding: 64px 0;
 }
 
+/* Reviewed landing (03_LANDING_PAGE_SPEC): one column, one primary action.
+   Not marketing — step one of the workflow. */
+.observatory-entry__hero--single {
+  display: block;
+  width: min(1080px, calc(100vw - 56px));
+  min-height: 0;
+  padding: 56px 0 72px;
+}
+.observatory-entry__hero--single h1 {
+  margin: 0;
+  max-width: 780px;
+  color: var(--obs-ink);
+  font-size: clamp(40px, 4.6vw, 60px);
+  line-height: 1.0;
+  letter-spacing: -0.015em;
+  font-weight: 720;
+}
+.observatory-entry__lede {
+  max-width: 620px;
+  margin: 20px 0 0;
+  color: color-mix(in srgb, var(--obs-ink) 72%, var(--obs-stone));
+  font-size: 17px;
+  line-height: 1.65;
+}
+.observatory-entry__cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  margin-top: 32px;
+}
+.observatory-entry__hero--single .observatory-entry__start {
+  width: auto;
+  min-height: 48px;
+  margin-top: 0;
+  padding: 0 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14.5px;
+  color: var(--action-primary-text);
+}
+.observatory-entry__hero--single .observatory-entry__no-ai-note {
+  max-width: 340px;
+  margin: 0;
+  font-size: 13px !important;
+}
+.observatory-entry__hero--single .observatory-entry__promise-grid {
+  margin-top: 52px;
+}
+.observatory-entry__hero--single .observatory-entry__error {
+  max-width: 640px;
+  margin-top: 18px;
+}
+
+.observatory-entry__recent-projects { margin-top: 44px; }
+.observatory-entry__recent-projects h2 {
+  margin: 0 0 12px;
+  color: var(--obs-stone);
+  font-size: 11px;
+  font-weight: 680;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.observatory-entry__recent-list { display: grid; gap: 8px; max-width: 640px; }
+.observatory-entry__recent-list button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  color: var(--obs-ink);
+  text-align: left;
+  background: var(--obs-paper);
+  border: 1px solid var(--obs-border);
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+}
+.observatory-entry__recent-list button:hover { border-color: color-mix(in srgb, var(--obs-slate-blue) 45%, var(--obs-border)); background: var(--action-ghost-hover); }
+.observatory-entry__recent-list svg { color: var(--obs-stone); }
+.observatory-entry__recent-main { min-width: 0; }
+.observatory-entry__recent-main strong { display: block; font-size: 14px; }
+.observatory-entry__recent-main small { display: block; overflow: hidden; color: var(--obs-stone); font-family: var(--font-mono); font-size: 11.5px; text-overflow: ellipsis; white-space: nowrap; }
+.observatory-entry__recent-meta { color: var(--obs-stone); font-size: 12px; white-space: nowrap; }
+
+/* Provenance teaching strip: the same epistemic chips used inside the
+   product, introduced before the user ever sees a map. */
+.observatory-entry__provenance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 44px;
+  padding-top: 22px;
+  border-top: 1px solid var(--obs-border);
+}
+.observatory-entry__provenance > div { min-width: 260px; flex: 1; }
+.observatory-entry__provenance-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.observatory-entry__provenance p { margin: 0; color: var(--obs-stone); font-size: 13px; line-height: 1.55; }
+.epistemic-chip--verified { border: 1px solid color-mix(in srgb, var(--verification-supported) 42%, var(--obs-border)); color: var(--verification-supported); background: color-mix(in srgb, var(--verification-supported) 7%, transparent); }
+.epistemic-chip--ai { border: 1px solid var(--ai-border); color: var(--ai-text); background: var(--ai-surface); }
+
+.observatory-progress__path { margin: 5px 0 0; color: var(--obs-stone); font-family: var(--font-mono); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.observatory-progress__next { margin: 18px 0 0; color: var(--obs-stone); font-size: 13px; line-height: 1.5; }
+/* Analysis replaces the lower landing content IN PLACE (no page
+   transition, no floating panel offset). */
+.observatory-entry__hero--single .observatory-progress { width: auto; max-width: 720px; margin: 44px 0 0; }
+.observatory-entry__hero--single .observatory-progress__header h2 { margin: 0; font-size: 18px; }
+
 .observatory-entry__copy {
   max-width: 640px;
 }

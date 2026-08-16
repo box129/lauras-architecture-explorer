@@ -2,16 +2,17 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import {
   AlertCircle,
-  ArrowRight,
   CheckCircle2,
-  ChevronDown,
-  Clock,
+  CircleDashed,
   FolderOpen,
+  FolderTree,
   GitBranch,
   Loader2,
   RotateCcw,
   Settings as SettingsIcon,
   ShieldCheck,
+  Sparkles,
+  Waypoints,
   XCircle,
 } from 'lucide-react';
 import { ApiError, fetchApi } from '../../api/client';
@@ -24,18 +25,24 @@ import { readinessStagesFromPayload } from '../../components/shared/readinessSta
 import { useSyntaxTreeStore } from '../../store';
 import FolderBrowserDialog from './FolderBrowserDialog';
 
-type AnalysisMode = 'standard' | 'validation';
-type ComprehensionMode = 'classic' | 'agentic';
-type BudgetProfile = 'strict' | 'balanced' | 'max_quality';
-type Scope = 'backend' | 'full_repo';
-
 interface AnalyzeResponse {
   job_id: string;
   run_id: string;
   status: string;
 }
 
-const RECENT_REPOS_KEY = 'syntax-tree.observatory.recentRepos.v1';
+const LEGACY_RECENT_REPOS_KEY = 'syntax-tree.observatory.recentRepos.v1';
+const RECENT_PROJECTS_KEY = 'syntax-tree.observatory.recentProjects.v2';
+
+/** One real prior analysis. Only fields that were actually observed are
+ * stored — a migrated legacy path row has no time or file count, and the
+ * row simply omits that metadata rather than inventing it. */
+interface RecentProject {
+  path: string;
+  name: string;
+  analyzedAt?: string;
+  fileCount?: number;
+}
 
 const stageCopy: Record<string, string> = {
   queued: 'Queued for analysis',
@@ -61,18 +68,19 @@ const stageCopy: Record<string, string> = {
   implementation_slices: 'Preparing source proof',
 };
 
+/**
+ * The reviewed landing (03_LANDING_PAGE_SPEC): not marketing — step one of
+ * the workflow. One primary icon-led action (Browse repository) with the
+ * no-AI sentence beside it; Architecture / Explore / Verify cards; Recent
+ * projects only when real history exists; the epistemic provenance strip;
+ * and the analysis state replacing the lower half IN PLACE with real stage
+ * copy and a real file counter. There is no visible environment form —
+ * the existing folder picker lives behind the one CTA.
+ */
 export default function ObservatoryEntry() {
-  const [repoPath, setRepoPath] = useState('');
   const [loading, setLoading] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
-  const [advancedOpen, setAdvancedOpen] = useState(false);
-  const [analysisMode, setAnalysisMode] = useState<AnalysisMode>('standard');
-  const [requireLlm, setRequireLlm] = useState(false);
-  const [comprehensionMode, setComprehensionMode] = useState<ComprehensionMode>('agentic');
-  const [budgetProfile, setBudgetProfile] = useState<BudgetProfile>('strict');
-  const [scope, setScope] = useState<Scope>('backend');
-  const [model, setModel] = useState('');
-  const [recentRepos, setRecentRepos] = useState<string[]>(() => readRecentRepos());
+  const [recentProjects, setRecentProjects] = useState<RecentProject[]>(() => readRecentProjects());
   const [browserOpen, setBrowserOpen] = useState(false);
 
   const analysisStatus = useSyntaxTreeStore((s) => s.analysisStatus);
@@ -86,44 +94,41 @@ export default function ObservatoryEntry() {
   const setAnalysisError = useSyntaxTreeStore((s) => s.setAnalysisError);
   const setAnalysisProgress = useSyntaxTreeStore((s) => s.setAnalysisProgress);
 
-  useObservatoryAnalysisProgress();
+  useObservatoryAnalysisProgress(() => setRecentProjects(readRecentProjects()));
 
   useEffect(() => {
     document.documentElement.classList.add('observatory-active');
     return () => document.documentElement.classList.remove('observatory-active');
   }, []);
 
-  const effectiveRequireLlm = analysisMode === 'validation' ? true : requireLlm;
   const busy = loading || analysisStatus === 'running';
-  const canStart = repoPath.trim().length > 0 && !busy;
+  const analysing = busy || analysisStatus === 'failed';
   const normalizedError = startError || analysisError;
 
-  const startAnalysis = async () => {
-    if (!repoPath.trim() || busy) return;
+  const startAnalysis = async (repositoryPath: string) => {
+    const path = repositoryPath.trim();
+    if (!path || busy) return;
     setLoading(true);
     setStartError(null);
     setAnalysisError(null);
     try {
-      const body: Record<string, unknown> = {
-        repository_path: repoPath.trim(),
-        analysis_mode: analysisMode,
-        require_llm: effectiveRequireLlm,
-        comprehension_mode: comprehensionMode,
-        budget_profile: budgetProfile,
-        scope,
-      };
-      if (model.trim()) body.model = model.trim();
-
       const result = await fetchApi<AnalyzeResponse>('/analyze', {
         method: 'POST',
-        body: JSON.stringify(body),
+        body: JSON.stringify({
+          repository_path: path,
+          analysis_mode: 'standard',
+          require_llm: false,
+          comprehension_mode: 'agentic',
+          budget_profile: 'strict',
+          scope: 'backend',
+        }),
       });
       if (!result.job_id || !result.run_id) {
         throw new ApiError(502, 'The analysis start response did not include both job_id and run_id.');
       }
       setAnalysisJobId(result.job_id);
       setAnalysisRunId(result.run_id);
-      setAnalysisRepositoryPath(repoPath.trim());
+      setAnalysisRepositoryPath(path);
       setAnalysisProgress({
         stage: 'queued',
         filesTotal: 0,
@@ -135,8 +140,7 @@ export default function ObservatoryEntry() {
         canRenderFrontend: false,
       });
       setAnalysisStatus('running');
-      const nextRecent = rememberRepo(repoPath.trim(), recentRepos);
-      setRecentRepos(nextRecent);
+      setRecentProjects(rememberProject(path));
     } catch (error) {
       setStartError(formatStartError(error));
       setAnalysisStatus('idle');
@@ -166,177 +170,102 @@ export default function ObservatoryEntry() {
         </div>
       </section>
 
-      <section className="observatory-entry__hero">
-        <div className="observatory-entry__copy">
-          <h1>Understand an unfamiliar codebase.</h1>
-          <p>
-            Laura&rsquo;s reads a repository on your machine, maps how it is put together,
-            and keeps every architectural statement attached to the exact source that
-            supports it.
-          </p>
-          <p className="observatory-entry__no-ai-note">
-            Source analysis runs entirely without AI. A model is optional, and only ever
-            adds interpretation on top.
-          </p>
-          <div className="observatory-entry__promise-grid">
-            <PromiseItem icon={<GitBranch size={17} />} title="Architecture" text="See the regions a repository is actually made of, and what contains what." />
-            <PromiseItem icon={<Clock size={17} />} title="Explore" text="Drill from a region into a cluster, into a module, into a single function." />
-            <PromiseItem icon={<ShieldCheck size={17} />} title="Verify" text="Follow any architectural statement to the file and lines behind it." />
-          </div>
-        </div>
+      <section className="observatory-entry__hero observatory-entry__hero--single">
+        <h1>Understand an unfamiliar codebase.</h1>
+        <p className="observatory-entry__lede">
+          Laura&rsquo;s reads a repository on your machine, maps how it is put together,
+          and keeps every architectural statement attached to the exact source that
+          supports it.
+        </p>
 
-        <div className="observatory-entry__panel" aria-label="Start repository analysis">
-          <div className="observatory-entry__panel-header">
-          <div>
-            <h2>Choose repository</h2>
-            <p>Select a local folder to begin analysis. The architecture overview opens when the source is ready.</p>
-            </div>
-            <span className="observatory-entry__status-pill">Local folder</span>
-          </div>
-
-          <label className="observatory-entry__label" htmlFor="observatory-repo-path">Repository path</label>
-          <div className="observatory-entry__input-row">
-            <FolderOpen size={16} strokeWidth={1.7} />
-            <input
-              id="observatory-repo-path"
-              value={repoPath}
-              onChange={(event) => setRepoPath(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') void startAnalysis();
-              }}
-              placeholder="Enter an absolute local repository path"
-            />
-            <button
-              type="button"
-              className="observatory-entry__browse-button"
-              onClick={() => setBrowserOpen(true)}
-            >
-              Browse&hellip;
-            </button>
-          </div>
-
-          {recentRepos.length > 0 && (
-            <div className="observatory-entry__recent" aria-label="Recent repository paths">
-              {recentRepos.slice(0, 3).map((path) => (
-                <button key={path} type="button" onClick={() => setRepoPath(path)}>
-                  {shortenPath(path)}
-                </button>
-              ))}
-            </div>
-          )}
-
-          <details
-            className="observatory-entry__advanced"
-            open={advancedOpen}
-            onToggle={(event) => setAdvancedOpen((event.target as HTMLDetailsElement).open)}
-          >
-            <summary>
-              <ChevronDown size={14} className={advancedOpen ? '' : 'observatory-entry__chevron--closed'} />
-              Optional analysis settings
-            </summary>
-            <div className="observatory-entry__advanced-body">
-              <SegmentedField
-                label="Analysis mode"
-                value={analysisMode}
-                onChange={(value) => setAnalysisMode(value as AnalysisMode)}
-                options={[
-                  { value: 'standard', label: 'Standard', description: 'Falls back honestly when the LLM is unavailable.' },
-                  { value: 'validation', label: 'Validation', description: 'Requires live LLM-backed reasoning.' },
-                ]}
-              />
-              <label className="observatory-entry__check">
-                <input
-                  type="checkbox"
-                  checked={effectiveRequireLlm}
-                  disabled={analysisMode === 'validation'}
-                  onChange={(event) => setRequireLlm(event.target.checked)}
-                />
-                Require live LLM explanations
-              </label>
-              <SegmentedField
-                label="Comprehension mode"
-                value={comprehensionMode}
-                onChange={(value) => setComprehensionMode(value as ComprehensionMode)}
-                options={[
-                  { value: 'agentic', label: 'Agentic' },
-                  { value: 'classic', label: 'Classic' },
-                ]}
-              />
-              <SegmentedField
-                label="Budget"
-                value={budgetProfile}
-                onChange={(value) => setBudgetProfile(value as BudgetProfile)}
-                options={[
-                  { value: 'strict', label: 'Strict' },
-                  { value: 'balanced', label: 'Balanced' },
-                  { value: 'max_quality', label: 'Max quality' },
-                ]}
-              />
-              <SegmentedField
-                label="Scope"
-                value={scope}
-                onChange={(value) => setScope(value as Scope)}
-                options={[
-                  { value: 'backend', label: 'Backend' },
-                  { value: 'full_repo', label: 'Full repo' },
-                ]}
-              />
-              <div>
-                <label className="observatory-entry__label" htmlFor="observatory-model">Model override</label>
-                <input
-                  id="observatory-model"
-                  className="observatory-entry__text-input"
-                  value={model}
-                  onChange={(event) => setModel(event.target.value)}
-                  placeholder="leave empty to use configured default"
-                />
-              </div>
-            </div>
-          </details>
-
-          {normalizedError && (
-            <div className="observatory-entry__error">
-              <AlertCircle size={16} />
-              <span>{normalizedError}</span>
-            </div>
-          )}
-
+        <div className="observatory-entry__cta-row">
           <button
             className="observatory-entry__start"
             type="button"
-            disabled={!canStart}
-            onClick={() => void startAnalysis()}
+            disabled={busy}
+            onClick={() => setBrowserOpen(true)}
           >
             {busy ? (
               <>
-                <Loader2 size={16} className="observatory-spin" />
-                Starting scan
+                <Loader2 size={17} className="observatory-spin" />
+                Analysing&hellip;
               </>
             ) : (
               <>
+                <FolderOpen size={17} strokeWidth={1.8} />
                 Browse repository
-                <ArrowRight size={16} />
               </>
             )}
           </button>
-
-          <p className="observatory-entry__hint">
-            Laura's reads the repository locally through the connected analysis service. If analysis cannot start,
-            this screen will explain what needs attention.
-          </p>
+          <span className="observatory-entry__no-ai-note">
+            Source analysis runs entirely without AI. A model is optional, and only ever
+            adds interpretation on top.
+          </span>
         </div>
-      </section>
 
-      {(analysisStatus === 'running' || analysisStatus === 'failed') && (
-        <ObservatoryProgressPanel onReset={resetAnalysis} />
-      )}
+        {normalizedError && (
+          <div className="observatory-entry__error" role="alert">
+            <AlertCircle size={16} />
+            <span>{normalizedError}</span>
+          </div>
+        )}
+
+        {!analysing && (
+          <>
+            <div className="observatory-entry__promise-grid">
+              <PromiseItem icon={<GitBranch size={17} />} title="Architecture" text="See the regions a repository is actually made of, and what contains what." />
+              <PromiseItem icon={<Waypoints size={17} />} title="Explore" text="Drill from a region into a cluster, into a module, into a single function." />
+              <PromiseItem icon={<ShieldCheck size={17} />} title="Verify" text="Follow any architectural statement to the file and lines behind it." />
+            </div>
+
+            {recentProjects.length > 0 && (
+              <section className="observatory-entry__recent-projects" aria-label="Recent projects">
+                <h2>Recent projects</h2>
+                <div className="observatory-entry__recent-list">
+                  {recentProjects.slice(0, 4).map((project) => (
+                    <button key={project.path} type="button" onClick={() => void startAnalysis(project.path)}>
+                      <FolderOpen size={15} strokeWidth={1.7} />
+                      <span className="observatory-entry__recent-main">
+                        <strong>{project.name}</strong>
+                        <small>{project.path}</small>
+                      </span>
+                      <span className="observatory-entry__recent-meta">{recentProjectMeta(project)}</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            <section className="observatory-entry__provenance" aria-label="How Laura's separates fact from interpretation">
+              <div>
+                <div className="observatory-entry__provenance-chips">
+                  <span className="epistemic-chip epistemic-chip--structure"><FolderTree size={11} /> Structure</span>
+                  <span className="epistemic-chip epistemic-chip--cluster"><Waypoints size={11} /> Structural cluster</span>
+                  <span className="epistemic-chip epistemic-chip--verified"><ShieldCheck size={11} /> Verified</span>
+                </div>
+                <p>Always available. Structure, clustering and evidence verification are deterministic and never call a model.</p>
+              </div>
+              <div>
+                <div className="observatory-entry__provenance-chips">
+                  <span className="epistemic-chip epistemic-chip--ai"><Sparkles size={11} /> AI interpretation</span>
+                </div>
+                <p>Optional, and always something you ask for. A model can name a group and explain an entity; it never changes what the analysis found.</p>
+              </div>
+            </section>
+          </>
+        )}
+
+        {(analysisStatus === 'running' || analysisStatus === 'failed') && (
+          <ObservatoryProgressPanel onReset={resetAnalysis} />
+        )}
+      </section>
 
       {browserOpen && (
         <FolderBrowserDialog
           onCancel={() => setBrowserOpen(false)}
           onSelect={(path) => {
-            setRepoPath(path);
             setBrowserOpen(false);
+            void startAnalysis(path);
           }}
         />
       )}
@@ -349,6 +278,7 @@ function ObservatoryProgressPanel({ onReset }: { onReset: () => void }) {
   const status = useSyntaxTreeStore((s) => s.analysisStatus);
   const error = useSyntaxTreeStore((s) => s.analysisError);
   const meta = useSyntaxTreeStore((s) => s.analysisRunMetadata);
+  const repositoryPath = useSyntaxTreeStore((s) => s.analysisRepositoryPath);
   const storedAnalysisRunId = useSyntaxTreeStore((s) => s.analysisRunId);
   const analysisRunId = storedAnalysisRunId ?? meta?.analysis_run_id ?? progress?.readinessStages?.[0]?.analysis_run_id ?? null;
   const graphReady = status === 'completed' || progress?.canRenderFrontend === true;
@@ -375,19 +305,14 @@ function ObservatoryProgressPanel({ onReset }: { onReset: () => void }) {
     });
   }, [progress]);
 
-  const parsedPercent = progress?.filesTotal
-    ? Math.min(100, Math.round((progress.filesParsed / progress.filesTotal) * 100))
-    : 0;
+  const repoName = repositoryPath ? projectName(repositoryPath) : 'repository';
 
   return (
     <section className="observatory-progress" aria-live="polite">
       <div className="observatory-progress__header">
         <div>
-          <span className="observatory-entry__eyebrow">
-            {status === 'failed' ? <XCircle size={14} /> : <Loader2 size={14} className="observatory-spin" />}
-            {status === 'failed' ? 'Scan stopped' : 'Building the architecture map'}
-          </span>
-          <h2>{status === 'failed' ? 'The scan needs attention' : friendlyStage(progress?.stage)}</h2>
+          <h2>{status === 'failed' ? 'The analysis needs attention' : `Analysing ${repoName}`}</h2>
+          {repositoryPath && <p className="observatory-progress__path">{repositoryPath}</p>}
         </div>
         {status === 'failed' && (
           <button type="button" onClick={onReset}>
@@ -407,16 +332,16 @@ function ObservatoryProgressPanel({ onReset }: { onReset: () => void }) {
       {progress?.filesTotal ? (
         <div className="observatory-progress__meter">
           <div className="observatory-progress__meter-label">
-            <span>Reading files</span>
+            <span>Files read</span>
             <span>{progress.filesParsed} / {progress.filesTotal}</span>
           </div>
           <div className="observatory-progress__bar">
-            <span style={{ width: `${parsedPercent}%` }} />
+            <span style={{ width: `${Math.min(100, Math.round((progress.filesParsed / progress.filesTotal) * 100))}%` }} />
           </div>
           {progress.currentFile && <p>{progress.currentFile}</p>}
         </div>
       ) : (
-        <p className="observatory-progress__quiet">Preparing the analysis job.</p>
+        <p className="observatory-progress__quiet">{friendlyStage(progress?.stage)}</p>
       )}
 
       <RepoOrientationPanel
@@ -452,6 +377,11 @@ function ObservatoryProgressPanel({ onReset }: { onReset: () => void }) {
         })}
       </div>
 
+      <p className="observatory-progress__next">
+        The architecture opens as soon as structure is grouped. Every count and relation
+        you will see comes from this deterministic pass.
+      </p>
+
       {meta && (
         <div className="observatory-progress__meta">
           <span>{meta.model || 'Configured model'}</span>
@@ -483,7 +413,7 @@ function StageRow({
       ) : state === 'skipped' ? (
         <AlertCircle size={15} />
       ) : (
-        <span />
+        <CircleDashed size={15} />
       )}
       <p>{label}</p>
     </div>
@@ -502,38 +432,7 @@ function PromiseItem({ icon, title, text }: { icon: ReactNode; title: string; te
   );
 }
 
-function SegmentedField({
-  label,
-  value,
-  onChange,
-  options,
-}: {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  options: { value: string; label: string; description?: string }[];
-}) {
-  return (
-    <div>
-      <span className="observatory-entry__label">{label}</span>
-      <div className="observatory-entry__segments">
-        {options.map((option) => (
-          <button
-            key={option.value}
-            type="button"
-            className={value === option.value ? 'is-active' : ''}
-            title={option.description}
-            onClick={() => onChange(option.value)}
-          >
-            {option.label}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function useObservatoryAnalysisProgress() {
+function useObservatoryAnalysisProgress(onCompleted?: () => void) {
   const analysisJobId = useSyntaxTreeStore((s) => s.analysisJobId);
   const analysisStatus = useSyntaxTreeStore((s) => s.analysisStatus);
   const setAnalysisStatus = useSyntaxTreeStore((s) => s.setAnalysisStatus);
@@ -541,6 +440,10 @@ function useObservatoryAnalysisProgress() {
   const setAnalysisError = useSyntaxTreeStore((s) => s.setAnalysisError);
   const setAnalysisRunMetadata = useSyntaxTreeStore((s) => s.setAnalysisRunMetadata);
   const wsRef = useRef<WebSocket | null>(null);
+  const onCompletedRef = useRef(onCompleted);
+  useEffect(() => {
+    onCompletedRef.current = onCompleted;
+  }, [onCompleted]);
 
   useEffect(() => {
     if (!analysisJobId || analysisStatus !== 'running') return;
@@ -573,6 +476,14 @@ function useObservatoryAnalysisProgress() {
       const progress = (raw.progress && typeof raw.progress === 'object' ? raw.progress : {}) as Record<string, unknown>;
       captureRunMetadata(raw);
       if (raw.status === 'completed') {
+        // Record the real completion facts against the project's recent
+        // row (time of analysis + observed file count) before leaving the
+        // landing — nothing is fabricated, absent values simply stay off.
+        const state = useSyntaxTreeStore.getState();
+        if (state.analysisRepositoryPath) {
+          recordProjectCompletion(state.analysisRepositoryPath, state.analysisProgress?.filesTotal ?? undefined);
+          onCompletedRef.current?.();
+        }
         setAnalysisStatus('completed');
       } else if (raw.status === 'failed') {
         setAnalysisError(String(progress.error || raw.error || 'Analysis failed'));
@@ -655,25 +566,90 @@ function formatStartError(error: unknown) {
   return message;
 }
 
-function readRecentRepos() {
+function projectName(path: string) {
+  const parts = path.replace(/\\/g, '/').split('/').filter(Boolean);
+  return parts.at(-1) ?? path;
+}
+
+function readRecentProjects(): RecentProject[] {
   if (typeof window === 'undefined') return [];
   try {
-    const parsed = JSON.parse(window.localStorage.getItem(RECENT_REPOS_KEY) || '[]');
-    return Array.isArray(parsed) ? parsed.filter((item) => typeof item === 'string').slice(0, 5) : [];
+    const parsed = JSON.parse(window.localStorage.getItem(RECENT_PROJECTS_KEY) || '[]');
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed.filter((item): item is RecentProject => Boolean(item && typeof item.path === 'string' && typeof item.name === 'string')).slice(0, 5);
+    }
   } catch {
-    return [];
+    // fall through to legacy migration
+  }
+  // Migrate the legacy plain-path list once: name is derived from the real
+  // path; time/count stay absent because they were never recorded.
+  try {
+    const legacy = JSON.parse(window.localStorage.getItem(LEGACY_RECENT_REPOS_KEY) || '[]');
+    if (Array.isArray(legacy)) {
+      const seen = new Set<string>();
+      const migrated: RecentProject[] = [];
+      for (const item of legacy) {
+        if (typeof item !== 'string') continue;
+        const key = item.replace(/\\/g, '/').toLowerCase();
+        if (seen.has(key)) continue;
+        seen.add(key);
+        migrated.push({ path: item, name: projectName(item) });
+      }
+      return migrated.slice(0, 5);
+    }
+  } catch {
+    // no usable history
+  }
+  return [];
+}
+
+function writeRecentProjects(projects: RecentProject[]) {
+  try {
+    window.localStorage.setItem(RECENT_PROJECTS_KEY, JSON.stringify(projects.slice(0, 5)));
+  } catch {
+    // Storage unavailable: the section simply reflects this session only.
   }
 }
 
-function rememberRepo(path: string, current: string[]) {
-  const next = [path, ...current.filter((item) => item !== path)].slice(0, 5);
-  window.localStorage.setItem(RECENT_REPOS_KEY, JSON.stringify(next));
+function rememberProject(path: string): RecentProject[] {
+  const key = path.replace(/\\/g, '/').toLowerCase();
+  const current = readRecentProjects().filter((item) => item.path.replace(/\\/g, '/').toLowerCase() !== key);
+  const next = [{ path, name: projectName(path), analyzedAt: new Date().toISOString() }, ...current].slice(0, 5);
+  writeRecentProjects(next);
   return next;
 }
 
-function shortenPath(path: string) {
-  const normalized = path.replace(/\\/g, '/');
-  const parts = normalized.split('/').filter(Boolean);
-  if (parts.length <= 2) return path;
-  return `${parts.at(-2)}/${parts.at(-1)}`;
+function recordProjectCompletion(path: string, fileCount: number | undefined) {
+  const key = path.replace(/\\/g, '/').toLowerCase();
+  const next = readRecentProjects().map((item) =>
+    item.path.replace(/\\/g, '/').toLowerCase() === key
+      ? { ...item, analyzedAt: new Date().toISOString(), ...(fileCount ? { fileCount } : {}) }
+      : item,
+  );
+  writeRecentProjects(next);
+}
+
+function recentProjectMeta(project: RecentProject): string {
+  const parts: string[] = [];
+  if (project.fileCount) parts.push(`${project.fileCount} file${project.fileCount === 1 ? '' : 's'}`);
+  if (project.analyzedAt) {
+    const relative = relativeTime(project.analyzedAt);
+    if (relative) parts.push(relative);
+  }
+  return parts.join(' · ');
+}
+
+function relativeTime(iso: string): string | null {
+  const then = Date.parse(iso);
+  if (Number.isNaN(then)) return null;
+  const seconds = Math.max(0, Math.round((Date.now() - then) / 1000));
+  if (seconds < 60) return 'just now';
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+  const days = Math.round(hours / 24);
+  if (days === 1) return 'yesterday';
+  if (days < 31) return `${days} days ago`;
+  return new Date(then).toLocaleDateString();
 }

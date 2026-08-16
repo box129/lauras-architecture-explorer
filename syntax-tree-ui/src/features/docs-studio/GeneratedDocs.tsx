@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { RefreshCw, Sparkles } from 'lucide-react';
-import { ApiError, fetchApi } from '../../api/client';
+import { ApiError, BACKEND_UNREACHABLE_MESSAGE, fetchApi, isBackendUnreachable } from '../../api/client';
 import { useSyntaxTreeStore } from '../../store';
 import { getArchExplanationSettings } from '../settings/api';
 import type { ArchExplanationSettings } from '../settings/types';
@@ -97,6 +97,13 @@ export default function GeneratedDocsSection({ componentId }: GeneratedDocsSecti
       setDoc(response);
       setPhase('done');
     } catch (err) {
+      if (isBackendUnreachable(err)) {
+        // Backend process down (dev-proxy 502/network failure) — a
+        // service-availability problem, never an AI-configuration state.
+        setError({ unavailable: false, message: BACKEND_UNREACHABLE_MESSAGE });
+        setPhase('error');
+        return;
+      }
       const unavailable = err instanceof ApiError && (err.status === 503 || err.status === 408);
       setError({
         unavailable,

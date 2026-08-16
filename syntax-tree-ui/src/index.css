@@ -5650,6 +5650,7 @@ html.observatory-active .react-flow__controls-button:hover {
 .architecture-graph-inspector__section-label { margin:0 0 3px !important; color:var(--obs-stone); font-size:10px !important; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
 .architecture-graph-inspector__technical-label { display:block; margin-top:5px; color:var(--obs-stone); font-size:10px; }
 .architecture-graph-inspector__copy--muted { margin-top:12px !important; color:var(--obs-stone); }
+.architecture-graph-inspector__copy--error { margin-top:10px !important; color:var(--verification-contradicted); font-weight:600; }
 .la-claim-card__statement, .la-claim-card__relation { display:flex; flex-direction:column; gap:3px; }
 .la-claim-card__statement small, .la-claim-card__relation small { color:var(--obs-stone); font-size:10px; font-weight:750; letter-spacing:.06em; text-transform:uppercase; }
 .la-claim-card__evidence-label { margin:0 0 8px; color:var(--obs-slate-blue); font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }

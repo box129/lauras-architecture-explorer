@@ -385,6 +385,7 @@ function TechnicalDetailsSection({ provider, model }: { provider?: string; model
           <div><dt>Repository</dt><dd><code>{repositoryPath ?? '—'}</code></dd></div>
           <div><dt>Effective provider</dt><dd><code>{provider && provider !== 'off' ? provider : 'none'}</code></dd></div>
           <div><dt>Effective model</dt><dd><code>{model || '—'}</code></dd></div>
+          <div><dt>Build</dt><dd><code>{__BUILD_WORKSPACE__} @ {__BUILD_COMMIT__}</code></dd></div>
         </dl>
       </details>
     </section>

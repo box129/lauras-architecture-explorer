@@ -24,7 +24,12 @@ export function architectureGraphScope(response: ArchitectureGraphResponse, scop
     ...response,
     groups: response.groups.filter((group) => group.id !== scopeGroupId && inScope.has(group.id)).map((group) => group.parent_group_id === scopeGroupId ? { ...group, parent_group_id: null } : group),
     aggregate_edges: response.aggregate_edges.filter((edge) => inScope.has(edge.source_group_id) && edge.source_group_id !== scopeGroupId && inScope.has(edge.target_group_id) && edge.target_group_id !== scopeGroupId),
-    internal_relation_counts: response.internal_relation_counts.filter((value) => inScope.has(value.group_id) && value.group_id !== scopeGroupId),
+    // The scope's OWN internal relation counts stay in the projection:
+    // they are the real resolved relations among the members now on
+    // screen (live-audit defect: entering a region with 16 internal
+    // relations displayed "Relations 0" because these rows were dropped
+    // along with the scope group itself).
+    internal_relation_counts: response.internal_relation_counts.filter((value) => inScope.has(value.group_id)),
   };
 }
 

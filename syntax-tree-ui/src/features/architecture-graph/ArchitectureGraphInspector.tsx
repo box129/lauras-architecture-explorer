@@ -1,6 +1,6 @@
 import { ArrowUpRight, ChevronDown, CircleDashed, FolderTree, Network, PanelRightClose, PanelRightOpen, RefreshCw, Sparkles, Waypoints } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-import { fetchApi } from '../../api/client';
+import { BACKEND_UNREACHABLE_MESSAGE, fetchApi, isBackendUnreachable } from '../../api/client';
 import type { ObservatoryNode } from '../observatory/types';
 import type { ArchitectureGraphResponse, ClusterInterpretationResponse } from './graphTypes';
 import { architectureGraphScope } from './graphAdapter';
@@ -14,10 +14,15 @@ function LayerChip({ layer }: { layer: 'structure' | 'cluster' | 'residual' }) {
   return <span className="epistemic-chip epistemic-chip--structure"><FolderTree size={11} /> Structure</span>;
 }
 
-export default function ArchitectureGraphInspector({ node, onEnter, onExpand, scopeGroupId }: { node: ObservatoryNode | null; onEnter: (node: ObservatoryNode) => void; onExpand: (node: ObservatoryNode) => void; scopeGroupId?: string | null }) {
+export default function ArchitectureGraphInspector({ node, onEnter, onExpand, onFocusEntity, scopeGroupId }: { node: ObservatoryNode | null; onEnter: (node: ObservatoryNode) => void; onExpand: (node: ObservatoryNode) => void; onFocusEntity?: (node: ObservatoryNode) => void; scopeGroupId?: string | null }) {
   const [graph, setGraph] = useState<ArchitectureGraphResponse | null>(null);
   const [interpretation, setInterpretation] = useState<ClusterInterpretationResponse | null>(null);
   const [interpreting, setInterpreting] = useState(false);
+  // Distinguishes WHY no interpretation exists (live-audit defect: a
+  // proxy 502 while the backend was down previously rendered as "No model
+  // configured", a false statement). 'unavailable' remains reserved for
+  // the backend's own honest no-model answer.
+  const [interpretationFailure, setInterpretationFailure] = useState<'backend_unreachable' | 'request_failed' | null>(null);
   const [collapsed, setCollapsed] = useState(false);
   useEffect(() => { void fetchApi<ArchitectureGraphResponse>('/architecture-graph').then(setGraph).catch(() => setGraph(null)); }, []);
   const scoped = useMemo(() => graph ? architectureGraphScope(graph, scopeGroupId) : null, [graph, scopeGroupId]);
@@ -30,8 +35,20 @@ export default function ArchitectureGraphInspector({ node, onEnter, onExpand, sc
   const incoming = useMemo(() => selected ? (scoped?.aggregate_edges.filter((edge) => edge.target_group_id === selected.id) ?? []) : [], [scoped, selected]);
   const outgoing = useMemo(() => selected ? (scoped?.aggregate_edges.filter((edge) => edge.source_group_id === selected.id) ?? []) : [], [scoped, selected]);
   const internal = useMemo(() => selected ? (scoped?.internal_relation_counts.filter((value) => value.group_id === selected.id) ?? []) : [], [scoped, selected]);
-  useEffect(() => { setInterpretation(null); setInterpreting(false); }, [selected?.id]);
-  const generateInterpretation = async () => { if (!selected) return; setInterpreting(true); try { setInterpretation(await fetchApi<ClusterInterpretationResponse>(`/architecture-graph/clusters/${encodeURIComponent(selected.id)}/interpretation`, { method: 'POST' })); } catch { setInterpretation({ analysis_run_id: selected.analysis_run_id, cluster_id: selected.id, status: 'unavailable' }); } finally { setInterpreting(false); } };
+  useEffect(() => { setInterpretation(null); setInterpreting(false); setInterpretationFailure(null); }, [selected?.id]);
+  const generateInterpretation = async () => {
+    if (!selected) return;
+    setInterpreting(true);
+    setInterpretationFailure(null);
+    try {
+      setInterpretation(await fetchApi<ClusterInterpretationResponse>(`/architecture-graph/clusters/${encodeURIComponent(selected.id)}/interpretation`, { method: 'POST' }));
+    } catch (error) {
+      setInterpretation(null);
+      setInterpretationFailure(isBackendUnreachable(error) ? 'backend_unreachable' : 'request_failed');
+    } finally {
+      setInterpreting(false);
+    }
+  };
 
   const collapseButton = (
     <button
@@ -50,6 +67,13 @@ export default function ArchitectureGraphInspector({ node, onEnter, onExpand, sc
   if (!scoped) return <aside className="architecture-graph-inspector" aria-label="Architecture graph inspector">{collapseButton}</aside>;
 
   if (!selected || !node) {
+    // Inside an entered scope, the scope's OWN internal relation counts
+    // are the real resolved relations among the members on screen — they
+    // are part of the honest relation total, not zero.
+    const scopeInternal = scopeGroupId
+      ? scoped.internal_relation_counts.filter((value) => value.group_id === scopeGroupId)
+      : [];
+    const scopeInternalTotal = scopeInternal.reduce((count, value) => count + value.member_relation_count, 0);
     return (
       <aside className="architecture-graph-inspector" aria-label="Architecture graph inspector">
         {collapseButton}
@@ -59,8 +83,14 @@ export default function ArchitectureGraphInspector({ node, onEnter, onExpand, sc
         <dl>
           <div><dt>Modules</dt><dd>{scoped.groups.filter((group) => !group.parent_group_id).reduce((count, group) => count + group.recursive_module_count, 0)}</dd></div>
           <div><dt>Regions</dt><dd>{scoped.groups.filter((group) => !group.parent_group_id).length}</dd></div>
-          <div><dt>Relations</dt><dd>{scoped.aggregate_edges.length}</dd></div>
+          <div><dt>Relations</dt><dd>{scoped.aggregate_edges.length + scopeInternalTotal}</dd></div>
         </dl>
+        {scopeInternal.length > 0 && (
+          <section>
+            <h3>Internal relations in this scope</h3>
+            {scopeInternal.map((value) => <p key={value.relation_kind}>{value.relation_kind} · {value.member_relation_count}</p>)}
+          </section>
+        )}
         <p className="architecture-graph-inspector__hint"><Network size={15} /> Nothing here is inferred — every edge is a sum of real imports, calls and inheritance.</p>
       </aside>
     );
@@ -105,8 +135,16 @@ export default function ArchitectureGraphInspector({ node, onEnter, onExpand, sc
             <p className="architecture-graph-inspector__copy">Derived mechanically from resolved source relationships.</p>
             <div className="ai-interpretation-card ai-interpretation-card--empty">
               <p className="ai-interpretation-card__label"><Sparkles size={12} /> <span>AI interpretation</span></p>
-              <button type="button" onClick={() => void generateInterpretation()} disabled={interpreting}>{interpreting ? 'Generating...' : 'Generate interpretation'}</button>
+              <button type="button" onClick={() => void generateInterpretation()} disabled={interpreting}>
+                {interpreting ? 'Generating...' : interpretationFailure ? 'Retry' : 'Generate interpretation'}
+              </button>
               {interpretation?.status === 'unavailable' && <p className="architecture-graph-inspector__copy architecture-graph-inspector__copy--muted">No model configured. Analysis is unaffected.</p>}
+              {interpretationFailure === 'backend_unreachable' && (
+                <p className="architecture-graph-inspector__copy architecture-graph-inspector__copy--error" role="alert">{BACKEND_UNREACHABLE_MESSAGE}</p>
+              )}
+              {interpretationFailure === 'request_failed' && (
+                <p className="architecture-graph-inspector__copy architecture-graph-inspector__copy--error" role="alert">The interpretation request failed. The deterministic cluster data above is unaffected — retry when ready.</p>
+              )}
             </div>
           </>
         )}
@@ -142,6 +180,14 @@ export default function ArchitectureGraphInspector({ node, onEnter, onExpand, sc
           <div><dt>Origin</dt><dd className="architecture-graph-inspector__origin">Source file</dd></div>
         </dl>
         <p className="architecture-graph-inspector__copy">A single analyzed source module. Its relations are counted in the containing {parent?.kind === 'relation_cluster' ? 'cluster' : 'region'} aggregates above this level.</p>
+        {onFocusEntity && (
+          <div className="architecture-graph-inspector__actions">
+            <button type="button" onClick={() => onFocusEntity(node)}>
+              <ArrowUpRight size={15} /> Focus this module
+            </button>
+          </div>
+        )}
+        <p className="architecture-graph-inspector__hint">Focus shows what depends on this module and what it depends on, from real recovered relations, with its architectural statements underneath.</p>
       </aside>
     );
   }

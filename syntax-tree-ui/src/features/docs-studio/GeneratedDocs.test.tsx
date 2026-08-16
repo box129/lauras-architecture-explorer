@@ -21,6 +21,10 @@ vi.mock('../../api/client', () => {
   return {
     fetchApi: (...args: unknown[]) => fetchApiMock(...args),
     ApiError: MockApiError,
+    BACKEND_UNREACHABLE_MESSAGE: 'The analysis service is not reachable. Start the backend (port 8000) and retry.',
+    isBackendUnreachable: (error: unknown) =>
+      (error instanceof MockApiError && (error.status === 0 || error.status === 502 || error.status === 504))
+      || error instanceof TypeError,
   };
 });
 

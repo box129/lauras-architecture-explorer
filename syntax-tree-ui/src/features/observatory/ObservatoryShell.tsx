@@ -372,6 +372,16 @@ export default function ObservatoryShell() {
     setGraphSelectedNode(node);
   }, []);
 
+  // Entity Focus from the deterministic graph (live-audit repair): an
+  // explicit "Focus this module" action routes the module's real id
+  // through the lens selection, which resolves it via the map node API
+  // and opens the incoming ▸ entity ▸ outgoing surface. Ordinary graph
+  // clicks stay local (selectGraphNode) exactly as before.
+  const focusEntity = useCallback((node: ObservatoryNode) => {
+    setGraphSelectedNode(null);
+    lens.selectNode(node);
+  }, [lens]);
+
   const enterNode = (node: ObservatoryNode, selectOnly = false) => {
     setGraphSelectedNode(node);
     lens.enterNode(node, selectOnly);
@@ -682,6 +692,7 @@ export default function ObservatoryShell() {
             node={graphSelectedNode ?? lens.selectedNode}
             onEnter={enterNode}
             onExpand={(node) => setRequestedGraphExpansion(node.id)}
+            onFocusEntity={focusEntity}
             scopeGroupId={lens.lensPath.at(-1) ?? null}
           />
         ) : (

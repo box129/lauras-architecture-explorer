@@ -152,12 +152,20 @@ export default function ArchitectureGraphOverview(props: { runId: string | null;
   const scoped = useMemo(() => data ? architectureGraphScope(data, props.scopeGroupId) : null, [data, props.scopeGroupId]);
   if (error || !scoped) return null;
   const summary = summarizeArchitectureGraph(scoped);
+  // Inside an entered scope, its own internal relation counts describe the
+  // real relations among the members on screen (live-audit defect 6).
+  const scopeInternalTotal = props.scopeGroupId
+    ? scoped.internal_relation_counts
+        .filter((value) => value.group_id === props.scopeGroupId)
+        .reduce((count, value) => count + value.member_relation_count, 0)
+    : 0;
   const summaryLine = [
     `${summary.sourceModules} source module${summary.sourceModules === 1 ? '' : 's'}`,
     props.scopeGroupId ? null : `${summary.topLevelRegions} top-level region${summary.topLevelRegions === 1 ? '' : 's'}`,
     summary.sections > 0 ? `${summary.sections} section${summary.sections === 1 ? '' : 's'}` : null,
     summary.structuralClusters > 0 ? `${summary.structuralClusters} structural cluster${summary.structuralClusters === 1 ? '' : 's'}` : null,
     summary.ungroupedModules > 0 ? `${summary.ungroupedModules} ungrouped module${summary.ungroupedModules === 1 ? '' : 's'}` : null,
+    scopeInternalTotal > 0 ? `${scopeInternalTotal} internal relation${scopeInternalTotal === 1 ? '' : 's'}` : null,
   ].filter(Boolean).join(' · ');
   return <main className="obs-canvas obs-canvas--react-flow architecture-graph-overview" aria-label="Architecture map"><ReactFlowProvider><GraphSurface {...props} data={scoped} /></ReactFlowProvider><div className="architecture-graph-overview__hint">{summaryLine}</div></main>;
 }

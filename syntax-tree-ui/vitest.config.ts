@@ -5,6 +5,12 @@ import react from '@vitejs/plugin-react'
 // the architectural-explanation slice is fully additive to the existing project.
 export default defineConfig({
   plugins: [react()],
+  define: {
+    // Mirrors vite.config.ts's build stamp so components that render it
+    // stay testable without the git-derived value.
+    __BUILD_COMMIT__: JSON.stringify('test'),
+    __BUILD_WORKSPACE__: JSON.stringify('test-workspace'),
+  },
   test: {
     environment: 'jsdom',
     globals: true,

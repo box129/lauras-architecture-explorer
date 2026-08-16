@@ -206,6 +206,9 @@ class ArchitectureMapProjector:
         at a node the UI can render as a definite neighbor, so it is
         skipped entirely here -- never upgraded to resolved fact.
         """
+        component = self._components.get(node_id)
+        if component is not None and getattr(component, "kind", None) == "module":
+            return self._module_neighborhood(node_id)
         relations = self._store.get_relations(self._job.run_id)
         dependencies: dict[str, ArchitectureMapNode] = {}
         dependents: dict[str, ArchitectureMapNode] = {}
@@ -225,6 +228,51 @@ class ArchitectureMapProjector:
                 dependents[other.id] = other
                 edge = self._neighborhood_edge(relation, source=other.id, target=node_id)
                 edges[edge.id] = edge
+        return tuple(dependencies.values()), tuple(dependents.values()), tuple(edges.values())
+
+    def _module_neighborhood(
+        self, node_id: str
+    ) -> tuple[tuple[ArchitectureMapNode, ...], tuple[ArchitectureMapNode, ...], tuple[ArchitectureMapEdge, ...]]:
+        """Module-level Entity Focus: the SAME persisted, resolved symbol
+        relations the symbol branch above uses, aggregated to the modules
+        the endpoint symbols live in (via each symbol's own file path --
+        the identical mapping the deterministic architecture-graph
+        projector uses). Nothing is inferred: every rendered edge is
+        backed by a real recovered relation; parallel relations of the
+        same kind between one module pair collapse onto the first
+        relation's edge/span rather than repeating."""
+        from syntax_tree_refurbished.app.analysis.static_structure import module_component_id
+
+        symbols = self._store.get_symbols(self._job.run_id)
+        symbol_to_module = {
+            symbol.id: module_component_id(self._job.run_id, symbol.path) for symbol in symbols
+        }
+        dependencies: dict[str, ArchitectureMapNode] = {}
+        dependents: dict[str, ArchitectureMapNode] = {}
+        edges: dict[tuple[str, str, str], ArchitectureMapEdge] = {}
+        for relation in self._store.get_relations(self._job.run_id):
+            if not relation.target_entity_id:
+                continue
+            source_module = symbol_to_module.get(relation.source_entity_id)
+            target_module = symbol_to_module.get(relation.target_entity_id)
+            if not source_module or not target_module or source_module == target_module:
+                continue
+            if source_module == node_id:
+                other = self._components.get(target_module)
+                if other is None:
+                    continue
+                dependencies[target_module] = self._component_node(other)
+                key = (node_id, target_module, relation.relation_kind)
+                if key not in edges:
+                    edges[key] = self._neighborhood_edge(relation, source=node_id, target=target_module)
+            elif target_module == node_id:
+                other = self._components.get(source_module)
+                if other is None:
+                    continue
+                dependents[source_module] = self._component_node(other)
+                key = (source_module, node_id, relation.relation_kind)
+                if key not in edges:
+                    edges[key] = self._neighborhood_edge(relation, source=source_module, target=node_id)
         return tuple(dependencies.values()), tuple(dependents.values()), tuple(edges.values())
 
     def _neighborhood_edge(self, relation: ObservedProgramRelation, *, source: str, target: str) -> ArchitectureMapEdge:

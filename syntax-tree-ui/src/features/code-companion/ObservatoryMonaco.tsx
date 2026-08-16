@@ -1,5 +1,5 @@
 import Editor, { useMonaco, type OnMount } from '@monaco-editor/react';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { editor as monacoEditor } from 'monaco-editor';
 import type {
   FileContentResponse,
@@ -68,8 +68,15 @@ export default function ObservatoryMonaco({ fileContent, highlights, activeSpanI
     monaco.editor.setTheme('syntax-tree-observatory');
   }, [monaco]);
 
+  // Monaco mounts asynchronously (lazy loader); a ref mutation alone never
+  // re-runs the decoration/reveal effects, so when data arrived before the
+  // editor the source pane stayed parked at line 1 instead of the cited
+  // span (live-audit defect 5). Mounting flips real state so both effects
+  // re-run against the now-present editor.
+  const [editorMounted, setEditorMounted] = useState(false);
   const handleMount: OnMount = useCallback((editor) => {
     editorRef.current = editor;
+    setEditorMounted(true);
   }, []);
 
   useEffect(() => {
@@ -97,7 +104,7 @@ export default function ObservatoryMonaco({ fileContent, highlights, activeSpanI
         },
       };
     }));
-  }, [activeSpanId, highlights]);
+  }, [activeSpanId, editorMounted, highlights]);
 
   useEffect(() => {
     const editor = editorRef.current;
@@ -105,7 +112,7 @@ export default function ObservatoryMonaco({ fileContent, highlights, activeSpanI
     const target = highlights.find((highlight) => highlight.span_id === activeSpanId) ?? highlights[0];
     if (!target) return;
     editor.revealLineInCenter(target.start_line, 0);
-  }, [activeSpanId, fileContent.file_path, highlights]);
+  }, [activeSpanId, editorMounted, fileContent.file_path, highlights]);
 
   return (
     <Editor

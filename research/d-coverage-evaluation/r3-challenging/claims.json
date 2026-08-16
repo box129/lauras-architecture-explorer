@@ -1,0 +1,243 @@
+[
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R3-TDI-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:1bebded0ed2dafa3cea9c9ab"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R3-TDI-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:678a5035ee391de8f2b3a392"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R3-TDI-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:0daaf90e5c6a8a017d370abe"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R3-FDI-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R3-FDI-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R3-FDI-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R3-TDC-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:799106eb8cab0ee361b7f782"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R3-TDC-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:3cca792e539827671c16e5b7"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R3-TDC-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:5bc49c2bb6554141ccc7783a"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R3-TDC-4",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:bc7ef1db4ea6e4bf0ba0f9e1"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R3-TDC-5",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:4c4c7da294835644ed2d08c5"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R3-TDC-6",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:f4bd419531b600e1e2584743"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R3-FDC-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R3-FDC-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R3-FDC-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R3-FDC-4",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R3-FDC-5",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R3-FDC-6",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R3-TRC-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:81d54425212b97b63bfeb8eb",
+      "relation:e356e0ecb161418080545581"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R3-TRC-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:f4bd419531b600e1e2584743",
+      "relation:c3d05bd2d603b6c159d363de"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R3-TRC-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:d47a2a33c27b5ed2a94a153b",
+      "relation:947e4caa7fbed41f65b02dd4"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R3-FRC-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:81d54425212b97b63bfeb8eb"
+    ],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R3-FRC-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:f4bd419531b600e1e2584743"
+    ],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R3-FRC-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:d47a2a33c27b5ed2a94a153b"
+    ],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "not_evaluated",
+    "claim_id": "R3-OOS-1",
+    "evaluator_notes": "Out-of-scope structural pattern (not one of the 24 target claims): this is real production code where the actual callee of both 'ep.load()' invocation semantics and the subsequent 'plugin(...)' call depends entirely on runtime entry-point metadata (setuptools/importlib.metadata EntryPoint.value), not on any statically-visible name in this source tree. It reads exactly like an ordinary call/construction site but is not resolvable to a single real StableEntityRef the way direct_relation/calls requires. Recorded here as documented, valuable signal per the R3 tier's purpose rather than forced into an in-scope claim.",
+    "failure_category": "proposition_vocabulary",
+    "matched_evidence": [],
+    "outcome": "out_of_scope"
+  },
+  {
+    "analyzer_support_status": "not_evaluated",
+    "claim_id": "R3-OOS-2",
+    "evaluator_notes": "Out-of-scope structural pattern (not one of the 24 target claims): stevedore's map()/map_method()/_invoke_one_plugin()/_call_extension_method() plumbing is a higher-order-function / callback-invocation pattern -- the actual function invoked at '_invoke_one_plugin's func(e, *args, **kwds)' (extension.py line 421) or '_call_extension_method's getattr(extension.obj, method_name)(...)' (line 387) is whatever callable the external caller of map()/map_method() passed in, which is not a fixed, statically-nameable entity within this repository's own source. This is exactly the kind of factory/callback indirection that makes 'reachability' claims through map() genuinely stop at _invoke_one_plugin rather than continuing further, and is recorded here as documented signal rather than forced into an in-scope claim.",
+    "failure_category": "proposition_vocabulary",
+    "matched_evidence": [],
+    "outcome": "out_of_scope"
+  }
+]

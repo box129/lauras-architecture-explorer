@@ -1,0 +1,343 @@
+[
+  {
+    "claim_id": "R1-TDC-1",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:5cc717562a5882e7ab67ca0a"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDC-2",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:cdee843c8fcb6588a0cc2967"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDC-3",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:f64a2d7525fe0d627179a178"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDC-4",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:bd54d7044ef6f86373a58ec0"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDC-5",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:1c8f680332c5ed739b034452"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDC-6",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:31827b3e078f57140f5ecf20"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDI-1",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:fcc4da58a5740be5a661e7f7"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDI-2",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:0b2177acce684d7ba7699542"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDI-3",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:9738fd1b0e33c5ef24b2ffad"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TRC-1",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:3da3f190430a9b8a7a014eaa",
+      "relation:cdee843c8fcb6588a0cc2967"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TRC-2",
+    "outcome": "incorrect_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": "",
+    "diagnostics": {
+      "claim_id": "R1-TRC-2",
+      "subject_ref": {
+        "file_path": "tenacity/before.py",
+        "qualified_name": "before_log.log_it",
+        "kind": "function"
+      },
+      "object_ref": {
+        "file_path": "tenacity/_utils.py",
+        "qualified_name": "get_callback_name",
+        "kind": "function"
+      },
+      "path_refs": [
+        {
+          "file_path": "tenacity/before.py",
+          "qualified_name": "before_log.log_it",
+          "kind": "function"
+        },
+        {
+          "file_path": "tenacity/__init__.py",
+          "qualified_name": "RetryCallState.get_fn_name",
+          "kind": "method"
+        },
+        {
+          "file_path": "tenacity/_utils.py",
+          "qualified_name": "get_callback_name",
+          "kind": "function"
+        }
+      ],
+      "outgoing_relations_from_subject": [
+        {
+          "relation_kind": "calls",
+          "source_entity_id": "symbol:a707793561a590ec784be57b",
+          "target_entity_id": null,
+          "resolution_status": "unresolved",
+          "target_reference": "retry_state.get_fn_name",
+          "resolution_basis": null,
+          "span_path": "tenacity/before.py",
+          "span_start_line": 35,
+          "span_end_line": 35
+        },
+        {
+          "relation_kind": "calls",
+          "source_entity_id": "symbol:a707793561a590ec784be57b",
+          "target_entity_id": null,
+          "resolution_status": "unresolved",
+          "target_reference": "logger.log",
+          "resolution_basis": null,
+          "span_path": "tenacity/before.py",
+          "span_start_line": 36,
+          "span_end_line": 40
+        },
+        {
+          "relation_kind": "calls",
+          "source_entity_id": "symbol:a707793561a590ec784be57b",
+          "target_entity_id": null,
+          "resolution_status": "unresolved",
+          "target_reference": "_utils.to_ordinal",
+          "resolution_basis": null,
+          "span_path": "tenacity/before.py",
+          "span_start_line": 39,
+          "span_end_line": 39
+        }
+      ],
+      "incoming_relations_to_object": [
+        {
+          "relation_kind": "calls",
+          "source_entity_id": "symbol:2cd876038d69267e08dfdcc2",
+          "target_entity_id": "symbol:4b72d90bde38bfa0a06fb48b",
+          "resolution_status": "resolved",
+          "target_reference": null,
+          "resolution_basis": null,
+          "span_path": "tenacity/__init__.py",
+          "span_start_line": 630,
+          "span_end_line": 630
+        }
+      ],
+      "per_hop": [
+        {
+          "left": "symbol:a707793561a590ec784be57b",
+          "right": "symbol:2cd876038d69267e08dfdcc2",
+          "relations_from_left": [
+            {
+              "relation_kind": "calls",
+              "source_entity_id": "symbol:a707793561a590ec784be57b",
+              "target_entity_id": null,
+              "resolution_status": "unresolved",
+              "target_reference": "retry_state.get_fn_name",
+              "resolution_basis": null,
+              "span_path": "tenacity/before.py",
+              "span_start_line": 35,
+              "span_end_line": 35
+            },
+            {
+              "relation_kind": "calls",
+              "source_entity_id": "symbol:a707793561a590ec784be57b",
+              "target_entity_id": null,
+              "resolution_status": "unresolved",
+              "target_reference": "logger.log",
+              "resolution_basis": null,
+              "span_path": "tenacity/before.py",
+              "span_start_line": 36,
+              "span_end_line": 40
+            },
+            {
+              "relation_kind": "calls",
+              "source_entity_id": "symbol:a707793561a590ec784be57b",
+              "target_entity_id": null,
+              "resolution_status": "unresolved",
+              "target_reference": "_utils.to_ordinal",
+              "resolution_basis": null,
+              "span_path": "tenacity/before.py",
+              "span_start_line": 39,
+              "span_end_line": 39
+            }
+          ]
+        },
+        {
+          "left": "symbol:2cd876038d69267e08dfdcc2",
+          "right": "symbol:4b72d90bde38bfa0a06fb48b",
+          "relations_from_left": [
+            {
+              "relation_kind": "calls",
+              "source_entity_id": "symbol:2cd876038d69267e08dfdcc2",
+              "target_entity_id": "symbol:4b72d90bde38bfa0a06fb48b",
+              "resolution_status": "resolved",
+              "target_reference": null,
+              "resolution_basis": null,
+              "span_path": "tenacity/__init__.py",
+              "span_start_line": 630,
+              "span_end_line": 630
+            },
+            {
+              "relation_kind": "calls",
+              "source_entity_id": "symbol:2cd876038d69267e08dfdcc2",
+              "target_entity_id": null,
+              "resolution_status": "unresolved",
+              "target_reference": "str",
+              "resolution_basis": null,
+              "span_path": "tenacity/__init__.py",
+              "span_start_line": 631,
+              "span_end_line": 631
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "claim_id": "R1-TRC-3",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:fa56f8d9db4717980ef4b573",
+      "relation:aeb2c80b364dd30f15c5050e"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDC-1",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDC-2",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDC-3",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDC-4",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDC-5",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDC-6",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDI-1",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDI-2",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDI-3",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FRC-1",
+    "outcome": "out_of_scope",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "ground_truth_notes": "EXCLUDED_AS_UNCERTAIN (pre-evaluation audit correction, see CORRECTIONS.md). Not one of R1's 23 scored in-scope claims. Retained in this file rather than deleted, to preserve correction history transparently -- the original FALSE reachability assertion this claim_id previously carried is superseded, not silently removed."
+  },
+  {
+    "claim_id": "R1-FRC-2",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FRC-3",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [
+      "relation:fa56f8d9db4717980ef4b573"
+    ],
+    "ground_truth_notes": ""
+  }
+]

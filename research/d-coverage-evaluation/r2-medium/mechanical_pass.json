@@ -1,0 +1,203 @@
+[
+  {
+    "claim_id": "R2-TDI-1",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:37701b381f83faebf06a0f13"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-TDI-2",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:365ac02f7929346a84e67dd4"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-TDI-3",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:fc8f84add296e905e2809709"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-TDC-1",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:35255e24f86c28d8db023571"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-TDC-2",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:e27b9caa219149cc4ce6e0a9"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-TDC-3",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:0ff566d6ed1adc0c90ef51be"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-TDC-4",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:47a3d74689affe26e8e1cce4"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-TDC-5",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:4aac3fad99a1753395049d0a"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-TDC-6",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:92e3f6b457b152bde6eebc7c"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-TRC-1",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:56fd13bb43888d9570ebc3ec",
+      "relation:92e3f6b457b152bde6eebc7c"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-TRC-2",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:92e3f6b457b152bde6eebc7c",
+      "relation:e27b9caa219149cc4ce6e0a9"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-TRC-3",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:0ff566d6ed1adc0c90ef51be",
+      "relation:47a3d74689affe26e8e1cce4"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-FDC-1",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-FDC-2",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-FDC-3",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-FDC-4",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-FDC-5",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-FDC-6",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-FDI-1",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-FDI-2",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-FDI-3",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-FRC-1",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [
+      "relation:92e3f6b457b152bde6eebc7c"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-FRC-2",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [
+      "relation:0ff566d6ed1adc0c90ef51be"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R2-FRC-3",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [
+      "relation:56fd13bb43888d9570ebc3ec"
+    ],
+    "ground_truth_notes": ""
+  }
+]

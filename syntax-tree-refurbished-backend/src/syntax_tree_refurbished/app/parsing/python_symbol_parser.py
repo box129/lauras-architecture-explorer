@@ -20,7 +20,12 @@ def parse_python_symbols(reader: SourceReader, file: FileRecord, run_id: str) ->
     symbols: list[ParsedSymbol] = []
     module_parent: str | None = None
 
-    def visit_body(body: list[ast.stmt], parent_name: str = "", parent_id: str | None = None) -> None:
+    def visit_body(
+        body: list[ast.stmt],
+        parent_name: str = "",
+        parent_id: str | None = None,
+        parent_is_class: bool = False,
+    ) -> None:
         for node in body:
             if isinstance(node, ast.ClassDef):
                 symbol = _symbol(
@@ -38,9 +43,12 @@ def parse_python_symbols(reader: SourceReader, file: FileRecord, run_id: str) ->
                     parent_id=parent_id,
                 )
                 symbols.append(symbol)
-                visit_body(node.body, _join_name(parent_name, node.name), symbol.id)
+                visit_body(node.body, _join_name(parent_name, node.name), symbol.id, parent_is_class=True)
             elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                kind = "method" if parent_name else "function"
+                # "method" only when the immediate lexical parent is a class
+                # body; a def nested inside another def (or at module scope)
+                # is a plain function regardless of how deep it is nested.
+                kind = "method" if parent_is_class else "function"
                 signature = _function_signature(node)
                 symbol = _symbol(
                     reader=reader,
@@ -57,7 +65,7 @@ def parse_python_symbols(reader: SourceReader, file: FileRecord, run_id: str) ->
                     parent_id=parent_id or module_parent,
                 )
                 symbols.append(symbol)
-                visit_body(node.body, _join_name(parent_name, node.name), symbol.id)
+                visit_body(node.body, _join_name(parent_name, node.name), symbol.id, parent_is_class=False)
 
     visit_body(tree.body)
     return tuple(symbols)

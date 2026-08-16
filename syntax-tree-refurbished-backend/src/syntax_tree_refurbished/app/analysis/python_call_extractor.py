@@ -165,6 +165,55 @@ What this extractor resolves ("resolved" / "partial"), and how
   third strictly additive fallback, attempted only when the ordinary
   same-class ``self.method()`` check above already left the call site
   ``"unresolved"``.
+- ``self.method()`` inside a function *nested* (at any depth) inside a
+  class method, when ``self`` is genuinely closure-captured from that
+  enclosing method -- see "Closure-captured ``self`` resolution" below.
+
+Closure-captured ``self`` resolution
+--------------------------------------------------------------------------
+A function nested inside a class method is NOT itself a method (it gets
+``current_class=None`` -- see ``_process_function``), but Python's lexical
+scoping means a bare ``self`` in its body can still deterministically
+refer to the enclosing method's own ``self`` parameter, via an ordinary
+closure capture:
+
+    class C:
+        def wraps(self, f):
+            def wrapped_f(*args, **kw):
+                copy = self.copy()   # <- C's own `self`, captured
+
+``self.copy()`` there resolves exactly like the same call written directly
+in the method body (same same-class ``methods`` lookup, plain
+``resolution_status="resolved"``, no ``resolution_basis``), but ONLY when
+the capture is provably unambiguous. The binding is REFUSED -- leaving the
+call exactly as before, an ordinary unresolved name -- whenever any of
+these hold (see ``_nested_closure_self_class``):
+
+- the nested function declares its own parameter named ``self`` (any
+  slot: positional, keyword-only, ``*args``/``**kwargs``);
+- the nested function rebinds ``self`` locally in any form (assignment,
+  ``del``, ``global``/``nonlocal``, a nested def/class/import/except/match
+  binding of the name -- deliberately over-inclusive, refusal-only);
+- lexical ownership is ambiguous: any scope between the method and the
+  nested function that is not itself a validated self-capturing function
+  (e.g. an intervening class body) breaks the chain, and so does the
+  enclosing method rebinding ``self`` in its own scope;
+- the enclosing scope is not a class method with a valid ``self``
+  binding: its first positional parameter must literally be named
+  ``self`` and it must not be decorated ``staticmethod``/``classmethod``.
+
+Parameter *type annotations* are never consulted -- an annotation is a
+claim about a value, not an observed binding, and resolving through one
+would be exactly the fabrication this extractor refuses everywhere else
+(so ``retry_state.get_fn_name()`` with ``retry_state: RetryCallState``
+stays unresolved on purpose). The captured ``self`` enables ONLY the
+direct same-class ``self.method()`` lookup: none of the additive fallbacks
+below (``constructor_binding``, ``direct_construction``,
+``inherited_self_method``, ``static_super``) fire from a nested function,
+exactly as before -- ``current_class`` remains ``None`` there, and
+``super()`` in particular MUST stay refused (zero-argument ``super()``
+raises at runtime in a function nested inside a method; the ``__class__``
+cell belongs to defs declared directly in the class body).
 
 Constructor-binding fallback resolution (``resolution_basis="constructor_binding"``)
 --------------------------------------------------------------------------------------
@@ -388,7 +437,7 @@ from syntax_tree_refurbished.core.models.program_relation import (
 )
 
 EXTRACTOR_NAME = "python_call_extractor"
-EXTRACTOR_VERSION = "0.5.0"
+EXTRACTOR_VERSION = "0.6.0"
 
 _PARTIAL_VAR_TRACKING_CONFIDENCE = 0.8
 
@@ -870,6 +919,18 @@ class _Ctx:
     scope (e.g. a nested ``def`` or a locally-defined class) -- checked
     before module top-level names, mirroring Python's own name lookup
     (local scope before module scope)."""
+    closure_self_class: _ClassInfo | None = None
+    """Set ONLY for a function nested (at any depth) inside a class method
+    when ``self`` in this function's body deterministically refers to the
+    enclosing method's own ``self`` parameter -- i.e. it is genuinely
+    captured from that enclosing lexical scope, with no scope on the chain
+    rebinding or shadowing it (see module docstring, "Closure-captured
+    ``self`` resolution", and ``_nested_closure_self_class`` for the exact
+    refusal conditions). ``None`` everywhere else: directly inside a method
+    (``current_class`` covers that case), at module scope, and for any
+    nested function where the capture is not provably safe. Mutually
+    exclusive with ``current_class`` by construction (a scope is either a
+    method itself or a nested function, never both)."""
 
 
 def _unparse(node: ast.AST) -> str:
@@ -938,8 +999,18 @@ def _resolve_call(func_expr: ast.expr, ctx: _Ctx) -> tuple[str, str | None, floa
         value = func_expr.value
         attr = func_expr.attr
 
-        if isinstance(value, ast.Name) and value.id == "self" and ctx.current_class is not None:
-            method_qn = ctx.current_class.methods.get(attr)
+        if isinstance(value, ast.Name) and value.id == "self" and (
+            ctx.current_class is not None or ctx.closure_self_class is not None
+        ):
+            # `self` either is the current method's own first parameter
+            # (current_class) or is deterministically captured from the
+            # enclosing method's scope by a nested function
+            # (closure_self_class -- see module docstring, "Closure-captured
+            # `self` resolution"). Both bind `self` to an instance of the
+            # same statically-known class, so the same same-class method
+            # lookup applies.
+            owner_class = ctx.current_class if ctx.current_class is not None else ctx.closure_self_class
+            method_qn = owner_class.methods.get(attr)
             if method_qn is not None:
                 return ("resolved", method_qn, None)
             return ("unresolved", None, None)
@@ -1357,6 +1428,121 @@ def _iter_own_scope(node: ast.AST):
         yield from _iter_own_scope(child)
 
 
+def _has_parameter_named(func_node: ast.FunctionDef | ast.AsyncFunctionDef, name: str) -> bool:
+    """True if ``func_node`` declares a parameter of this name anywhere in
+    its signature (positional-only, positional, keyword-only, ``*args`` or
+    ``**kwargs``)."""
+    arguments = func_node.args
+    params = [*arguments.posonlyargs, *arguments.args, *arguments.kwonlyargs]
+    if arguments.vararg is not None:
+        params.append(arguments.vararg)
+    if arguments.kwarg is not None:
+        params.append(arguments.kwarg)
+    return any(param.arg == name for param in params)
+
+
+def _binds_name_in_own_scope(func_node: ast.AST, name: str) -> bool:
+    """True if ``func_node``'s own scope (never a nested function/class/
+    lambda body) binds ``name`` in any way other than as a parameter: an
+    assignment/for/with/walrus Store, a ``del``, a ``global``/``nonlocal``
+    declaration, a nested def/class of that name, an import binding, an
+    ``except ... as`` name, or a match-pattern capture. Deliberately
+    over-inclusive (e.g. comprehension targets, which Python actually
+    scopes separately, still count): this feeds a *refusal* guard, so
+    over-detection can only ever keep a closure binding unused -- never
+    produce a wrong resolution."""
+    for node in _iter_own_scope(func_node):
+        if isinstance(node, ast.Name) and node.id == name and isinstance(node.ctx, (ast.Store, ast.Del)):
+            return True
+        if isinstance(node, (ast.Global, ast.Nonlocal)) and name in node.names:
+            return True
+        if isinstance(node, (*_FUNC_TYPES, ast.ClassDef)) and node.name == name:
+            return True
+        if isinstance(node, ast.alias) and (node.asname or node.name.split(".")[0]) == name:
+            return True
+        if isinstance(node, ast.ExceptHandler) and node.name == name:
+            return True
+        if isinstance(node, (ast.MatchAs, ast.MatchStar)) and node.name == name:
+            return True
+    return False
+
+
+def _is_instance_method_with_self(method_node: ast.FunctionDef | ast.AsyncFunctionDef) -> bool:
+    """True only when ``method_node`` (a def declared directly in a class
+    body) observably binds ``self`` as its own first positional parameter:
+    the first positional (or positional-only) parameter is literally named
+    ``self``, and no ``staticmethod``/``classmethod`` decorator changes what
+    that parameter receives. Purely syntactic -- parameter *type
+    annotations* are never consulted (an annotation is a claim, not an
+    observed binding)."""
+    for decorator in method_node.decorator_list:
+        if isinstance(decorator, ast.Name) and decorator.id in ("staticmethod", "classmethod"):
+            return False
+        if isinstance(decorator, ast.Attribute) and decorator.attr in ("staticmethod", "classmethod"):
+            return False
+    positional = [*method_node.args.posonlyargs, *method_node.args.args]
+    return bool(positional) and positional[0].arg == "self"
+
+
+def _nested_closure_self_class(
+    nested_node: ast.FunctionDef | ast.AsyncFunctionDef,
+    enclosing_node: ast.AST,
+    current_class: _ClassInfo | None,
+    closure_self_class: _ClassInfo | None,
+) -> _ClassInfo | None:
+    """Decide whether ``self`` inside ``nested_node`` (a def declared
+    directly in ``enclosing_node``'s scope) deterministically refers to an
+    enclosing class method's own ``self`` parameter -- and if so, which
+    class it is an instance of. Returns ``None`` (refusal) unless every
+    condition holds; a refusal means the nested function's ``self`` is
+    treated exactly as before this fallback existed (an ordinary unknown
+    name), never a guess.
+
+    Refuses when:
+
+    - the enclosing scope is not a class method with a valid ``self``
+      binding: either ``enclosing_node`` is a def directly in a class body
+      (``current_class``) whose first positional parameter must literally
+      be ``self`` with no ``staticmethod``/``classmethod`` decorator
+      (``_is_instance_method_with_self``), or ``enclosing_node`` is itself
+      a nested function that already carries a validated
+      ``closure_self_class`` -- anything else (module scope, a method
+      without a real ``self``, a class body in between) has no safe
+      ``self`` to capture;
+    - the enclosing method rebinds ``self`` anywhere in its own scope
+      (the captured cell's value would then be whatever the rebinding
+      produced -- lexical ownership becomes ambiguous);
+    - the nested function declares its own parameter named ``self`` (its
+      ``self`` is then a local, not the capture);
+    - the nested function rebinds ``self`` locally in any form
+      (``_binds_name_in_own_scope`` -- assignment, ``del``,
+      ``global``/``nonlocal``, a nested def/class/import/except/match
+      binding of that name).
+
+    Intermediate nested functions on a deeper chain were already validated
+    by this same function when they were entered (their surviving
+    ``closure_self_class`` proves they neither shadow nor rebind ``self``),
+    so passing it through is sound without re-checking them here.
+    """
+    if current_class is not None:
+        if not isinstance(enclosing_node, _FUNC_TYPES):
+            return None
+        if not _is_instance_method_with_self(enclosing_node):
+            return None
+        if _binds_name_in_own_scope(enclosing_node, "self"):
+            return None
+        owner = current_class
+    else:
+        owner = closure_self_class
+    if owner is None:
+        return None
+    if _has_parameter_named(nested_node, "self"):
+        return None
+    if _binds_name_in_own_scope(nested_node, "self"):
+        return None
+    return owner
+
+
 def _infer_var_types(func_node: ast.AST, ctx: _Ctx) -> dict[str, str]:
     """See module docstring, "Variable-type tracking". A name is trusted
     only if every direct assignment to it in this function's own scope
@@ -1659,6 +1845,7 @@ def _process_function(
     current_class: _ClassInfo | None,
     globals_ctx: _GlobalContext,
     run_id: str,
+    closure_self_class: _ClassInfo | None = None,
 ) -> list[ObservedProgramRelation]:
     internal_qualname = module_idx.qualnames[id(func_node)]
     source_symbol = _lookup_real_symbol(internal_qualname, globals_ctx)
@@ -1677,6 +1864,7 @@ def _process_function(
         resolved_imports=resolved_imports,
         globals_ctx=globals_ctx,
         local_defs=local_defs,
+        closure_self_class=closure_self_class,
     )
     var_types = _infer_var_types(func_node, typing_ctx)
     ctx = _Ctx(
@@ -1686,6 +1874,7 @@ def _process_function(
         resolved_imports=resolved_imports,
         globals_ctx=globals_ctx,
         local_defs=local_defs,
+        closure_self_class=closure_self_class,
     )
 
     relations: list[ObservedProgramRelation] = []
@@ -1714,8 +1903,20 @@ def _process_function(
             )
         elif isinstance(node, _FUNC_TYPES):
             # Nested function: its own source entity, not a method of the
-            # enclosing class even if the enclosing scope is a method.
-            relations.extend(_process_function(node, module_idx, None, globals_ctx, run_id))
+            # enclosing class even if the enclosing scope is a method
+            # (current_class is therefore never propagated). What CAN
+            # propagate is a deterministic closure capture of the enclosing
+            # method's `self` -- computed here, with every refusal condition
+            # checked, and None whenever the capture is not provably safe
+            # (see _nested_closure_self_class).
+            nested_closure = _nested_closure_self_class(
+                node, func_node, current_class, closure_self_class
+            )
+            relations.extend(
+                _process_function(
+                    node, module_idx, None, globals_ctx, run_id, closure_self_class=nested_closure
+                )
+            )
         elif isinstance(node, ast.ClassDef):
             relations.extend(_process_class(node, module_idx, globals_ctx, run_id))
 

@@ -92,6 +92,15 @@ For each declared base of a class statement:
   statement -- including simple relative imports) *and* a matching real
   ``ParsedSymbol`` exists for that class, the relation is
   ``resolution_status="resolved"``.
+- A generic-parameterized base, ``class Sub(Base[T])`` (an ``ast.Subscript``
+  base expression), resolves exactly as its origin expression ``Base``
+  would: the subscript arguments are type parameters, not part of the
+  inheritance target's identity (PEP 484/560 -- ``Base[T]`` contributes
+  ``Base`` to the subclass's bases via ``__mro_entries__``). If the origin
+  does not itself trace to an analyzed class (e.g. ``typing.Generic[T]``,
+  ``Protocol[T]``, or any external base), the relation stays
+  ``unresolved`` with the full literal expression (subscript included) as
+  ``target_reference``.
 - Otherwise the relation is ``resolution_status="unresolved"`` with
   ``target_reference`` set to the literal base expression as written (e.g.
   ``"SomeExternalLib.Base"``). This extractor never fabricates a
@@ -161,7 +170,7 @@ from syntax_tree_refurbished.core.models.parsed_symbol import ParsedSymbol
 from syntax_tree_refurbished.core.models.program_relation import ObservedProgramRelation
 
 EXTRACTOR_NAME = "python_inheritance_extractor"
-EXTRACTOR_VERSION = "0.2.0"
+EXTRACTOR_VERSION = "0.3.0"
 
 
 @dataclass(frozen=True)
@@ -569,6 +578,30 @@ def _resolve_base(
             class_registry=class_registry,
             module_path_by_dotted=module_path_by_dotted,
             class_symbols=class_symbols,
+        )
+    if isinstance(base, ast.Subscript):
+        # Generic-parameterized base (PEP 484/560): `class Sub(Base[T])`.
+        # The class actually entered into the subclass's bases at runtime is
+        # the subscript's *origin* expression (`Base`), via
+        # `__class_getitem__`/`__mro_entries__` -- the subscript arguments
+        # are type parameters, not part of the inheritance target's
+        # identity. Resolve the origin through the exact same Name/Attribute
+        # logic above (recursively, so `mod.Base[T]` also works); anything
+        # the origin resolution cannot trace to a real analyzed class still
+        # comes out None, and the caller falls back to `unresolved` with the
+        # full literal base expression (subscript included) as
+        # `target_reference` -- never a guess. A class overriding
+        # `__mro_entries__` to substitute a different base is dynamic
+        # behavior outside this extractor's static model, exactly like
+        # `class Foo(some_factory()):` already is.
+        return _resolve_base(
+            base.value,
+            class_registry=class_registry,
+            local_classes=local_classes,
+            local_imports=local_imports,
+            module_path_by_dotted=module_path_by_dotted,
+            class_symbols=class_symbols,
+            enclosing_qualname=enclosing_qualname,
         )
     return None
 

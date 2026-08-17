@@ -1,4 +1,5 @@
-import { Send, Sparkles } from 'lucide-react';
+import { MessageCircle, Send, Sparkles } from 'lucide-react';
+import { useState } from 'react';
 
 interface QuestionDockProps {
   suggestions: string[];
@@ -7,6 +8,7 @@ interface QuestionDockProps {
   onDraftChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
   loading?: boolean;
+  compact?: boolean;
 }
 
 export default function QuestionDock({
@@ -16,10 +18,13 @@ export default function QuestionDock({
   onDraftChange,
   onSubmit,
   loading = false,
+  compact = false,
 }: QuestionDockProps) {
+  const [expanded, setExpanded] = useState(false);
   const submit = () => {
     if (!loading && draftPrompt.trim()) onSubmit?.(draftPrompt);
   };
+  if (compact && !expanded) return <button className="obs-question-dock obs-question-dock--compact" type="button" onClick={() => setExpanded(true)}><MessageCircle size={16} /> Ask about this architecture…</button>;
   return (
     <form
       className={loading ? 'obs-question-dock obs-question-dock--loading' : 'obs-question-dock'}

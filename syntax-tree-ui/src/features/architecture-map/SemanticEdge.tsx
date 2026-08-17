@@ -1,4 +1,4 @@
-import { BaseEdge, getBezierPath, type EdgeProps } from '@xyflow/react';
+import { BaseEdge, EdgeLabelRenderer, getBezierPath, type EdgeProps } from '@xyflow/react';
 
 export default function SemanticEdge({
   id,
@@ -8,9 +8,10 @@ export default function SemanticEdge({
   targetY,
   sourcePosition,
   targetPosition,
+  markerEnd,
   data,
 }: EdgeProps) {
-  const [edgePath] = getBezierPath({
+  const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
     sourceY,
     targetX,
@@ -19,5 +20,10 @@ export default function SemanticEdge({
     targetPosition,
   });
   const kind = typeof data?.visualKind === 'string' ? data.visualKind : 'dependency';
-  return <BaseEdge id={id} path={edgePath} className={`obs-rf-edge obs-rf-edge--${kind}`} />;
+  const edgeClass = typeof data?.edgeClass === 'string' ? data.edgeClass : '';
+  const label = typeof data?.edgeLabel === 'string' ? data.edgeLabel : null;
+  return <>
+    <BaseEdge id={id} path={edgePath} markerEnd={markerEnd} className={`obs-rf-edge obs-rf-edge--${kind} ${edgeClass}`} />
+    {label && <EdgeLabelRenderer><span className="architecture-graph-edge-label" style={{ transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)` }}>{label}</span></EdgeLabelRenderer>}
+  </>;
 }

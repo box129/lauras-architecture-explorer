@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { useSyntaxTreeStore } from '../../store';
 import { ApiError } from '../../api/client';
+import { readThemePreference, setThemePreference, type ThemePreference } from '../../design/theme';
 import { getArchExplanationSettings, putArchExplanationSettings, testArchExplanationConnection } from './api';
 import { invalidateArchitecturalExplanationCache } from '../architectural-explanation/api';
 import { CONNECTION_TEST_COPY, PROVIDER_OPTIONS } from './types';
@@ -172,6 +173,7 @@ export default function SettingsPanel() {
         </header>
 
         <div className="obs-settings__body">
+          <AppearanceSection />
           <section aria-labelledby="settings-arch-explanation-heading">
             <h3 id="settings-arch-explanation-heading">Architectural Explanations</h3>
             <p className="obs-settings__hint">
@@ -181,6 +183,10 @@ export default function SettingsPanel() {
               decides what is true. Repository analysis and the architecture map work fully without this
               configured.
             </p>
+            <div className="obs-settings__clarity-grid">
+              <div><strong>AI is used for</strong><ul><li>Architectural explanations</li><li>Optional cluster interpretations</li></ul></div>
+              <div><strong>Always deterministic</strong><ul><li>Source parsing and relationship extraction</li><li>Structural grouping and cluster membership</li><li>Evidence verification</li></ul></div>
+            </div>
 
             {loading && <p role="status">Loading current settings&hellip;</p>}
             {loadError && (
@@ -316,9 +322,72 @@ export default function SettingsPanel() {
                 </p>
               </div>
             )}
+
+            {!loading && !loadError && !enabled && (
+              <p className="obs-settings__availability" role="status"><strong>AI features unavailable</strong> Deterministic analysis and architecture exploration still work.</p>
+            )}
           </section>
+          <TechnicalDetailsSection provider={saved?.provider} model={saved?.model} />
         </div>
       </div>
     </div>
+  );
+}
+
+/** Appearance (14_SETTINGS_SPEC): System / Light / Dark, labelled — the
+ * second form of the one theme control (the compact icon group lives in
+ * the header). */
+function AppearanceSection() {
+  const [preference, setPreference] = useState<ThemePreference>(() => readThemePreference());
+  const choose = (value: ThemePreference) => {
+    setThemePreference(value);
+    setPreference(value);
+  };
+  return (
+    <section aria-labelledby="settings-appearance-heading">
+      <h3 id="settings-appearance-heading">Appearance</h3>
+      <div className="obs-settings__theme-row" role="radiogroup" aria-label="Theme preference">
+        {([
+          { value: 'system', label: 'System' },
+          { value: 'light', label: 'Light' },
+          { value: 'dark', label: 'Dark' },
+        ] as const).map(({ value, label }) => (
+          <button
+            key={value}
+            type="button"
+            role="radio"
+            aria-checked={preference === value}
+            className={preference === value ? 'obs-settings__theme-option obs-settings__theme-option--active' : 'obs-settings__theme-option'}
+            onClick={() => choose(value)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      <p className="obs-settings__hint obs-settings__hint--small">
+        System follows your operating system&rsquo;s light or dark preference, and keeps following it when it changes.
+      </p>
+    </section>
+  );
+}
+
+/** Technical details (14_SETTINGS_SPEC): collapsed; where the internal
+ * strings from the vocabulary cleanup live instead of the product UI. */
+function TechnicalDetailsSection({ provider, model }: { provider?: string; model?: string }) {
+  const runId = useSyntaxTreeStore((s) => s.analysisRunId);
+  const repositoryPath = useSyntaxTreeStore((s) => s.analysisRepositoryPath);
+  return (
+    <section aria-labelledby="settings-technical-heading">
+      <details className="obs-settings__technical">
+        <summary id="settings-technical-heading">Technical details</summary>
+        <dl>
+          <div><dt>Run id</dt><dd><code>{runId ?? 'no active run'}</code></dd></div>
+          <div><dt>Repository</dt><dd><code>{repositoryPath ?? '—'}</code></dd></div>
+          <div><dt>Effective provider</dt><dd><code>{provider && provider !== 'off' ? provider : 'none'}</code></dd></div>
+          <div><dt>Effective model</dt><dd><code>{model || '—'}</code></dd></div>
+          <div><dt>Build</dt><dd><code>{__BUILD_WORKSPACE__} @ {__BUILD_COMMIT__}</code></dd></div>
+        </dl>
+      </details>
+    </section>
   );
 }

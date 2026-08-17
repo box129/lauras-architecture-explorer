@@ -525,3 +525,184 @@ class Child(Base):
     assert source_symbol.stable_entity_key != ""
     assert target_symbol.stable_entity_key != ""
     assert source_symbol.stable_entity_key != target_symbol.stable_entity_key
+
+
+# ---------------------------------------------------------------------------
+# Generic-parameterized (ast.Subscript) bases -- intervention A
+# ---------------------------------------------------------------------------
+
+
+def test_generic_subscript_base_same_file_resolved(tmp_path: Path) -> None:
+    """`class Child(Base[T])` resolves to the analyzed class `Base`: the
+    subscript arguments are type parameters, not part of the inheritance
+    target's identity."""
+    source = """
+from typing import TypeVar
+
+T = TypeVar("T")
+
+
+class Base:
+    pass
+
+
+class Child(Base[T]):
+    pass
+"""
+    write(tmp_path / "pkg" / "mod.py", source)
+    job = _job_for(tmp_path, _new_run_id())
+
+    relations = extract_inheritance_relations(job, _symbols_for(job))
+
+    child_symbol = _class_symbol(job, "pkg/mod.py", "Child")
+    base_symbol = _class_symbol(job, "pkg/mod.py", "Base")
+    relation = _only(relations, source_entity_id=child_symbol.id)
+    assert relation.resolution_status == "resolved"
+    assert relation.target_entity_id == base_symbol.id
+    assert relation.target_reference is None
+
+
+def test_generic_subscript_base_cross_file_from_import_resolved(tmp_path: Path) -> None:
+    """The audited real-repository shape: a subclass in one module whose
+    declared base is a `from .sibling import Name` import parameterized
+    with a type variable (`class Child(RemoteBase[T])`)."""
+    write(
+        tmp_path / "pkg" / "base_module.py",
+        """
+from typing import Generic, TypeVar
+
+T = TypeVar("T")
+
+
+class RemoteBase(Generic[T]):
+    pass
+""",
+    )
+    write(
+        tmp_path / "pkg" / "child_module.py",
+        """
+from typing import TypeVar
+
+from pkg.base_module import RemoteBase
+
+T = TypeVar("T")
+
+
+class Child(RemoteBase[T]):
+    pass
+""",
+    )
+    job = _job_for(tmp_path, _new_run_id())
+
+    relations = extract_inheritance_relations(job, _symbols_for(job))
+
+    child_symbol = _class_symbol(job, "pkg/child_module.py", "Child")
+    base_symbol = _class_symbol(job, "pkg/base_module.py", "RemoteBase")
+    relation = _only(relations, source_entity_id=child_symbol.id)
+    assert relation.resolution_status == "resolved"
+    assert relation.target_entity_id == base_symbol.id
+
+    # RemoteBase's own declared base (`Generic[T]`) resolves through the
+    # same subscript handling to... nothing analyzed: `Generic` is external,
+    # so its relation must stay unresolved with the full literal expression
+    # (subscript included) as target_reference -- never a guess.
+    base_own = _only(relations, source_entity_id=base_symbol.id)
+    assert base_own.resolution_status == "unresolved"
+    assert base_own.target_entity_id is None
+    assert base_own.target_reference == "Generic[T]"
+
+
+def test_generic_subscript_module_attribute_origin_resolved(tmp_path: Path) -> None:
+    """`class Child(pkg.base_module.RemoteBase[T])` -- the subscript origin
+    is a dotted-attribute chain off an `import pkg.base_module` binding."""
+    write(
+        tmp_path / "pkg" / "base_module.py",
+        """
+class RemoteBase:
+    pass
+""",
+    )
+    write(
+        tmp_path / "pkg" / "child_module.py",
+        """
+from typing import TypeVar
+
+import pkg.base_module
+
+T = TypeVar("T")
+
+
+class Child(pkg.base_module.RemoteBase[T]):
+    pass
+""",
+    )
+    job = _job_for(tmp_path, _new_run_id())
+
+    relations = extract_inheritance_relations(job, _symbols_for(job))
+
+    child_symbol = _class_symbol(job, "pkg/child_module.py", "Child")
+    base_symbol = _class_symbol(job, "pkg/base_module.py", "RemoteBase")
+    relation = _only(relations, source_entity_id=child_symbol.id)
+    assert relation.resolution_status == "resolved"
+    assert relation.target_entity_id == base_symbol.id
+
+
+def test_subscript_with_unresolvable_origin_stays_unresolved(tmp_path: Path) -> None:
+    """A subscript whose origin is not a plain name/attribute chain (here a
+    call expression) must never resolve -- same rule as the non-subscript
+    `class Foo(some_factory()):` case."""
+    source = """
+class Foo(make_base()[int]):
+    pass
+"""
+    write(tmp_path / "pkg" / "mod.py", source)
+    job = _job_for(tmp_path, _new_run_id())
+
+    relations = extract_inheritance_relations(job, _symbols_for(job))
+
+    relation = _only(relations)
+    assert relation.resolution_status == "unresolved"
+    assert relation.target_entity_id is None
+    assert relation.target_reference == "make_base()[int]"
+
+
+def test_subscript_chain_emits_only_direct_base_relations(tmp_path: Path) -> None:
+    """Abstention analog of the frozen false inheritance claims: in a
+    three-level generic chain A(B[T]), B(C[T]), no A->C relation may ever
+    be emitted -- each class's relation points only at its own directly
+    declared base, so a false 'A inherits C' direct-relation claim keeps
+    abstaining after this change."""
+    source = """
+from typing import TypeVar
+
+T = TypeVar("T")
+
+
+class C:
+    pass
+
+
+class B(C[T]):
+    pass
+
+
+class A(B[T]):
+    pass
+"""
+    write(tmp_path / "pkg" / "mod.py", source)
+    job = _job_for(tmp_path, _new_run_id())
+
+    relations = extract_inheritance_relations(job, _symbols_for(job))
+
+    a = _class_symbol(job, "pkg/mod.py", "A")
+    b = _class_symbol(job, "pkg/mod.py", "B")
+    c = _class_symbol(job, "pkg/mod.py", "C")
+
+    a_rel = _only(relations, source_entity_id=a.id)
+    assert (a_rel.resolution_status, a_rel.target_entity_id) == ("resolved", b.id)
+    b_rel = _only(relations, source_entity_id=b.id)
+    assert (b_rel.resolution_status, b_rel.target_entity_id) == ("resolved", c.id)
+    # No relation -- resolved or otherwise -- may connect A to C directly.
+    assert not [
+        r for r in relations if r.source_entity_id == a.id and r.target_entity_id == c.id
+    ]

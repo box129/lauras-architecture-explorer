@@ -1,0 +1,20 @@
+/* Motion — design/motion.ts. One easing curve for everything. */
+:root {
+  --obs-ease: cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --duration-micro: 120ms; /* @kind other */
+  --duration-layout: 280ms; /* @kind other */
+  --duration-surface: 520ms; /* @kind other */
+  --transition-micro: 120ms cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --transition-layout: 280ms cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --transition-surface: 520ms cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --hover-lift: scale(1.035); /* @kind other */
+  --hover-nudge: translateY(-1px); /* @kind other */
+}
+
+@keyframes observatory-spin { to { transform: rotate(360deg); } }
+@keyframes observatory-edge-flow { to { stroke-dashoffset: -20; } }
+@keyframes observatory-pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}

@@ -1,0 +1,227 @@
+[
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R2-TDI-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:7fc73962a4b9956b713cd2c4"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R2-TDI-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:7b73b8bdec0680894d8b2484"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R2-TDI-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:22cc06cfe16323eae2bb6a95"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R2-TDC-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:4d24e29c648046e025b23b71"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R2-TDC-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:edff18c00a2ee5f9af2438c1"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R2-TDC-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:5caf7a8debba3599ac2e3814"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R2-TDC-4",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:b7ee2d8a0091a6ea7808040e"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R2-TDC-5",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:372354c1d3a273a372626800"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R2-TDC-6",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:b35d7f87ed1bb60326ac67b6"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R2-TRC-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:e9fe3d4d3599db7073097ae5",
+      "relation:b35d7f87ed1bb60326ac67b6"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R2-TRC-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:b35d7f87ed1bb60326ac67b6",
+      "relation:edff18c00a2ee5f9af2438c1"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R2-TRC-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:5caf7a8debba3599ac2e3814",
+      "relation:b7ee2d8a0091a6ea7808040e"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R2-FDC-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R2-FDC-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R2-FDC-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R2-FDC-4",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R2-FDC-5",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R2-FDC-6",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R2-FDI-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R2-FDI-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R2-FDI-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R2-FRC-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:b35d7f87ed1bb60326ac67b6"
+    ],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R2-FRC-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:5caf7a8debba3599ac2e3814"
+    ],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R2-FRC-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:e9fe3d4d3599db7073097ae5"
+    ],
+    "outcome": "correct_abstention"
+  }
+]

@@ -4,7 +4,7 @@ import { openWebuiLandscape } from '../observatory/fixtures/openWebuiLandscape';
 import { openWebuiChildLenses } from '../observatory/fixtures/openWebuiChildLenses';
 import type { ObservatoryLandscapeFixture, ObservatoryNode } from '../observatory/types';
 import type { ArchitectureMapNodeDTO } from './apiTypes';
-import { adaptArchitectureMap, adaptArchitectureNeighborhood, adaptArchitectureScope } from './mapAdapter';
+import { adaptArchitectureMap, adaptArchitectureNeighborhood, adaptArchitectureNode, adaptArchitectureScope } from './mapAdapter';
 import { getArchitectureChildren, getArchitectureNeighborhood, getArchitectureNode, prefetchArchitectureChildren, prefetchArchitectureImplementation } from './lensCache';
 import { pushObservatoryUrlState, readObservatoryUrlState, setObservatoryUrlState } from './lensUrlState';
 import { useArchitectureMap } from './useArchitectureMap';
@@ -224,12 +224,45 @@ export function useArchitectureLens({
     ? lensPath.length > 0 ? apiLandscape : rootLandscape
     : fixtureLandscape;
 
+  // A selection can legitimately name a node that is not in the current
+  // lens landscape at all — e.g. Entity Focus entered from the
+  // deterministic architecture graph, whose module ids exist in the map's
+  // node API but not in the legacy landscape node list. Resolve such an
+  // id through the real `/architecture-map/nodes/{id}` endpoint instead of
+  // silently dropping the selection (live-audit defect: Entity Focus was
+  // unreachable from normal navigation).
+  const [detachedNode, setDetachedNode] = useState<ObservatoryNode | null>(null);
+  useEffect(() => {
+    if (source !== 'api' || !selectedNodeId) {
+      setDetachedNode(null);
+      return;
+    }
+    const inLandscape = landscape?.nodes.some((node) => node.id === selectedNodeId)
+      || landscape?.parentNode?.id === selectedNodeId;
+    if (inLandscape) {
+      setDetachedNode(null);
+      return;
+    }
+    let cancelled = false;
+    getArchitectureNode(selectedNodeId)
+      .then((dto) => {
+        if (!cancelled) setDetachedNode({ ...adaptArchitectureNode(dto), position: { x: 0, y: 0 } });
+      })
+      .catch(() => {
+        if (!cancelled) setDetachedNode(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [landscape, selectedNodeId, source]);
+
   const selectedNode = useMemo(() => {
     if (!selectedNodeId) return null;
     const childNode = landscape?.nodes.find((node) => node.id === selectedNodeId) ?? null;
     if (childNode) return childNode;
-    return landscape?.parentNode && landscape.parentNode.id === selectedNodeId ? landscape.parentNode : null;
-  }, [landscape, selectedNodeId]);
+    if (landscape?.parentNode && landscape.parentNode.id === selectedNodeId) return landscape.parentNode;
+    return detachedNode?.id === selectedNodeId ? detachedNode : null;
+  }, [detachedNode, landscape, selectedNodeId]);
 
   const breadcrumbs = source === 'api'
     ? apiBreadcrumbs(rootLandscape, apiPathNodes)
@@ -317,6 +350,13 @@ export function useArchitectureLens({
   }, [clearLens, lensPath, source, writeState]);
 
   const goBack = useCallback(() => {
+    // Enter records the entered structural node as the selected focal node.
+    // Back from that state must leave the scope, not spend a redundant step
+    // merely clearing selection before the actual scope transition.
+    if (lensPath.length > 0 && selectedNodeId === focalNode?.id) {
+      writeState(lensPath.slice(0, -1), null);
+      return;
+    }
     if (selectedNodeId) {
       writeState(lensPath, null);
       return;
@@ -324,7 +364,7 @@ export function useArchitectureLens({
     if (lensPath.length > 0) {
       writeState(lensPath.slice(0, -1), null);
     }
-  }, [lensPath, selectedNodeId, writeState]);
+  }, [focalNode?.id, lensPath, selectedNodeId, writeState]);
 
   // Browser Back/Forward integration: pushObservatoryUrlState above gives every
   // in-app navigation its own history entry, so a popstate event means the user

@@ -1,0 +1,77 @@
+{
+  "raw_counts": {
+    "total_claims_in_file": 24,
+    "out_of_scope": 1,
+    "scored_claims": 23,
+    "true_claims": 12,
+    "false_claims": 11,
+    "true_supported": 11,
+    "true_abstained": 1,
+    "false_supported": 0,
+    "false_abstained": 11,
+    "resolution_failures": 0
+  },
+  "metrics": {
+    "claim_support_precision": {
+      "value": 1.0,
+      "undefined": false,
+      "numerator": 11,
+      "denominator": 11,
+      "formula": "true_supported / (true_supported + false_supported)"
+    },
+    "claim_support_recall": {
+      "value": 0.9166666666666666,
+      "undefined": false,
+      "numerator": 11,
+      "denominator": 12,
+      "formula": "true_supported / (true_supported + true_abstained)"
+    },
+    "correct_abstention_rate": {
+      "value": 1.0,
+      "undefined": false,
+      "numerator": 11,
+      "denominator": 11,
+      "formula": "false_abstained / (false_abstained + false_supported)"
+    },
+    "unsupported_claim_acceptance_rate": {
+      "value": 0.0,
+      "undefined": false,
+      "numerator": 0,
+      "denominator": 11,
+      "formula": "false_supported / (false_abstained + false_supported)"
+    },
+    "evidence_correctness": {
+      "value": 1.0,
+      "undefined": false,
+      "numerator": 11,
+      "denominator": 11,
+      "formula": "supported claims whose matched_evidence relations are resolved and exactly match the proposition's (subject, relation_kind, object) per hop / all supported claims"
+    },
+    "evidence_completeness": {
+      "value": 1.0,
+      "undefined": false,
+      "numerator": 11,
+      "denominator": 11,
+      "formula": "correct_support claims whose matched_evidence covers every required hop / all correct_support claims"
+    }
+  },
+  "relation_extraction": {
+    "total_relations": 2146,
+    "by_relation_kind": {
+      "calls": 2071,
+      "inherits": 75
+    },
+    "by_resolution_status": {
+      "unresolved": 1481,
+      "resolved": 651,
+      "partial": 14
+    }
+  },
+  "source_symbol_resolution": {
+    "value": 1.0,
+    "undefined": false,
+    "numerator": 28,
+    "denominator": 28,
+    "formula": "unique StableEntityRefs (subject/object/path across in-scope claims) that resolved to a real ParsedSymbol / all unique StableEntityRefs referenced"
+  }
+}

@@ -13,8 +13,12 @@ $BackendDir = Join-Path $WorkspaceRoot "syntax-tree-refurbished-backend"
 $FrontendDir = Join-Path $WorkspaceRoot "syntax-tree-ui"
 $ArtifactDir = Join-Path $WorkspaceRoot "syntax-tree-test-artifacts\local-refurbished-dev"
 $PidFile = Join-Path $ArtifactDir "syntax-tree-refurbished-dev-pids.json"
-$BackendLog = Join-Path $ArtifactDir "backend.log"
-$FrontendLog = Join-Path $ArtifactDir "frontend.log"
+# A previous detached server can outlive its wrapper and retain its output
+# file handle. Per-launch logs avoid making a fresh, port-safe launch fail
+# before either command starts; the exact paths remain in the PID manifest.
+$LaunchStamp = (Get-Date).ToString("yyyyMMdd-HHmmss-fff")
+$BackendLog = Join-Path $ArtifactDir "backend-$LaunchStamp.log"
+$FrontendLog = Join-Path $ArtifactDir "frontend-$LaunchStamp.log"
 
 function Test-IdlePort {
     param(

@@ -8,7 +8,7 @@ interface EvidenceChainViewProps {
 export default function EvidenceChainView({ chain }: EvidenceChainViewProps) {
   return (
     <div className="la-evidence-chain">
-      <h4>Evidence chain ({chain.hop_count} hop{chain.hop_count === 1 ? '' : 's'})</h4>
+      <h4>Evidence relationship · {chain.hop_count} hop{chain.hop_count === 1 ? '' : 's'}</h4>
       {chain.reasoning && <p className="la-evidence-chain__reasoning">{chain.reasoning}</p>}
       {chain.items.length > 0 ? (
         <ul className="obs-evidence-list">

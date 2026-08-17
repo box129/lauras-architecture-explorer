@@ -1,0 +1,194 @@
+[
+  {
+    "claim_id": "R1-TDC-1",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:19343a3c1fb1834c849afaa1"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDC-2",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:5ddf930f6cfb1a7ae9160e40"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDC-3",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:20206f2701682ff4360f63e4"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDC-4",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:85f24b40c0c4684838e1bead"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDC-5",
+    "outcome": "resolution_failed",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "ground_truth_notes": "[auto-suggested failure_category=parser_coverage] StableEntityRef resolution failed: tenacity/__init__.py:BaseRetrying.wraps.wrapped_f (function) -> not_found (0 candidates)"
+  },
+  {
+    "claim_id": "R1-TDC-6",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:8fdbe7d21851df086887b209"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDI-1",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:d8701c7147215a48a93196b4"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDI-2",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:e3d63ad460e2e9b5378a7d18"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TDI-3",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:be3aac335fdb4724720bba66"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TRC-1",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:5db17e2449d1d687c06b1dba",
+      "relation:5ddf930f6cfb1a7ae9160e40"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-TRC-2",
+    "outcome": "resolution_failed",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "ground_truth_notes": "[auto-suggested failure_category=parser_coverage] StableEntityRef resolution failed: tenacity/before.py:before_log.log_it (function) -> not_found (0 candidates); tenacity/before.py:before_log.log_it (function) -> not_found (0 candidates)"
+  },
+  {
+    "claim_id": "R1-TRC-3",
+    "outcome": "correct_support",
+    "analyzer_support_status": "supported",
+    "matched_evidence": [
+      "relation:357d80c5b8faba306ba8c9bf",
+      "relation:13d807fe29f7ecc2326fd36c"
+    ],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDC-1",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDC-2",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDC-3",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDC-4",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDC-5",
+    "outcome": "resolution_failed",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "ground_truth_notes": "[auto-suggested failure_category=parser_coverage] StableEntityRef resolution failed: tenacity/__init__.py:BaseRetrying.wraps.wrapped_f (function) -> not_found (0 candidates)"
+  },
+  {
+    "claim_id": "R1-FDC-6",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDI-1",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDI-2",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FDI-3",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [],
+    "ground_truth_notes": ""
+  },
+  {
+    "claim_id": "R1-FRC-1",
+    "outcome": "out_of_scope",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "ground_truth_notes": "EXCLUDED_AS_UNCERTAIN (pre-evaluation audit correction, see CORRECTIONS.md). Not one of R1's 23 scored in-scope claims. Retained in this file rather than deleted, to preserve correction history transparently -- the original FALSE reachability assertion this claim_id previously carried is superseded, not silently removed."
+  },
+  {
+    "claim_id": "R1-FRC-2",
+    "outcome": "resolution_failed",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "ground_truth_notes": "[auto-suggested failure_category=parser_coverage] StableEntityRef resolution failed: tenacity/before.py:before_log.log_it (function) -> not_found (0 candidates); tenacity/before.py:before_log.log_it (function) -> not_found (0 candidates)"
+  },
+  {
+    "claim_id": "R1-FRC-3",
+    "outcome": "correct_abstention",
+    "analyzer_support_status": "insufficient_evidence",
+    "matched_evidence": [
+      "relation:357d80c5b8faba306ba8c9bf"
+    ],
+    "ground_truth_notes": ""
+  }
+]

@@ -54,14 +54,15 @@ export default function ClaimCard({ claim }: ClaimCardProps) {
               See claimStatus.ts, claimBadgeShortCopy, for why. */}
           <span className="la-claim-card__badge-caption">{claimBadgeShortCopy(claim.support_status)}</span>
         </span>
-        <span className="la-claim-card__statement">{claim.statement}</span>
+        <span className="la-claim-card__statement"><small>Statement</small>{claim.statement}</span>
         <span className="la-claim-card__relation">
-          {claim.proposition.kind.replaceAll('_', ' ')}: {claim.proposition.relation_kind}
+          <small>Status</small>{claim.proposition.kind.replaceAll('_', ' ')}: {claim.proposition.relation_kind}
         </span>
       </button>
 
       {expanded && (
         <div className="la-claim-card__body">
+          <p className="la-claim-card__evidence-label">Evidence</p>
           {isInsufficientEvidence && (
             <p className="la-claim-card__insufficient-copy">{INSUFFICIENT_EVIDENCE_COPY}</p>
           )}

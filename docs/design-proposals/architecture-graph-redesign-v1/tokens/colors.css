@@ -1,0 +1,91 @@
+/* Syntax Tree — Observatory color system.
+   Source of truth: syntax-tree-ui/src/index.css (:root) and
+   syntax-tree-ui/src/design/tokens.ts in box129/lauras-architecture-explorer.
+   Two value sets exist upstream: the CSS ones (contrast-corrected, used for
+   text/borders) and the tokens.ts ones (brighter, used for graph fills).
+   Both are preserved here. */
+:root {
+  /* ── Base surfaces & ink ── */
+  --obs-canvas: #F8F5F1;
+  --obs-paper: #FCFAF7;
+  --obs-white: #FFFFFF;
+  --obs-ink: #1A1916;
+  --obs-stone: #625F59;
+  --obs-stone-soft: #8F8A82; /* tokens.ts stone — decorative only, fails text contrast on paper */
+  --obs-border: #DED8CF;
+
+  /* ── Accents (contrast-corrected, for text/border/icon) ── */
+  --obs-slate-blue: #3D5A80;
+  --obs-citrine: #755D00;
+  --obs-clay: #A0522D;
+  --obs-sage: #4F7142;
+  --obs-muted-red: #873D31;
+
+  /* ── Accents (graph/fill variants from design/tokens.ts) ── */
+  --obs-citrine-fill: #C9A227;
+  --obs-sage-fill: #7A9B68;
+  --obs-muted-red-fill: #B45C4A;
+
+  /* ── Semantic aliases ── */
+  --text-heading: var(--obs-ink);
+  --text-body: color-mix(in srgb, var(--obs-ink) 76%, var(--obs-stone));
+  --text-muted: var(--obs-stone);
+  --text-onsolid: var(--obs-white);
+  --text-link: var(--obs-slate-blue);
+
+  --surface-canvas: var(--obs-canvas);
+  --surface-card: var(--obs-paper);
+  --surface-card-translucent: rgba(252, 250, 247, 0.9);
+  --surface-input: color-mix(in srgb, var(--obs-white) 62%, var(--obs-paper));
+  --surface-sunken: color-mix(in srgb, var(--obs-white) 38%, transparent);
+  --surface-code: #171821;
+
+  --border-default: var(--obs-border);
+  --border-strong: color-mix(in srgb, var(--obs-slate-blue) 62%, var(--obs-border));
+  --border-focus: var(--obs-slate-blue);
+
+  --action-primary-bg: var(--obs-slate-blue);
+  --action-primary-fg: var(--obs-white);
+  --action-primary-bg-hover: color-mix(in srgb, var(--obs-slate-blue) 88%, var(--obs-ink));
+  --action-quiet-bg: rgba(61, 90, 128, 0.055);
+  --action-quiet-bg-hover: rgba(61, 90, 128, 0.09);
+  --action-tint: rgba(61, 90, 128, 0.07);
+
+  /* ── Evidence status (design/status.ts) ── */
+  --status-verified: var(--obs-citrine);
+  --status-partial: var(--obs-clay);
+  --status-insufficient: var(--obs-clay);
+  --status-inferred: var(--obs-stone);
+  --status-candidate: var(--obs-stone);
+  --status-unsupported: var(--obs-muted-red);
+  --status-stale: var(--obs-stone);
+  --status-legacy: var(--obs-stone);
+
+  /* ── Analysis stage states (entry progress panel) ── */
+  --stage-done: var(--obs-sage);
+  --stage-current: var(--obs-slate-blue);
+  --stage-failed: #b91c1c;
+  --stage-skipped: #b45309;
+  --orientation-ready: #047857;
+  --orientation-partial: #b45309;
+  --orientation-failed: #b91c1c;
+
+  /* ── Repo-shape chips (repo-orientation) ── */
+  --chip-signal-bg: #eef2ff;
+  --chip-signal-fg: #3730a3;
+}
+
+/* Deprecated legacy dark workspace (/legacy route, Tailwind @theme upstream).
+   Kept for reference only; never mix with the Observatory palette. */
+.st-legacy {
+  --color-bg: #0F0F1A;
+  --color-surface: #1A1A2E;
+  --color-border: #2A2A3E;
+  --color-primary: #E0E0E8;
+  --color-secondary: #888899;
+  --color-accent: #E94560;
+  --color-info: #42A5F5;
+  --color-success: #4CAF50;
+  --color-warning: #FFA726;
+  --color-interp: #7C4DFF;
+}

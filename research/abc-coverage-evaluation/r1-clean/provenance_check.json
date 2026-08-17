@@ -1,0 +1,154 @@
+[
+  {
+    "claim_id": "R1-TDC-1",
+    "evidence": [
+      {
+        "relation_id": "relation:fdf2e0354675fba9ac00421d",
+        "relation_span": "tenacity/__init__.py:544-544",
+        "span_inside_source_symbol": "python:tenacity/__init__.py::Retrying.__call__ (535-560)",
+        "matches_ground_truth_citation": "tenacity/__init__.py:544-544 (call site `self.begin()` inside Retrying.__call__)",
+        "resolution_basis": "inherited_self_method",
+        "supporting_resolution_spans": [
+          "tenacity/__init__.py:531-531 (inherits relation used to resolve self.method() through a base class)"
+        ]
+      }
+    ]
+  },
+  {
+    "claim_id": "R1-TDC-2",
+    "evidence": [
+      {
+        "relation_id": "relation:ca33365fdebd7031078ef52a",
+        "relation_span": "tenacity/__init__.py:435-435",
+        "span_inside_source_symbol": "python:tenacity/__init__.py::BaseRetrying.iter (434-439)",
+        "matches_ground_truth_citation": "tenacity/__init__.py:435-435 (call site `self._begin_iter(retry_state)` inside BaseRetrying.iter)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R1-TDC-3",
+    "evidence": [
+      {
+        "relation_id": "relation:38251896b0616a60b47c40f0",
+        "relation_span": "tenacity/__init__.py:447-447",
+        "span_inside_source_symbol": "python:tenacity/__init__.py::BaseRetrying._begin_iter (441-456)",
+        "matches_ground_truth_citation": "tenacity/__init__.py:447-447 (call site `self._add_action_func(self.before)` inside BaseRetrying._begin_iter)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R1-TDC-4",
+    "evidence": [
+      {
+        "relation_id": "relation:ed0a8aca08bbd5832d3cee2d",
+        "relation_span": "tenacity/__init__.py:460-460",
+        "span_inside_source_symbol": "python:tenacity/__init__.py::BaseRetrying._post_retry_check_actions (458-468)",
+        "matches_ground_truth_citation": null,
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R1-TDC-6",
+    "evidence": [
+      {
+        "relation_id": "relation:e8e9b4fad608aab07c14c8ce",
+        "relation_span": "tenacity/_utils.py:81-81",
+        "span_inside_source_symbol": "python:tenacity/_utils.py::to_ordinal (80-81)",
+        "matches_ground_truth_citation": "tenacity/_utils.py:81-81 (call site `find_ordinal(pos_num)` inside to_ordinal)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R1-TDI-1",
+    "evidence": [
+      {
+        "relation_id": "relation:3aa9f85198ac9053d36f51e6",
+        "relation_span": "tenacity/retry.py:107-107",
+        "span_inside_source_symbol": "python:tenacity/retry.py::retry_if_exception_type (107-119)",
+        "matches_ground_truth_citation": "tenacity/retry.py:107-107 (class statement `class retry_if_exception_type(retry_if_exception):`)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R1-TDI-2",
+    "evidence": [
+      {
+        "relation_id": "relation:fe7af290c9733fe06aa363cb",
+        "relation_span": "tenacity/wait.py:247-247",
+        "span_inside_source_symbol": "python:tenacity/wait.py::wait_random_exponential (247-276)",
+        "matches_ground_truth_citation": "tenacity/wait.py:247-247 (class statement `class wait_random_exponential(wait_exponential):`)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R1-TDI-3",
+    "evidence": [
+      {
+        "relation_id": "relation:494fd29271700491811180e3",
+        "relation_span": "tenacity/__init__.py:531-531",
+        "span_inside_source_symbol": "python:tenacity/__init__.py::Retrying (531-560)",
+        "matches_ground_truth_citation": "tenacity/__init__.py:531-531 (class statement `class Retrying(BaseRetrying):`)",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R1-TRC-1",
+    "evidence": [
+      {
+        "relation_id": "relation:99e8c7cfb5e54090f97b214f",
+        "relation_span": "tenacity/__init__.py:548-548",
+        "span_inside_source_symbol": "python:tenacity/__init__.py::Retrying.__call__ (535-560)",
+        "matches_ground_truth_citation": "tenacity/__init__.py:548-548 (hop 1 call site: Retrying.__call__ calls self.iter(...) (resolves to BaseRetrying.iter))",
+        "resolution_basis": "inherited_self_method",
+        "supporting_resolution_spans": [
+          "tenacity/__init__.py:531-531 (inherits relation used to resolve self.method() through a base class)"
+        ]
+      },
+      {
+        "relation_id": "relation:ca33365fdebd7031078ef52a",
+        "relation_span": "tenacity/__init__.py:435-435",
+        "span_inside_source_symbol": "python:tenacity/__init__.py::BaseRetrying.iter (434-439)",
+        "matches_ground_truth_citation": "tenacity/__init__.py:435-435 (hop 2 call site: BaseRetrying.iter calls self._begin_iter(...))",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      }
+    ]
+  },
+  {
+    "claim_id": "R1-TRC-3",
+    "evidence": [
+      {
+        "relation_id": "relation:27d23e103759112e69cae326",
+        "relation_span": "tenacity/asyncio/__init__.py:126-126",
+        "span_inside_source_symbol": "python:tenacity/asyncio/__init__.py::AsyncRetrying.__call__ (113-141)",
+        "matches_ground_truth_citation": "tenacity/asyncio/__init__.py:126-126 (hop 1 call site: AsyncRetrying.__call__ calls self.iter(...) (resolves to AsyncRetrying.iter))",
+        "resolution_basis": null,
+        "supporting_resolution_spans": []
+      },
+      {
+        "relation_id": "relation:acc96f0e6de71c790992c725",
+        "relation_span": "tenacity/asyncio/__init__.py:173-173",
+        "span_inside_source_symbol": "python:tenacity/asyncio/__init__.py::AsyncRetrying.iter (172-177)",
+        "matches_ground_truth_citation": "tenacity/asyncio/__init__.py:173-173 (hop 2 call site: AsyncRetrying.iter calls self._begin_iter(...) (resolves to inherited BaseRetrying._begin_iter))",
+        "resolution_basis": "inherited_self_method",
+        "supporting_resolution_spans": [
+          "tenacity/asyncio/__init__.py:75-75 (inherits relation used to resolve self.method() through a base class)"
+        ]
+      }
+    ]
+  }
+]

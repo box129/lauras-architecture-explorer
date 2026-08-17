@@ -1,0 +1,13 @@
+{
+  "protocol_version": "pilot-v1",
+  "ground_truth_freeze_tag": "pilot-v1-ground-truth-frozen",
+  "ground_truth_artifact_hash": "sha256:a3a298b80bfb913ca7d45c3872e867685a23ac2f0b973e0bf7ab901a227b9e53",
+  "system_checkpoint": "0eee4a9",
+  "system_tag": "feasibility-deterministic-provenance-j3",
+  "repository_id": "jd/tenacity",
+  "repository_revision": "26f719dc73d3c5612b9c1b8d18a7883837790ad8",
+  "run_id": "run:74b52314ec854a1fb9dae0f699298756",
+  "python_version": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+  "comparison_note": "ABC coverage evaluation -- NOT pilot-v1 and NOT the frozen D4 comparison; system checkpoint is this repository's backend with interventions A (subscripted generic inheritance bases), B (bare `from . import X` submodule binding), and C (guarded static super() resolution) applied on top of the J3+D4 state.",
+  "system_under_evaluation": "C:\\Users\\LENOVO T14\\Development\\lauras-architecture-explorer-design-review\\syntax-tree-refurbished-backend\\src\\syntax_tree_refurbished\\__init__.py"
+}

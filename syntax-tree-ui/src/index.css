@@ -17,11 +17,21 @@
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Laura's semantic theme tokens (design-system tokens/theme.css).
+   The --obs-* base tokens are the LIGHT palette; the dark scope
+   re-declares the same names with the warm-charcoal dark palette
+   so every Observatory surface re-themes together. Scoping:
+   [data-theme] on <html> is the single resolved theme, written by
+   src/design/theme.ts (light/dark/system preference; `system` is
+   resolved in JS via matchMedia so there is one source of truth).
+   ───────────────────────────────────────────────────────────── */
 :root {
   --obs-canvas: #F8F5F1;
   --obs-paper: #FCFAF7;
   --obs-ink: #1A1916;
   --obs-stone: #625F59;
+  --obs-stone-soft: #8F8A82;
   --obs-border: #DED8CF;
   --obs-slate-blue: #3D5A80;
   --obs-citrine: #755D00;
@@ -30,6 +40,102 @@
   --obs-muted-red: #873D31;
   --obs-white: #FFFFFF;
   --obs-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Surfaces */
+  --bg-app: var(--obs-canvas);
+  --bg-surface: var(--obs-paper);
+  --bg-elevated: var(--obs-white);
+  --bg-code: #171821;
+  --bg-scrim: rgba(26, 25, 22, 0.32);
+
+  /* Action */
+  --action-primary: var(--obs-slate-blue);
+  --action-primary-text: var(--obs-white);
+  --action-primary-hover: color-mix(in srgb, var(--obs-slate-blue) 88%, var(--obs-ink));
+  --action-ghost-hover: rgba(61, 90, 128, 0.08);
+
+  /* L1 structural region: enclosing container, folder-tree icon */
+  --region-bg: color-mix(in srgb, #6B7C93 4%, var(--obs-paper));
+  --region-head-bg: color-mix(in srgb, #6B7C93 10%, var(--obs-paper));
+  --region-border: color-mix(in srgb, #6B7C93 38%, var(--obs-border));
+
+  /* L2 structural cluster: contained relation-derived card, waypoints icon */
+  --structural-cluster-bg: color-mix(in srgb, var(--obs-white) 62%, var(--obs-canvas));
+  --structural-cluster-border: color-mix(in srgb, var(--obs-slate-blue) 26%, var(--obs-border));
+  --structural-cluster-accent: color-mix(in srgb, var(--obs-slate-blue) 62%, var(--obs-stone));
+  --structural-residual-border: color-mix(in srgb, var(--obs-border) 78%, transparent);
+
+  /* L3 AI interpretation: iris — deliberately outside every status palette */
+  --ai-surface: color-mix(in srgb, #6E4B8E 6%, var(--obs-paper));
+  --ai-border: color-mix(in srgb, #6E4B8E 44%, var(--obs-border));
+  --ai-text: #5B3E79;
+  --ai-accent: #6E4B8E;
+
+  /* L4 verification — reserved words, reserved colors */
+  --verification-supported: var(--obs-citrine);
+  --verification-insufficient: var(--obs-clay);
+  --verification-contradicted: var(--obs-muted-red);
+  --verification-supported-bg: color-mix(in srgb, var(--obs-citrine) 8%, var(--obs-paper));
+  --verification-insufficient-bg: color-mix(in srgb, var(--obs-clay) 6%, var(--obs-paper));
+  --verification-contradicted-bg: color-mix(in srgb, var(--obs-muted-red) 7%, var(--obs-paper));
+
+  /* L5 evidence highlight — tinted band plus solid edge in both themes */
+  --evidence-highlight: rgba(201, 162, 39, 0.20);
+  --evidence-highlight-edge: rgba(201, 162, 39, 0.85);
+
+  /* Architecture canvas edges */
+  --edge-stroke: rgba(88, 99, 116, 0.6);
+  --edge-stroke-dim: rgba(88, 99, 116, 0.22);
+  --edge-label-bg: var(--obs-paper);
+  --canvas-dot: rgba(88, 99, 116, 0.16);
+
+  --focus-ring: var(--obs-slate-blue);
+  --shadow-node: 0 10px 30px rgba(26, 25, 22, 0.12);
+  --shadow-chrome: 0 10px 24px rgba(26, 25, 22, 0.12);
+  --shadow-panel: 0 18px 42px rgba(26, 25, 22, 0.16);
+}
+
+/* Dark — warm charcoal, not black; not an inversion (THEME_SYSTEM spec). */
+:root[data-theme="dark"] {
+  --obs-canvas: #131210;
+  --obs-paper: #1C1B17;
+  --obs-white: #24231E;
+  --obs-ink: #F1EEE7;
+  --obs-stone: #A39E93;
+  --obs-stone-soft: #7C776E;
+  --obs-border: #37342C;
+  --obs-slate-blue: #8FB0D9;
+  --obs-citrine: #D9B84A;
+  --obs-clay: #D28C64;
+  --obs-sage: #97BE81;
+  --obs-muted-red: #E08A79;
+
+  --bg-code: #101018;
+  --bg-scrim: rgba(0, 0, 0, 0.58);
+  --action-primary-text: #101014;
+  --action-primary-hover: color-mix(in srgb, var(--obs-slate-blue) 84%, var(--obs-white));
+  --action-ghost-hover: rgba(143, 176, 217, 0.14);
+
+  --region-bg: color-mix(in srgb, #8FB0D9 6%, var(--obs-paper));
+  --region-head-bg: color-mix(in srgb, #8FB0D9 12%, var(--obs-paper));
+  --region-border: color-mix(in srgb, #8FB0D9 32%, var(--obs-border));
+
+  --ai-surface: color-mix(in srgb, #C4A9E8 8%, var(--obs-paper));
+  --ai-border: color-mix(in srgb, #C4A9E8 46%, var(--obs-border));
+  --ai-text: #CBB4EC;
+  --ai-accent: #C4A9E8;
+
+  --evidence-highlight: rgba(217, 184, 74, 0.22);
+  --evidence-highlight-edge: rgba(217, 184, 74, 0.9);
+
+  --edge-stroke: rgba(196, 210, 230, 0.55);
+  --edge-stroke-dim: rgba(196, 210, 230, 0.18);
+  --edge-label-bg: var(--bg-surface);
+  --canvas-dot: rgba(196, 210, 230, 0.13);
+
+  --shadow-node: 0 10px 30px rgba(0, 0, 0, 0.34);
+  --shadow-chrome: 0 10px 24px rgba(0, 0, 0, 0.32);
+  --shadow-panel: 0 18px 42px rgba(0, 0, 0, 0.44);
 }
 
 /* Base styles */
@@ -104,27 +210,29 @@ body {
   100% { transform: scale(0.95); opacity: 0.7; }
 }
 
-/* React Flow overrides */
+/* React Flow overrides — token-driven so every canvas (light or warm-dark)
+   themes together; the old hard-coded legacy-dark values fought the
+   design-system theme layer. */
 .react-flow__background {
-  background-color: var(--color-bg) !important;
+  background-color: transparent !important;
 }
 .react-flow__minimap {
-  background-color: var(--color-surface) !important;
-  border: 1px solid var(--color-border) !important;
+  background-color: var(--obs-paper) !important;
+  border: 1px solid var(--obs-border) !important;
   border-radius: 8px !important;
 }
 .react-flow__controls {
-  background-color: var(--color-surface) !important;
-  border: 1px solid var(--color-border) !important;
+  background-color: var(--obs-paper) !important;
+  border: 1px solid var(--obs-border) !important;
   border-radius: 8px !important;
 }
 .react-flow__controls-button {
-  background-color: var(--color-surface) !important;
-  border-color: var(--color-border) !important;
-  fill: var(--color-primary) !important;
+  background-color: var(--obs-paper) !important;
+  border-color: var(--obs-border) !important;
+  fill: var(--obs-ink) !important;
 }
 .react-flow__controls-button:hover {
-  background-color: var(--color-border) !important;
+  background-color: var(--action-ghost-hover) !important;
 }
 
 /* Violation edge glow */
@@ -311,6 +419,115 @@ body {
   padding: 64px 0;
 }
 
+/* Reviewed landing (03_LANDING_PAGE_SPEC): one column, one primary action.
+   Not marketing — step one of the workflow. */
+.observatory-entry__hero--single {
+  display: block;
+  width: min(1080px, calc(100vw - 56px));
+  min-height: 0;
+  padding: 56px 0 72px;
+}
+.observatory-entry__hero--single h1 {
+  margin: 0;
+  max-width: 780px;
+  color: var(--obs-ink);
+  font-size: clamp(40px, 4.6vw, 60px);
+  line-height: 1.0;
+  letter-spacing: -0.015em;
+  font-weight: 720;
+}
+.observatory-entry__lede {
+  max-width: 620px;
+  margin: 20px 0 0;
+  color: color-mix(in srgb, var(--obs-ink) 72%, var(--obs-stone));
+  font-size: 17px;
+  line-height: 1.65;
+}
+.observatory-entry__cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  margin-top: 32px;
+}
+.observatory-entry__hero--single .observatory-entry__start {
+  width: auto;
+  min-height: 48px;
+  margin-top: 0;
+  padding: 0 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14.5px;
+  color: var(--action-primary-text);
+}
+.observatory-entry__hero--single .observatory-entry__no-ai-note {
+  max-width: 340px;
+  margin: 0;
+  font-size: 13px !important;
+}
+.observatory-entry__hero--single .observatory-entry__promise-grid {
+  margin-top: 52px;
+}
+.observatory-entry__hero--single .observatory-entry__error {
+  max-width: 640px;
+  margin-top: 18px;
+}
+
+.observatory-entry__recent-projects { margin-top: 44px; }
+.observatory-entry__recent-projects h2 {
+  margin: 0 0 12px;
+  color: var(--obs-stone);
+  font-size: 11px;
+  font-weight: 680;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.observatory-entry__recent-list { display: grid; gap: 8px; max-width: 640px; }
+.observatory-entry__recent-list button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  color: var(--obs-ink);
+  text-align: left;
+  background: var(--obs-paper);
+  border: 1px solid var(--obs-border);
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+}
+.observatory-entry__recent-list button:hover { border-color: color-mix(in srgb, var(--obs-slate-blue) 45%, var(--obs-border)); background: var(--action-ghost-hover); }
+.observatory-entry__recent-list svg { color: var(--obs-stone); }
+.observatory-entry__recent-main { min-width: 0; }
+.observatory-entry__recent-main strong { display: block; font-size: 14px; }
+.observatory-entry__recent-main small { display: block; overflow: hidden; color: var(--obs-stone); font-family: var(--font-mono); font-size: 11.5px; text-overflow: ellipsis; white-space: nowrap; }
+.observatory-entry__recent-meta { color: var(--obs-stone); font-size: 12px; white-space: nowrap; }
+
+/* Provenance teaching strip: the same epistemic chips used inside the
+   product, introduced before the user ever sees a map. */
+.observatory-entry__provenance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 44px;
+  padding-top: 22px;
+  border-top: 1px solid var(--obs-border);
+}
+.observatory-entry__provenance > div { min-width: 260px; flex: 1; }
+.observatory-entry__provenance-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.observatory-entry__provenance p { margin: 0; color: var(--obs-stone); font-size: 13px; line-height: 1.55; }
+.epistemic-chip--verified { border: 1px solid color-mix(in srgb, var(--verification-supported) 42%, var(--obs-border)); color: var(--verification-supported); background: color-mix(in srgb, var(--verification-supported) 7%, transparent); }
+.epistemic-chip--ai { border: 1px solid var(--ai-border); color: var(--ai-text); background: var(--ai-surface); }
+
+.observatory-progress__path { margin: 5px 0 0; color: var(--obs-stone); font-family: var(--font-mono); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.observatory-progress__next { margin: 18px 0 0; color: var(--obs-stone); font-size: 13px; line-height: 1.5; }
+/* Analysis replaces the lower landing content IN PLACE (no page
+   transition, no floating panel offset). */
+.observatory-entry__hero--single .observatory-progress { width: auto; max-width: 720px; margin: 44px 0 0; }
+.observatory-entry__hero--single .observatory-progress__header h2 { margin: 0; font-size: 18px; }
+
 .observatory-entry__copy {
   max-width: 640px;
 }
@@ -340,6 +557,13 @@ body {
   line-height: 1.7;
 }
 
+.observatory-entry__no-ai-note {
+  max-width: 480px;
+  color: var(--obs-stone) !important;
+  font-size: 13.5px !important;
+  line-height: 1.55 !important;
+}
+
 .observatory-entry__promise-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -355,8 +579,9 @@ body {
   background: color-mix(in srgb, var(--obs-paper) 82%, transparent);
 }
 
+/* Slate, not citrine: citrine is reserved for the SUPPORTED verdict. */
 .observatory-entry__promise svg {
-  color: var(--obs-citrine);
+  color: var(--obs-slate-blue);
 }
 
 .observatory-entry__promise strong {
@@ -937,7 +1162,7 @@ body {
   padding: 16px;
   border: 1px solid var(--obs-border);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.86);
+  background: color-mix(in srgb, var(--bg-elevated) 86%, transparent);
   color: var(--obs-text);
 }
 
@@ -1117,7 +1342,7 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   bottom: 54px;
   max-width: min(820px, calc(100% - 36px));
   color: var(--obs-ink);
-  background: rgba(252, 250, 247, 0.98);
+  background: color-mix(in srgb, var(--obs-paper) 98%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 8px;
   box-shadow: 0 12px 28px rgba(26, 25, 22, 0.14);
@@ -1356,7 +1581,7 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   padding: clamp(22px, 4vw, 54px);
   overflow: auto;
   color: var(--obs-ink);
-  background: var(--obs-white);
+  background: var(--obs-paper);
 }
 
 .obs-docs-detail__header {
@@ -1498,6 +1723,109 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   white-space: pre;
 }
 
+/* AI documentation (Doc Studio "Generate documentation") ------------- */
+
+.obs-docs-generated h4 {
+  margin: 20px 0 8px;
+  font-size: 13px;
+}
+
+.obs-docs-generated__intro p,
+.obs-docs-generated__disclaimer {
+  max-width: 760px;
+  margin: 0 0 12px;
+  color: var(--obs-stone);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.obs-docs-generated__generate,
+.obs-docs-generated__actions button,
+.obs-docs-generated__unavailable button,
+.obs-docs-generated__meta button {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 7px 12px;
+  color: var(--obs-ink);
+  font-size: 12px;
+  background: var(--obs-paper);
+  border: 1px solid var(--obs-border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.obs-docs-generated__status {
+  color: var(--obs-stone);
+  font-size: 13px;
+}
+
+.obs-docs-generated__unavailable {
+  max-width: 760px;
+  padding: 13px 14px;
+  color: color-mix(in srgb, var(--obs-ink) 76%, var(--obs-clay));
+  font-size: 13px;
+  background: color-mix(in srgb, var(--obs-clay) 7%, var(--obs-paper));
+  border: 1px solid color-mix(in srgb, var(--obs-clay) 18%, var(--obs-border));
+  border-radius: 8px;
+}
+
+.obs-docs-generated__unavailable p {
+  margin: 0 0 8px;
+}
+
+.obs-docs-generated__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.obs-docs-generated__meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.obs-docs-generated__badge {
+  font-weight: 600;
+}
+
+.obs-docs-generated__purpose {
+  max-width: 760px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.obs-docs-generated__responsibilities {
+  max-width: 760px;
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.obs-docs-generated__notes {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.obs-docs-generated__note {
+  max-width: 760px;
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.obs-docs-generated__note-chip {
+  height: 20px;
+  margin-right: 8px;
+  font-size: 10px;
+}
+
 .obs-code-token--comment {
   color: #AAA7B2;
   font-style: italic;
@@ -1623,7 +1951,7 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   align-items: center;
   height: 48px;
   padding: 0 18px;
-  background: rgba(252, 250, 247, 0.86);
+  background: color-mix(in srgb, var(--obs-paper) 86%, transparent);
   border-bottom: 1px solid var(--obs-border);
   backdrop-filter: blur(18px);
 }
@@ -1639,6 +1967,95 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
 .obs-topbar__right {
   justify-content: flex-end;
 }
+
+.obs-topbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding-right: 4px;
+  color: var(--obs-ink);
+  font-size: 14px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+.obs-topbar__brand svg { color: var(--obs-slate-blue); }
+
+.obs-topbar__search {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 0 10px;
+  height: 30px;
+  border: 1px solid var(--obs-border);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  color: var(--obs-stone);
+}
+.obs-topbar__search input {
+  width: 190px;
+  border: none;
+  background: transparent;
+  color: var(--obs-ink);
+  font: 500 12px var(--font-sans);
+  outline: none;
+}
+.obs-topbar__search-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 60;
+  width: 300px;
+  margin: 0;
+  padding: 5px;
+  list-style: none;
+  border: 1px solid var(--obs-border);
+  border-radius: 10px;
+  background: var(--obs-paper);
+  box-shadow: var(--shadow-panel);
+}
+.obs-topbar__search-results button {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 7px 9px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--obs-ink);
+  cursor: pointer;
+  font: 600 12px var(--font-sans);
+  text-align: left;
+}
+.obs-topbar__search-results button:hover { background: var(--action-ghost-hover); }
+.obs-topbar__search-results small { color: var(--obs-stone); font-size: 10.5px; font-weight: 500; }
+
+.obs-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--obs-border);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+}
+.obs-theme-toggle__option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--obs-stone);
+  cursor: pointer;
+}
+.obs-theme-toggle__option:hover { color: var(--obs-ink); background: var(--action-ghost-hover); }
+.obs-theme-toggle__option--active { color: var(--obs-slate-blue); background: var(--action-ghost-hover); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--obs-slate-blue) 42%, transparent); }
 
 .obs-topbar__title {
   font-size: 15px;
@@ -1763,7 +2180,7 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   height: 30px;
   padding: 0 10px;
   color: var(--obs-ink);
-  background: rgba(252, 250, 247, 0.72);
+  background: color-mix(in srgb, var(--obs-paper) 72%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 8px;
   cursor: pointer;
@@ -1882,7 +2299,7 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   z-index: 4;
   max-width: min(840px, calc(100% - 72px));
   padding: 10px 14px;
-  background: rgba(252, 250, 247, 0.88);
+  background: color-mix(in srgb, var(--obs-paper) 88%, transparent);
   border-radius: 12px;
   pointer-events: none;
 }
@@ -1901,7 +2318,7 @@ html.observatory-active :is(button, a, input, textarea, select, summary, [tabind
   height: 24px;
   padding: 0 8px;
   color: color-mix(in srgb, var(--obs-ink) 72%, var(--obs-stone));
-  background: rgba(252, 250, 247, 0.72);
+  background: color-mix(in srgb, var(--obs-paper) 72%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 999px;
   font-size: 11px;
@@ -1954,7 +2371,7 @@ html.observatory-active .react-flow__background {
 html.observatory-active .react-flow__minimap,
 .obs-rf-minimap {
   overflow: hidden;
-  background-color: rgba(252, 250, 247, 0.84) !important;
+  background-color: color-mix(in srgb, var(--obs-paper) 84%, transparent) !important;
   border: 1px solid var(--obs-border) !important;
   border-radius: 8px !important;
   box-shadow: 0 10px 24px rgba(26, 25, 22, 0.06);
@@ -1963,7 +2380,7 @@ html.observatory-active .react-flow__minimap,
 html.observatory-active .react-flow__controls,
 .obs-rf-controls {
   overflow: hidden;
-  background: rgba(252, 250, 247, 0.86) !important;
+  background: color-mix(in srgb, var(--obs-paper) 86%, transparent) !important;
   border: 1px solid var(--obs-border) !important;
   border-radius: 8px !important;
   box-shadow: 0 10px 24px rgba(26, 25, 22, 0.06);
@@ -1992,7 +2409,7 @@ html.observatory-active .react-flow__controls-button:hover {
   padding: 14px 15px;
   text-align: left;
   color: var(--obs-ink);
-  background: rgba(252, 250, 247, 0.9);
+  background: color-mix(in srgb, var(--obs-paper) 90%, transparent);
   border: 1px solid color-mix(in srgb, var(--obs-border) 84%, var(--obs-white));
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(26, 25, 22, 0.055);
@@ -2144,7 +2561,7 @@ html.observatory-active .react-flow__controls-button:hover {
   padding: 18px 20px;
   border-width: 1.5px;
   border-color: color-mix(in srgb, var(--obs-stone) 46%, var(--obs-border));
-  background: color-mix(in srgb, var(--obs-stone) 5%, rgba(252, 250, 247, 0.9));
+  background: color-mix(in srgb, var(--obs-stone) 5%, color-mix(in srgb, var(--obs-paper) 90%, transparent));
 }
 
 .obs-rf-node--group .obs-rf-node__title {
@@ -2199,7 +2616,7 @@ html.observatory-active .react-flow__controls-button:hover {
   width: 100%;
   padding: 12px 16px;
   color: var(--obs-ink);
-  background: color-mix(in srgb, var(--obs-stone) 10%, rgba(252, 250, 247, 0.95));
+  background: color-mix(in srgb, var(--obs-stone) 10%, color-mix(in srgb, var(--obs-paper) 95%, transparent));
   border: none;
   border-bottom: 1.5px dashed color-mix(in srgb, var(--obs-stone) 50%, var(--obs-border));
   border-radius: 12px 12px 0 0;
@@ -2208,7 +2625,7 @@ html.observatory-active .react-flow__controls-button:hover {
 }
 
 .obs-rf-container-frame__header:hover {
-  background: color-mix(in srgb, var(--obs-slate-blue) 8%, rgba(252, 250, 247, 0.95));
+  background: color-mix(in srgb, var(--obs-slate-blue) 8%, color-mix(in srgb, var(--obs-paper) 95%, transparent));
 }
 
 .obs-rf-container-frame__title {
@@ -2288,7 +2705,7 @@ html.observatory-active .react-flow__controls-button:hover {
   z-index: 3;
   padding: 5px 10px;
   color: var(--obs-stone);
-  background: rgba(252, 250, 247, 0.92);
+  background: color-mix(in srgb, var(--obs-paper) 92%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 999px;
   font-size: 12px;
@@ -2309,7 +2726,7 @@ html.observatory-active .react-flow__controls-button:hover {
   width: min(440px, 100%);
   padding: 24px;
   color: var(--obs-ink);
-  background: rgba(252, 250, 247, 0.88);
+  background: color-mix(in srgb, var(--obs-paper) 88%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 12px;
   box-shadow: 0 16px 42px rgba(26, 25, 22, 0.07);
@@ -2357,9 +2774,9 @@ html.observatory-active .react-flow__controls-button:hover {
   height: 42px;
   background: linear-gradient(
     90deg,
-    rgba(252, 250, 247, 0.72),
-    rgba(255, 255, 255, 0.9),
-    rgba(252, 250, 247, 0.72)
+    color-mix(in srgb, var(--obs-paper) 72%, transparent),
+    color-mix(in srgb, var(--bg-elevated) 90%, transparent),
+    color-mix(in srgb, var(--obs-paper) 72%, transparent)
   );
   border: 1px solid var(--obs-border);
   border-radius: 10px;
@@ -2374,7 +2791,7 @@ html.observatory-active .react-flow__controls-button:hover {
 .obs-skeleton-node {
   width: 238px;
   height: 104px;
-  background: rgba(252, 250, 247, 0.76);
+  background: color-mix(in srgb, var(--obs-paper) 76%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(26, 25, 22, 0.045);
@@ -2414,7 +2831,7 @@ html.observatory-active .react-flow__controls-button:hover {
   padding: 14px 16px;
   text-align: left;
   color: var(--obs-ink);
-  background: rgba(252, 250, 247, 0.88);
+  background: color-mix(in srgb, var(--obs-paper) 88%, transparent);
   border: 1px solid color-mix(in srgb, var(--obs-border) 84%, var(--obs-white));
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(26, 25, 22, 0.055);
@@ -2584,7 +3001,7 @@ html.observatory-active .react-flow__controls-button:hover {
   bottom: 18px;
   width: 132px;
   height: 92px;
-  background: rgba(252, 250, 247, 0.84);
+  background: color-mix(in srgb, var(--obs-paper) 84%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 8px;
   box-shadow: 0 10px 24px rgba(26, 25, 22, 0.06);
@@ -2629,7 +3046,7 @@ html.observatory-active .react-flow__controls-button:hover {
   min-width: 0;
   padding: 24px;
   overflow: auto;
-  background: rgba(252, 250, 247, 0.76);
+  background: color-mix(in srgb, var(--obs-paper) 76%, transparent);
   backdrop-filter: blur(18px);
 }
 
@@ -2690,7 +3107,7 @@ html.observatory-active .react-flow__controls-button:hover {
   min-height: 24px;
   padding: 0 8px;
   color: color-mix(in srgb, var(--obs-ink) 72%, var(--obs-stone));
-  background: rgba(255, 255, 255, 0.42);
+  background: color-mix(in srgb, var(--bg-elevated) 42%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 999px;
   font-size: 11px;
@@ -2731,7 +3148,7 @@ html.observatory-active .react-flow__controls-button:hover {
 
 .obs-voice__actions button:disabled {
   color: var(--obs-stone);
-  background: rgba(255, 255, 255, 0.32);
+  background: color-mix(in srgb, var(--bg-elevated) 32%, transparent);
   cursor: not-allowed;
 }
 
@@ -2741,7 +3158,7 @@ html.observatory-active .react-flow__controls-button:hover {
   gap: 4px;
   padding: 4px;
   margin-top: 24px;
-  background: rgba(255, 255, 255, 0.38);
+  background: color-mix(in srgb, var(--bg-elevated) 38%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 10px;
 }
@@ -2866,7 +3283,7 @@ html.observatory-active .react-flow__controls-button:hover {
 .obs-file-list {
   margin-top: 12px;
   overflow: hidden;
-  background: rgba(252, 250, 247, 0.72);
+  background: color-mix(in srgb, var(--obs-paper) 72%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 8px;
 }
@@ -2933,7 +3350,7 @@ html.observatory-active .react-flow__controls-button:hover {
   min-height: 32px;
   padding: 7px 11px;
   color: color-mix(in srgb, var(--obs-ink) 78%, var(--obs-stone));
-  background: rgba(252, 250, 247, 0.72);
+  background: color-mix(in srgb, var(--obs-paper) 72%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 7px;
   cursor: pointer;
@@ -2957,7 +3374,7 @@ html.observatory-active .react-flow__controls-button:hover {
   grid-template-columns: 14px minmax(0, 1fr);
   gap: 10px;
   padding: 11px 12px;
-  background: rgba(252, 250, 247, 0.62);
+  background: color-mix(in srgb, var(--obs-paper) 62%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 8px;
 }
@@ -3019,7 +3436,7 @@ html.observatory-active .react-flow__controls-button:hover {
   min-height: 64px;
   padding: 12px 14px 12px 18px;
   color: var(--obs-stone);
-  background: rgba(252, 250, 247, 0.9);
+  background: color-mix(in srgb, var(--obs-paper) 90%, transparent);
   border: 1px solid color-mix(in srgb, var(--obs-border) 80%, var(--obs-white));
   border-radius: 16px;
   box-shadow: 0 18px 46px rgba(26, 25, 22, 0.09);
@@ -3080,7 +3497,7 @@ html.observatory-active .react-flow__controls-button:hover {
 .obs-question-dock kbd {
   padding: 3px 7px;
   color: var(--obs-stone);
-  background: rgba(255, 255, 255, 0.5);
+  background: color-mix(in srgb, var(--bg-elevated) 50%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 6px;
   font-family: var(--font-mono);
@@ -3132,7 +3549,7 @@ html.observatory-active .react-flow__controls-button:hover {
   min-height: 0;
   overflow: hidden;
   color: var(--obs-ink);
-  background: rgba(252, 250, 247, 0.96);
+  background: color-mix(in srgb, var(--obs-paper) 96%, transparent);
   border: 1px solid color-mix(in srgb, var(--obs-border) 82%, var(--obs-white));
   border-radius: 14px;
   box-shadow: 0 22px 60px rgba(26, 25, 22, 0.13);
@@ -3195,7 +3612,7 @@ html.observatory-active .react-flow__controls-button:hover {
   height: 22px;
   padding: 3px 8px;
   color: var(--obs-stone);
-  background: rgba(255, 255, 255, 0.48);
+  background: color-mix(in srgb, var(--bg-elevated) 48%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 999px;
   font-family: var(--font-mono);
@@ -3242,7 +3659,7 @@ html.observatory-active .react-flow__controls-button:hover {
   padding: 8px 10px;
   color: color-mix(in srgb, var(--obs-ink) 72%, var(--obs-stone));
   text-align: left;
-  background: rgba(255, 255, 255, 0.36);
+  background: color-mix(in srgb, var(--bg-elevated) 62%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 9px;
   cursor: pointer;
@@ -3298,6 +3715,73 @@ html.observatory-active .react-flow__controls-button:hover {
   margin-top: 14px;
 }
 
+.obs-code-sidebar__eyebrow {
+  margin: 0 0 6px;
+  color: var(--obs-stone);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+/* Numbered evidence chain (07): ordered, numbered, each item a locator. */
+.obs-evidence-chain {
+  display: grid;
+  gap: 7px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.obs-evidence-chain__item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--obs-border);
+  border-radius: 8px;
+  background: var(--obs-paper);
+  color: var(--obs-ink);
+  cursor: pointer;
+  text-align: left;
+}
+.obs-evidence-chain__item--active {
+  border-color: color-mix(in srgb, var(--obs-slate-blue) 55%, var(--obs-border));
+  background: color-mix(in srgb, var(--obs-slate-blue) 7%, var(--obs-paper));
+}
+.obs-evidence-chain__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 19px;
+  height: 19px;
+  border: 1px solid var(--obs-border);
+  border-radius: 999px;
+  color: var(--obs-stone);
+  font-size: 10.5px;
+  font-weight: 750;
+}
+.obs-evidence-chain__locator {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+.obs-evidence-chain__locator code {
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.obs-evidence-chain__locator small {
+  color: var(--obs-stone);
+  font-size: 10px;
+  text-transform: capitalize;
+}
+
 .obs-code-highlight-chip {
   display: flex;
   align-items: center;
@@ -3306,7 +3790,7 @@ html.observatory-active .react-flow__controls-button:hover {
   padding: 0 10px;
   color: var(--obs-stone);
   text-align: left;
-  background: rgba(252, 250, 247, 0.76);
+  background: color-mix(in srgb, var(--obs-paper) 76%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 8px;
   cursor: pointer;
@@ -3347,8 +3831,9 @@ html.observatory-active .react-flow__controls-button:hover {
 }
 
 .obs-code-static-preview {
-  background: var(--obs-paper);
-  color: var(--obs-ink);
+  /* Same dark code surface as Monaco — one recipe in both themes. */
+  background: var(--bg-code);
+  color: #ECEAF0;
   font-family: var(--obs-font-mono);
   font-size: 12.5px;
   line-height: 1.55;
@@ -3365,9 +3850,9 @@ html.observatory-active .react-flow__controls-button:hover {
 }
 
 .obs-code-static-preview__line--active {
-  background: color-mix(in srgb, var(--obs-citrine) 14%, transparent);
-  border-left: 2px solid var(--obs-citrine);
-  margin-left: -2px;
+  background: var(--evidence-highlight);
+  border-left: 3px solid var(--evidence-highlight-edge);
+  margin-left: -3px;
 }
 
 .obs-code-static-preview__number {
@@ -3375,12 +3860,16 @@ html.observatory-active .react-flow__controls-button:hover {
   user-select: none;
 }
 
+/* Evidence highlight (07_EVIDENCE_SOURCE_SPEC): a tinted band PLUS a solid
+   3px left edge, so it survives dark mode, colour-blindness and print. */
 .obs-code-highlight {
-  background: color-mix(in srgb, var(--obs-citrine) 16%, transparent);
+  background: var(--evidence-highlight);
+  box-shadow: inset 3px 0 0 var(--evidence-highlight-edge);
 }
 
 .obs-code-highlight--active {
-  background: color-mix(in srgb, var(--obs-slate-blue) 14%, transparent);
+  background: var(--evidence-highlight);
+  box-shadow: inset 3px 0 0 var(--evidence-highlight-edge);
 }
 
 .obs-code-glyph {
@@ -4285,6 +4774,56 @@ html.observatory-active .react-flow__controls-button:hover {
   overflow: hidden;
 }
 
+/* Doc Studio inside the persistent shell: content fills the space under
+   the standard 48px top bar; the studio inherits the shell surface. */
+.observatory-shell__docs { height: calc(100vh - 48px); min-height: 0; }
+.observatory-shell__docs .obs-docs-studio { height: 100%; background: transparent; }
+
+/* Page heading row (replaces the old broken obs-docs-topbar grid whose
+   Refresh action overlapped the intro copy). */
+.obs-docs-pagehead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 22px 10px;
+  border-bottom: 1px solid var(--obs-border);
+  background: color-mix(in srgb, var(--obs-paper) 90%, transparent);
+}
+.obs-docs-pagehead > div { display: grid; gap: 2px; min-width: 0; }
+.obs-docs-pagehead__eyebrow {
+  color: var(--obs-stone);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.obs-docs-pagehead h1 { margin: 0; font-size: 18px; font-weight: 720; }
+.obs-docs-pagehead button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding: 6px 12px;
+  border: 1px solid var(--obs-border);
+  border-radius: 8px;
+  background: var(--bg-elevated);
+  color: var(--obs-slate-blue);
+  cursor: pointer;
+  font: 600 12px var(--font-sans);
+}
+.obs-docs-pagehead button:hover:not(:disabled) { border-color: var(--focus-ring); background: var(--action-ghost-hover); }
+
+/* Entity Focus at short windows: floating canvas chrome (question dock,
+   accessible-tables toggle) must sit above the statements strip instead
+   of overlapping it (layout only). */
+.observatory-shell__main:has(.entity-statements) .obs-question-dock {
+  bottom: calc(38vh + 14px);
+}
+.observatory-shell__main:has(.entity-statements) .obs-graph-alternative {
+  bottom: calc(38vh + 68px);
+}
+
 .obs-docs-topbar {
   display: grid;
   grid-template-columns: auto minmax(220px, 1fr);
@@ -4503,7 +5042,7 @@ html.observatory-active .react-flow__controls-button:hover {
 .la-arch-explanation {
   margin-top: 20px;
   padding: 16px;
-  background: rgba(252, 250, 247, 0.72);
+  background: color-mix(in srgb, var(--obs-paper) 72%, transparent);
   border: 1px solid var(--obs-border);
   border-radius: 10px;
 }
@@ -4634,11 +5173,28 @@ html.observatory-active .react-flow__controls-button:hover {
 }
 
 .la-claim-card {
+  position: relative;
   overflow: hidden;
   background: var(--obs-paper);
   border: 1px solid var(--obs-border);
   border-radius: 8px;
 }
+
+/* 3px left status bar (10_VERIFIED_CLAIM_VISUAL_LANGUAGE): the verdict
+   travels through the bar, the uppercase word and the shape-coded dot —
+   colour is never the only channel. */
+.la-claim-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--obs-border);
+}
+.la-claim-card--supported::before { background: var(--verification-supported); }
+.la-claim-card--insufficient_evidence::before { background: var(--verification-insufficient); }
+.la-claim-card--contradicted::before { background: var(--verification-contradicted); }
 
 /* Supported claims read at full, normal emphasis. */
 .la-claim-card--supported {
@@ -5043,6 +5599,48 @@ html.observatory-active .react-flow__controls-button:hover {
   border-color: var(--obs-ink) !important;
 }
 
+/* Entity Focus: named side columns and a dominant centred entity. */
+.obs-entity-columns { position:absolute; top:18px; left:34px; right:34px; z-index:5; display:flex; justify-content:space-between; pointer-events:none; }
+.obs-entity-columns span { color:var(--obs-stone); font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+.obs-rf-node--focal { border-color:var(--obs-slate-blue) !important; box-shadow:0 0 0 2px color-mix(in srgb, var(--obs-slate-blue) 38%, transparent), var(--shadow-panel) !important; transform:scale(1.04); }
+
+/* Entity Focus statements strip: beneath the graph, full width. The main
+   surface is position:relative with the canvas filling it, so the strip
+   docks to the bottom above the canvas padding. */
+.observatory-shell__main:has(.entity-statements) .obs-canvas { padding-bottom: 40vh; }
+.entity-statements { position:absolute; left:0; right:0; bottom:0; z-index:7; max-height:38vh; overflow:auto; padding:14px 20px 18px; border-top:1px solid var(--obs-border); background:var(--obs-paper); }
+.entity-statements__header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.entity-statements__header h3 { margin:0; font-size:13px; font-weight:750; }
+.entity-statements__badge { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border:1px solid var(--obs-border); border-radius:999px; color:var(--obs-stone); font-size:9px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; }
+.entity-statements__empty { margin:0; color:var(--obs-stone); font-size:12.5px; }
+.entity-statements__grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:10px; }
+.entity-statements__card { position:relative; display:flex; flex-direction:column; gap:6px; padding:10px 12px 10px 15px; border:1px solid var(--obs-border); border-radius:8px; background:var(--bg-elevated); }
+.entity-statements__card::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; border-radius:3px 0 0 3px; }
+.entity-statements__card--supported { border-color:color-mix(in srgb, var(--verification-supported) 30%, var(--obs-border)); }
+.entity-statements__card--supported::before { background:var(--verification-supported); }
+.entity-statements__card--insufficient { border-style:dashed; border-color:color-mix(in srgb, var(--verification-insufficient) 34%, var(--obs-border)); }
+.entity-statements__card--insufficient::before { background:var(--verification-insufficient); }
+.entity-statements__card--contradicted { border-style:dashed; border-color:color-mix(in srgb, var(--verification-contradicted) 36%, var(--obs-border)); }
+.entity-statements__card--contradicted::before { background:var(--verification-contradicted); }
+.entity-statements__verdict { display:flex; align-items:center; gap:6px; margin:0; font-size:9.5px; font-weight:800; letter-spacing:.08em; }
+.entity-statements__card--supported .entity-statements__verdict { color:var(--verification-supported); }
+.entity-statements__card--insufficient .entity-statements__verdict { color:var(--verification-insufficient); }
+.entity-statements__card--contradicted .entity-statements__verdict { color:var(--verification-contradicted); }
+.entity-statements__text { margin:0; font-size:12.5px; line-height:1.45; }
+.entity-statements__card footer { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:auto; color:var(--obs-stone); font-size:11px; }
+.entity-statements__card footer button { padding:0; border:none; background:transparent; color:var(--obs-slate-blue); cursor:pointer; font:600 11px var(--font-sans); }
+
+.obs-settings__theme-row { display:flex; gap:8px; margin:12px 0 8px; }
+.obs-settings__theme-option { padding:7px 16px; border:1px solid var(--obs-border); border-radius:8px; background:var(--bg-elevated); color:var(--obs-ink); cursor:pointer; font:600 12.5px var(--font-sans); }
+.obs-settings__theme-option--active { border-color:var(--obs-slate-blue); color:var(--obs-slate-blue); background:var(--action-ghost-hover); box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--obs-slate-blue) 40%, transparent); }
+.obs-settings__technical { margin-top:20px; padding:12px 14px; border:1px solid var(--obs-border); border-radius:8px; }
+.obs-settings__technical summary { color:var(--obs-stone); cursor:pointer; font-size:12.5px; font-weight:650; }
+.obs-settings__technical dl { display:grid; gap:8px; margin:12px 0 0; }
+.obs-settings__technical dl div { display:flex; justify-content:space-between; gap:12px; }
+.obs-settings__technical dt { color:var(--obs-stone); font-size:11.5px; }
+.obs-settings__technical dd { margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.obs-settings__technical code { font-family:var(--font-mono); font-size:11px; }
+
 .obs-settings__link-button {
   padding: 0;
   color: var(--obs-clay);
@@ -5058,3 +5656,175 @@ html.observatory-active .react-flow__controls-button:hover {
   background: color-mix(in srgb, #3d7a4f 8%, var(--obs-paper));
   border-color: color-mix(in srgb, #3d7a4f 20%, var(--obs-border));
 }
+/* ── Architecture map (19_ARCHITECTURE_GRAPH_SPEC): three visual levels,
+      literal containment, aggregated relation edges, floating control
+      cluster, Outline as the accessible equivalent. Token-driven so the
+      whole map re-themes with light / warm-charcoal dark. ── */
+.architecture-graph-overview { background: radial-gradient(circle, var(--canvas-dot) 1px, transparent 1px) 0 0 / 24px 24px, var(--obs-canvas); }
+.observatory-shell__body:has(.architecture-graph-overview) { grid-template-columns:minmax(0, 1fr) 292px; }
+.observatory-shell__body:has(.architecture-graph-inspector--collapsed) { grid-template-columns:minmax(0, 1fr) 44px; }
+.architecture-graph-overview__hint { position:absolute; left:20px; bottom:18px; z-index:5; max-width:calc(50% - 240px); padding:8px 11px; border-radius:8px; border:1px solid var(--obs-border); background:color-mix(in srgb, var(--obs-paper) 92%, transparent); color:var(--obs-stone); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.architecture-graph-overview__body { position:absolute; inset:0; display:flex; }
+.architecture-graph-overview__canvas { position:relative; flex:1 1 auto; min-width:0; }
+.architecture-graph-overview__body--outline .architecture-graph-overview__canvas { display:none; }
+.architecture-graph-overview__body--both .architecture-graph-overview__canvas { flex:1 1 58%; }
+.architecture-graph-overview__outline-pane { flex:1 1 42%; min-width:280px; overflow:auto; border-left:1px solid var(--obs-border); background:var(--obs-paper); }
+.architecture-graph-overview__body--outline .architecture-graph-overview__outline-pane { flex:1 1 100%; border-left:none; }
+.architecture-graph-overview__lod { position:absolute; top:14px; left:50%; transform:translateX(-50%); z-index:5; padding:4px 10px; border:1px solid var(--obs-border); border-radius:999px; background:color-mix(in srgb, var(--obs-paper) 92%, transparent); color:var(--obs-stone); font-size:10.5px; font-weight:700; letter-spacing:.04em; }
+.architecture-graph-overview .architecture-graph-minimap { width:132px; height:88px; border:1px solid var(--obs-border); border-radius:8px; overflow:hidden; opacity:.85; background:var(--obs-paper) !important; }
+.architecture-graph-overview .architecture-graph-minimap .react-flow__minimap-mask { fill: var(--bg-scrim); }
+.architecture-graph-overview .obs-graph-alternative.architecture-graph-alternative { left: auto; right: 18px; bottom: auto; top: 16px; }
+.architecture-graph-overview ~ .obs-question-dock,
+.observatory-shell__main:has(.architecture-graph-overview) > .obs-question-dock { left: 20px; bottom: 64px; }
+.architecture-graph-node--dimmed { opacity:.22; transition:opacity 150ms ease; }
+.architecture-graph-edge--dimmed { opacity:.2; }
+/* Relation kinds: imports solid, calls dashed, inherits dot-dashed. The
+   kind word travels on the edge label, so colour is never load-bearing. */
+.architecture-graph-edge--imports { stroke:var(--obs-slate-blue) !important; stroke-width:2 !important; }
+.architecture-graph-edge--calls { stroke:var(--obs-sage) !important; stroke-width:2 !important; stroke-dasharray:7 5; }
+.architecture-graph-edge--inherits { stroke:var(--obs-stone) !important; stroke-width:2 !important; stroke-dasharray:2 4; }
+.architecture-graph-overview .react-flow__edge-text { fill:var(--obs-ink); font-size:11px; font-weight:700; }
+
+/* Level A — structural region: enclosing container with a header band. */
+.argn { position:relative; box-sizing:border-box; width:100%; height:100%; display:flex; flex-direction:column; align-items:flex-start; color:var(--obs-ink); overflow:hidden; transition:border-color 150ms ease, box-shadow 150ms ease, opacity 150ms ease; }
+.argn--region { border:2px solid var(--region-border); border-radius:12px; background:var(--region-bg); box-shadow:var(--shadow-node); }
+.argn--section { border:1.5px solid var(--region-border); border-radius:10px; background:color-mix(in srgb, var(--region-bg) 72%, transparent); }
+.argn--region > .argn__header, .argn--section > .argn__header { width:100%; padding:9px 14px; border-bottom:1px solid color-mix(in srgb, var(--region-border) 55%, transparent); background:var(--region-head-bg); }
+/* Level B — structural cluster: contained relation-derived card. 4px
+   corners on purpose — deliberately squarer than everything else. */
+.argn--cluster { border:1px solid var(--structural-cluster-border); border-radius:4px; background:var(--structural-cluster-bg); }
+.argn--cluster > .argn__header { width:100%; padding:8px 12px 4px; }
+.argn--cluster .argn__title svg { color:var(--structural-cluster-accent); }
+/* Ungrouped bucket: dashed, low-weight, never a cluster card. */
+.argn--residual { border:1.5px dashed var(--structural-residual-border); border-radius:6px; background:transparent; color:var(--obs-stone); }
+.argn--residual > .argn__header { width:100%; padding:8px 12px 4px; }
+/* Level C — module: compact monospace chip. */
+.argn--module { flex-direction:row; align-items:center; gap:6px; padding:5px 9px; border:1px solid var(--obs-border); border-radius:6px; background:var(--bg-elevated); color:var(--obs-ink); }
+.argn--module code { overflow:hidden; font-family:var(--font-mono); font-size:11px; text-overflow:ellipsis; white-space:nowrap; }
+.argn--module svg { flex:none; color:var(--obs-stone); }
+.argn--selected { border-color:var(--focus-ring); box-shadow:0 0 0 2px color-mix(in srgb, var(--focus-ring) 42%, transparent), var(--shadow-node); }
+.argn__header { display:flex; flex-direction:column; gap:2px; min-width:0; }
+.argn__title { display:inline-flex; align-items:center; gap:6px; max-width:100%; min-width:0; }
+.argn__title svg { flex:none; color:var(--obs-stone); }
+.argn__title strong { overflow:hidden; font-size:13.5px; font-weight:740; line-height:1.15; text-overflow:ellipsis; white-space:nowrap; }
+.argn--region > .argn__header .argn__title strong { font-size:15px; font-family:var(--font-mono); }
+.argn--section > .argn__header .argn__title strong { font-family:var(--font-mono); }
+.argn__counts { color:var(--obs-stone); font-size:10.5px; font-weight:650; }
+.argn--region > .argn__header { flex-direction:row; align-items:center; justify-content:space-between; gap:10px; }
+.argn--section > .argn__header { flex-direction:row; align-items:center; justify-content:space-between; gap:10px; }
+.argn__basis { margin:4px 14px 0; overflow:hidden; max-width:calc(100% - 28px); color:var(--obs-stone); font-size:10.5px; text-overflow:ellipsis; white-space:nowrap; }
+.argn__members { display:flex; flex-wrap:wrap; gap:4px; padding:6px 12px 4px; }
+.argn__members code { padding:2px 7px; border:1px solid var(--obs-border); border-radius:4px; background:var(--bg-elevated); font-family:var(--font-mono); font-size:10px; color:var(--obs-ink); }
+.argn__more { color:var(--obs-stone); font-size:10px; align-self:center; }
+.argn__residual-note { margin:2px 12px 6px; color:var(--obs-stone); font-size:10px; font-style:italic; }
+.argn__actions { display:flex; gap:6px; align-items:center; margin-top:auto; width:100%; padding:6px 12px 9px; }
+.argn__actions button, .architecture-graph-inspector__actions button { display:inline-flex; align-items:center; gap:4px; padding:4px 8px; border:1px solid var(--obs-border); border-radius:6px; background:var(--bg-elevated); color:var(--obs-slate-blue); cursor:pointer; font:600 10.5px var(--font-sans); }
+.argn__actions button:hover, .architecture-graph-inspector__actions button:hover { border-color:var(--focus-ring); background:var(--action-ghost-hover); }
+.argn__handle { width:4px !important; height:4px !important; min-width:4px !important; min-height:4px !important; border:0 !important; background:var(--obs-slate-blue) !important; opacity:0; }
+.argn:hover .argn__handle, .argn--selected .argn__handle { opacity:.9; }
+.architecture-graph-edge-label { position:absolute; z-index:4; pointer-events:none; padding:3px 7px; border:1px solid var(--obs-border); border-radius:999px; background:var(--edge-label-bg); color:var(--obs-ink); font-size:10px; font-weight:750; line-height:1; white-space:nowrap; }
+
+/* Floating control cluster — zoom / % / fit, relation filter,
+   Map · Outline · Both, minimap toggle. Reserves no layout strip. */
+.map-controls { position:absolute; z-index:6; bottom:14px; left:50%; display:flex; gap:8px; align-items:stretch; padding:5px; border:1px solid var(--obs-border); border-radius:10px; background:color-mix(in srgb, var(--obs-paper) 94%, transparent); box-shadow:var(--shadow-chrome); transform:translateX(-50%); }
+.map-controls__group { display:flex; align-items:center; gap:2px; }
+.map-controls button { display:inline-flex; align-items:center; justify-content:center; gap:5px; min-width:28px; height:28px; padding:0 7px; border:none; border-radius:7px; background:transparent; color:var(--obs-ink); cursor:pointer; font:600 11.5px var(--font-sans); }
+.map-controls button:hover { background:var(--action-ghost-hover); }
+.map-controls__zoom { min-width:38px; color:var(--obs-stone); font-size:11px; font-weight:650; text-align:center; }
+.map-controls__filter select { height:28px; padding:0 6px; border:1px solid var(--obs-border); border-radius:7px; background:var(--bg-elevated); color:var(--obs-ink); font:600 11.5px var(--font-sans); }
+.map-controls__view--active, .map-controls__minimap--active { background:var(--action-ghost-hover) !important; color:var(--obs-slate-blue) !important; box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--obs-slate-blue) 40%, transparent); }
+
+/* Outline — the same tree as a linear, keyboard-first view. */
+.architecture-outline { display:flex; flex-direction:column; gap:14px; padding:14px; }
+.architecture-outline__tree { display:flex; flex-direction:column; gap:2px; margin:0; padding:0; list-style:none; }
+.architecture-outline__row { display:flex; align-items:center; gap:6px; padding:4px 8px 4px calc(8px + var(--outline-depth, 0) * 18px); border-radius:7px; }
+.architecture-outline__row--selected { background:var(--action-ghost-hover); box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--obs-slate-blue) 38%, transparent); }
+.architecture-outline__twist { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; padding:0; border:none; border-radius:5px; background:transparent; color:var(--obs-stone); cursor:pointer; }
+.architecture-outline__twist:hover { background:var(--action-ghost-hover); }
+.architecture-outline__twist--leaf { width:20px; }
+.architecture-outline__label { display:inline-flex; align-items:center; gap:6px; min-width:0; padding:2px 4px; border:none; background:transparent; color:var(--obs-ink); cursor:pointer; font:600 12.5px var(--font-sans); }
+.architecture-outline__label svg { flex:none; color:var(--obs-stone); }
+.architecture-outline__label span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.architecture-outline__row--module .architecture-outline__label { font-family:var(--font-mono); font-size:11.5px; font-weight:500; }
+.architecture-outline__meta { display:inline-flex; gap:8px; align-items:center; margin-left:auto; color:var(--obs-stone); font-size:10.5px; white-space:nowrap; }
+.architecture-outline__selected { padding:1px 7px; border:1px solid color-mix(in srgb, var(--obs-slate-blue) 42%, transparent); border-radius:999px; color:var(--obs-slate-blue); font-size:9.5px; font-weight:750; letter-spacing:.05em; text-transform:uppercase; }
+.architecture-outline__actions { display:inline-flex; gap:5px; }
+.architecture-outline__actions button { display:inline-flex; align-items:center; gap:3px; padding:2px 8px; border:1px solid var(--obs-border); border-radius:6px; background:var(--bg-elevated); color:var(--obs-slate-blue); cursor:pointer; font:600 10.5px var(--font-sans); }
+.architecture-outline__actions button:hover { border-color:var(--focus-ring); }
+.architecture-outline__relations h3 { margin:0 0 7px; color:var(--obs-stone); font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.architecture-outline__relations ul { display:flex; flex-direction:column; gap:4px; margin:0; padding:0; list-style:none; }
+.architecture-outline__relations li { display:flex; justify-content:space-between; gap:12px; padding:5px 8px; border:1px solid var(--obs-border); border-radius:6px; font-size:11.5px; }
+.architecture-outline__edge-kind { color:var(--obs-stone); font-family:var(--font-mono); font-size:10.5px; white-space:nowrap; }
+.architecture-outline__empty { margin:0; color:var(--obs-stone); font-size:11.5px; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+.architecture-graph-inspector { height:100%; min-width:0; padding:20px; overflow:auto; border-left:1px solid var(--obs-border); background:color-mix(in srgb, var(--obs-paper) 94%, transparent); color:var(--obs-ink); }
+.architecture-graph-inspector__eyebrow { margin:0 0 6px; color:var(--obs-slate-blue); font-size:10px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
+.architecture-graph-inspector h2 { margin:0; font-size:19px; line-height:1.15; }
+.architecture-graph-inspector h3 { margin:20px 0 7px; font-size:12px; }
+.architecture-graph-inspector p { margin:4px 0; font-size:12px; line-height:1.45; }
+.architecture-graph-inspector__path { overflow:hidden; color:var(--obs-stone); text-overflow:ellipsis; white-space:nowrap; }
+.architecture-graph-inspector dl { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:18px 0; }
+.architecture-graph-inspector dl div { padding:9px; border:1px solid var(--obs-border); border-radius:8px; }
+.architecture-graph-inspector dt { color:var(--obs-stone); font-size:10px; }
+.architecture-graph-inspector dd { margin:3px 0 0; font-size:16px; font-weight:750; }
+.architecture-graph-inspector__copy { display:flex; gap:7px; align-items:flex-start; color:var(--obs-stone); }
+.architecture-graph-inspector__hint { margin-top:20px !important; color:var(--obs-slate-blue); font-weight:650; }
+.architecture-graph-inspector__actions { display:flex; gap:8px; margin-top:22px; }
+.architecture-graph-inspector__actions button { color:var(--obs-slate-blue); background:var(--obs-paper); }
+.obs-topbar__nav-current { display:grid; grid-template-columns:auto minmax(0,1fr); gap:9px; align-items:start; padding:9px; color:var(--obs-slate-blue); border-bottom:1px solid var(--obs-border); }
+.obs-topbar__nav-current span { display:grid; gap:3px; }
+.obs-topbar__nav-current small { color:var(--obs-stone); font-size:11px; }
+.architecture-graph-inspector__ai-badge { display:flex; align-items:center; gap:5px; margin-top:10px !important; color:var(--ai-text) !important; font-weight:700; }
+.architecture-graph-inspector__ai-badge span { color:var(--obs-stone); font-size:10px; font-weight:500; }
+.architecture-graph-inspector { position:relative; }
+.architecture-graph-inspector--collapsed { display:flex; align-items:flex-start; justify-content:center; padding:10px 4px; }
+.architecture-graph-inspector__collapse { position:absolute; top:10px; right:10px; }
+.architecture-graph-inspector--collapsed .architecture-graph-inspector__collapse { position:static; }
+.architecture-graph-inspector__origin { font-size:11px !important; font-weight:650 !important; }
+.architecture-graph-inspector__module-name { font-family:var(--font-mono); font-size:16px !important; }
+.architecture-graph-inspector__relations { margin-top:14px; }
+.architecture-graph-inspector__relation-row { display:flex; justify-content:space-between; gap:8px; padding:5px 8px; border:1px solid var(--obs-border); border-radius:6px; margin:4px 0 !important; font-size:11px !important; }
+.architecture-graph-inspector__relation-row code { font-family:var(--font-mono); font-size:10.5px; }
+.architecture-graph-inspector__relation-target { color:var(--obs-stone); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* Epistemic layer chips — shape + icon + word, never colour alone. */
+.epistemic-chip { display:inline-flex; align-items:center; gap:5px; margin:6px 0 8px; padding:3px 9px; border-radius:999px; font-size:9.5px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.epistemic-chip--structure { border:1px solid color-mix(in srgb, var(--obs-stone) 42%, var(--obs-border)); color:var(--obs-stone); background:color-mix(in srgb, var(--obs-stone) 6%, transparent); }
+.epistemic-chip--cluster { border:1px solid var(--structural-cluster-border); color:var(--structural-cluster-accent); background:color-mix(in srgb, var(--obs-slate-blue) 6%, transparent); border-radius:4px; }
+
+/* AI interpretation card (09_AI_VISUAL_LANGUAGE): iris surface, 3px left
+   rail, pill corners, sparkles + the words AI INTERPRETATION, and a
+   permanent deterministic ground-truth line underneath. Iris appears
+   nowhere else; the card can never carry a verification verdict. */
+.ai-interpretation-card { position:relative; margin:12px 0; padding:12px 14px 12px 17px; border:1px solid var(--ai-border); border-radius:14px; background:var(--ai-surface); }
+.ai-interpretation-card::before { content:""; position:absolute; left:6px; top:10px; bottom:10px; width:3px; border-radius:3px; background:var(--ai-accent); }
+.ai-interpretation-card__label { display:flex; align-items:center; gap:5px; margin:0 0 6px !important; color:var(--ai-text) !important; font-size:9.5px !important; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
+.ai-interpretation-card__label small { margin-left:auto; color:var(--obs-stone); font-size:9px; font-weight:500; letter-spacing:normal; text-transform:none; }
+.ai-interpretation-card__name { display:block; color:var(--ai-text); font-size:14.5px; font-weight:750; }
+.ai-interpretation-card__body { margin:5px 0 8px !important; color:var(--obs-ink); font-size:12px; line-height:1.45; }
+.ai-interpretation-card__regenerate { display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border:1px solid var(--ai-border); border-radius:999px; background:transparent; color:var(--ai-text); cursor:pointer; font:600 11px var(--font-sans); }
+.ai-interpretation-card__ground-truth { display:flex; flex-wrap:wrap; align-items:center; gap:5px; margin:10px 0 0 !important; padding-top:9px; border-top:1px dashed var(--ai-border); color:var(--obs-stone) !important; font-size:10.5px !important; }
+.ai-interpretation-card--empty button { display:inline-flex; align-items:center; gap:5px; padding:5px 11px; border:1px solid var(--ai-border); border-radius:999px; background:transparent; color:var(--ai-text); cursor:pointer; font:600 11.5px var(--font-sans); }
+.architecture-graph-inspector__basis { margin-top:14px; padding:10px; border:1px solid color-mix(in srgb, var(--obs-slate-blue) 24%, var(--obs-border)); border-radius:8px; background:color-mix(in srgb, var(--obs-slate-blue) 5%, transparent); }
+.architecture-graph-inspector__section-label { margin:0 0 3px !important; color:var(--obs-stone); font-size:10px !important; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.architecture-graph-inspector__technical-label { display:block; margin-top:5px; color:var(--obs-stone); font-size:10px; }
+.architecture-graph-inspector__copy--muted { margin-top:12px !important; color:var(--obs-stone); }
+.architecture-graph-inspector__copy--error { margin-top:10px !important; color:var(--verification-contradicted); font-weight:600; }
+.la-claim-card__statement, .la-claim-card__relation { display:flex; flex-direction:column; gap:3px; }
+.la-claim-card__statement small, .la-claim-card__relation small { color:var(--obs-stone); font-size:10px; font-weight:750; letter-spacing:.06em; text-transform:uppercase; }
+.la-claim-card__evidence-label { margin:0 0 8px; color:var(--obs-slate-blue); font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.obs-settings__clarity-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:14px 0 18px; }
+/* Was color-mix(var(--obs-white) 52%, transparent): a heavy white wash
+   read fine as a light-mode surface tint, but over the dark paper panel it
+   washed out to a pale grey block with near-illegible --obs-stone text on
+   top. Blending --obs-ink into --obs-paper elevates the card a touch in
+   both themes (ink is dark-on-light, light-on-dark) without collapsing
+   contrast in either. */
+.obs-settings__clarity-grid > div { padding:12px; border:1px solid var(--obs-border); border-radius:8px; background:color-mix(in srgb, var(--obs-ink) 6%, var(--obs-paper)); }
+.obs-settings__clarity-grid strong { font-size:12px; }
+.obs-settings__clarity-grid ul { margin:8px 0 0; padding-left:17px; color:var(--obs-stone); font-size:11.5px; line-height:1.5; }
+.obs-settings__availability { margin:16px 0 0; padding:11px 12px; color:var(--obs-stone); border:1px solid var(--obs-border); border-radius:8px; background:color-mix(in srgb, var(--obs-slate-blue) 5%, transparent); font-size:12px; line-height:1.45; }
+@media (max-width: 900px) { .obs-topbar__title { max-width:28vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .observatory-shell__body:has(.architecture-graph-overview) { grid-template-columns:minmax(0,1fr) 300px; } }
+@media (max-width: 700px) { .obs-settings__clarity-grid { grid-template-columns:1fr; } .obs-topbar { padding:0 10px; } .obs-topbar__right { display:none; } }
+.obs-question-dock--compact { display:inline-flex; align-items:center; gap:8px; width:auto; min-height:auto; padding:8px 12px; border:1px solid rgba(197,210,231,.78); border-radius:999px; background:color-mix(in srgb, var(--obs-paper) 94%, transparent); color:var(--obs-slate-blue); font:600 12px var(--font-sans); cursor:pointer; box-shadow:0 8px 22px rgba(10,18,31,.16); }
+@media (max-width: 900px) { .architecture-graph-overview__hint { display:none; } .architecture-graph-overview .react-flow__minimap { display:none; } }

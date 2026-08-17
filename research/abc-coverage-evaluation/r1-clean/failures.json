@@ -1,0 +1,42 @@
+[
+  {
+    "claim_id": "R1-TDC-5",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "outcome": "resolution_failed",
+    "failure_category": "parser_coverage",
+    "evaluator_notes": "Unchanged by A+B+C (intervention D scope, deliberately not implemented in this round): the subject is a function nested inside another def. The real parser DOES emit the symbol (qualified name matches), but classifies every nested def as kind='method', while the frozen ground truth correctly declares kind='function' -- the harness's kind-checked StableEntityRef resolution therefore finds no match and the claim cannot be evaluated."
+  },
+  {
+    "claim_id": "R1-TRC-2",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "outcome": "resolution_failed",
+    "failure_category": "parser_coverage",
+    "evaluator_notes": "Unchanged by A+B+C (intervention D scope, deliberately not implemented in this round): the subject is a function nested inside another def. The real parser DOES emit the symbol (qualified name matches), but classifies every nested def as kind='method', while the frozen ground truth correctly declares kind='function' -- the harness's kind-checked StableEntityRef resolution therefore finds no match and the claim cannot be evaluated."
+  },
+  {
+    "claim_id": "R1-FDC-5",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "outcome": "resolution_failed",
+    "failure_category": "parser_coverage",
+    "evaluator_notes": "Unchanged by A+B+C (intervention D scope, deliberately not implemented in this round): the subject is a function nested inside another def. The real parser DOES emit the symbol (qualified name matches), but classifies every nested def as kind='method', while the frozen ground truth correctly declares kind='function' -- the harness's kind-checked StableEntityRef resolution therefore finds no match and the claim cannot be evaluated."
+  },
+  {
+    "claim_id": "R1-FRC-1",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "outcome": "out_of_scope",
+    "failure_category": "proposition_vocabulary",
+    "evaluator_notes": "EXCLUDED_AS_UNCERTAIN (pre-evaluation audit correction, see CORRECTIONS.md). Not one of R1's 23 scored in-scope claims. Retained in this file rather than deleted, to preserve correction history transparently -- the original FALSE reachability assertion this claim_id previously carried is superseded, not silently removed."
+  },
+  {
+    "claim_id": "R1-FRC-2",
+    "analyzer_support_status": "not_evaluated",
+    "matched_evidence": [],
+    "outcome": "resolution_failed",
+    "failure_category": "parser_coverage",
+    "evaluator_notes": "Unchanged by A+B+C (intervention D scope, deliberately not implemented in this round): the subject is a function nested inside another def. The real parser DOES emit the symbol (qualified name matches), but classifies every nested def as kind='method', while the frozen ground truth correctly declares kind='function' -- the harness's kind-checked StableEntityRef resolution therefore finds no match and the claim cannot be evaluated."
+  }
+]

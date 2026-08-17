@@ -37,11 +37,14 @@ export interface ConnectionTestResult {
   model_used: string | null;
 }
 
+/** Final provider contract (design package, 14_SETTINGS_SPEC): None ·
+ * OpenAI · OpenRouter. Blackbox was legacy carry-over and is deliberately
+ * not selectable; a previously saved 'blackbox' value still round-trips
+ * through the backend, it just cannot be chosen anew here. */
 export const PROVIDER_OPTIONS: { value: string; label: string }[] = [
-  { value: 'off', label: 'Disabled (no provider)' },
+  { value: 'off', label: 'None (no provider)' },
   { value: 'openai', label: 'OpenAI' },
   { value: 'openrouter', label: 'OpenRouter' },
-  { value: 'blackbox', label: 'Blackbox' },
 ];
 
 export const CONNECTION_TEST_COPY: Record<ConnectionTestStatus, string> = {

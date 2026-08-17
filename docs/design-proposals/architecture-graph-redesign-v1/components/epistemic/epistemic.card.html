@@ -1,0 +1,24 @@
+<!-- @dsCard group="Components" viewport="700x420" name="Epistemic layers" subtitle="Provenance chips, AI interpretation, verified statements, regions and clusters" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>html,body{margin:0}body{padding:18px;background:var(--bg-app);font-family:var(--font-sans);color:var(--text-primary)}.row{display:flex;flex-wrap:wrap;align-items:center;gap:12px}.col{display:grid;gap:12px}</style></head><body><div id="root"></div><script type="text/babel">const {ProvenanceChip, AIInterpretationCard, StatementCard, StructuralRegion, ClusterCard, ThemeToggle} = window.SyntaxTreeDesignSystem_b1a4e9;
+ReactDOM.createRoot(document.getElementById('root')).render(
+<div className="col">
+  <div className="row">
+    <ProvenanceChip kind="structure" /><ProvenanceChip kind="cluster" /><ProvenanceChip kind="ai" /><ProvenanceChip kind="verified" /><ProvenanceChip kind="evidence" />
+    <ThemeToggle value="system" />
+  </div>
+  <div style={{display:'grid',gridTemplateColumns:'repeat(2,minmax(0,1fr))',gap:12}}>
+    <AIInterpretationCard state="generated" name="Authentication & Sessions" description="Handles credential checks, token validation and session lifecycle." groundTruth="Structural cluster 1 · 5 modules" generatedAt="cached from this run" onRegenerate={() => {}} />
+    <AIInterpretationCard state="unavailable" groundTruth="Structural cluster 2 · 4 modules" />
+  </div>
+  <StatementCard statement="auth.service.js calls notification.service.js when a session is created" status="supported" relation="calls · direct_relation" evidenceCount={3} onOpenEvidence={() => {}} />
+  <StatementCard statement="auth.service.js is reachable from the public HTTP surface" status="insufficient_evidence" relation="reachability" evidenceCount={0} />
+  <StructuralRegion path="backend/src/services" moduleCount={50}>
+    <ClusterCard label="Structural cluster 1" memberCount={5} relationCount={6} members={['auth.service.js','email.service.js','notification.service.js','notificationEvent.service.js','submission.service.js']} onOpenBasis={() => {}} />
+    <ClusterCard residual label="Ungrouped" memberCount={24} members={['contextSimilarity.service.js','readiness.service.js','cohort.service.js']} />
+  </StructuralRegion>
+</div>);</script></body></html>

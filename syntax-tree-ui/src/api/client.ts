@@ -13,6 +13,28 @@ export class ApiError extends Error {
   }
 }
 
+export const BACKEND_UNREACHABLE_MESSAGE =
+  'The analysis service is not reachable. Start the backend (port 8000) and retry.';
+
+/**
+ * True when a request failed because the BACKEND SERVICE itself could not
+ * be reached — a dev-proxy 502/504 (backend process down) or a plain
+ * network failure — as opposed to the backend answering with an
+ * application error. Callers use this to show a retryable
+ * "service unavailable" state instead of misreporting the failure as an
+ * AI-configuration condition (live-audit defect: a 502 while the backend
+ * was down rendered as "No model configured. Analysis is unaffected.").
+ * A backend-emitted 503 is deliberately NOT included: that is the
+ * "configured provider could not be reached" state and keeps its own copy.
+ */
+export function isBackendUnreachable(error: unknown): boolean {
+  if (error instanceof ApiError) {
+    return error.status === 0 || error.status === 502 || error.status === 504;
+  }
+  // fetch() rejects with TypeError when the connection itself fails.
+  return error instanceof TypeError;
+}
+
 function extractAndRecordTokens(obj: unknown) {
   if (!obj || typeof obj !== 'object') return;
   const record = obj as Record<string, unknown>;
@@ -34,7 +56,13 @@ function extractAndRecordTokens(obj: unknown) {
   }
 }
 
-export async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
+export async function fetchApi<T>(
+  path: string,
+  options?: RequestInit,
+  // LLM-backed endpoints (e.g. documentation generation) legitimately run
+  // longer than the default; callers pass a larger budget explicitly.
+  timeoutMs: number = DEFAULT_TIMEOUT_MS,
+): Promise<T> {
   const url = `${API_BASE}${path}`;
   const headers = new Headers(options?.headers);
   headers.set('Content-Type', headers.get('Content-Type') || 'application/json');
@@ -56,8 +84,8 @@ export async function fetchApi<T>(path: string, options?: RequestInit): Promise<
     upstreamSignal?.addEventListener('abort', abortFromUpstream, { once: true });
   }
   const timeout = globalThis.setTimeout(() => {
-    controller.abort(new DOMException(`Request exceeded ${DEFAULT_TIMEOUT_MS / 1000} seconds.`, 'TimeoutError'));
-  }, DEFAULT_TIMEOUT_MS);
+    controller.abort(new DOMException(`Request exceeded ${timeoutMs / 1000} seconds.`, 'TimeoutError'));
+  }, timeoutMs);
 
   try {
     const res = await fetch(url, {
@@ -73,6 +101,12 @@ export async function fetchApi<T>(path: string, options?: RequestInit): Promise<
         const detail = body.detail || body.message;
         message = typeof detail === 'string' ? detail : detail?.message || message;
       } catch { /* ignore parse error */ }
+      if (res.status === 502 || res.status === 504) {
+        // The dev proxy answers 502/504 itself when the backend process is
+        // down — this is a service-availability failure, never an
+        // application response.
+        message = BACKEND_UNREACHABLE_MESSAGE;
+      }
       throw new ApiError(res.status, message);
     }
 
@@ -85,7 +119,7 @@ export async function fetchApi<T>(path: string, options?: RequestInit): Promise<
     return data as T;
   } catch (error) {
     if (controller.signal.aborted && !upstreamSignal?.aborted) {
-      throw new ApiError(408, 'The request timed out after 15 seconds. You can retry safely.');
+      throw new ApiError(408, `The request timed out after ${timeoutMs / 1000} seconds. You can retry safely.`);
     }
     throw error;
   } finally {

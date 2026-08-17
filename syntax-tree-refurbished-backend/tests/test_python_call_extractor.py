@@ -1464,3 +1464,247 @@ def test_direct_construction_resolution_is_deterministic_across_runs(tmp_path: P
     assert first == second
     resolved_via_direct_construction = [r for r in first if r.resolution_basis == "direct_construction"]
     assert len(resolved_via_direct_construction) == 1
+
+
+# ---------------------------------------------------------------------------
+# Bare `from . import X` submodule binding -- intervention B
+# ---------------------------------------------------------------------------
+
+
+def test_bare_package_import_submodule_call_resolved(tmp_path: Path) -> None:
+    """The audited shape: `from . import cli` at module scope, then a
+    method body calling `cli.some_function()` -- resolves to the analyzed
+    submodule's top-level function when the package __init__ does not
+    shadow the name."""
+    files = {
+        "pkg/__init__.py": "",
+        "pkg/cli.py": """
+def load_env():
+    return 1
+""",
+        "pkg/app.py": """
+from . import cli
+
+
+class App:
+    def run(self):
+        return cli.load_env()
+""",
+    }
+    relations = _extract(tmp_path, files)
+    real_cli = _real_symbols(tmp_path, RUN_ID, "pkg/cli.py")
+    real_app = _real_symbols(tmp_path, RUN_ID, "pkg/app.py")
+    load_env_id = real_cli["python:pkg/cli.py::load_env"].id
+    run_id_ = real_app["python:pkg/app.py::App.run"].id
+
+    calls = [r for r in relations if r.target_entity_id == load_env_id]
+    assert len(calls) == 1
+    rel = calls[0]
+    assert rel.source_entity_id == run_id_
+    assert rel.resolution_status == "resolved"
+    assert rel.resolution_basis is None  # ordinary syntactic resolution
+    assert rel.target_reference is None
+
+
+def test_bare_package_import_at_root_level_resolved(tmp_path: Path) -> None:
+    """`from . import cli` between modules at the analyzed root (no
+    package __init__ in the set at all): nothing observed can shadow, so
+    the sibling submodule binding resolves."""
+    files = {
+        "cli.py": """
+def load_env():
+    return 1
+""",
+        "app.py": """
+from . import cli
+
+
+def run():
+    return cli.load_env()
+""",
+    }
+    relations = _extract(tmp_path, files)
+    real_cli = _real_symbols(tmp_path, RUN_ID, "cli.py")
+    load_env_id = real_cli["python:cli.py::load_env"].id
+
+    calls = [r for r in relations if r.target_entity_id == load_env_id]
+    assert len(calls) == 1
+    assert calls[0].resolution_status == "resolved"
+
+
+def test_bare_package_import_with_alias_resolved(tmp_path: Path) -> None:
+    files = {
+        "pkg/__init__.py": "",
+        "pkg/cli.py": """
+def load_env():
+    return 1
+""",
+        "pkg/app.py": """
+from . import cli as command_line
+
+
+def run():
+    return command_line.load_env()
+""",
+    }
+    relations = _extract(tmp_path, files)
+    real_cli = _real_symbols(tmp_path, RUN_ID, "pkg/cli.py")
+    load_env_id = real_cli["python:pkg/cli.py::load_env"].id
+    assert [r.resolution_status for r in relations if r.target_entity_id == load_env_id] == ["resolved"]
+
+
+def test_bare_package_import_shadowed_by_init_assignment_stays_unresolved(tmp_path: Path) -> None:
+    """The shadowing guard: the package __init__ assigns `cli` at module
+    scope, so Python's runtime binding for `from . import cli` is the
+    attribute, not the submodule -- the call must stay unresolved rather
+    than guessed."""
+    files = {
+        "pkg/__init__.py": """
+cli = object()
+""",
+        "pkg/cli.py": """
+def load_env():
+    return 1
+""",
+        "pkg/app.py": """
+from . import cli
+
+
+def run():
+    return cli.load_env()
+""",
+    }
+    relations = _extract(tmp_path, files)
+    unresolved = [r for r in relations if r.target_reference == "cli.load_env"]
+    assert len(unresolved) == 1
+    assert unresolved[0].resolution_status == "unresolved"
+    assert unresolved[0].target_entity_id is None
+
+
+def test_bare_package_import_shadowed_by_init_function_resolves_to_attribute(tmp_path: Path) -> None:
+    """A def of the same name in the package __init__ wins outright
+    (Python's own precedence): the import binds that function, so the
+    attribute call through it is unresolved -- and, critically, never
+    resolved to the submodule's function."""
+    files = {
+        "pkg/__init__.py": """
+def cli():
+    return None
+""",
+        "pkg/cli.py": """
+def load_env():
+    return 1
+""",
+        "pkg/app.py": """
+from . import cli
+
+
+def run():
+    return cli.load_env()
+""",
+    }
+    relations = _extract(tmp_path, files)
+    real_cli = _real_symbols(tmp_path, RUN_ID, "pkg/cli.py")
+    load_env_id = real_cli["python:pkg/cli.py::load_env"].id
+    assert not [r for r in relations if r.target_entity_id == load_env_id]
+    unresolved = [r for r in relations if r.target_reference == "cli.load_env"]
+    assert len(unresolved) == 1
+    assert unresolved[0].resolution_status == "unresolved"
+
+
+def test_bare_package_import_shadowed_by_different_import_stays_unresolved(tmp_path: Path) -> None:
+    """The package __init__ binds the same name via a *different* import
+    (`from .other import cli`), so the attribute could be either binding
+    at runtime -- refused, never guessed."""
+    files = {
+        "pkg/__init__.py": """
+from .other import cli
+""",
+        "pkg/other.py": """
+def cli():
+    return None
+""",
+        "pkg/cli.py": """
+def load_env():
+    return 1
+""",
+        "pkg/app.py": """
+from . import cli
+
+
+def run():
+    return cli.load_env()
+""",
+    }
+    relations = _extract(tmp_path, files)
+    real_cli = _real_symbols(tmp_path, RUN_ID, "pkg/cli.py")
+    load_env_id = real_cli["python:pkg/cli.py::load_env"].id
+    assert not [r for r in relations if r.target_entity_id == load_env_id]
+
+
+def test_bare_package_import_self_reexport_in_init_still_resolves(tmp_path: Path) -> None:
+    """The one import binding of the name in __init__ that does NOT shadow:
+    the package's own bare `from . import cli` of the very same submodule
+    (a self-consistent re-export). The submodule binding stays valid."""
+    files = {
+        "pkg/__init__.py": """
+from . import cli
+""",
+        "pkg/cli.py": """
+def load_env():
+    return 1
+""",
+        "pkg/app.py": """
+from . import cli
+
+
+def run():
+    return cli.load_env()
+""",
+    }
+    relations = _extract(tmp_path, files)
+    real_cli = _real_symbols(tmp_path, RUN_ID, "pkg/cli.py")
+    load_env_id = real_cli["python:pkg/cli.py::load_env"].id
+    assert [r.resolution_status for r in relations if r.target_entity_id == load_env_id] == ["resolved"]
+
+
+def test_bare_package_import_of_missing_submodule_stays_unresolved(tmp_path: Path) -> None:
+    """`from . import missing` where no analyzed submodule of that name
+    exists: unresolved, exactly as before this change."""
+    files = {
+        "pkg/__init__.py": "",
+        "pkg/app.py": """
+from . import missing
+
+
+def run():
+    return missing.do_it()
+""",
+    }
+    relations = _extract(tmp_path, files)
+    unresolved = [r for r in relations if r.target_reference == "missing.do_it"]
+    assert len(unresolved) == 1
+    assert unresolved[0].resolution_status == "unresolved"
+
+
+def test_level_two_bare_relative_import_stays_unresolved(tmp_path: Path) -> None:
+    """`from .. import x` (level >= 2) remains out of scope -- unchanged."""
+    files = {
+        "pkg/__init__.py": "",
+        "pkg/x.py": """
+def go():
+    return 1
+""",
+        "pkg/sub/__init__.py": "",
+        "pkg/sub/app.py": """
+from .. import x
+
+
+def run():
+    return x.go()
+""",
+    }
+    relations = _extract(tmp_path, files)
+    unresolved = [r for r in relations if r.target_reference == "x.go"]
+    assert len(unresolved) == 1
+    assert unresolved[0].resolution_status == "unresolved"

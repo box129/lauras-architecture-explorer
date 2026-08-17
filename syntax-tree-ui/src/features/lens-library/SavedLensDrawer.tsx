@@ -38,9 +38,16 @@ export default function SavedLensDrawer({
   onOpenDocs,
 }: SavedLensDrawerProps) {
   const tourLenses = activeTour ? activeTour.lensIds.map((id) => lenses.find((lens) => lens.id === id)).filter(Boolean) as SavedLens[] : [];
+  // Lenses & tours is secondary workspace UX, reachable from the primary
+  // navigation menu at any time (see ObservatoryTopBar's "Lenses & tours"
+  // item). The always-visible left-edge tab below is only a shortcut for
+  // when there is actually something saved -- an empty tab in that
+  // position read as unfinished primary functionality competing with
+  // Architecture, the product's actual primary surface.
   if (!open) {
+    if (lenses.length === 0 && !activeTour) return null;
     return (
-      <button className="obs-lens-drawer-tab" type="button" onClick={onOpen}>
+      <button className="obs-lens-drawer-tab" type="button" onClick={onOpen} aria-label="Open saved lenses and tours">
         <Library size={15} />
         Lenses
       </button>

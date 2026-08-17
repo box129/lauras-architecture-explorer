@@ -165,6 +165,55 @@ What this extractor resolves ("resolved" / "partial"), and how
   third strictly additive fallback, attempted only when the ordinary
   same-class ``self.method()`` check above already left the call site
   ``"unresolved"``.
+- ``self.method()`` inside a function *nested* (at any depth) inside a
+  class method, when ``self`` is genuinely closure-captured from that
+  enclosing method -- see "Closure-captured ``self`` resolution" below.
+
+Closure-captured ``self`` resolution
+--------------------------------------------------------------------------
+A function nested inside a class method is NOT itself a method (it gets
+``current_class=None`` -- see ``_process_function``), but Python's lexical
+scoping means a bare ``self`` in its body can still deterministically
+refer to the enclosing method's own ``self`` parameter, via an ordinary
+closure capture:
+
+    class C:
+        def wraps(self, f):
+            def wrapped_f(*args, **kw):
+                copy = self.copy()   # <- C's own `self`, captured
+
+``self.copy()`` there resolves exactly like the same call written directly
+in the method body (same same-class ``methods`` lookup, plain
+``resolution_status="resolved"``, no ``resolution_basis``), but ONLY when
+the capture is provably unambiguous. The binding is REFUSED -- leaving the
+call exactly as before, an ordinary unresolved name -- whenever any of
+these hold (see ``_nested_closure_self_class``):
+
+- the nested function declares its own parameter named ``self`` (any
+  slot: positional, keyword-only, ``*args``/``**kwargs``);
+- the nested function rebinds ``self`` locally in any form (assignment,
+  ``del``, ``global``/``nonlocal``, a nested def/class/import/except/match
+  binding of the name -- deliberately over-inclusive, refusal-only);
+- lexical ownership is ambiguous: any scope between the method and the
+  nested function that is not itself a validated self-capturing function
+  (e.g. an intervening class body) breaks the chain, and so does the
+  enclosing method rebinding ``self`` in its own scope;
+- the enclosing scope is not a class method with a valid ``self``
+  binding: its first positional parameter must literally be named
+  ``self`` and it must not be decorated ``staticmethod``/``classmethod``.
+
+Parameter *type annotations* are never consulted -- an annotation is a
+claim about a value, not an observed binding, and resolving through one
+would be exactly the fabrication this extractor refuses everywhere else
+(so ``retry_state.get_fn_name()`` with ``retry_state: RetryCallState``
+stays unresolved on purpose). The captured ``self`` enables ONLY the
+direct same-class ``self.method()`` lookup: none of the additive fallbacks
+below (``constructor_binding``, ``direct_construction``,
+``inherited_self_method``, ``static_super``) fire from a nested function,
+exactly as before -- ``current_class`` remains ``None`` there, and
+``super()`` in particular MUST stay refused (zero-argument ``super()``
+raises at runtime in a function nested inside a method; the ``__class__``
+cell belongs to defs declared directly in the class body).
 
 Constructor-binding fallback resolution (``resolution_basis="constructor_binding"``)
 --------------------------------------------------------------------------------------
@@ -270,14 +319,39 @@ already builds from the caller-supplied ``symbols``). The call resolves
 whose target is the ancestor the method was found on (the specific base
 declaration this resolution depended on) -- the call site's own span
 remains the relation's primary span, unchanged. This fallback never
-resolves a ``super().method()`` call (a structurally different AST shape,
-explicitly out of scope -- see below), never walks through a class this
+resolves a ``super().method()`` call (a structurally different AST shape
+with its own separate ``static_super`` fallback -- see below), never
+walks through a class this
 extractor's own same-class lookup already resolved (so an overriding
 ``method`` defined directly on ``C`` is always preferred, exactly as
 Python's own method resolution would pick the subclass's own definition
 first), and never fires at all when ``inherits`` is omitted/empty --
 every existing caller that does not pass ``inherits`` sees byte-identical
 behavior to before this fallback existed.
+
+Guarded static super() resolution (``resolution_basis="static_super"``)
+------------------------------------------------------------------------
+For a zero-argument ``super().method(...)`` call site inside a method of
+class ``C``, and only when the caller passed ``inherits``: walk upward
+from ``C`` through the caller-supplied resolved ``inherits`` relations,
+requiring at every step (``C`` itself and every ancestor looked past)
+exactly one declared base, fully resolved -- any multiple inheritance or
+any unresolved/external base anywhere on the walk refuses resolution for
+the whole call site, since the runtime MRO could then consult a class
+this extractor cannot see or order. The nearest ancestor that defines
+``method`` (exactly one matching real ``kind="method"`` symbol) is the
+target -- exactly where Python's own MRO for that single-base chain would
+stop; zero definers by chain end, or a duplicate definition on one
+ancestor, refuses. ``super(C, self)`` (explicit two-argument form),
+``super()`` calls in nested functions, and every other shape are never
+touched. ``supporting_resolution_spans`` carries every ``inherits``
+relation walked, in order (the chain of base declarations the resolution
+depended on); the call site's own span remains the relation's primary
+span. Residual static approximation, shared with ``inherited_self_method``
+above: a *different* class using ``C`` in cooperative multiple
+inheritance could reroute ``super()`` at runtime for instances of that
+subclass -- the single-base-chain restriction keeps the resolved edge the
+statically correct one for ``C``'s own declared hierarchy.
 
 Variable-type tracking (the heuristic behind "partial" matches):
 For each function/method body, every direct ``name = SomeConstructorCall()``
@@ -306,16 +380,28 @@ What is explicitly OUT of scope (left "unresolved" on purpose)
   attribute access other than ``self.method()`` itself (e.g.
   ``self.attribute.method()`` still requires the constructor-binding or
   direct-construction fallbacks, unaffected by this one).
-- ``super().method()`` calls (would require MRO resolution) -- still out
-  of scope; not touched by the ``inherited_self_method`` fallback, which
-  only ever matches a bare ``self.method()`` attribute-call shape.
+- ``super().method()`` calls are IN scope only in the one statically
+  safe configuration handled by the ``static_super`` fallback (see
+  "Guarded static super() resolution" below): zero-argument ``super()``,
+  a fully resolved, strictly single-base inheritance chain, and exactly
+  one (nearest) defining ancestor. Everything else -- ``super(C, self)``,
+  any multiple inheritance or unresolved base on the walk, no unique
+  definer -- remains out of scope and unresolved. The
+  ``inherited_self_method`` fallback itself still never matches a
+  ``super()`` shape.
 - Star imports (``from x import *``): names introduced this way are not
   tracked at all, so calls to them are unresolved like any other unknown
   name.
-- Relative imports with level >= 2, or bare ``from . import name``
-  (package-level re-export ambiguity) -- only the explicit
-  ``from .sibling_module import name`` (level == 1, module named) form is
-  resolved.
+- Relative imports with level >= 2. Bare ``from . import name`` (level ==
+  1, no module clause) IS now resolved, but only in the one
+  deterministically safe configuration: ``name`` maps to an analyzed
+  submodule ``package.name``, and the package's ``__init__`` (when
+  analyzed) does not bind ``name`` any other way -- a def/class of that
+  name in the ``__init__`` resolves to that attribute instead (Python's
+  own precedence), and any module-scope assignment or different import
+  binding of the same name refuses resolution entirely rather than
+  guessing between attribute and submodule. See
+  ``_package_init_shadows_submodule``.
 - Multi-segment dotted ``import pkg.sub.mod`` attribute-chain call sites
   (``pkg.sub.mod.func()``) -- only single-name ``import module[as alias]``
   plus ``alias.func()`` is resolved.
@@ -351,7 +437,7 @@ from syntax_tree_refurbished.core.models.program_relation import (
 )
 
 EXTRACTOR_NAME = "python_call_extractor"
-EXTRACTOR_VERSION = "0.3.0"
+EXTRACTOR_VERSION = "0.6.0"
 
 _PARTIAL_VAR_TRACKING_CONFIDENCE = 0.8
 
@@ -375,6 +461,12 @@ class _ImportBinding:
     kind: str  # "from" | "module"
     target_module: str | None  # resolved absolute dotted module path, or None if unresolvable syntactically
     imported_name: str | None  # for kind == "from": the original imported name
+    bare_package_import: bool = False
+    """True only for the bare ``from . import X`` form (``level == 1``,
+    no module clause): ``target_module`` is then the current *package*
+    path itself ("" for a root-level module set), and ``X`` may resolve
+    to the analyzed submodule ``package.X`` when the package ``__init__``
+    does not shadow that name -- see ``_resolve_imports_for_module``."""
 
 
 @dataclass
@@ -394,6 +486,14 @@ class _ModuleIndex:
     ``app.parsing.python_symbol_parser`` for the same symbol (e.g.
     ``"python:pkg/mod.py::Foo.bar"``), for every function/method/class node
     this module's own syntactic walk saw -- see module docstring."""
+    module_scope_assigned: frozenset[str] = frozenset()
+    """Every name bound by a Store context at this module's own scope
+    (assignments, for/with targets, walrus, etc. -- never inside a nested
+    function/class/lambda body). Consulted only by the bare
+    ``from . import X`` submodule-binding resolution's shadowing guard: a
+    package ``__init__`` that assigns ``X`` at module scope makes the
+    runtime attribute win over the submodule, so the binding is refused
+    rather than guessed."""
 
 
 @dataclass
@@ -431,8 +531,15 @@ def _resolve_from_module(node: ast.ImportFrom, package_path: str | None) -> str 
         if package_path:
             return f"{package_path}.{node.module}"
         return node.module
-    # Bare `from . import x` (module is None) or level >= 2: not supported
-    # precisely enough to resolve deterministically -- see module docstring.
+    if node.level == 1 and node.module is None:
+        # Bare `from . import X`: anchor at the current package itself (""
+        # for a root-level module set). Whether X then binds an attribute of
+        # the package __init__ or the analyzed submodule `package.X` is
+        # decided at cross-module resolution time -- see
+        # `_resolve_imports_for_module` and the module docstring.
+        return package_path if package_path is not None else ""
+    # level >= 2 relative imports: not supported precisely enough to resolve
+    # deterministically -- see module docstring.
     return None
 
 
@@ -453,7 +560,12 @@ def _record_import(node: ast.stmt, imports: dict[str, _ImportBinding], package_p
                 continue  # star import: cannot resolve deterministically
             bind_name = alias.asname or alias.name
             target_module = _resolve_from_module(node, package_path)
-            imports[bind_name] = _ImportBinding(kind="from", target_module=target_module, imported_name=alias.name)
+            imports[bind_name] = _ImportBinding(
+                kind="from",
+                target_module=target_module,
+                imported_name=alias.name,
+                bare_package_import=(node.module is None and node.level == 1),
+            )
 
 
 def _build_module_index(file_path: str, source: str, language: str) -> _ModuleIndex:
@@ -520,7 +632,29 @@ def _build_module_index(file_path: str, source: str, language: str) -> _ModuleIn
         imports=imports,
         qualnames=qualnames,
         internal_to_real_qn=internal_to_real_qn,
+        module_scope_assigned=_module_scope_assigned_names(tree),
     )
+
+
+def _module_scope_assigned_names(tree: ast.Module) -> frozenset[str]:
+    """Collect every name bound by a Store context at module scope (never
+    descending into nested function/class/lambda bodies). Deliberately
+    over-inclusive (e.g. comprehension targets at module level are counted
+    even though Python scopes them separately): this feeds a *refusal*
+    guard, so over-detection can only ever keep a binding unresolved --
+    never produce a wrong resolution."""
+    names: set[str] = set()
+
+    def walk(node: ast.AST) -> None:
+        for child in ast.iter_child_nodes(node):
+            if isinstance(child, _SCOPE_BOUNDARY):
+                continue
+            if isinstance(child, ast.Name) and isinstance(child.ctx, ast.Store):
+                names.add(child.id)
+            walk(child)
+
+    walk(tree)
+    return frozenset(names)
 
 
 # ---------------------------------------------------------------------------
@@ -535,12 +669,37 @@ def _resolve_imports_for_module(
     for local_name, binding in module_idx.imports.items():
         if binding.kind == "from":
             target_module = binding.target_module
-            target_idx = modules_by_path.get(target_module) if target_module else None
+            # `is not None` (not truthiness): "" is the legitimate root
+            # package for the bare `from . import X` form in a root-level
+            # module set, and its __init__ module indexes under "".
+            target_idx = modules_by_path.get(target_module) if target_module is not None else None
             if target_idx is not None and binding.imported_name is not None:
                 hit = target_idx.top_level.get(binding.imported_name)
                 if hit is not None:
+                    # A def/class of this name in the target module wins --
+                    # for the bare package form this is exactly Python's own
+                    # semantics (the package attribute shadows the
+                    # submodule).
                     kind, qn = hit
                     resolved[local_name] = _ResolvedImport(kind=kind, qualname=qn)
+                    continue
+            if (
+                binding.bare_package_import
+                and binding.imported_name is not None
+                and target_module is not None
+            ):
+                # Bare `from . import X`: bind X as the analyzed submodule
+                # `package.X`, but only when the package __init__ (if
+                # analyzed) does not shadow the name -- see
+                # `_package_init_shadows_submodule`. Anything ambiguous
+                # stays unresolved, never guessed.
+                submodule = (
+                    f"{target_module}.{binding.imported_name}" if target_module else binding.imported_name
+                )
+                if submodule in modules_by_path and not _package_init_shadows_submodule(
+                    target_idx, binding.imported_name
+                ):
+                    resolved[local_name] = _ResolvedImport(kind="module", target=submodule)
                     continue
             resolved[local_name] = _ResolvedImport(kind="unresolved")
         else:  # "module"
@@ -550,6 +709,46 @@ def _resolve_imports_for_module(
             else:
                 resolved[local_name] = _ResolvedImport(kind="unresolved")
     return resolved
+
+
+def _package_init_shadows_submodule(
+    package_idx: _ModuleIndex | None, name: str
+) -> bool:
+    """Shadowing guard for the bare ``from . import X`` submodule binding:
+    Python binds the package's own attribute ``X`` in preference to the
+    submodule whenever the package ``__init__`` defines one. The caller has
+    already handled the def/class case (top_level hit wins outright); this
+    guard refuses the submodule binding when the analyzed ``__init__``
+    could bind ``X`` any other way:
+
+    - a module-scope assignment of any Store form (``X = ...``, ``for X
+      in ...``, ``with ... as X``, walrus);
+    - an import binding of ``X`` that is anything other than the package's
+      own bare ``from . import X`` of this very submodule (that specific
+      self-consistent form binds the submodule itself, so it does not
+      shadow).
+
+    ``package_idx is None`` means the package ``__init__`` is not in the
+    analyzed/parsed module set at all -- nothing observed can shadow, and a
+    package whose ``__init__`` genuinely failed to parse could not be
+    imported at runtime either, so the binding is allowed."""
+    if package_idx is None:
+        return False
+    if name in package_idx.top_level:
+        return True  # defensive: caller normally resolved this case already
+    if name in package_idx.module_scope_assigned:
+        return True
+    own_binding = package_idx.imports.get(name)
+    if own_binding is not None:
+        is_same_bare_submodule_import = (
+            own_binding.kind == "from"
+            and own_binding.bare_package_import
+            and own_binding.imported_name == name
+            and own_binding.target_module == package_idx.module_path
+        )
+        if not is_same_bare_submodule_import:
+            return True
+    return False
 
 
 @dataclass
@@ -720,6 +919,18 @@ class _Ctx:
     scope (e.g. a nested ``def`` or a locally-defined class) -- checked
     before module top-level names, mirroring Python's own name lookup
     (local scope before module scope)."""
+    closure_self_class: _ClassInfo | None = None
+    """Set ONLY for a function nested (at any depth) inside a class method
+    when ``self`` in this function's body deterministically refers to the
+    enclosing method's own ``self`` parameter -- i.e. it is genuinely
+    captured from that enclosing lexical scope, with no scope on the chain
+    rebinding or shadowing it (see module docstring, "Closure-captured
+    ``self`` resolution", and ``_nested_closure_self_class`` for the exact
+    refusal conditions). ``None`` everywhere else: directly inside a method
+    (``current_class`` covers that case), at module scope, and for any
+    nested function where the capture is not provably safe. Mutually
+    exclusive with ``current_class`` by construction (a scope is either a
+    method itself or a nested function, never both)."""
 
 
 def _unparse(node: ast.AST) -> str:
@@ -788,8 +999,18 @@ def _resolve_call(func_expr: ast.expr, ctx: _Ctx) -> tuple[str, str | None, floa
         value = func_expr.value
         attr = func_expr.attr
 
-        if isinstance(value, ast.Name) and value.id == "self" and ctx.current_class is not None:
-            method_qn = ctx.current_class.methods.get(attr)
+        if isinstance(value, ast.Name) and value.id == "self" and (
+            ctx.current_class is not None or ctx.closure_self_class is not None
+        ):
+            # `self` either is the current method's own first parameter
+            # (current_class) or is deterministically captured from the
+            # enclosing method's scope by a nested function
+            # (closure_self_class -- see module docstring, "Closure-captured
+            # `self` resolution"). Both bind `self` to an instance of the
+            # same statically-known class, so the same same-class method
+            # lookup applies.
+            owner_class = ctx.current_class if ctx.current_class is not None else ctx.closure_self_class
+            method_qn = owner_class.methods.get(attr)
             if method_qn is not None:
                 return ("resolved", method_qn, None)
             return ("unresolved", None, None)
@@ -1087,6 +1308,109 @@ def _resolve_via_inheritance(
     return method_symbol.id, (span,)
 
 
+def _resolve_via_static_super(
+    func_expr: ast.expr, ctx: _Ctx
+) -> tuple[str, tuple[ResolutionEvidenceSpan, ...]] | None:
+    """Fallback resolution for a zero-argument ``super().method()`` call
+    site (see module docstring, "Guarded static super() resolution").
+    Returns ``(real_method_entity_id, supporting_resolution_spans)`` only
+    when the calling class's declared inheritance chain is fully resolved,
+    strictly single-base at every step, and exactly one ancestor (the
+    nearest) defines the method; ``None`` otherwise -- never a guess.
+
+    Guards, in order:
+
+    - AST shape: ``super().<name>(...)`` with a bare, zero-argument
+      ``super()`` only. The two-argument ``super(C, self)`` form (which can
+      deliberately re-anchor the lookup anywhere) is refused.
+    - Scope: the call must be directly inside a method of a class this
+      module's own walk tracked (``ctx.current_class``); nested functions
+      (which get ``current_class=None`` -- see ``_process_function``) never
+      fire this fallback.
+    - The caller must have supplied ``inherits`` relations at all (same
+      opt-in rule as the ``inherited_self_method`` fallback).
+    - Chain walk, starting AT the calling class (``super()`` skips the
+      calling class's own definition of the method by construction): every
+      class the walk stands on must have exactly one declared base, and
+      that base must be resolved. A class with any unresolved/external
+      base, or with two or more bases (multiple inheritance -- where the
+      runtime MRO could interleave the other branch), refuses resolution
+      for the whole call site.
+    - The first ancestor that defines the method (exactly one real
+      ``kind="method"`` symbol of that name under it) is the target --
+      precisely where Python's own MRO for a single-base chain stops. An
+      ancestor defining the method more than once (duplicate defs) refuses.
+      A chain that ends (a class with zero declared bases) without any
+      definer refuses -- no unique defining ancestor.
+    """
+    if not isinstance(func_expr, ast.Attribute):
+        return None
+    method_name = func_expr.attr
+
+    inner = func_expr.value
+    if not (
+        isinstance(inner, ast.Call)
+        and isinstance(inner.func, ast.Name)
+        and inner.func.id == "super"
+        and not inner.args
+        and not inner.keywords
+    ):
+        return None
+
+    if ctx.current_class is None:
+        return None
+    class_symbol = _lookup_real_symbol(ctx.current_class.qualname, ctx.globals_ctx)
+    if class_symbol is None:
+        return None
+
+    if not ctx.globals_ctx.inherits_by_source and not ctx.globals_ctx.has_unresolved_base:
+        # No `inherits` collection was supplied at all -- deliberate no-op,
+        # same rule as `_resolve_via_inheritance`.
+        return None
+
+    visited: set[str] = {class_symbol.id}
+    current_id = class_symbol.id
+    spans: list[ResolutionEvidenceSpan] = []
+    while True:
+        if current_id in ctx.globals_ctx.has_unresolved_base:
+            # An unresolved/external base could define (or reorder the
+            # lookup of) the method at exactly this point -- never guess.
+            return None
+        base_relations = ctx.globals_ctx.inherits_by_source.get(current_id, ())
+        if len(base_relations) != 1:
+            # Zero bases: the chain ended without a defining ancestor.
+            # Two or more resolved bases: multiple inheritance, where the
+            # runtime MRO after `current_id` may interleave the other
+            # branch -- refused either way.
+            return None
+        rel = base_relations[0]
+        parent_id = rel.target_entity_id
+        if parent_id is None or parent_id in visited:
+            return None
+        visited.add(parent_id)
+        spans.append(
+            ResolutionEvidenceSpan(
+                path=rel.span_path or ctx.module_idx.file_path,
+                start_line=rel.span_start_line or 0,
+                end_line=rel.span_end_line or rel.span_start_line or 0,
+                description="inherits relation walked to resolve super().method() along a single-base chain",
+            )
+        )
+        candidates = [
+            symbol
+            for symbol in ctx.globals_ctx.methods_by_parent.get(parent_id, [])
+            if symbol.name == method_name
+        ]
+        if len(candidates) > 1:
+            return None  # duplicate defs on one class -- genuinely ambiguous
+        if len(candidates) == 1:
+            return candidates[0].id, tuple(spans)
+        # `parent_id` does not define the method -- keep walking past it;
+        # its own base-shape/resolution guards apply at the top of the next
+        # iteration, exactly because the lookup must look PAST it.
+        current_id = parent_id
+
+
 # ---------------------------------------------------------------------------
 # Own-scope traversal helpers
 # ---------------------------------------------------------------------------
@@ -1102,6 +1426,121 @@ def _iter_own_scope(node: ast.AST):
         if isinstance(child, _SCOPE_BOUNDARY):
             continue
         yield from _iter_own_scope(child)
+
+
+def _has_parameter_named(func_node: ast.FunctionDef | ast.AsyncFunctionDef, name: str) -> bool:
+    """True if ``func_node`` declares a parameter of this name anywhere in
+    its signature (positional-only, positional, keyword-only, ``*args`` or
+    ``**kwargs``)."""
+    arguments = func_node.args
+    params = [*arguments.posonlyargs, *arguments.args, *arguments.kwonlyargs]
+    if arguments.vararg is not None:
+        params.append(arguments.vararg)
+    if arguments.kwarg is not None:
+        params.append(arguments.kwarg)
+    return any(param.arg == name for param in params)
+
+
+def _binds_name_in_own_scope(func_node: ast.AST, name: str) -> bool:
+    """True if ``func_node``'s own scope (never a nested function/class/
+    lambda body) binds ``name`` in any way other than as a parameter: an
+    assignment/for/with/walrus Store, a ``del``, a ``global``/``nonlocal``
+    declaration, a nested def/class of that name, an import binding, an
+    ``except ... as`` name, or a match-pattern capture. Deliberately
+    over-inclusive (e.g. comprehension targets, which Python actually
+    scopes separately, still count): this feeds a *refusal* guard, so
+    over-detection can only ever keep a closure binding unused -- never
+    produce a wrong resolution."""
+    for node in _iter_own_scope(func_node):
+        if isinstance(node, ast.Name) and node.id == name and isinstance(node.ctx, (ast.Store, ast.Del)):
+            return True
+        if isinstance(node, (ast.Global, ast.Nonlocal)) and name in node.names:
+            return True
+        if isinstance(node, (*_FUNC_TYPES, ast.ClassDef)) and node.name == name:
+            return True
+        if isinstance(node, ast.alias) and (node.asname or node.name.split(".")[0]) == name:
+            return True
+        if isinstance(node, ast.ExceptHandler) and node.name == name:
+            return True
+        if isinstance(node, (ast.MatchAs, ast.MatchStar)) and node.name == name:
+            return True
+    return False
+
+
+def _is_instance_method_with_self(method_node: ast.FunctionDef | ast.AsyncFunctionDef) -> bool:
+    """True only when ``method_node`` (a def declared directly in a class
+    body) observably binds ``self`` as its own first positional parameter:
+    the first positional (or positional-only) parameter is literally named
+    ``self``, and no ``staticmethod``/``classmethod`` decorator changes what
+    that parameter receives. Purely syntactic -- parameter *type
+    annotations* are never consulted (an annotation is a claim, not an
+    observed binding)."""
+    for decorator in method_node.decorator_list:
+        if isinstance(decorator, ast.Name) and decorator.id in ("staticmethod", "classmethod"):
+            return False
+        if isinstance(decorator, ast.Attribute) and decorator.attr in ("staticmethod", "classmethod"):
+            return False
+    positional = [*method_node.args.posonlyargs, *method_node.args.args]
+    return bool(positional) and positional[0].arg == "self"
+
+
+def _nested_closure_self_class(
+    nested_node: ast.FunctionDef | ast.AsyncFunctionDef,
+    enclosing_node: ast.AST,
+    current_class: _ClassInfo | None,
+    closure_self_class: _ClassInfo | None,
+) -> _ClassInfo | None:
+    """Decide whether ``self`` inside ``nested_node`` (a def declared
+    directly in ``enclosing_node``'s scope) deterministically refers to an
+    enclosing class method's own ``self`` parameter -- and if so, which
+    class it is an instance of. Returns ``None`` (refusal) unless every
+    condition holds; a refusal means the nested function's ``self`` is
+    treated exactly as before this fallback existed (an ordinary unknown
+    name), never a guess.
+
+    Refuses when:
+
+    - the enclosing scope is not a class method with a valid ``self``
+      binding: either ``enclosing_node`` is a def directly in a class body
+      (``current_class``) whose first positional parameter must literally
+      be ``self`` with no ``staticmethod``/``classmethod`` decorator
+      (``_is_instance_method_with_self``), or ``enclosing_node`` is itself
+      a nested function that already carries a validated
+      ``closure_self_class`` -- anything else (module scope, a method
+      without a real ``self``, a class body in between) has no safe
+      ``self`` to capture;
+    - the enclosing method rebinds ``self`` anywhere in its own scope
+      (the captured cell's value would then be whatever the rebinding
+      produced -- lexical ownership becomes ambiguous);
+    - the nested function declares its own parameter named ``self`` (its
+      ``self`` is then a local, not the capture);
+    - the nested function rebinds ``self`` locally in any form
+      (``_binds_name_in_own_scope`` -- assignment, ``del``,
+      ``global``/``nonlocal``, a nested def/class/import/except/match
+      binding of that name).
+
+    Intermediate nested functions on a deeper chain were already validated
+    by this same function when they were entered (their surviving
+    ``closure_self_class`` proves they neither shadow nor rebind ``self``),
+    so passing it through is sound without re-checking them here.
+    """
+    if current_class is not None:
+        if not isinstance(enclosing_node, _FUNC_TYPES):
+            return None
+        if not _is_instance_method_with_self(enclosing_node):
+            return None
+        if _binds_name_in_own_scope(enclosing_node, "self"):
+            return None
+        owner = current_class
+    else:
+        owner = closure_self_class
+    if owner is None:
+        return None
+    if _has_parameter_named(nested_node, "self"):
+        return None
+    if _binds_name_in_own_scope(nested_node, "self"):
+        return None
+    return owner
 
 
 def _infer_var_types(func_node: ast.AST, ctx: _Ctx) -> dict[str, str]:
@@ -1364,6 +1803,22 @@ def _make_relation(
                     target_reference = None
                     confidence = None
                     resolution_basis = "inherited_self_method"
+                else:
+                    # Fourth, structurally separate additive fallback: a
+                    # zero-argument super().method() call -- see module
+                    # docstring "Guarded static super() resolution".
+                    # Mutually exclusive by AST shape with all three
+                    # fallbacks above (those require a bare `self` Name at
+                    # the root of the attribute chain; this one requires a
+                    # `super()` Call there), so there is no ordering
+                    # ambiguity between them.
+                    static_super_hit = _resolve_via_static_super(call_node.func, ctx)
+                    if static_super_hit is not None:
+                        target_entity_id, supporting_resolution_spans = static_super_hit
+                        status = "resolved"
+                        target_reference = None
+                        confidence = None
+                        resolution_basis = "static_super"
 
     end_line = call_node.end_lineno if call_node.end_lineno is not None else call_node.lineno
     return ObservedProgramRelation.create(
@@ -1390,6 +1845,7 @@ def _process_function(
     current_class: _ClassInfo | None,
     globals_ctx: _GlobalContext,
     run_id: str,
+    closure_self_class: _ClassInfo | None = None,
 ) -> list[ObservedProgramRelation]:
     internal_qualname = module_idx.qualnames[id(func_node)]
     source_symbol = _lookup_real_symbol(internal_qualname, globals_ctx)
@@ -1408,6 +1864,7 @@ def _process_function(
         resolved_imports=resolved_imports,
         globals_ctx=globals_ctx,
         local_defs=local_defs,
+        closure_self_class=closure_self_class,
     )
     var_types = _infer_var_types(func_node, typing_ctx)
     ctx = _Ctx(
@@ -1417,6 +1874,7 @@ def _process_function(
         resolved_imports=resolved_imports,
         globals_ctx=globals_ctx,
         local_defs=local_defs,
+        closure_self_class=closure_self_class,
     )
 
     relations: list[ObservedProgramRelation] = []
@@ -1445,8 +1903,20 @@ def _process_function(
             )
         elif isinstance(node, _FUNC_TYPES):
             # Nested function: its own source entity, not a method of the
-            # enclosing class even if the enclosing scope is a method.
-            relations.extend(_process_function(node, module_idx, None, globals_ctx, run_id))
+            # enclosing class even if the enclosing scope is a method
+            # (current_class is therefore never propagated). What CAN
+            # propagate is a deterministic closure capture of the enclosing
+            # method's `self` -- computed here, with every refusal condition
+            # checked, and None whenever the capture is not provably safe
+            # (see _nested_closure_self_class).
+            nested_closure = _nested_closure_self_class(
+                node, func_node, current_class, closure_self_class
+            )
+            relations.extend(
+                _process_function(
+                    node, module_idx, None, globals_ctx, run_id, closure_self_class=nested_closure
+                )
+            )
         elif isinstance(node, ast.ClassDef):
             relations.extend(_process_class(node, module_idx, globals_ctx, run_id))
 

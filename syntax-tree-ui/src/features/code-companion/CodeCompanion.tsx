@@ -103,20 +103,29 @@ export default function CodeCompanion({
       ) : activeTab && fileContent ? (
         <div className="obs-code-companion__body">
           <div className="obs-code-sidebar">
+            <p className="obs-code-sidebar__eyebrow">Evidence chain</p>
             <p>{activeTab.reason || activeTab.summary}</p>
-            <div className="obs-code-highlights">
-              {activeTab.highlights.map((highlight) => (
-                <button
-                  className={highlight.span_id === activeSpanId ? 'obs-code-highlight-chip obs-code-highlight-chip--active' : 'obs-code-highlight-chip'}
-                  key={highlight.span_id}
-                  onClick={() => onSelect({ ...selection, file_path: activeTab.file_path, span_id: highlight.span_id, start_line: highlight.start_line })}
-                  type="button"
-                >
-                  <StatusBadge status={highlight.status} />
-                  <span>{highlight.start_line}-{highlight.end_line}</span>
-                </button>
+            {/* The chain is ordered and numbered — it is a chain, not a
+                list (07_EVIDENCE_SOURCE_SPEC). Each item names its exact
+                source lines; the source pane renders the ACTIVE item. */}
+            <ol className="obs-evidence-chain">
+              {activeTab.highlights.map((highlight, index) => (
+                <li key={highlight.span_id}>
+                  <button
+                    className={highlight.span_id === activeSpanId ? 'obs-evidence-chain__item obs-evidence-chain__item--active' : 'obs-evidence-chain__item'}
+                    onClick={() => onSelect({ ...selection, file_path: activeTab.file_path, span_id: highlight.span_id, start_line: highlight.start_line })}
+                    type="button"
+                  >
+                    <span className="obs-evidence-chain__number">{index + 1}</span>
+                    <span className="obs-evidence-chain__locator">
+                      <code>{fileName(activeTab.file_path)}:{highlight.start_line}{highlight.end_line !== highlight.start_line ? `–${highlight.end_line}` : ''}</code>
+                      <small>{activeTab.role}</small>
+                    </span>
+                    <StatusBadge status={highlight.status} />
+                  </button>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
           <div className="obs-code-editor">
             {fileLoading ? (

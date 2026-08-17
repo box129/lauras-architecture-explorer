@@ -1,0 +1,220 @@
+[
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R1-TDC-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:13aee2b619e21df729e65464"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R1-TDC-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:f036696b7f737d50776cf920"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R1-TDC-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:0116b58b403b72556a585ca5"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R1-TDC-4",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:17fbed859de19fdb33a8edd1"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R1-TDC-5",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:b0905f05f11b75472ce4db73"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R1-TDC-6",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:9fcc11b236ac6361ebae5fcf"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R1-TDI-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:dd8c123ee6619a57a6302491"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R1-TDI-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:a60ab4e420617e849a619d15"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R1-TDI-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:ad86fdd2da2d6ccf6972508b"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R1-TRC-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:860d3a5d8364545142e123a6",
+      "relation:f036696b7f737d50776cf920"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R1-TRC-2",
+    "evaluator_notes": "Newly EVALUABLE under intervention D (previously resolution_failed): the nested-def taxonomy fix classifies before_log.log_it as kind='function', matching the frozen ground truth, so StableEntityRef resolution now succeeds for every ref in the proposition. The verifier then honestly reports insufficient_evidence: hop 1 (before.py:35, `retry_state.get_fn_name()`) is a call through a parameter whose type is known only from the `RetryCallState` annotation, and the extractor refuses BY DESIGN to treat a parameter type annotation as an observed runtime binding (an annotation is a claim, not an observed fact). This is the deliberately-kept precision boundary, not a regression: the claim moves from 'cannot even be evaluated' to 'evaluated, honestly unsupported', which ADDS it to the conditional-recall denominator (true_supported/(true_supported+true_abstained)) for the first time. Any resulting percentage drop in conditional recall is a denominator change, not a lost previously-supported claim.",
+    "failure_category": "call_resolution",
+    "matched_evidence": [],
+    "outcome": "incorrect_abstention"
+  },
+  {
+    "analyzer_support_status": "supported",
+    "claim_id": "R1-TRC-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:4de2536ad11ca053547c7e52",
+      "relation:f8ba9d529fb96c8b07cf14b2"
+    ],
+    "outcome": "correct_support"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R1-FDC-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R1-FDC-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R1-FDC-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R1-FDC-4",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R1-FDC-5",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R1-FDC-6",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R1-FDI-1",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R1-FDI-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R1-FDI-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "not_evaluated",
+    "claim_id": "R1-FRC-1",
+    "evaluator_notes": "EXCLUDED_AS_UNCERTAIN (pre-evaluation audit correction, see CORRECTIONS.md). Not one of R1's 23 scored in-scope claims. Retained in this file rather than deleted, to preserve correction history transparently -- the original FALSE reachability assertion this claim_id previously carried is superseded, not silently removed.",
+    "failure_category": "proposition_vocabulary",
+    "matched_evidence": [],
+    "outcome": "out_of_scope"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R1-FRC-2",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [],
+    "outcome": "correct_abstention"
+  },
+  {
+    "analyzer_support_status": "insufficient_evidence",
+    "claim_id": "R1-FRC-3",
+    "evaluator_notes": "",
+    "failure_category": null,
+    "matched_evidence": [
+      "relation:4de2536ad11ca053547c7e52"
+    ],
+    "outcome": "correct_abstention"
+  }
+]

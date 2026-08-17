@@ -1,5 +1,5 @@
 import Editor, { useMonaco, type OnMount } from '@monaco-editor/react';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { editor as monacoEditor } from 'monaco-editor';
 import type {
   FileContentResponse,
@@ -31,37 +31,52 @@ export default function ObservatoryMonaco({ fileContent, highlights, activeSpanI
 
   useEffect(() => {
     if (!monaco) return;
+    // The code surface is a dark panel in BOTH product themes
+    // (THEME_SYSTEM: background.code #171821 light / #101018 dark) — the
+    // paper shell frames a dark source pane, so evidence highlights keep
+    // one consistent recipe everywhere.
     monaco.editor.defineTheme('syntax-tree-observatory', {
-      base: 'vs',
+      base: 'vs-dark',
       inherit: true,
       rules: [
-        { token: 'comment', foreground: '8F8A82', fontStyle: 'italic' },
-        { token: 'keyword', foreground: '3D5A80' },
-        { token: 'string', foreground: '7A9B68' },
-        { token: 'number', foreground: 'A0522D' },
-        { token: 'type', foreground: '3D5A80' },
-        { token: 'function', foreground: '8A6E1B' },
-        { token: 'variable', foreground: '1A1916' },
+        { token: 'comment', foreground: 'AAA7B2', fontStyle: 'italic' },
+        { token: 'keyword', foreground: '8FB0D9' },
+        { token: 'string', foreground: '97BE81' },
+        { token: 'number', foreground: 'D28C64' },
+        { token: 'type', foreground: '8FB0D9' },
+        { token: 'function', foreground: 'D9B84A' },
+        { token: 'variable', foreground: 'ECEAF0' },
       ],
       colors: {
-        'editor.background': '#FCFAF7',
-        'editor.foreground': '#1A1916',
-        'editor.lineHighlightBackground': '#F8F5F1',
-        'editor.selectionBackground': '#3D5A8024',
-        'editor.inactiveSelectionBackground': '#3D5A8014',
-        'editorLineNumber.foreground': '#9A9890',
-        'editorLineNumber.activeForeground': '#3D5A80',
-        'editorGutter.background': '#FCFAF7',
-        'editorCursor.foreground': '#3D5A80',
-        'scrollbarSlider.background': '#DED8CF80',
-        'scrollbarSlider.hoverBackground': '#C8C0B680',
-        'editorOverviewRuler.border': '#DED8CF',
+        'editor.background': '#171821',
+        'editor.foreground': '#ECEAF0',
+        'editor.lineHighlightBackground': '#1D1E29',
+        'editor.selectionBackground': '#8FB0D930',
+        'editor.inactiveSelectionBackground': '#8FB0D91A',
+        'editorLineNumber.foreground': '#6F6C78',
+        'editorLineNumber.activeForeground': '#8FB0D9',
+        'editorGutter.background': '#171821',
+        'editorCursor.foreground': '#8FB0D9',
+        'scrollbarSlider.background': '#3A3B4A80',
+        'scrollbarSlider.hoverBackground': '#4A4B5A80',
+        'editorOverviewRuler.border': '#2A2B38',
       },
     });
+    // The Editor can mount before this definition exists (monaco falls back
+    // to its default light theme and never re-reads the name) — apply
+    // explicitly once defined.
+    monaco.editor.setTheme('syntax-tree-observatory');
   }, [monaco]);
 
+  // Monaco mounts asynchronously (lazy loader); a ref mutation alone never
+  // re-runs the decoration/reveal effects, so when data arrived before the
+  // editor the source pane stayed parked at line 1 instead of the cited
+  // span (live-audit defect 5). Mounting flips real state so both effects
+  // re-run against the now-present editor.
+  const [editorMounted, setEditorMounted] = useState(false);
   const handleMount: OnMount = useCallback((editor) => {
     editorRef.current = editor;
+    setEditorMounted(true);
   }, []);
 
   useEffect(() => {
@@ -89,7 +104,7 @@ export default function ObservatoryMonaco({ fileContent, highlights, activeSpanI
         },
       };
     }));
-  }, [activeSpanId, highlights]);
+  }, [activeSpanId, editorMounted, highlights]);
 
   useEffect(() => {
     const editor = editorRef.current;
@@ -97,7 +112,7 @@ export default function ObservatoryMonaco({ fileContent, highlights, activeSpanI
     const target = highlights.find((highlight) => highlight.span_id === activeSpanId) ?? highlights[0];
     if (!target) return;
     editor.revealLineInCenter(target.start_line, 0);
-  }, [activeSpanId, fileContent.file_path, highlights]);
+  }, [activeSpanId, editorMounted, fileContent.file_path, highlights]);
 
   return (
     <Editor

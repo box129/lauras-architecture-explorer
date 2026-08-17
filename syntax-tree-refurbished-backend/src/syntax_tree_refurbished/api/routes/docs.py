@@ -11,12 +11,31 @@ from pydantic import BaseModel
 from syntax_tree_refurbished.app.analysis.analysis_job import AnalysisJob
 from syntax_tree_refurbished.app.analysis.run_store import InMemoryRunStore
 from syntax_tree_refurbished.app.analysis.static_structure import module_component_id
+from syntax_tree_refurbished.api.dto.docs_generation import (
+    ComponentDocGenerationResponse,
+    DocGenerationRunMetadata,
+    RelationshipNoteDTO,
+)
+from syntax_tree_refurbished.api.dto.provenance import ArchitecturalClaimDTO
 from syntax_tree_refurbished.api.run_resolution import resolve_ready_run
+from syntax_tree_refurbished.app.architectural_explanation.verification_service import (
+    verify_target_entity,
+)
+from syntax_tree_refurbished.app.docs.component_doc_generator import (
+    generate_component_documentation,
+)
 from syntax_tree_refurbished.app.docs.docs_controller import DocsController
 from syntax_tree_refurbished.app.evidence.source_reader import SourceReadError, SourceReader
-from syntax_tree_refurbished.app.investigation.llm_model import InvestigationModel, NoConfiguredModel, make_live_model
+from syntax_tree_refurbished.app.investigation.llm_model import (
+    InvestigationModel,
+    NoConfiguredModel,
+    make_arch_explanation_model,
+    make_live_model,
+)
 from syntax_tree_refurbished.app.overview.system_overview_generator import SystemOverviewGenerator
 from syntax_tree_refurbished.config import Settings
+from syntax_tree_refurbished.core.models.parsed_symbol import ParsedSymbol
+from syntax_tree_refurbished.core.models.provenance import ArchitecturalClaim
 from syntax_tree_refurbished.core.models.system_overview import SystemOverview
 
 
@@ -191,6 +210,215 @@ def documentation_component(component_id: str, request: Request, run_id: str | N
         text=region.text,
         dependencies=dependencies,
     )
+
+
+#: Producer name recorded on every ArchitecturalClaim the generation
+#: endpoint produces (mirrors the architectural-explanation route's
+#: PRODUCER_NAME convention -- a stable service label, not a model id).
+DOCS_GENERATION_PRODUCER_NAME = "docs-component-generation-service"
+
+#: For a module target, the claim pipeline runs per top-level symbol; cap
+#: how many are verified so one click never fans out into an unbounded
+#: number of LLM proposal calls.
+_MODULE_TARGET_SYMBOL_LIMIT = 3
+
+
+@router.post(
+    "/components/{component_id:path}/generate",
+    response_model=ComponentDocGenerationResponse,
+)
+def generate_component_documentation_route(
+    component_id: str, request: Request, run_id: str | None = None
+) -> ComponentDocGenerationResponse:
+    """Evidence-grounded LLM documentation for one hierarchy component.
+
+    deterministic component facts + deterministically verified claims
+    -> one LLM writing call -> structured, labeled AI documentation.
+
+    Reuses the architectural-explanation provider/runtime configuration
+    boundary (never a second provider system) and its L1/L2 claim
+    pipeline unchanged. When no AI is configured, returns an honest
+    ``ai_generated=False`` body -- never fabricated prose; when a
+    configured provider fails, raises the same style of 503 the
+    architectural-explanation route uses.
+    """
+    job = resolve_ready_run(request, run_id)
+    store = _store(request)
+    target_symbol_ids, component_facts = _resolve_generation_target(
+        request, job, store, component_id
+    )
+
+    # Same private helpers the architectural-explanation route itself uses
+    # (imported lazily to keep route modules order-independent): one
+    # provider stack, one runtime-settings boundary, one claim pipeline.
+    from syntax_tree_refurbished.api.routes import architectural_explanation as arch_routes
+
+    settings = arch_routes._settings(request)
+    model = _generation_model(request, settings)
+    provider = settings.arch_explanation_llm_provider
+
+    if isinstance(model, NoConfiguredModel):
+        return ComponentDocGenerationResponse(
+            analysis_run_id=job.run_id,
+            component_id=component_id,
+            ai_generated=False,
+            unavailable_reason="not_configured",
+            message=(
+                "AI documentation generation is not configured. "
+                "Deterministic documentation remains available."
+            ),
+            run_metadata=DocGenerationRunMetadata(provider=provider, model="none"),
+        )
+
+    proposer = arch_routes._proposer(request)
+    symbols = store.get_symbols(job.run_id)
+    relations = store.get_relations(job.run_id)
+    resolver = arch_routes._source_region_resolver(store, job)
+
+    try:
+        claims: list[ArchitecturalClaim] = []
+        seen_claim_ids: set[str] = set()
+        for target_id in target_symbol_ids:
+            for claim in verify_target_entity(
+                run_id=job.run_id,
+                target_entity_id=target_id,
+                symbols=symbols,
+                relations=relations,
+                proposer=proposer,
+                producer_name=DOCS_GENERATION_PRODUCER_NAME,
+                source_region_resolver=resolver,
+            ):
+                if claim.id not in seen_claim_ids:
+                    seen_claim_ids.add(claim.id)
+                    claims.append(claim)
+
+        generated = generate_component_documentation(
+            model=model,
+            component_facts=component_facts,
+            claims=tuple(claims),
+        )
+    except RuntimeError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "code": "documentation_generation_unavailable",
+                "message": "The configured language-model provider could not be reached.",
+            },
+        ) from exc
+
+    return ComponentDocGenerationResponse(
+        analysis_run_id=job.run_id,
+        component_id=component_id,
+        ai_generated=True,
+        purpose=generated.purpose,
+        responsibilities=list(generated.responsibilities),
+        relationship_notes=[
+            RelationshipNoteDTO(claim_id=note.claim_id, note=note.note)
+            for note in generated.relationship_notes
+        ],
+        discarded_relationship_notes=generated.discarded_relationship_notes,
+        claims=[ArchitecturalClaimDTO.from_domain(claim) for claim in claims],
+        supported_count=sum(1 for c in claims if c.support_status == "supported"),
+        insufficient_evidence_count=sum(
+            1 for c in claims if c.support_status == "insufficient_evidence"
+        ),
+        run_metadata=DocGenerationRunMetadata(
+            provider=provider,
+            model=generated.model,
+            tokens_in=generated.tokens_in,
+            tokens_out=generated.tokens_out,
+            latency_ms=generated.latency_ms,
+        ),
+    )
+
+
+def _generation_model(request: Request, effective_settings: Settings) -> InvestigationModel:
+    """Model used for the documentation-writing call: a test-injection
+    hook first (``app.state.docs_generation_model``), else the SAME
+    architectural-explanation provider/runtime configuration the claim
+    proposer uses (``make_arch_explanation_model`` + the Settings-UI
+    runtime credential) -- deliberately never a second provider system."""
+    injected = getattr(request.app.state, "docs_generation_model", None)
+    if injected is not None:
+        return injected
+    if (
+        effective_settings.environment != "test"
+        and effective_settings.arch_explanation_llm_configured
+    ):
+        runtime = request.app.state.arch_explanation_runtime_config
+        api_key = runtime.resolve_api_key(request.app.state.settings)
+        return make_arch_explanation_model(effective_settings, api_key_override=api_key)
+    return NoConfiguredModel()
+
+
+def _resolve_generation_target(
+    request: Request, job: AnalysisJob, store: InMemoryRunStore, component_id: str
+) -> tuple[list[str], str]:
+    """Resolve a hierarchy component id to (claim target symbol ids,
+    deterministic component-facts text). 404s for unknown components,
+    mirroring ``documentation_component``'s resolution order: parsed
+    symbol first, then module component."""
+    symbol = store.get_symbol(component_id)
+    if symbol and symbol.run_id == job.run_id:
+        return [symbol.id], _symbol_facts(store, job, symbol)
+
+    overview = store.get_system_overview(job.run_id) or _overview(request, job)
+    component = next((item for item in overview.main_components if item.id == component_id), None)
+    if not component or component.kind != "module" or not component.related_file_paths:
+        raise HTTPException(status_code=404, detail="Documentation component not found.")
+    path = component.related_file_paths[0]
+    top_level = sorted(
+        (s for s in store.get_symbols(job.run_id) if s.path == path and not s.parent_symbol_id),
+        key=lambda s: s.start_line,
+    )
+    targets = [s.id for s in top_level[:_MODULE_TARGET_SYMBOL_LIMIT]]
+    return targets, _module_facts(component.summary, path, top_level)
+
+
+def _symbol_facts(store: InMemoryRunStore, job: AnalysisJob, symbol: ParsedSymbol) -> str:
+    lines = [
+        f"kind: {symbol.kind}",
+        f"name: {symbol.name}",
+        f"qualified_name: {symbol.qualified_name}",
+        f"path: {symbol.path}",
+        f"lines: {symbol.start_line}-{symbol.end_line}",
+        f"signature: {symbol.signature or symbol.name}",
+    ]
+    if symbol.parent_symbol_id:
+        parent = store.get_symbol(symbol.parent_symbol_id)
+        if parent:
+            lines.append(f"declared inside: {parent.kind} {parent.qualified_name}")
+    children = sorted(
+        (s for s in store.get_symbols(job.run_id) if s.parent_symbol_id == symbol.id),
+        key=lambda s: s.start_line,
+    )
+    if children:
+        lines.append("contains:")
+        for child in children[:20]:
+            lines.append(f"  - {child.kind} {child.name} (lines {child.start_line}-{child.end_line})")
+        if len(children) > 20:
+            lines.append(f"  - ... and {len(children) - 20} more")
+    return "\n".join(lines)
+
+
+def _module_facts(summary: str, path: str, top_level: list[ParsedSymbol]) -> str:
+    lines = [
+        "kind: module",
+        f"path: {path}",
+    ]
+    if summary:
+        lines.append(f"parser-derived summary: {summary}")
+    if top_level:
+        lines.append("top-level declarations:")
+        for symbol in top_level[:20]:
+            lines.append(
+                f"  - {symbol.kind} {symbol.name} (lines {symbol.start_line}-{symbol.end_line})"
+            )
+        if len(top_level) > 20:
+            lines.append(f"  - ... and {len(top_level) - 20} more")
+    else:
+        lines.append("top-level declarations: (none parsed)")
+    return "\n".join(lines)
 
 
 @router.post("/plan")

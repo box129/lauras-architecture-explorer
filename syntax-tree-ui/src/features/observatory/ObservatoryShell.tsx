@@ -1,6 +1,8 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import ArchitectureMapCanvas from '../architecture-map/ArchitectureMapCanvas';
+import ArchitectureGraphOverview from '../architecture-graph/ArchitectureGraphOverview';
+import ArchitectureGraphInspector from '../architecture-graph/ArchitectureGraphInspector';
 import {
   ArchitectureMapEmptyState,
   ArchitectureMapErrorState,
@@ -25,9 +27,14 @@ import QuestionLensCanvas from '../question-lens/QuestionLensCanvas';
 import UnderstandingPane from '../question-lens/UnderstandingPane';
 import { questionLensProofSelection, questionStepProofSelection } from '../question-lens/questionLensProof';
 import { useQuestionLens } from '../question-lens/useQuestionLens';
-import ObservatoryTopBar from './ObservatoryTopBar';
+import ObservatoryTopBar, { type ArchitectureSearchItem } from './ObservatoryTopBar';
+import { adaptArchitectureGraph } from '../architecture-graph/graphAdapter';
+import type { ArchitectureGraphResponse } from '../architecture-graph/graphTypes';
+import { fetchApi } from '../../api/client';
 import type { BreadcrumbItem } from './BreadcrumbTrail';
+import type { ObservatoryNode } from './types';
 import QuestionDock from './QuestionDock';
+import EntityStatements from './EntityStatements';
 import VoiceRail from './VoiceRail';
 import { getFixtureExplanation } from './fixtures/openWebuiExplanations';
 import { useSyntaxTreeStore } from '../../store';
@@ -98,6 +105,12 @@ export default function ObservatoryShell() {
     runId: analysisRunId,
   });
   const [draftPrompt, setDraftPrompt] = useState('');
+  const [requestedGraphExpansion, setRequestedGraphExpansion] = useState<string | null>(null);
+  // Architecture-graph nodes include v2 cluster/residual nodes that are not
+  // part of the broader architecture-map lens payload. Keep one selection
+  // value at the shell boundary so canvas, accessible table, and inspector
+  // render the same graph-local selection.
+  const [graphSelectedNode, setGraphSelectedNode] = useState<ObservatoryNode | null>(null);
   const [proofSelection, setProofSelection] = useState<CodeCompanionSelection | null>(() => decodeProofSelection(searchParams.get('proof')));
   const [proofMode, setProofMode] = useState<'closed' | 'collapsed' | 'open' | 'expanded'>(() => {
     const mode = searchParams.get('proofMode');
@@ -281,13 +294,16 @@ export default function ObservatoryShell() {
       setProofModeAndUrl('closed');
       return;
     }
+    setGraphSelectedNode(null);
     lens.goBack();
   }, [lens, proofMode, proofSelection, setProofModeAndUrl]);
   const canGoBack = (Boolean(proofSelection) && proofMode !== 'closed') || Boolean(lens.selectedNode) || lens.lensPath.length > 0;
 
   const unifiedBreadcrumb = useMemo(() => {
     const items: BreadcrumbItem[] = [...lens.breadcrumbs];
-    if (lens.selectedNode && lens.selectedNode.id !== lens.focalNode?.id) {
+    // Root graph selection is local emphasis, not a navigation scope. Keep
+    // breadcrumbs reserved for Enter/drill-down so they state scope exactly.
+    if (lens.lensPath.length > 0 && lens.selectedNode && lens.selectedNode.id !== lens.focalNode?.id) {
       items.push({ id: lens.selectedNode.id, label: truncateBreadcrumbLabel(lens.selectedNode.label), title: lens.selectedNode.label });
     }
     if (proofSelection && proofMode !== 'closed') {
@@ -303,11 +319,12 @@ export default function ObservatoryShell() {
       items.push({ id: 'evidence', label: truncateBreadcrumbLabel(statementLabel), title: statementLabel });
     }
     return items;
-  }, [lens.breadcrumbs, lens.focalNode, lens.selectedNode, proofMode, proofSelection]);
+  }, [lens.breadcrumbs, lens.focalNode, lens.lensPath.length, lens.selectedNode, proofMode, proofSelection]);
 
   const handleBreadcrumbSelect = useCallback((index: number) => {
     const lensCrumbCount = lens.breadcrumbs.length;
     if (index < lensCrumbCount) {
+      setGraphSelectedNode(null);
       lens.goToBreadcrumb(index);
       setProofModeAndUrl('closed');
       return;
@@ -318,12 +335,17 @@ export default function ObservatoryShell() {
     setProofModeAndUrl('closed');
   }, [lens, setProofModeAndUrl]);
 
+  useEffect(() => {
+    setGraphSelectedNode(null);
+  }, [analysisRunId]);
+
   const analyzeAnotherRepository = useCallback(() => {
     resetAnalysis();
     window.history.replaceState({}, '', '/');
   }, [resetAnalysis]);
 
   const selectNode = (node: Parameters<typeof lens.selectNode>[0]) => {
+    setGraphSelectedNode(node);
     lens.selectNode(node);
     if (node?.level && node.level >= 2 && node.evidenceCount > 0) {
       openProof({
@@ -333,6 +355,36 @@ export default function ObservatoryShell() {
         open: true,
       });
     }
+  };
+
+  // Selection inside the architecture-graph (v2) canvas must stay local to
+  // graphSelectedNode only. Routing it through lens.selectNode (as plain
+  // selectNode above does, for the legacy architecture-map canvas) makes
+  // useArchitectureLens.focusEntity non-null for any graph node whose id
+  // differs from the legacy focalNode -- which is every graph node, since
+  // the graph and the legacy map use disjoint id spaces. That flips
+  // isEntityFocus true and silently swaps the whole canvas and inspector
+  // over to ArchitectureMapCanvas/VoiceRail (the pre-redesign entity-focus
+  // system), which is where the "Verified" badge on a 0-evidence
+  // structural container, the raw "fallback no llm" chip, and the
+  // triplicated node-detail panels all actually came from.
+  const selectGraphNode = useCallback((node: ObservatoryNode | null) => {
+    setGraphSelectedNode(node);
+  }, []);
+
+  // Entity Focus from the deterministic graph (live-audit repair): an
+  // explicit "Focus this module" action routes the module's real id
+  // through the lens selection, which resolves it via the map node API
+  // and opens the incoming ▸ entity ▸ outgoing surface. Ordinary graph
+  // clicks stay local (selectGraphNode) exactly as before.
+  const focusEntity = useCallback((node: ObservatoryNode) => {
+    setGraphSelectedNode(null);
+    lens.selectNode(node);
+  }, [lens]);
+
+  const enterNode = (node: ObservatoryNode, selectOnly = false) => {
+    setGraphSelectedNode(node);
+    lens.enterNode(node, selectOnly);
   };
 
   const relatedFlows = useMemo(() => {
@@ -428,7 +480,41 @@ export default function ObservatoryShell() {
     playTour(Math.max(tourStep - 1, 0));
   }, [playTour, tourStep]);
 
+  // Architecture-aware search index (19.6): every group in the current
+  // deterministic graph, searchable by name or structural path. Selecting
+  // a result expands its ancestors on the canvas and selects it, without
+  // touching the breadcrumb.
+  const [searchGraph, setSearchGraph] = useState<ArchitectureGraphResponse | null>(null);
+  useEffect(() => {
+    if (source !== 'api') return undefined;
+    let cancelled = false;
+    void fetchApi<ArchitectureGraphResponse>('/architecture-graph')
+      .then((value) => { if (!cancelled) setSearchGraph(value); })
+      .catch(() => { if (!cancelled) setSearchGraph(null); });
+    return () => { cancelled = true; };
+  }, [source, analysisRunId]);
+  const searchItems = useMemo<ArchitectureSearchItem[]>(() => {
+    if (!searchGraph) return [];
+    return searchGraph.groups.map((group) => ({
+      id: group.id,
+      label: group.kind === 'relation_residual' ? 'Ungrouped' : group.label,
+      path: group.structural_path,
+      kind: group.kind === 'relation_cluster' ? 'structural cluster' : group.kind === 'relation_residual' ? 'ungrouped' : group.kind === 'module' ? 'module' : 'region',
+    }));
+  }, [searchGraph]);
+  const handleSearchSelect = useCallback((item: ArchitectureSearchItem) => {
+    if (!searchGraph) return;
+    const adapted = adaptArchitectureGraph(searchGraph);
+    const target = adapted.nodes.find((node) => node.id === item.id);
+    if (!target) return;
+    setRequestedGraphExpansion(target.parentGroupId ?? target.id);
+    setGraphSelectedNode(target);
+  }, [searchGraph]);
+
   const canvasFixture = lens.isEntityFocus ? (lens.entityFocusLandscape ?? lens.landscape) : lens.landscape;
+  // Root structural selection is graph-local context, not an entity-focus
+  // navigation event. Only Enter changes `lensPath` and leaves this canvas.
+  const isArchitectureGraph = Boolean(canvasFixture && source === 'api' && !lens.isEntityFocus && !showQuestionLens && !showFlowLens);
 
   let canvas = showQuestionLens ? (
     <QuestionLensCanvas
@@ -452,10 +538,21 @@ export default function ObservatoryShell() {
       onSelectStep={flowLens.selectStep}
       selectedStepId={flowLens.selectedStepId}
     />
+  ) : isArchitectureGraph ? (
+    <ArchitectureGraphOverview
+      runId={analysisRunId}
+      selectedNode={graphSelectedNode ?? lens.selectedNode}
+      onEnterNode={enterNode}
+      onHoverNode={lens.prefetchNode}
+      onSelectNode={selectGraphNode}
+      requestedExpandId={requestedGraphExpansion}
+      scopeGroupId={lens.lensPath.at(-1) ?? null}
+    />
   ) : (canvasFixture) ? (
     <ArchitectureMapCanvas
       fixture={canvasFixture}
       focalNode={lens.isEntityFocus ? lens.selectedNode : lens.focalNode}
+      entityFocus={lens.isEntityFocus}
       onEnterNode={lens.enterNode}
       onHoverNode={lens.prefetchNode}
       onSelectNode={selectNode}
@@ -499,17 +596,64 @@ export default function ObservatoryShell() {
   }
 
   if (isDocsStudio) {
+    // Doc Studio wears the same persistent shell as every other surface:
+    // the standard top bar (wordmark, one Back, one breadcrumb stack,
+    // global navigation, theme control, run chip) frames the validated
+    // documentation content unchanged.
     return (
-      <DocsStudio
-        drafts={library.drafts}
-        lenses={savedLenses}
-        onBack={() => navigateToObservatory(source, analysisRunId, analysisRepositoryPath)}
-        onOpenLens={(savedLens) => restoreSavedLens(savedLens, undefined, undefined, source, analysisRunId, analysisRepositoryPath)}
-        onSaveDraft={library.saveDraft}
-        scopeKey={scopeKey}
-        source={source}
-        tours={savedTours}
-      />
+      <div className="observatory-shell">
+        <ObservatoryTopBar
+          breadcrumb={[
+            { id: 'architecture', label: shellMeta.repoTitle, title: 'Back to Architecture' },
+            { id: 'docs', label: 'Documentation' },
+          ]}
+          canGoBack
+          onBack={() => navigateToObservatory(source, analysisRunId, analysisRepositoryPath)}
+          onBreadcrumbSelect={(index) => {
+            if (index === 0) navigateToObservatory(source, analysisRunId, analysisRepositoryPath);
+          }}
+          freshness={shellMeta.freshness}
+          lastScanned={shellMeta.lastScanned}
+          onOpenDocs={() => navigateToDocs(source, analysisRunId, analysisRepositoryPath)}
+          onAnalyzeAnotherRepository={analyzeAnotherRepository}
+          repoTitle={shellMeta.repoTitle}
+          runId={shellMeta.runId}
+        />
+        <div className="observatory-shell__docs">
+          <DocsStudio
+            drafts={library.drafts}
+            lenses={savedLenses}
+            onBack={() => navigateToObservatory(source, analysisRunId, analysisRepositoryPath)}
+            onOpenLens={(savedLens) => restoreSavedLens(savedLens, undefined, undefined, source, analysisRunId, analysisRepositoryPath)}
+            onSaveDraft={library.saveDraft}
+            scopeKey={scopeKey}
+            source={source}
+            tours={savedTours}
+          />
+        </div>
+        {/* "Open source" on a claim's evidence uses the store's goToCode →
+            mainSurface 'code' mechanism; the docs branch must render the
+            same exact-source overlay the architecture branch does, or the
+            action silently does nothing (latent gap in the standalone
+            docs page, surfaced by live-AI acceptance). */}
+        {mainSurface === 'code' && (
+          <div className="obs-code-overlay" role="dialog" aria-label="Source code">
+            <div className="obs-code-overlay__panel">
+              <button
+                type="button"
+                className="obs-code-overlay__back"
+                aria-label="Back to documentation"
+                onClick={() => setMainSurface('architecture')}
+              >
+                <ArrowLeft size={15} strokeWidth={1.8} /> Back
+              </button>
+              <Suspense fallback={<div className="obs-code-overlay__loading">Loading source...</div>}>
+                <CodeViewer />
+              </Suspense>
+            </div>
+          </div>
+        )}
+      </div>
     );
   }
 
@@ -524,12 +668,23 @@ export default function ObservatoryShell() {
         onBreadcrumbSelect={handleBreadcrumbSelect}
         onOpenDocs={() => navigateToDocs(source, analysisRunId, analysisRepositoryPath)}
         onAnalyzeAnotherRepository={analyzeAnotherRepository}
+        onOpenLenses={() => setDrawerOpen(true)}
         repoTitle={shellMeta.repoTitle}
         runId={shellMeta.runId}
+        searchItems={isArchitectureGraph ? searchItems : undefined}
+        onSearchSelect={isArchitectureGraph ? handleSearchSelect : undefined}
       />
       <div className={showQuestionLens ? 'observatory-shell__body observatory-shell__body--question' : 'observatory-shell__body'}>
         <div className="observatory-shell__main">
           {canvas}
+          {lens.isEntityFocus && explanationNode && !showFlowLens && !showQuestionLens && (
+            <EntityStatements
+              node={explanationNode}
+              explanation={explanationState.explanation}
+              evidence={explanationState.evidence}
+              onOpenProof={openProof}
+            />
+          )}
           <CodeCompanion
             mode={proofMode}
             onModeChange={setProofModeAndUrl}
@@ -541,6 +696,7 @@ export default function ObservatoryShell() {
           />
           {!showFlowLens && (
             <QuestionDock
+              compact={isArchitectureGraph}
               contextLabel={lens.selectedNode?.label ?? lens.focalNode?.label ?? shellMeta.repoTitle}
               draftPrompt={draftPrompt}
               loading={questionLens.loading}
@@ -577,6 +733,14 @@ export default function ObservatoryShell() {
             onOpenProof={openProof}
             onSaveLens={saveCurrentLens}
             selectedStep={flowLens.selectedStep}
+          />
+        ) : isArchitectureGraph ? (
+          <ArchitectureGraphInspector
+            node={graphSelectedNode ?? lens.selectedNode}
+            onEnter={enterNode}
+            onExpand={(node) => setRequestedGraphExpansion(node.id)}
+            onFocusEntity={focusEntity}
+            scopeGroupId={lens.lensPath.at(-1) ?? null}
           />
         ) : (
           <VoiceRail

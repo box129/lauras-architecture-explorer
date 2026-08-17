@@ -1,0 +1,190 @@
+/* ─────────────────────────────────────────────────────────────
+   Laura's — theme layer (light / dark / system).
+   Semantic tokens per the redesign THEME_SYSTEM spec. The base
+   --obs-* tokens from colors.css are the LIGHT palette; this file
+   re-declares them under the dark scope so every existing
+   component themes automatically.
+
+   Scoping: [data-theme="light"|"dark"] wins; with no attribute
+   (or data-theme="system") the OS preference decides.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Surfaces */
+  --bg-app: var(--obs-canvas);
+  --bg-canvas: var(--obs-canvas);
+  --bg-surface: var(--obs-paper);
+  --bg-elevated: var(--obs-white);
+  --bg-sunken: color-mix(in srgb, var(--obs-stone) 5%, var(--obs-canvas));
+  --bg-code: #171821;
+  --bg-scrim: rgba(26, 25, 22, 0.32);
+
+  /* Text */
+  --text-primary: var(--obs-ink);
+  --text-secondary: color-mix(in srgb, var(--obs-ink) 74%, var(--obs-stone));
+  --text-muted: var(--obs-stone);
+  --text-oncode: #ECEAF0;
+  --text-oncode-dim: #AAA7B2;
+
+  /* Lines */
+  --border-subtle: color-mix(in srgb, var(--obs-border) 62%, transparent);
+  --border-default2: var(--obs-border);
+  --border-strong2: color-mix(in srgb, var(--obs-stone) 58%, var(--obs-border));
+
+  /* Action */
+  --action-primary: var(--obs-slate-blue);
+  --action-primary-hover: color-mix(in srgb, var(--obs-slate-blue) 88%, var(--obs-ink));
+  --action-primary-text: var(--obs-white);
+  --action-ghost-hover: rgba(61, 90, 128, 0.08);
+
+  /* ── Epistemic layers — each one also carries a shape + icon,
+        never color alone (see ACCESSIBILITY_SPEC). ── */
+
+  /* L1 deterministic path container: solid 1.5px stone, folder-tree icon */
+  --structural-container-bg: color-mix(in srgb, var(--obs-stone) 4%, var(--obs-paper));
+  --structural-container-border: color-mix(in srgb, var(--obs-stone) 46%, var(--obs-border));
+  --structural-container-header: color-mix(in srgb, var(--obs-stone) 9%, var(--obs-paper));
+  --structural-container-text: var(--obs-ink);
+
+  /* L2 deterministic relation cluster: inset 1px, waypoints icon, corner notch */
+  --structural-cluster-bg: color-mix(in srgb, var(--obs-white) 62%, var(--obs-canvas));
+  --structural-cluster-border: color-mix(in srgb, var(--obs-slate-blue) 26%, var(--obs-border));
+  --structural-cluster-accent: color-mix(in srgb, var(--obs-slate-blue) 62%, var(--obs-stone));
+
+  /* L2 residual bucket: no cluster border at all — plain list */
+  --structural-residual-border: color-mix(in srgb, var(--obs-border) 78%, transparent);
+
+  /* L3 AI interpretation: iris. Deliberately outside the status palette
+     (citrine/clay/sage/muted-red) so it can never be misread as a verdict.
+     Carried by icon, 3px rail, border and label — the surface tint stays under
+     8% so iris never becomes a large saturated area competing with structure. */
+  --ai-surface: color-mix(in srgb, #6E4B8E 6%, var(--obs-paper));
+  --ai-border: color-mix(in srgb, #6E4B8E 44%, var(--obs-border));
+  --ai-text: #5B3E79;
+  --ai-accent: #6E4B8E;
+
+  /* L4 verification — reserved words, reserved colors */
+  --verification-supported: var(--obs-citrine);
+  --verification-insufficient: var(--obs-clay);
+  --verification-contradicted: var(--obs-muted-red);
+  --verification-supported-bg: color-mix(in srgb, var(--obs-citrine) 8%, var(--obs-paper));
+  --verification-insufficient-bg: color-mix(in srgb, var(--obs-clay) 6%, var(--obs-paper));
+  --verification-contradicted-bg: color-mix(in srgb, var(--obs-muted-red) 7%, var(--obs-paper));
+
+
+  /* Architecture canvas — regions, aggregated relation edges */
+  --region-bg: color-mix(in srgb, #6B7C93 4%, var(--obs-paper));
+  --region-head-bg: color-mix(in srgb, #6B7C93 10%, var(--obs-paper));
+  --region-border: color-mix(in srgb, #6B7C93 38%, var(--obs-border));
+  --edge-stroke: rgba(88, 99, 116, 0.6);
+  --edge-stroke-active: var(--action-primary);
+  --edge-stroke-dim: rgba(88, 99, 116, 0.22);
+  --edge-label-bg: var(--obs-paper);
+  --edge-label-border: var(--border-subtle);
+  --canvas-dot: rgba(88, 99, 116, 0.16);
+  --bg-surface-alpha: color-mix(in srgb, var(--bg-surface) 86%, transparent);
+
+  /* Evidence highlight — must stay legible in both themes */
+  --evidence-highlight: rgba(201, 162, 39, 0.20);
+  --evidence-highlight-edge: rgba(201, 162, 39, 0.85);
+  /* Counter-evidence: clay, translucent so it washes over the code surface
+     rather than covering it. Never the opaque paper-mixed verification tint. */
+  --evidence-counter-highlight: rgba(191, 92, 74, 0.24);
+  --evidence-counter-highlight-edge: rgba(191, 92, 74, 0.9);
+
+  /* Focus */
+  --focus-ring: var(--obs-slate-blue);
+  --focus-ring-offset: var(--obs-white);
+}
+
+/* ── Dark ──
+   Applied only via [data-theme="dark"]. "System" is resolved in JS
+   (matchMedia + a change listener) so there is exactly one source of
+   truth for the active theme; see components/epistemic/ThemeToggle. ── */
+:root[data-theme="dark"] {
+  --obs-canvas: #131210;
+  --obs-paper: #1C1B17;
+  --obs-white: #24231E;
+  --obs-ink: #F1EEE7;
+  --obs-stone: #A39E93;
+  --obs-stone-soft: #7C776E;
+  --obs-border: #37342C;
+  --obs-slate-blue: #8FB0D9;
+  --obs-citrine: #D9B84A;
+  --obs-clay: #D28C64;
+  --obs-sage: #97BE81;
+  --obs-muted-red: #E08A79;
+  --obs-citrine-fill: #D9B84A;
+  --obs-sage-fill: #97BE81;
+  --obs-muted-red-fill: #E08A79;
+  --surface-code: #101018;
+  --bg-code: #101018;
+  --chip-signal-bg: #262338;
+  --chip-signal-fg: #BFB6F2;
+  --stage-failed: #E88176;
+  --stage-skipped: #E0A868;
+  --orientation-ready: #6FC49B;
+  --orientation-partial: #E0A868;
+  --orientation-failed: #E88176;
+  --action-primary-text: #101014;
+  --action-primary-hover: color-mix(in srgb, var(--obs-slate-blue) 84%, var(--obs-white));
+  --action-ghost-hover: rgba(143, 176, 217, 0.14);
+  --ai-surface: color-mix(in srgb, #C4A9E8 8%, var(--obs-paper));
+  --ai-border: color-mix(in srgb, #C4A9E8 46%, var(--obs-border));
+  --ai-text: #CBB4EC;
+  --ai-accent: #C4A9E8;
+  --bg-scrim: rgba(0, 0, 0, 0.58);
+  --evidence-highlight: rgba(217, 184, 74, 0.22);
+  --evidence-highlight-edge: rgba(217, 184, 74, 0.9);
+
+  --region-bg: color-mix(in srgb, #8FB0D9 6%, var(--obs-paper));
+  --region-head-bg: color-mix(in srgb, #8FB0D9 12%, var(--obs-paper));
+  --region-border: color-mix(in srgb, #8FB0D9 32%, var(--obs-border));
+  --edge-stroke: rgba(196, 210, 230, 0.55);
+  --edge-stroke-dim: rgba(196, 210, 230, 0.18);
+  --edge-label-bg: var(--bg-surface);
+  --canvas-dot: rgba(196, 210, 230, 0.13);
+  --evidence-counter-highlight: rgba(226, 122, 102, 0.24);
+  --evidence-counter-highlight-edge: rgba(226, 122, 102, 0.92);
+  --focus-ring-offset: #131210;
+  --canvas-wash: radial-gradient(circle at 45% 26%, rgba(217, 184, 74, 0.06), transparent 30%), radial-gradient(circle at 72% 18%, rgba(143, 176, 217, 0.07), transparent 28%); /* @kind other */
+  --shadow-node: 0 10px 30px rgba(0, 0, 0, 0.34);
+  --shadow-chrome: 0 10px 24px rgba(0, 0, 0, 0.32);
+  --shadow-tab-active: 0 8px 18px rgba(0, 0, 0, 0.34);
+  --shadow-card: 0 16px 42px rgba(0, 0, 0, 0.4);
+  --shadow-panel: 0 18px 42px rgba(0, 0, 0, 0.44);
+  --shadow-dock: 0 18px 46px rgba(0, 0, 0, 0.5);
+  --shadow-menu: 0 14px 34px rgba(0, 0, 0, 0.58);
+  --shadow-companion: 0 22px 60px rgba(0, 0, 0, 0.55);
+  --shadow-modal: 0 30px 70px rgba(0, 0, 0, 0.68);
+  --shadow-selected: 0 16px 42px rgba(143, 176, 217, 0.18);
+}
+
+/* ── Architecture-lens palette (prototype) ──────────────────────
+   These colors distinguish spatial architecture roles, NOT epistemic truth
+   or verification status. Epistemic meaning still comes from explicit chips,
+   labels and icons. */
+:root {
+  --arch-blue: #2F6FAD;
+  --arch-blue-bg: color-mix(in srgb, #2F6FAD 5%, var(--bg-surface));
+  --arch-cyan: #238A9D;
+  --arch-cyan-bg: color-mix(in srgb, #238A9D 5%, var(--bg-surface));
+  --arch-teal: #258A78;
+  --arch-teal-bg: color-mix(in srgb, #258A78 6%, var(--bg-surface));
+  --arch-violet: #7658A6;
+  --arch-violet-bg: color-mix(in srgb, #7658A6 6%, var(--bg-surface));
+  --arch-neutral: color-mix(in srgb, var(--text-muted) 62%, var(--border-default2));
+  --arch-neutral-bg: color-mix(in srgb, var(--text-muted) 4%, var(--bg-surface));
+}
+:root[data-theme="dark"] {
+  --arch-blue: #4DA8FF;
+  --arch-blue-bg: color-mix(in srgb, #4DA8FF 7%, var(--bg-surface));
+  --arch-cyan: #56C7D7;
+  --arch-cyan-bg: color-mix(in srgb, #56C7D7 7%, var(--bg-surface));
+  --arch-teal: #59D4B6;
+  --arch-teal-bg: color-mix(in srgb, #59D4B6 7%, var(--bg-surface));
+  --arch-violet: #B79AE3;
+  --arch-violet-bg: color-mix(in srgb, #B79AE3 8%, var(--bg-surface));
+  --arch-neutral: #A6A196;
+  --arch-neutral-bg: color-mix(in srgb, #A6A196 5%, var(--bg-surface));
+}

@@ -3,6 +3,7 @@ import { ArrowLeft, ChevronRight, Code2, FileText, Network, RefreshCw } from 'lu
 import { ApiError, fetchApi } from '../../api/client';
 import { useSyntaxTreeStore } from '../../store';
 import type { DocsStudioDraft, LensTour, SavedLens } from '../lens-library/types';
+import GeneratedDocsSection from './GeneratedDocs';
 import SourceCode from './SourceCode';
 
 interface DocsStudioProps {
@@ -62,10 +63,13 @@ interface DocumentationDetailResponse {
 
 export default function DocsStudio(props: DocsStudioProps) {
   if (props.source === 'fixture') return <FixtureDocsStudio {...props} />;
-  return <RepositoryDocsPortal onBack={props.onBack} />;
+  // Back navigation is owned by the persistent shell top bar around this
+  // surface (one Back, one breadcrumb stack), so the real portal no longer
+  // renders its own.
+  return <RepositoryDocsPortal />;
 }
 
-function RepositoryDocsPortal({ onBack }: Pick<DocsStudioProps, 'onBack'>) {
+function RepositoryDocsPortal() {
   const analysisRunId = useSyntaxTreeStore((state) => state.analysisRunId);
   const repositoryPath = useSyntaxTreeStore((state) => state.analysisRepositoryPath);
   const [hierarchy, setHierarchy] = useState<DocumentationHierarchyResponse | null>(null);
@@ -143,17 +147,17 @@ function RepositoryDocsPortal({ onBack }: Pick<DocsStudioProps, 'onBack'>) {
 
   return (
     <main className="obs-docs-studio obs-docs-portal" aria-label="Repository documentation">
-      <header className="obs-docs-topbar">
-        <button type="button" onClick={onBack}><ArrowLeft size={15} /> Back to Observatory</button>
+      {/* The persistent shell top bar above owns Back and the breadcrumb
+          (one Back, one stack); this page header only names the surface
+          and hosts Refresh, laid out so nothing overlaps the intro. */}
+      <header className="obs-docs-pagehead">
         <div>
-          <span>Repository documentation</span>
+          <span className="obs-docs-pagehead__eyebrow">Repository documentation</span>
           <h1>{hierarchy?.repository_name || repositoryDisplayName(repositoryPath)}</h1>
         </div>
-        <div className="obs-docs-actions">
-          <button type="button" onClick={() => void loadHierarchy()} disabled={hierarchyLoading}>
-            <RefreshCw size={14} /> Refresh
-          </button>
-        </div>
+        <button type="button" onClick={() => void loadHierarchy()} disabled={hierarchyLoading}>
+          <RefreshCw size={14} /> Refresh
+        </button>
       </header>
 
       {/* Participant 1 formative finding: "I finally found a doc studio but
@@ -245,6 +249,10 @@ function DocumentationDetail({
         <code>{detail.qualified_name}</code>
         {detail.summary && <p>{detail.summary}</p>}
       </header>
+
+      {/* keyed so a component switch resets generation state instead of
+          showing another component's AI output */}
+      <GeneratedDocsSection componentId={detail.id} key={detail.id} />
 
       <section className="obs-docs-detail__section" aria-labelledby="documentation-heading">
         <h3 id="documentation-heading">Documentation</h3>
